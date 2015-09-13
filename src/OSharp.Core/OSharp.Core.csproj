@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F7C67C95-FACB-4160-9A88-CB738E65E034}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OSharp.Core</RootNamespace>
+    <AssemblyName>OSharp.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\OSharp.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\OSharp.Core.NET45\Release\</OutputPath>
+    <DefineConstants>TRACE;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\OSharp.Core.NET45\Release\OSharp.Core.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caching\CacheBase.cs" />
+    <Compile Include="Caching\CacheLevel.cs" />
+    <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\InternalCacher.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Caching\ICacheProvider.cs" />
+    <Compile Include="Caching\QueryCacheExtensions.cs" />
+    <Compile Include="Caching\RuntimeMemoryCache.cs" />
+    <Compile Include="Caching\RuntimeMemoryCacheProvider.cs" />
+    <Compile Include="Configs\BasicLoggingConfig.cs" />
+    <Compile Include="Configs\ConfigFile\Data\ContextCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configs\ConfigFile\Data\ContextElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configs\ConfigFile\Logging\BasicLoggingElement.cs" />
+    <Compile Include="Configs\ConfigFile\Logging\DataLoggingElement.cs" />
+    <Compile Include="Configs\ConfigFile\Logging\LoggingEntryElement.cs" />
+    <Compile Include="Configs\DataLoggingConfig.cs" />
+    <Compile Include="Configs\DbContextConfig.cs" />
+    <Compile Include="Configs\DataConfig.cs" />
+    <Compile Include="Configs\DbContextInitializerConfig.cs" />
+    <Compile Include="Configs\LoggingAdapterConfig.cs" />
+    <Compile Include="Configs\LoggingConfig.cs" />
+    <Compile Include="Configs\LoggingEntryConfig.cs" />
+    <Compile Include="Configs\OSharpConfig.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Context\Operator.cs" />
+    <Compile Include="Context\OSharpContext.cs" />
+    <Compile Include="Data\DataPage.cs" />
+    <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
+    <Compile Include="Data\IEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\IEntityDto.cs" />
+    <Compile Include="Data\EntityBase.cs" />
+    <Compile Include="Data\Extensions\CollectionExtensions.cs" />
+    <Compile Include="Data\Infrastructure\IAudited.cs" />
+    <Compile Include="Data\Infrastructure\ICreatedAudited.cs" />
+    <Compile Include="Data\Infrastructure\ICreatedTime.cs" />
+    <Compile Include="Data\Infrastructure\IRecycle.cs" />
+    <Compile Include="Data\Infrastructure\ITimestamp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Infrastructure\IUpdateAutited.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\TransactionalBehavior.cs" />
+    <Compile Include="Dependency\IIocResolver.cs" />
+    <Compile Include="Dependency\ISingletonDependency.cs" />
+    <Compile Include="Dependency\ITransientDependency.cs" />
+    <Compile Include="Dependency\ILifetimeScopeDependency.cs" />
+    <Compile Include="Dependency\LifetimeScopeDependencyTypeFinder.cs" />
+    <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
+    <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
+    <Compile Include="Exceptions\CacheExtensions.cs" />
+    <Compile Include="Exceptions\ClaimsIdentityExtensions.cs" />
+    <Compile Include="Dependency\IDependency.cs" />
+    <Compile Include="Configs\ConfigFile\Data\CreateDatabaseInitializerElement.cs" />
+    <Compile Include="Configs\ConfigFile\Data\DataElement.cs" />
+    <Compile Include="Configs\ConfigFile\Data\DbContextInitializerElement.cs" />
+    <Compile Include="Configs\ConfigFile\Logging\LoggingAdapterCollection.cs" />
+    <Compile Include="Configs\ConfigFile\Logging\LoggingAdapterElement.cs" />
+    <Compile Include="Configs\ConfigFile\Logging\LoggingElement.cs" />
+    <Compile Include="Configs\ConfigFile\OSharpFrameworkSection.cs" />
+    <Compile Include="Initialize\IBasicLoggingInitializer.cs" />
+    <Compile Include="Initialize\IDataHandlerInitializer.cs" />
+    <Compile Include="Initialize\IDataLoggingInitializer.cs" />
+    <Compile Include="Initialize\IDatabaseInitializer.cs" />
+    <Compile Include="Initialize\IIocInitializer.cs" />
+    <Compile Include="Initialize\IFrameworkInitializer.cs" />
+    <Compile Include="Dependency\LifeCycleStyle.cs" />
+    <Compile Include="Logging\DataLog.cs" />
+    <Compile Include="Logging\DataLogItem.cs" />
+    <Compile Include="Logging\IDataLogCache.cs" />
+    <Compile Include="Logging\IOperateLogWriter.cs" />
+    <Compile Include="Logging\LogInfoBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logging\OperateLog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logging\SystemLog.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\CurrentDomainAssemblyFinder.cs" />
+    <Compile Include="Reflection\IAssemblyFinder.cs" />
+    <Compile Include="Reflection\IFinder.cs" />
+    <Compile Include="Reflection\IMethodInfoFinder.cs" />
+    <Compile Include="Reflection\ITypeFinder.cs" />
+    <Compile Include="Security\EntityInfo.cs" />
+    <Compile Include="Security\EntityInfoBase.cs" />
+    <Compile Include="Security\Function.cs" />
+    <Compile Include="Security\FunctionBase.cs" />
+    <Compile Include="Security\FunctionType.cs" />
+    <Compile Include="Security\IEntityInfo.cs" />
+    <Compile Include="Security\IEntityInfoHandler.cs" />
+    <Compile Include="Security\IFunction.cs" />
+    <Compile Include="Security\IFunctionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\LoginedAttribute.cs" />
+    <Compile Include="Security\RoleLimitAttribute.cs" />
+    <Compile Include="Security\VisiteType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configs\ConfigFile\osharp.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OSharp.Core.nuspec" />
+    <None Include="OSharp.Keys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">
+      <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>
+      <Name>OSharp.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

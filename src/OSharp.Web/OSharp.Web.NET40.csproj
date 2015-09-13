@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C1192CE1-AEFF-454A-963F-A0C5EC10089E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OSharp.Web</RootNamespace>
+    <AssemblyName>OSharp.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>e9260055</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\OSharp.Web.NET40\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DocumentationFile>bin\OSharp.Web.NET40\Debug\OSharp.Web.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\OSharp.Web.NET40\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\OSharp.Web.NET40\Release\OSharp.Web.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\HttpRequestExtensions.cs" />
+    <Compile Include="Http\BaseApiController.cs" />
+    <Compile Include="Http\Caching\CachingHandler.cs" />
+    <Compile Include="Http\Caching\EntityTagKey.cs" />
+    <Compile Include="Http\Caching\IEntityTagStore.cs" />
+    <Compile Include="Http\Caching\InMemoryEntityTagStore.cs" />
+    <Compile Include="Http\Caching\InMemoryThrottleStore.cs" />
+    <Compile Include="Http\Caching\IThrottleStore.cs" />
+    <Compile Include="Http\Caching\ThrottleEntry.cs" />
+    <Compile Include="Http\Caching\TimedEntityTagHeaderValue.cs" />
+    <Compile Include="Http\Content\CompressedContent.cs" />
+    <Compile Include="Http\Content\CompressHandler.cs" />
+    <Compile Include="Http\Extensions\ActionExtensions.cs" />
+    <Compile Include="Http\Extensions\AreaRegistrationContextExtensions.cs" />
+    <Compile Include="Http\Extensions\ConfigurationExtensions.cs" />
+    <Compile Include="Http\Extensions\ContentNegotiationExtensions.cs" />
+    <Compile Include="Http\Extensions\HttpMessageExtensions.cs" />
+    <Compile Include="Http\Filters\EnableCorsAttribute.cs" />
+    <Compile Include="Http\Filters\ExceptionHandlingAttribute.cs" />
+    <Compile Include="Http\Filters\OnlineUserFilterBaseAttribute.cs" />
+    <Compile Include="Http\Filters\ValidationAttribute.cs" />
+    <Compile Include="Http\Formattings\CSVMediaTypeFormatter.cs" />
+    <Compile Include="Http\Formattings\PlainTextFormatter.cs" />
+    <Compile Include="Http\Handlers\BasicAuthenticationHandlerBase.cs" />
+    <Compile Include="Http\Handlers\DigestAuthenticationHandle.cs" />
+    <Compile Include="Http\Handlers\EncodingHandler.cs" />
+    <Compile Include="Http\Handlers\ETagHandler.cs" />
+    <Compile Include="Http\Handlers\HeadMessageHandler.cs" />
+    <Compile Include="Http\Handlers\HttpMethodTunnelMessageHandler.cs" />
+    <Compile Include="Http\Handlers\MethodOverrideHandler.cs" />
+    <Compile Include="Http\Handlers\NotAcceptableMessageHandler.cs" />
+    <Compile Include="Http\Handlers\RequestResponseTraceHandlerHandler.cs" />
+    <Compile Include="Http\Handlers\RequireHttpsHandler.cs" />
+    <Compile Include="Http\Handlers\SelfHostConsoleOutputHandler.cs" />
+    <Compile Include="Http\Handlers\SimpleCorsHandler.cs" />
+    <Compile Include="Http\Handlers\ThrottlingHandler.cs" />
+    <Compile Include="Http\Handlers\TokenAuthenticationHandlerBase.cs" />
+    <Compile Include="Http\Handlers\TraceMessageHandler.cs" />
+    <Compile Include="Http\Handlers\UriFormatExtensionHandler.cs" />
+    <Compile Include="Http\Internal\EnumerableExtensions.cs" />
+    <Compile Include="Http\Internal\HttpHeaderNames.cs" />
+    <Compile Include="Http\Internal\IsInExtensions.cs" />
+    <Compile Include="Http\Internal\MediaTypeConstants.cs" />
+    <Compile Include="Http\Internal\ReflectionHelper.cs" />
+    <Compile Include="Http\Logging\ApiLoggingInfo.cs" />
+    <Compile Include="Http\Logging\ILoggingRepository.cs" />
+    <Compile Include="Http\Messages\ConflictResponse.cs" />
+    <Compile Include="Http\Messages\CreateResponse.cs" />
+    <Compile Include="Http\Messages\IApiResource.cs" />
+    <Compile Include="Http\Messages\MovedPermanentlyResponse.cs" />
+    <Compile Include="Http\Messages\NotModifiedResponse.cs" />
+    <Compile Include="Http\Messages\OkResponse.cs" />
+    <Compile Include="Http\Messages\RedirectResponse.cs" />
+    <Compile Include="Http\Messages\ResourceIdentifierBase.cs" />
+    <Compile Include="Http\Messages\ResourceLocation.cs" />
+    <Compile Include="Http\Messages\ResourceResponseBase.cs" />
+    <Compile Include="Http\Messages\TemporaryRedirectResponse.cs" />
+    <Compile Include="Http\ModelBinders\MvcActionValueBinder.cs" />
+    <Compile Include="Http\ModelBinders\MvcStyleBindingAttribute.cs" />
+    <Compile Include="Http\Routing\StartsWithConstraint.cs" />
+    <Compile Include="Http\Security\ClientCryptoDelegatingHandler.cs" />
+    <Compile Include="Http\Security\HostCryptoDelegatingHandler.cs" />
+    <Compile Include="Http\Selectors\AreaHttpControllerSelector.cs" />
+    <Compile Include="Http\Selectors\CorsActionSelector.cs" />
+    <Compile Include="Http\Serialization\IHttpMessageSerializerAsync.cs" />
+    <Compile Include="Http\Serialization\MessageContentHttpMessageSerializer.cs" />
+    <Compile Include="Http\Serialization\TaskHelpers.cs" />
+    <Compile Include="Http\Serialization\TaskHelpersExtensions.cs" />
+    <Compile Include="Http\Tracing\TraceWriter.cs" />
+    <Compile Include="Http\WebHttpHelper.cs" />
+    <Compile Include="Mvc\AdminBaseController.cs" />
+    <Compile Include="Mvc\BaseController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mvc\Binders\JsonBinder.cs" />
+    <Compile Include="Mvc\Binders\StringTrimModelBinder.cs" />
+    <Compile Include="Mvc\Extensions\Caching\RecordWriter.cs" />
+    <Compile Include="Mvc\Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Mvc\Filters\HandleAjaxErrorAttribute.cs" />
+    <Compile Include="Mvc\Filters\NonRequireHttpsAttribute.cs" />
+    <Compile Include="Mvc\Filters\OnlineUserFilterBaseAttribute.cs" />
+    <Compile Include="Mvc\Routing\LowerCaseUrlConverter.cs" />
+    <Compile Include="Mvc\Routing\RewriteLowerCaseUrlRoute.cs" />
+    <Compile Include="Mvc\Routing\RewriteUrlRouteExtensions.cs" />
+    <Compile Include="Mvc\Routing\RouteHelper.cs" />
+    <Compile Include="Mvc\Security\AjaxOnlyAttribute.cs" />
+    <Compile Include="Net\Alipay\AlipayConfig.cs" />
+    <Compile Include="Net\Alipay\AlipayCore.cs" />
+    <Compile Include="Net\Alipay\AlipayNotify.cs" />
+    <Compile Include="Net\Alipay\AlipayNotifyInfo.cs" />
+    <Compile Include="Net\Alipay\AlipayRequest.cs" />
+    <Compile Include="Net\Alipay\DeliverErrorCode.cs" />
+    <Compile Include="Net\Alipay\LogisticsPayment.cs" />
+    <Compile Include="Net\Alipay\LogisticsType.cs" />
+    <Compile Include="Net\Alipay\RefundStatus.cs" />
+    <Compile Include="Net\Alipay\TradeStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Security\OnlineType.cs" />
+    <Compile Include="Security\OnlineUser.cs" />
+    <Compile Include="Security\OnlineUserStoreBase.cs" />
+    <Compile Include="UI\AjaxResult.cs" />
+    <Compile Include="UI\AjaxResultType.cs" />
+    <Compile Include="UI\Extensions.cs" />
+    <Compile Include="UI\GridData.cs" />
+    <Compile Include="UI\GridRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">
+      <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>
+      <Name>OSharp.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OSharp.Keys.snk" />
+    <None Include="packages.OSharp.Web.NET40.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

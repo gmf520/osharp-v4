@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "实体数据信息列表";
+    Layout = "~/Areas/Admin/Views/Shared/_DataGridLayout.cshtml";
+    ViewBag.ToolbarItem = "edit,cancel,save";
+
+    ViewBag.GridId = "entityInfos";
+    ViewBag.GridDataUrl = Url.Action("GridData");
+    ViewBag.EditUrl = Url.Action("Edit");
+}
+@section customScript
+{
+    <script type="text/javascript">
+        columns = [
+            [
+                { field: "Name", title: "实体名称", width: 200, sortable: true },
+                { field: "ClassName", title: "实体类型名称", width: 300, sortable: true },
+                {
+                    field: "DataLogEnabled",
+                    title: "数据日志",
+                    width: 80,
+                    sortable: true,
+                    align: "center",
+                    formatter: formatBoolean,
+                    editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } }
+                }
+            ]
+        ];
+        multiSort = true;
+    </script>
+}

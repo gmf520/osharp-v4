@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "功能信息列表";
+    Layout = "~/Areas/Admin/Views/Shared/_DataGridLayout.cshtml";
+
+    ViewBag.GridId = "functions";
+    ViewBag.GridDataUrl = Url.Action("GridData");
+    ViewBag.AddUrl = Url.Action("Add");
+    ViewBag.EditUrl = Url.Action("Edit");
+    ViewBag.DeleteUrl = Url.Action("Delete");
+}
+@section customScript
+{
+    <script type="text/javascript">
+        columns = [
+            [
+                { field: "Name", title: "功能名称", width: 150, sortable: true, editor: { type: "validatebox", options: { required: true, validType: "length[1,50]" } } },
+                {
+                    field: "FunctionType",
+                    title: "功能类型",
+                    width: 80,
+                    sortable: true,
+                    align: "center",
+                    formatter: function(value) { return $.osharp.tools.data.valueToText(value, $.osharp.data.demo.functionTypes); },
+                    editor: { type: "combobox", options: { required: true, data: $.osharp.data.demo.functionTypes, valueField: "id" } }
+                },
+                { field: "OperateLogEnabled", title: "操作日志", width: 70, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+                { field: "DataLogEnabled", title: "数据日志", width: 70, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+                { field: "CacheExpirationSeconds", title: "缓存秒数", width: 70, sortable: true, align: "center", editor: { type: "numberbox", options: { precision: 0 } } },
+                { field: "IsCacheSliding", title: "滑动过期", width: 70, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+                { field: "IsLocked", title: "已锁定", width: 70, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+                { field: "IsAjax", title: "Ajax访问", width: 70, sortable: true, align: "center", hidden:true, formatter: formatBoolean },
+                { field: "IsChild", title: "子功能", width: 70, sortable: true, align: "center", hidden: true, formatter: formatBoolean },
+                { field: "IsCustom", title: "自定义", width: 70, sortable: true, align: "center", formatter: formatBoolean },
+                { field: "Area", title: "区域", width: 100, sortable: true, hidden: true },
+                { field: "Controller", title: "控制器", width: 150, sortable: true, hidden: true },
+                { field: "Action", title: "功能方法", width: 150, sortable: true, hidden: true },
+                { field: "Url", title: "URL地址", width: 150, sortable: true, editor: { type: "textarea", options: { validType: "length[1,500]" } } }
+            ]
+        ];
+        multiSort = true;
+        endfunction = function() {
+            grid.datagrid({
+                view: groupview,
+                groupField: "ModuleName",
+                groupFormatter: function(value, rows) {
+                    return value + " - " + rows.length;
+                }
+            });
+        };
+    </script>
+}

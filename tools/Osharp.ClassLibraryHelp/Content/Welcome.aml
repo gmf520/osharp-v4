@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="b511cb6a-f024-4e46-ba73-40879ae16990" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>OSharp3.0.2.0 框架帮助文档</para>
+		</introduction>
+
+		<section>
+			<title>OSharp3.0.2.0 框架帮助文档</title>
+			<content>
+        <para>
+          OSharp 框架解说系列请查看OSharp创始人郭明锋的博客 ：
+          <link xlink:href="http://www.cnblogs.com/guomingfeng/p/osharp3-new-feature-preview.html">http://www.cnblogs.com/guomingfeng/p/osharp3-new-feature-preview.html</link>
+        </para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<!--<link xlink:href="3f97c244-66ba-4c7d-a34a-e1271213e054" />-->
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

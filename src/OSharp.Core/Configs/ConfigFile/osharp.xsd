@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="osharp"
+    targetNamespace="http://file.66soft.net/downloads/schemas/osharp.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://file.66soft.net/downloads/schemas/osharp.xsd"
+    xmlns:mstns="http://file.66soft.net/downloads/schemas/osharp.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+<!--<xs:schema version="1.01" elementFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">-->
+  <xs:element name="osharp">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="data" type="Type_Data" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="logging" type="Type_Logging" minOccurs="0" maxOccurs="1"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Type_Data">
+    <xs:all>
+      <xs:element name="contexts" type="Type_ContextList" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="Type_ContextList">
+    <xs:sequence>
+      <xs:element name="context" type="Type_Context" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Type_Context">
+    <xs:sequence>
+      <xs:element name="initializer" type="Type_ContextInitializer" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="enabled" type="xs:boolean" use="optional" default="true"/>
+    <xs:attribute name="dataLoggingEnabled" type="xs:boolean" use="optional" default="false"/>
+    <xs:attribute name="connectionStringName" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Type_ContextInitializer">
+    <xs:sequence>
+      <xs:element name="createInitializer" type="Type_DatabaseInitializer" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="mapperFiles" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Type_DatabaseInitializer">
+    <xs:attribute name="type" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Type_Logging">
+    <xs:all>
+      <xs:element name="entry" type="Type_LoggingEntry" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="data" type="Type_DataLogging" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="basic" type="Type_BasicLogging" minOccurs="1" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="Type_LoggingEntry">
+    <xs:attribute name="enabled" type="xs:boolean" use="optional" default="true"/>
+    <xs:attribute name="level" type="Type_LogLevel" use="optional" default="All"/>
+  </xs:complexType>
+
+  <xs:complexType name="Type_DataLogging">
+    <xs:attribute name="enabled" type="xs:string" use="optional" default="true"/>
+    <xs:attribute name="level" type="Type_LogLevel" use="optional" default="All"/>
+    <xs:attribute name="type" type="xs:string" use="optional" default="OSharp.Core.Data.Entity.Logging.DatabaseLoggerAdapter, OSharp.Core.Data.Entity"/>
+  </xs:complexType>
+
+  <xs:complexType name="Type_BasicLogging">
+    <xs:sequence>
+      <xs:element name="adapters" type="Type_LoggingAdapterList" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Type_LoggingAdapterList">
+    <xs:sequence>
+      <xs:element name="adapter" type="Type_LoggingAdapter" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Type_LoggingAdapter">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="enabled" type="xs:boolean" use="optional" default="true"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="Type_LogLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="All"/>
+      <xs:enumeration value="Trace"/>
+      <xs:enumeration value="Debug"/>
+      <xs:enumeration value="Info"/>
+      <xs:enumeration value="Warn"/>
+      <xs:enumeration value="Error"/>
+      <xs:enumeration value="Fatal"/>
+      <xs:enumeration value="Off"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

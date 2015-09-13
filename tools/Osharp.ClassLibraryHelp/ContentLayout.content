@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="b511cb6a-f024-4e46-ba73-40879ae16990" visible="True" isDefault="true" isSelected="true" title="OSharp3.0.2.0 框架帮助文档" tocTitle="OSharp3.0.2.0 框架帮助文档" linkText="OSharp3.0.2.0 框架帮助文档">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="3f97c244-66ba-4c7d-a34a-e1271213e054" visible="False" isExpanded="true" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version, history" />
+    </HelpKeywords>
+    <Topic id="475157d6-9d0e-43a7-b527-98ff2167e1fd" visible="True" title="Version 3.0.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 3.0.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+</Topics>

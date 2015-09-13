@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_TreeGridLayout.cshtml";
+    ViewBag.Title = "组织机构管理";
+    ViewBag.GridId = "organizations";
+    ViewBag.GridDataUrl = Url.Action("GridData");
+    ViewBag.NodeDataUrl = Url.Action("NodeData");
+    ViewBag.AddUrl = Url.Action("Add");
+    ViewBag.EditUrl = Url.Action("Edit");
+    ViewBag.DeleteUrl = Url.Action("Delete");
+}
+@section customScript{
+    <script type="text/javascript">
+        columns = [[
+            { field: "Id", title: "编号", width: 40, halign: "center", align: "right" },
+            { field: "Name", title: "名称", width: 200, editor: { type: "validatebox", options: { required: true, validType: "length[1,50]" } } },
+            { field: "SortCode", title: "排序", width: 60, align: "center", editor: { type: "numberbox", options: { required: true, precision: 0 } } },
+            { field: "Remark", title: "备注", width: 250, editor: { type: "textarea", options: { validType: "length[1,500]" } } },
+            { field: "CreatedTime", title: "创建时间", width: 150, halign: "center", align: "center", formatter: function (value) { return $.osharp.tools.formatDate(value); } }
+        ]];
+        idField = "Id";
+        treeField = "Name";
+    </script>
+}

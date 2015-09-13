@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - OSharp管理系统</title>
+    <link href="/Content/themes/gray/easyui.css" rel="stylesheet" />
+    <link href="/Content/themes/icon.css" rel="stylesheet" />
+    <link href="/Content/osharp-icons.css" rel="stylesheet" />
+    <link href="/Content/osharp-admin.css" rel="stylesheet"/>
+    @RenderSection("header", false)
+</head>
+<body>
+    @RenderBody()
+    <script src="/Scripts/jquery-1.11.3.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.easyui-1.4.1.js" type="text/javascript"></script>
+    <script src="/Scripts/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.linq.js" type="text/javascript"></script>
+    <script src="/Scripts/json2.js" type="text/javascript"></script>
+    <script src="/Scripts/osharp.global.js" type="text/javascript"></script>
+    <script src="/Scripts/osharp.easyui.js" type="text/javascript"></script>
+    <script src="/Scripts/osharp.data.js" type="text/javascript"></script>
+    <script src="/Scripts/osharp.data.demo.js" type="text/javascript"></script>
+    @RenderSection("footer", false)
+</body>
+</html>

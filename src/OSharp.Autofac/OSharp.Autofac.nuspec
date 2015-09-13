@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>OSharp.Autofac</id>
+    <version>$version$</version>
+    <title>OSharp.Autofac</title>
+    <authors>OSharp开源团队</authors>
+    <owners>http://www.osharp.org</owners>
+    <projectUrl>https://github.com/i66soft/osharp</projectUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;s=80</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>OSharp依赖注入的Autofac实现，自动进行依赖注入类型的配套注册工作</description>
+    <summary>OSharp依赖注入Autofac实现</summary>
+    <copyright>Copyright © OSharp 2014-2015</copyright>
+    <language>zh-CN</language>
+    <tags>OSharp</tags>
+    <dependencies>
+      <dependency id="Autofac" version="[3.5.2, 4.0.0)" />
+      <dependency id="Autofac.Mvc5" version="3.3.4" />
+      <dependency id="Autofac.WebApi2" version="3.4.0"/>
+      <dependency id="Autofac.SignalR2" version="3.1.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\$id$.pdb" target="lib\net45\" />
+  </files>
+</package>

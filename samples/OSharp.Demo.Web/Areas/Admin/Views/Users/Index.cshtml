@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "用户信息列表";
+    Layout = "~/Areas/Admin/Views/Shared/_DataGridLayout.cshtml";
+
+    ViewBag.GridId = "users";
+    ViewBag.GridDataUrl = Url.Action("GridData");
+    ViewBag.AddUrl = Url.Action("Add");
+    ViewBag.EditUrl = Url.Action("Edit");
+    ViewBag.DeleteUrl = Url.Action("Delete");
+}
+@section paramInit{
+    <script type="text/javascript">
+        addObject = function() {
+            return { EmailConfirmed: false, PhoneNumberConfirmed: false, IsLocked: false, IsDeleted: false };
+        };
+    </script>
+}
+@section customScript
+{
+    <script type="text/javascript">
+        columns = [[
+            { field: "Id", title: "编号", width: 40, align: "right", sortable: true },
+            { field: "UserName", title: "用户名", width: 150, sortable: true, align: "center", editor: { type: "validatebox", options: { required: true, validType: "length[3,100]" } } },
+            { field: "NickName", title: "用户昵称", width: 150, sortable: true, align: "center", editor: { type: "validatebox", options: { required: true, validType: "length[3,100]" } } },
+            { field: "Email", title: "邮箱", width: 150, sortable: true, align: "center", editor: { type: "validatebox", options: { validType: "length[6,200]" } } },
+            { field: "EmailConfirmed", title: "邮箱验证", width: 80, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+            { field: "PhoneNumber", title: "手机号码", width: 150, sortable: true, align: "center", editor: { type: "validatebox", options: { validType: "length[3,50]" } } },
+            { field: "PhoneNumberConfirmed", title: "手机验证", width: 80, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+            { field: "IsLocked", title: "已锁定", width: 80, sortable: true, align: "center", formatter: formatBoolean, editor: { type: "combobox", options: { required: true, data: $.osharp.data.bool, valueField: "id" } } },
+            { field: "LockoutEndDateUtc", title: "登录解锁时间", width: 150, align: "center", sortable: true, formatter: function (value) { return $.osharp.tools.formatDate(value); } },
+            { field: "AccessFailedCount", title: "登录失败次数", width: 100, sortable: true, align: "center" },
+            { field: "CreatedTime", title: "创建时间", width: 150, align: "center", sortable: true, formatter: function (value) { return $.osharp.tools.formatDate(value); } },
+        ]];
+
+        startfunction = function () {
+            //设置角色
+            function setRoles() {
+                $.osharp.easyui.msg.info("设置用户的角色");
+            }
+            //功能权限
+            function setFunctionPermission() {
+                $.osharp.easyui.msg.info("设置用户的功能权限");
+            }
+
+            toolbarData.push("-");
+            toolbarData.push({ text: "设置角色", iconCls: "pic_198", handler: setRoles });
+            toolbarData.push({ text: "功能权限", iconCls: "pic_94", handler: setFunctionPermission });
+        };
+    </script>
+}

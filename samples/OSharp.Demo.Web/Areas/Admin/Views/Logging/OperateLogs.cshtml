@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "操作日志信息列表";
+    Layout = "~/Areas/Admin/Views/Shared/_DataGridLayout.cshtml";
+    ViewBag.ToolbarItem = "delete";
+
+    ViewBag.GridId = "operate-logs";
+    ViewBag.GridDataUrl = Url.Action("OperateLogGridData");
+    ViewBag.SubGridDataUrl = Url.Action("DataLogGridData");
+    ViewBag.DeleteUrl = Url.Action("DeleteOperateLogs");
+}
+@section customScript
+{
+    <script type="text/javascript">
+        columns = [
+            [
+                { field: "ck", checkbox: true },
+                { field: "Id", title: "编号", width: 40, halign: "center", align: "right", sortable: true },
+                { field: "FunctionName", title: "功能名称", width: 300, sortable: true },
+                { field: "NickName", title: "操作人", width: 200 },
+                { field: "Ip", title: "IP地址", width: 100 },
+                { field: "CreatedTime", title: "创建时间", width: 150, halign: "center", align: "center", sortable: true, formatter: function (value) { return $.osharp.tools.formatDate(value); } },
+                {
+                    field: "DataLogs",
+                    title: "操作",
+                    width: 150,
+                    halign: "center",
+                    align: "center",
+                    formatter: function (value) {
+                        if (value.Count === 0) {
+                            return "";
+                        }
+                        return '<a href="javascript:;" class="option-row-show" data-id="' + value.Id + '">详情</a>';
+                    }
+                }
+            ]
+        ];
+
+        function showDataLogs(id) {
+            var $win = $("#win-data-logs").window({
+                title: "数据日志信息",
+                modal: true,
+                closed: true,
+                collapsible: false,
+                minimizable: false,
+                width: 800,
+                height: 600,
+                onClose: function () {
+                    $("#win-data-logs").window("destroy");
+                    //窗口销毁后，需要重新添加html元素
+                    $("body").append('<div id="win-data-logs" style="padding: 10px;"><div id="grid-data-logs"></div></div>');
+                }
+            });
+            $win.window("open");
+
+            var $subgrid = $("#grid-data-logs").datagrid({
+                columns: [
+                    [
+                        { field: "Name", title: "数据名称", width: 200 },
+                        { field: "EntityName", title: "数据类型", width: 300 },
+                        { field: "EntityKey", title: "数据标识", width: 150 },
+                        { field: "OperateType", title: "操作类型", width: 80, align:"center", formatter: function (value) { return $.osharp.tools.data.valueToText(value, $.osharp.data.demo.operateTypes); } }
+                    ]
+                ],
+                url: "@ViewBag.SubGridDataUrl/" + id,
+                fit: true,
+                onBeforeLoad: beforeLoad,
+                loadFilter: loadFilter,
+                view: detailview,
+                detailFormatter: function () {
+                    return '<div style="padding:2px"><table class="ddv" title="数据日志列表"></table></div>';
+                },
+                onExpandRow: function (index, row) {
+                    if (!row.LogItems.length) {
+                        return;
+                    }
+                    var ddv = $(this).datagrid("getRowDetail", index).find("table.ddv");
+                    ddv.datagrid({
+                        columns: [
+                            [
+                                { field: "FieldName", title: "名称", width: 120 },
+                                { field: "Field", title: "字段", width: 120 },
+                                { field: "OriginalValue", title: "旧值", width: 150 },
+                                { field: "NewValue", title: "新值", width: 150 },
+                                { field: "DataType", title: "数据类型", width: 150 }
+                            ]
+                        ],
+                        data: { rows: row.LogItems, total: row.LogItems.length },
+                        height: "auto",
+                        rownumbers: true,
+                        onBeforeLoad: beforeLoad,
+                        loadFilter: loadFilter,
+                        onResize: function () {
+                            $subgrid.datagrid('fixDetailRowHeight', index);
+                        },
+                        onLoadSuccess: function () {
+                            setTimeout(function () {
+                                $subgrid.datagrid('fixDetailRowHeight', index);
+                            }, 0);
+                        }
+                    });
+                }
+            });
+        }
+
+        startfunction = function () {
+            $(document).on("click", ".option-row-show", function () {
+                var id = $(this).attr("data-id");
+                showDataLogs(id);
+            });
+        };
+
+    </script>
+}
+<div id="win-data-logs" style="padding: 10px;">
+    <div id="grid-data-logs"></div>
+</div>

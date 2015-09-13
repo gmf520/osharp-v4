@@ -1,0 +1,7 @@
+﻿#main-nav .panel-title{ font-weight: normal;}
+#main-nav .accordion-header-selected{ background: #f3f3f3; }
+#main-nav .accordion-header-selected .panel-title{ font-weight: bold;color: #575765;}
+#main-nav .tree-icon { margin-top: 5px; }
+#main-nav .tree-hit { margin-top: 4px; }
+#main-nav .tree-node { height: 26px; }
+#main-nav .tree-title { line-height: 26px; }

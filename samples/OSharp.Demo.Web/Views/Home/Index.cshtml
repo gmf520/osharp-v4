@@ -1,0 +1,13 @@
+﻿@using OSharp.Web.Mvc.Extensions
+@{
+    ViewBag.Title = "OSharp快速开发框架";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data = ViewBag.Data;
+    DateTime now = DateTime.Now;
+}
+
+<h2>OSharp快速开发框架</h2>
+<ol style="line-height: 30px;">
+    <li>@Html.ActionLink("测试页", "Index", "Tests")</li>
+    <li>@Html.ActionLink("后台首页", "Index", "Home", new { area = "Admin" }, null)</li>
+</ol>

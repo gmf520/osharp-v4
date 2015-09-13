@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "OSharp后台管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string navDataUrl = Url.Action("GetMenuData");
+}
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north', height:50" style="padding: 10px;">
+        <span style="font-size: 18px;">OSharp后台管理系统</span>
+        <a href="/" target="_blank">返回首页</a>
+    </div>
+    <div data-options="region:'west', split:true, minWidth:100, width:150, title:'导航菜单'">
+        <div id="main-nav" class="easyui-accordion" data-options="fit:true, border:false, selected:true">
+
+        </div>
+    </div>
+    <div data-options="region:'center'">
+        <div id="main-tab" class="easyui-tabs" data-options="fit:true, border:false">
+            <div title="我的主页" iconcls="pic_209" style="padding: 5px;">
+                <iframe width="100%" height="100%" frameborder="0" src="@Url.Action("Welcome")" marginheight="0" marginwidth="0"></iframe>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'south', height:50">
+        <p style="text-align:center; line-height:20px;">Copyright &copy; OSharp 2014 - @DateTime.Now.Year</p>
+    </div>
+</div>
+<div id="tab-menu" class="easyui-menu" style="width: 150px;">
+    <div id="tab-menu-refresh" data-options="iconCls:'icon-reload'">刷新</div>
+    <div id="tab-menu-openFrame" data-options="iconCls:'pic_138'">新窗口打开</div>
+    <div class="menu-sep"></div>
+    <div id="tab-menu-close" data-options="iconCls:'icon-remove'">关闭</div>
+    <div id="tab-menu-closeleft" data-options="iconCls:'icon-undo'">关闭左边</div>
+    <div id="tab-menu-closeright" data-options="iconCls:'icon-redo'">关闭右边</div>
+    <div class="menu-sep"></div>
+    <div id="tab-menu-closeother" data-options="iconCls:'pic_101'">关闭其他</div>
+    <div id="tab-menu-closeall" data-options="iconCls:'pic_283'">关闭所有</div>
+</div>
+
+@section footer{
+    <script type="text/javascript">
+        $(function() {
+            $.getJSON("@navDataUrl", function(data) {
+                if (data.length == 0) {
+                    return;
+                }
+                //第一层生成手风琴的项
+                $.each(data, function(i, item) {
+                    var id = item.Id;
+                    $("#main-nav").accordion("add", {
+                        title: item.Text,
+                        content: "<ul id='tree-" + id + "'></ul>",
+                        selected: true,
+                        iconCls: item.IconCls
+                    });
+                    $.parser.parse();
+                    //第二层生成树节点
+                    if (!item.Children || item.Children.length == 0) {
+                        return true;
+                    }
+                    var treeData = transToTreeData(item.Children);
+                    $("#tree-" + id).tree({
+                        data: treeData,
+                        onClick: function(node) {
+                            if (node.attributes) {
+                                var tabTitle = node.text;
+                                var url = node.attributes.url;
+                                var icon = node.iconCls;
+                                addTab(tabTitle, url, icon);
+                            }
+                        }
+                    });
+                });
+            });
+
+            $("#main-tab").tabs({
+                onContextMenu: function(e, title) {
+                    e.preventDefault();
+                    $("#tab-menu").menu("show", { left: e.pageX, top: e.pageY })
+                        .data("tabTitle", title); //将点击的Tab标题加到菜单数据中
+                }
+            });
+
+            $("#tab-menu").menu({
+                onClick: function(item) {
+                    tabHandle(this, item.id);
+                }
+            });
+        });
+
+        function addTab(title, url, icon) {
+            var $mainTabs = $("#main-tab");
+            if ($mainTabs.tabs("exists", title)) {
+                $mainTabs.tabs("select", title);
+            } else {
+                $mainTabs.tabs("add", {
+                    title: title,
+                    closable: true,
+                    icon: icon,
+                    content: createFrame(url)
+                });
+            }
+        }
+
+        function createFrame(url) {
+            var html = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:99%;"></iframe>';
+            return html;
+        }
+
+        function tabHandle(menu, type) {
+            var title = $(menu).data("tabTitle");
+            var $tab = $("#main-tab");
+            var tabs = $tab.tabs("tabs");
+            var index = $tab.tabs("getTabIndex", $tab.tabs("getTab", title));
+            var closeTitles = [];
+            switch (type) {
+                case "tab-menu-refresh":
+                    var iframe = $(".tabs-panels .panel").eq(index).find("iframe");
+                    if (iframe) {
+                        var url = iframe.attr("src");
+                        iframe.attr("src", url);
+                    }
+                    break;
+                case "tab-menu-openFrame":
+                    var iframe = $(".tabs-panels .panel").eq(index).find("iframe");
+                    if (iframe) {
+                        window.open(iframe.attr("src"));
+                    }
+                    break;
+                case "tab-menu-close":
+                    closeTitles.push(title);
+                    break;
+                case "tab-menu-closeleft":
+                    if (index == 0) {
+                        $.osharp.easyui.msg.tip("左边没有可关闭标签。");
+                        return;
+                    }
+                    for (var i = 0; i < index; i++) {
+                        var opt = $(tabs[i]).panel("options");
+                        if (opt.closable) {
+                            closeTitles.push(opt.title);
+                        }
+                    }
+                    break;
+                case "tab-menu-closeright":
+                    if (index == tabs.length - 1) {
+                        $.osharp.easyui.msg.tip("右边没有可关闭标签。");
+                        return;
+                    }
+                    for (var i = index + 1; i < tabs.length; i++) {
+                        var opt = $(tabs[i]).panel("options");
+                        if (opt.closable) {
+                            closeTitles.push(opt.title);
+                        }
+                    }
+                    break;
+                case "tab-menu-closeother":
+                    for (var i = 0; i < tabs.length; i++) {
+                        if (i == index) {
+                            continue;
+                        }
+                        var opt = $(tabs[i]).panel("options");
+                        if (opt.closable) {
+                            closeTitles.push(opt.title);
+                        }
+                    }
+                    break;
+                case "tab-menu-closeall":
+                    for (var i = 0; i < tabs.length; i++) {
+                        var opt = $(tabs[i]).panel("options");
+                        if (opt.closable) {
+                            closeTitles.push(opt.title);
+                        }
+                    }
+                    break;
+            }
+            for (var i = 0; i < closeTitles.length; i++) {
+                $tab.tabs("close", closeTitles[i]);
+            }
+        }
+
+        function transToTreeData(data) {
+            return $.Enumerable.From(data).Select(function(m) {
+                var obj = {};
+                obj.id = m.Id;
+                obj.text = m.Text;
+                obj.iconCls = m.IconCls;
+                obj.checked = m.Checked;
+                if (m.Url) {
+                    obj.attributes = { url: m.Url };
+                }
+                if (m.Children && m.Children.length > 0) {
+                    obj.children = transToTreeData(m.Children);
+                }
+                return obj;
+            }).ToArray();
+        }
+    </script>
+}
