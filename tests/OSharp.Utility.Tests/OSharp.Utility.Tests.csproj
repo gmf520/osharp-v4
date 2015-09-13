@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4ADB8868-99C0-4AAB-BD6D-FFFF30D957EC}</ProjectGuid>
+    <ProjectGuid>{AB8E170C-A389-4700-88D8-E3C42B1DB65C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OSharp.Utility.Tests</RootNamespace>
@@ -16,10 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="mscorlib.4.0.0.0.Fakes">
       <HintPath>FakesAssemblies\mscorlib.4.0.0.0.Fakes.dll</HintPath>
     </Reference>
@@ -83,20 +80,20 @@
     <Compile Include="Secutiry\HashHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Fakes Include="Fakes\System.fakes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\mscorlib.fakes" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>
       <Name>OSharp.Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj">
-      <Project>{f22f76d3-32a2-43e2-a8a6-910ba8f3b877}</Project>
+      <Project>{2f9bc5e5-8782-4a7e-863a-ec944eafac4b}</Project>
       <Name>OSharp.UnitTest.Infrastructure</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Fakes Include="Fakes\System.fakes" />
-  </ItemGroup>
-  <ItemGroup>
-    <Fakes Include="Fakes\mscorlib.fakes" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
