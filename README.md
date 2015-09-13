@@ -1,7 +1,8 @@
 ﻿# osharp framework version 3.0
 ## 简介
-OSharp是一个依赖于EntityFramework，专注于业务数据模型与EntityFramework解耦的适用于中小型项目开发的（插件式）框架。
-相关博客：http://www.cnblogs.com/guomingfeng/tag/OSharp%E6%A1%86%E6%9E%B6/
+1. OSharp是一个依赖于EntityFramework，专注于业务数据模型与EntityFramework解耦的适用于中小型项目开发的（插件式）框架。
+2. 相关博客：[OSharp3.0框架解说系列](http://www.cnblogs.com/guomingfeng/tag/OSharp%E6%A1%86%E6%9E%B6/)
+3. QQ交流群：85895249 [http://pub.idqqimg.com/wpa/images/group.png](http://shang.qq.com/wpa/qunwpa?idkey=250897a8ee4c2d3146d798a6111274bfa7bb6306d0f07418bfc6d8c45f26e269 "OSharp开发框架交流群")
 
 ## 相关技术
 1. 技术框架：.NET Framework 4.5
