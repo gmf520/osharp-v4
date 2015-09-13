@@ -173,10 +173,6 @@
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
       <Name>OSharp.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.SiteBase\OSharp.SiteBase.csproj">
-      <Project>{78a2a1d4-64b1-4237-a71f-a2ba999ffb4d}</Project>
-      <Name>OSharp.SiteBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>
       <Name>OSharp.Utility</Name>

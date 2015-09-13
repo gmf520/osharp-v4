@@ -42,15 +42,5 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 限制类型
         /// </summary>
         FilterType FilterType { get; set; }
-
-        /// <summary>
-        /// 获取或设置 生效时间
-        /// </summary>
-        DateTime BeginTime { get; set; }
-
-        /// <summary>
-        /// 获取或设置 过期时间
-        /// </summary>
-        DateTime? EndTime { get; set; }
     }
 }

@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 using OSharp.Core.Data;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
-using OSharp.SiteBase;
-using OSharp.SiteBase.Security;
 
 
 namespace OSharp.Demo.Services

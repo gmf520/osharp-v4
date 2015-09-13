@@ -12,8 +12,6 @@ using OSharp.Core.Security;
 using OSharp.Demo.Dtos.Identity;
 using OSharp.Demo.Dtos.Security;
 using OSharp.Demo.Models.Identity;
-using OSharp.SiteBase;
-using OSharp.SiteBase.Security;
 
 
 namespace OSharp.Demo.Dtos

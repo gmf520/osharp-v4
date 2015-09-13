@@ -2,31 +2,29 @@
 //  <copyright file="OperateLogFilterAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-04 15:26</last-date>
+//  <last-date>2015-09-13 17:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using System.Web.Mvc;
 
-using OSharp.Core;
 using OSharp.Core.Context;
 using OSharp.Core.Exceptions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.SiteBase.Extensions;
 using OSharp.Web.Extensions;
-using OSharp.Web.Mvc.Extensions;
+
 
 namespace OSharp.SiteBase.Logging
 {
     /// <summary>
     /// 操作日志记录过滤器
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class OperateLogFilterAttribute : ActionFilterAttribute
     {
         /// <summary>
@@ -75,7 +73,7 @@ namespace OSharp.SiteBase.Logging
                 foreach (DataLog dataLog in DataLogCache.DataLogs)
                 {
                     operateLog.DataLogs.Add(dataLog);
-                } 
+                }
             }
             OperateLogWriter.Write(operateLog);
         }

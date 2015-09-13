@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\IdentityExtensions.cs" />
+    <Compile Include="Identity\Dtos\UserRoleMapDtoBase.cs" />
     <Compile Include="Identity\Models\IUserClaim.cs" />
     <Compile Include="Identity\Models\IUserLogin.cs" />
     <Compile Include="Identity\Models\IUserRoleMap.cs" />

@@ -24,6 +24,11 @@ namespace OSharp.Core.Security.Dtos
     public class FunctionUserMapBaseDto<TKey, TFunctionKey, TUserKey> : IAddDto, IEditDto<TKey>
     {
         /// <summary>
+        /// 获取或设置 主键，唯一标识
+        /// </summary>
+        public TKey Id { get; set; }
+
+        /// <summary>
         /// 获取或设置 功能编号
         /// </summary>
         public TFunctionKey FunctionId { get; set; }
@@ -37,20 +42,5 @@ namespace OSharp.Core.Security.Dtos
         /// 获取或设置 限制类型
         /// </summary>
         public FilterType FilterType { get; set; }
-
-        /// <summary>
-        /// 获取或设置 生效时间
-        /// </summary>
-        public DateTime BeginTime { get; set; }
-
-        /// <summary>
-        /// 获取或设置 过期时间
-        /// </summary>
-        public DateTime? EndTime { get; set; }
-
-        /// <summary>
-        /// 获取或设置 主键，唯一标识
-        /// </summary>
-        public TKey Id { get; set; }
     }
 }

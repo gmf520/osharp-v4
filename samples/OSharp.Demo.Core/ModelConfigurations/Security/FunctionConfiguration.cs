@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Security;
-using OSharp.SiteBase;
-using OSharp.SiteBase.Security;
 
 
 namespace OSharp.Demo.ModelConfigurations.Security

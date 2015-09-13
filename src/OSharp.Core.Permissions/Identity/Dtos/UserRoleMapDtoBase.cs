@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="UserRoleMapBase.cs" company="OSharp开源团队">
+//  <copyright file="UserRoleMapDtoBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-13 17:25</last-date>
+//  <last-date>2015-09-13 17:26</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,25 +13,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNet.Identity;
-
 using OSharp.Core.Data;
 
 
-namespace OSharp.Core.Identity.Models
+namespace OSharp.Core.Identity.Dtos
 {
     /// <summary>
-    /// 用户角色映射信息基类
+    /// 用户角色映射基类DTO
     /// </summary>
-    /// <typeparam name="TKey">编号类型</typeparam>
-    /// <typeparam name="TUser">用户类型</typeparam>
-    /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    /// <typeparam name="TRole">角色类型</typeparam>
-    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class UserRoleMapBase<TKey, TUser, TUserKey, TRole, TRoleKey>
-        : EntityBase<TKey>, IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey>
-        where TUser : IUser<TUserKey>
-        where TRole : IRole<TRoleKey>
+    public abstract class UserRoleMapDtoBase<TKey, TUserKey, TRoleKey> : IAddDto, IEditDto<TKey>
     {
         private DateTime _beginTime;
         private DateTime? _endTime;
@@ -39,10 +29,20 @@ namespace OSharp.Core.Identity.Models
         /// <summary>
         /// 
         /// </summary>
-        protected UserRoleMapBase()
+        protected UserRoleMapDtoBase()
         {
             _beginTime = DateTime.Now;
         }
+
+        /// <summary>
+        /// 获取或设置 用户编号
+        /// </summary>
+        public TUserKey UserId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 角色编号
+        /// </summary>
+        public TRoleKey RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 生效时间
@@ -77,13 +77,8 @@ namespace OSharp.Core.Identity.Models
         }
 
         /// <summary>
-        /// 获取或设置 用户信息
+        /// 获取或设置 主键，唯一标识
         /// </summary>
-        public virtual TUser User { get; set; }
-
-        /// <summary>
-        /// 获取或设置 角色信息
-        /// </summary>
-        public virtual TRole Role { get; set; }
+        public TKey Id { get; set; }
     }
 }
