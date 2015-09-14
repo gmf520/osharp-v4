@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="osharp"
-    targetNamespace="http://file.66soft.net/downloads/schemas/osharp.xsd"
+    targetNamespace="http://file.osharp.org/schemas/osharp.xsd"
     elementFormDefault="qualified"
-    xmlns="http://file.66soft.net/downloads/schemas/osharp.xsd"
-    xmlns:mstns="http://file.66soft.net/downloads/schemas/osharp.xsd"
+    xmlns="http://file.osharp.org/schemas/osharp.xsd"
+    xmlns:mstns="http://file.osharp.org/schemas/osharp.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 <!--<xs:schema version="1.01" elementFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">-->
