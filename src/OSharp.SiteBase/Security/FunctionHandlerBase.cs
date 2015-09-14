@@ -322,6 +322,10 @@ namespace OSharp.SiteBase.Security
         protected virtual TFunction[] GetLastestFunctions()
         {
             IRepository<TFunction, TKey> repository = DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
+            if (repository == null)
+            {
+                return new TFunction[0];
+            }
             return repository.Entities.ToArray();
         }
     }
