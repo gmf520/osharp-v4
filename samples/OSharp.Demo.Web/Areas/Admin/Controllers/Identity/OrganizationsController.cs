@@ -93,8 +93,8 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
             };
             List<Organization> roots = IdentityContract.Organizations.Where(m => m.Parent == null).OrderBy(m => m.SortCode).ToList();
             List<OrganizationView> datas = (from root in roots
-                let source = IdentityContract.Organizations.Where(m => m.TreePath.StartsWith(root.TreePath)).ToList()
-                select getOrganizationView(root, source)).ToList();
+                                            let source = IdentityContract.Organizations.Where(m => m.TreePath.StartsWith(root.TreePath)).ToList()
+                                            select getOrganizationView(root, source)).ToList();
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -129,7 +129,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-组织机构-新增")]
-        public ActionResult Add([ModelBinder(typeof(JsonBinder<OrganizationDto>))] OrganizationDto dto)
+        public ActionResult Add(OrganizationDto dto)
         {
             dto.CheckNotNull("dto");
             OperationResult result = IdentityContract.AddOrganizations(dto);
@@ -139,7 +139,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-组织机构-编辑")]
-        public ActionResult Edit([ModelBinder(typeof(JsonBinder<OrganizationDto>))] OrganizationDto dto)
+        public ActionResult Edit(OrganizationDto dto)
         {
             dto.CheckNotNull("dto");
             OperationResult result = IdentityContract.EditOrganizations(dto);

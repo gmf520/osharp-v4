@@ -111,30 +111,30 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-新增")]
-        public ActionResult Add([ModelBinder(typeof(JsonBinder<FunctionDto>))] ICollection<FunctionDto> dtos)
+        public ActionResult Add(FunctionDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = SecurityContract.AddFunctions(dtos.ToArray());
+            OperationResult result = SecurityContract.AddFunctions(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-编辑")]
-        public ActionResult Edit([ModelBinder(typeof(JsonBinder<FunctionDto>))] ICollection<FunctionDto> dtos)
+        public ActionResult Edit(FunctionDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
-            OperationResult result = SecurityContract.EditFunctions(dtos.ToArray());
+            OperationResult result = SecurityContract.EditFunctions(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-删除")]
-        public ActionResult Delete([ModelBinder(typeof(JsonBinder<Guid>))] ICollection<Guid> ids)
+        public ActionResult Delete(Guid[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = SecurityContract.DeleteFunctions(ids.ToArray());
+            OperationResult result = SecurityContract.DeleteFunctions(ids);
             return Json(result.ToAjaxResult());
         }
 

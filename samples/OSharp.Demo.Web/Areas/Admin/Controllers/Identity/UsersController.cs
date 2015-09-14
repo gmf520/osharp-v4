@@ -84,10 +84,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [AllowAnonymous]
         [Description("管理-用户-新增")]
-        public async Task<ActionResult> Add([ModelBinder(typeof(JsonBinder<UserDto>))] ICollection<UserDto> dtos)
+        public async Task<ActionResult> Add(UserDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = await IdentityContract.AddUsers(dtos.ToArray());
+            OperationResult result = await IdentityContract.AddUsers(dtos);
             return Json(result.ToAjaxResult());
         }
 
@@ -95,10 +95,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [Logined]
         [Description("管理-用户-编辑")]
-        public async Task<ActionResult> Edit([ModelBinder(typeof(JsonBinder<UserDto>))] ICollection<UserDto> dtos)
+        public async Task<ActionResult> Edit(UserDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = await IdentityContract.EditUsers(dtos.ToArray());
+            OperationResult result = await IdentityContract.EditUsers(dtos);
             return Json(result.ToAjaxResult());
         }
 
@@ -106,10 +106,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [RoleLimit]
         [Description("管理-用户-删除")]
-        public async Task<ActionResult> Delete([ModelBinder(typeof(JsonBinder<int>))] ICollection<int> ids)
+        public async Task<ActionResult> Delete(int[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = await IdentityContract.DeleteUsers(ids.ToArray());
+            OperationResult result = await IdentityContract.DeleteUsers(ids);
             return Json(result.ToAjaxResult());
         }
 

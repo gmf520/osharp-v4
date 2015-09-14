@@ -74,10 +74,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-实体数据-编辑")]
-        public ActionResult Edit([ModelBinder(typeof(JsonBinder<EntityInfoDto>))] ICollection<EntityInfoDto> dtos)
+        public ActionResult Edit(EntityInfoDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = SecurityContract.EditEntityInfos(dtos.ToArray());
+            OperationResult result = SecurityContract.EditEntityInfos(dtos);
             return Json(result.ToAjaxResult());
         }
 

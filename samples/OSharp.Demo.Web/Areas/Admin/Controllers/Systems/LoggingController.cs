@@ -95,10 +95,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
 
         [AjaxOnly]
         [Description("管理-操作日志-删除")]
-        public ActionResult DeleteOperateLogs([ModelBinder(typeof(JsonBinder<int>))] ICollection<int> ids)
+        public ActionResult DeleteOperateLogs(int[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = LoggingContract.DeleteOperateLogs(ids.ToArray());
+            OperationResult result = LoggingContract.DeleteOperateLogs(ids);
             return Json(result.ToAjaxResult(), JsonRequestBehavior.AllowGet);
         }
 
