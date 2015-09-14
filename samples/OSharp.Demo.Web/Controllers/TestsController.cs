@@ -76,5 +76,16 @@ namespace OSharp.Demo.Web.Controllers
             TestContract.Test();
             return Content("end");
         }
+
+        [HttpPost]
+        public ActionResult Test03Ajax(List<int> ids)
+        {
+            return Json(ids);
+        }
+
+        public ActionResult Test03()
+        {
+            return View();
+        }
     }
 }

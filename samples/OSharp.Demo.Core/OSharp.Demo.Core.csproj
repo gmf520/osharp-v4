@@ -69,6 +69,8 @@
     <Compile Include="Contracts\ILoggingContract.cs" />
     <Compile Include="Contracts\ISecurityContract.cs" />
     <Compile Include="Contracts\ITestContract.cs" />
+    <Compile Include="Data\CreateDatabaseIfNotExistsWithSeed.cs" />
+    <Compile Include="Data\CreateDatabaseSeedAction.cs" />
     <Compile Include="Data\DemoDbContext.cs">
       <SubType>Code</SubType>
     </Compile>

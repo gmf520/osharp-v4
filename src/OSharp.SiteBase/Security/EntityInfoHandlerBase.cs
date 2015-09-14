@@ -200,6 +200,10 @@ namespace OSharp.SiteBase.Security
         protected virtual TEntityInfo[] GetLastestEntityInfos()
         {
             IRepository<TEntityInfo, TKey> repository = DependencyResolver.Current.GetService<IRepository<TEntityInfo, TKey>>();
+            if (repository == null)
+            {
+                return new TEntityInfo[0];
+            }
             return repository.Entities.ToArray();
         }
     }

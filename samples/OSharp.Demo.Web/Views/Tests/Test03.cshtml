@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Test03";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<input type="button" id="btn" value="点击"/>
+<p id="text"></p>
+@section footer
+{
+    <script type="text/javascript" src="/Scripts/osharp.global.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btn").click(function() {
+                var data = { ids: [1, 2, 3, 4] };
+                $.post("@Url.Action("Test03Ajax")", data, function (d) {
+                    var str = $.osharp.tools.array.expandAndToString(d);
+                    $("#text").text(str);
+                });
+            });
+        });
+    </script>
+}
