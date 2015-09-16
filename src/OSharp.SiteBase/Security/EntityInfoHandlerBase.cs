@@ -69,7 +69,7 @@ namespace OSharp.SiteBase.Security
             UpdateToRepository(entityInfos);
             RefreshCache();
         }
-         
+
         /// <summary>
         /// 查找指定实体类型的实体信息
         /// </summary>
@@ -82,7 +82,8 @@ namespace OSharp.SiteBase.Security
                 RefreshCache();
             }
             Debug.Assert(EntityInfos != null, "EntityInfos != null");
-            return EntityInfos.FirstOrDefault(m => m.ClassName == type.FullName);
+            return EntityInfos.FirstOrDefault(m => m.ClassName == type.FullName) ??
+                EntityInfos.FirstOrDefault(m => type.BaseType != null && m.ClassName == type.BaseType.FullName);
         }
 
         /// <summary>
