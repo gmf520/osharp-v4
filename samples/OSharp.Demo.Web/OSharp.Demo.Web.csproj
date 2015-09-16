@@ -164,6 +164,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\checkmark.gif" />
     <Content Include="Content\images\checknomark.gif" />
     <Content Include="Content\images\icon.png" />
@@ -443,6 +447,7 @@
     <Content Include="Content\themes\metro\tree.css" />
     <Content Include="Content\themes\metro\validatebox.css" />
     <Content Include="Content\themes\metro\window.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
@@ -463,8 +468,17 @@
     <Content Include="Areas\Admin\Views\Logging\SystemLogs.cshtml" />
     <Content Include="Areas\Admin\Views\Functions\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EntityInfos\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\web.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\OSharp.Demo.Web.pubxml" />
     <None Include="Scripts\jquery-1.11.3.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\easyloader.js" />
     <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
@@ -516,6 +530,7 @@
     <Compile Include="Areas\Admin\Controllers\Security\EntityInfosController.cs" />
     <Compile Include="Areas\Admin\Controllers\Security\FunctionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Systems\LoggingController.cs" />
+    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
@@ -564,6 +579,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Manage\Controllers\" />
+    <Folder Include="Areas\Manage\Models\" />
+    <Folder Include="Areas\Manage\Views\Shared\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <PropertyGroup>
