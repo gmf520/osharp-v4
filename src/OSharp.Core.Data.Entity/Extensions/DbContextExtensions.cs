@@ -127,12 +127,12 @@ namespace OSharp.Core.Data.Entity
                 select GetAddedLog(entry, entityInfo);
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Modified).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType().BaseType)
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetModifiedLog(entry, entityInfo));
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Deleted).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType().BaseType)
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetDeletedLog(entry, entityInfo));
 
