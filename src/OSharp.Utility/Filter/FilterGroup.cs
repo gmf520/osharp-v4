@@ -25,6 +25,8 @@ namespace OSharp.Utility.Filter
     {
         private FilterOperate _operate;
 
+        #region 构造函数
+
         /// <summary>
         /// 初始化一个<see cref="FilterGroup"/>的新实例
         /// </summary>
@@ -50,6 +52,8 @@ namespace OSharp.Utility.Filter
             Rules = new List<FilterRule>();
             Groups = new List<FilterGroup>();
         }
+
+        #endregion
 
         /// <summary>
         /// 获取或设置 条件集合

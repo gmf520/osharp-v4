@@ -131,7 +131,16 @@ namespace OSharp.Demo.Consoles
 
         private static void Method02()
         {
-            
+            int total = 10000;
+            for (int index = 0; index < total; index++)
+            {
+                if (index % 7 != 0 || index % 6 != 1 || index % 5 != 1 || index % 4 != 1 || index % 3 != 1 || index % 2 != 1)
+                {
+                    index++;
+                    continue;
+                }
+                Console.WriteLine("结果：" + index);
+            }
         }
 
         private static void Method03()
