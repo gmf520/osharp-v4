@@ -57,6 +57,10 @@
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -77,16 +81,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="log4net.config" />
+    <Content Include="osharp.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OSharp.Autofac\OSharp.Autofac.csproj">
+      <Project>{50A2B6A0-8E08-4554-9595-6801F627E16B}</Project>
+      <Name>OSharp.Autofac</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
       <Name>OSharp.Core.Data.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj">
+      <Project>{E34D7585-25DA-4622-9019-89DBC766AD67}</Project>
+      <Name>OSharp.Core.Permissions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
       <Name>OSharp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.SiteBase\OSharp.SiteBase.csproj">
+      <Project>{78A2A1D4-64B1-4237-A71F-A2BA999FFB4D}</Project>
+      <Name>OSharp.SiteBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>

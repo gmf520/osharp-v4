@@ -44,10 +44,14 @@ namespace OSharp.Core.Configs
                 throw new InvalidOperationException("上下文初始化类型“{0}”不存在".FormatWith(element.InitializerTypeName));
             }
             InitializerType = type;
-
+            //如果当前运行环境是WEB
+            string currentDirectory= AppDomain.CurrentDomain.RelativeSearchPath;
+            if (currentDirectory.IsNullOrEmpty())
+                //运行环境是Console
+                currentDirectory = Directory.GetCurrentDirectory();
             string[] mapperFiles = element.EntityMapperFiles.Split(',')
                 .Select(fileName => fileName.EndsWith(".dll") ? fileName : fileName + ".dll")
-                .Select(fileName => Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, fileName)).ToArray();
+                .Select(fileName => Path.Combine(currentDirectory, fileName)).ToArray();
             EntityMapperAssemblies = mapperFiles.Select(Assembly.LoadFrom).ToList();
 
             if (element.CreateDatabaseInitializer != null && element.CreateDatabaseInitializer.InitializerTypeName != null)

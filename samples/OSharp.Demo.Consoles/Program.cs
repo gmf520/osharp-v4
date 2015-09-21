@@ -14,6 +14,7 @@ using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
 using OSharp.Demo.Contracts;
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Logging;
 
 
 namespace OSharp.Demo.Consoles
@@ -22,15 +23,16 @@ namespace OSharp.Demo.Consoles
     {
         private static ICache Cache;
         private static Program _program;
-
+        private static ILogger _logger;
         public IIdentityContract IdentityContract { get; set; }
 
         private static void Main(string[] args)
         {
             try
             {
-                //Startup.Start();
-                //_program = Startup.Container.Resolve<Program>();
+                Startup.Start();
+                _program = Startup.Container.Resolve<Program>();
+                _logger = LogManager.GetLogger(typeof(Program));
                 //Cache = CacheManager.GetCacher(typeof(Program));
                 Console.WriteLine("程序初始化完毕并启动成功。");
             }
@@ -131,12 +133,14 @@ namespace OSharp.Demo.Consoles
 
         private static void Method02()
         {
-            
+            IIdentityContract identityContract = _program.IdentityContract;
+            // identityContract.AddRoles(new RoleDto[] { new RoleDto() { IsAdmin = false, IsLocked = false, IsSystem = false, Name = "testrole2", Remark = "12" } });
+            Console.WriteLine(identityContract.Roles.Count());
         }
 
         private static void Method03()
         {
-            throw new NotImplementedException();
+            _logger.Info(DateTime.Now.ToShortDateString());
         }
 
         private static void Method04()

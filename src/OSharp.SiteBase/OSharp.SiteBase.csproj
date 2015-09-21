@@ -39,6 +39,10 @@
     <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -125,9 +129,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependency\DbContextTypeResolver.cs" />
+    <Compile Include="Dependency\IConsoleIocInitializer.cs" />
     <Compile Include="Dependency\IMvcIocInitializer.cs" />
     <Compile Include="Dependency\ISignalRIocInitializer.cs" />
     <Compile Include="Dependency\IWebApiIocInitializer.cs" />
+    <Compile Include="Dependency\ConsoleIocResolver.cs" />
     <Compile Include="Dependency\MvcIocResolver.cs" />
     <Compile Include="Dependency\SignalRIocResolver.cs" />
     <Compile Include="Dependency\WebApiIocResolver.cs" />
@@ -137,6 +143,7 @@
     <Compile Include="Initialize\DataHandlerInitializer.cs" />
     <Compile Include="Initialize\DataLoggingInitializer.cs" />
     <Compile Include="Initialize\EntityMapperAssemblyFinder.cs" />
+    <Compile Include="Initialize\FrameworkConsoleInitializer.cs" />
     <Compile Include="Initialize\FrameworkInitializer.cs" />
     <Compile Include="Initialize\IocInitializerBase.cs" />
     <Compile Include="Initialize\LoggingInitializerBase.cs" />

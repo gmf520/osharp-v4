@@ -126,6 +126,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacConsoleIocInitializer.cs" />
     <Compile Include="AutofacSignalrIocInitializer.cs" />
     <Compile Include="AutofacWebApiIocInitializer.cs" />
     <Compile Include="AutofacMvcIocInitializer.cs" />

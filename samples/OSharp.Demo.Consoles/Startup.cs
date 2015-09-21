@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 
 using Autofac;
 
+using OSharp.Autofac;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
+using OSharp.SiteBase.Initialize;
+using OSharp.Utility.Logging;
 
 
 namespace OSharp.Demo.Consoles
@@ -21,6 +24,7 @@ namespace OSharp.Demo.Consoles
     public static class Startup
     {
         public static IContainer Container { get; private set; }
+        
 
         public static void Start()
         {
@@ -32,21 +36,11 @@ namespace OSharp.Demo.Consoles
 
         private static void AutofacRegisters()
         {
-            ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterGeneric(typeof(Repository<,>)).As(typeof(IRepository<,>));
-
-            Type baseType = typeof(ILifetimeScopeDependency);
-            string path = Directory.GetCurrentDirectory();
-            Assembly[] assemblies = Directory.GetFiles(path, "*.dll").Select(m => Assembly.LoadFrom(m))
-                .Union(new[] { Assembly.GetExecutingAssembly() }).ToArray();
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract)
-                .AsSelf()   //自身服务，用于没有接口的类
-                .AsImplementedInterfaces()  //接口服务
-                .PropertiesAutowired()  //属性注入
-                .InstancePerLifetimeScope();    //保证生命周期基于请求
-
-            Container = builder.Build();
+            FrameworkConsoleInitializer initializer = new FrameworkConsoleInitializer();
+            var autofacConsoleIocInitializer = new AutofacConsoleIocInitializer();
+            initializer.ConsoleIocInitializer = autofacConsoleIocInitializer;
+            Container = autofacConsoleIocInitializer.Container;
+            initializer.Initialize();
         }
 
         private static void CachingInit()
