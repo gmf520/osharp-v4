@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Data.Entity.Properties;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
 
@@ -64,7 +65,7 @@ namespace OSharp.Core.Data.Entity
             entityType.CheckNotNull("entityType");
             if (!typeof(IEntity<>).IsGenericAssignableFrom(entityType))
             {
-                throw new InvalidOperationException("类型“{0}”不是实体类型".FormatWith(entityType.FullName));
+                throw new InvalidOperationException(Resources.DbContextManager_TypeNotEntityType.FormatWith(entityType.FullName));
             }
             Type contextType = null;
             if (_entityContextCache.ContainsKey(entityType))
@@ -82,7 +83,7 @@ namespace OSharp.Core.Data.Entity
             }
             if (contextType == null)
             {
-                throw new InvalidOperationException("实体类型“{0}”未映射到上下文中".FormatWith(entityType.FullName));
+                throw new InvalidOperationException(Resources.DbContextManager_EntityTypeNotMaptoDbContext.FormatWith(entityType.FullName));
             }
             return contextType;
         }
@@ -98,7 +99,7 @@ namespace OSharp.Core.Data.Entity
             dbContextType.CheckNotNull("dbContextType");
             if (!typeof(DbContextBase<>).IsGenericAssignableFrom(dbContextType))
             {
-                throw new InvalidOperationException("类型“{0}”不是 DbContextBase<> 类型的派生类".FormatWith(dbContextType.FullName));
+                throw new InvalidOperationException(Resources.DbContextManager_TypeNotDbContextType.FormatWith(dbContextType.FullName));
             }
 
             DbContextInitializerBase initializer;

@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Caching_CacheNotInitialized" xml:space="preserve">
-    <value>缓存功能尚未初始化，未找到可用的 ICacheProvider 实现。</value>
+  <data name="DatabaseInitializer_TypeNotDatabaseInitializer" xml:space="preserve">
+    <value>类型“{0}”不是有效的上下文初始化类型</value>
   </data>
-  <data name="ConfigFile_ItemKeyDefineRepeated" xml:space="preserve">
-    <value>标识为“{0}”的项重复定义</value>
+  <data name="DbContextTypeResolver_DbContextResolveFailed" xml:space="preserve">
+    <value>实体类“{0}”所属的上下文“{1}”获取失败</value>
   </data>
-  <data name="DbContextInitializerConfig_InitializerNotExists" xml:space="preserve">
-    <value>上下文初始化类型“{0}”不存在</value>
+  <data name="FrameworkInitializer_MvcIoCInitializerNull" xml:space="preserve">
+    <value>MVC初始化器不能为空，请为FrameworkInitializer.MvcIocInitializer属性赋值</value>
   </data>
-  <data name="QueryCacheExtensions_TypeNotEntityType" xml:space="preserve">
-    <value>类型“{0}”不是实体类型</value>
+  <data name="MvcActionMethodInfoFinder_TypeNotMvcControllerType" xml:space="preserve">
+    <value>类型“{0}”不是MVC控制器类型</value>
   </data>
 </root>

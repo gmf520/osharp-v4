@@ -7,19 +7,12 @@
 //  <last-date>2015-08-01 22:45</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using Autofac;
 using Autofac.Integration.Mvc;
 
-using OSharp.Core.Configs;
-using OSharp.Core.Data.Entity.Logging;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.SiteBase.Dependency;

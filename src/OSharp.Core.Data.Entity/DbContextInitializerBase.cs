@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
@@ -20,7 +19,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using OSharp.Core.Data.Entity.Migrations;
-using OSharp.Utility;
+using OSharp.Core.Data.Entity.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -133,7 +132,7 @@ namespace OSharp.Core.Data.Entity
         {
             if (MapperAssemblies.Count == 0)
             {
-                throw new InvalidOperationException("上下文“{0}”初始化失败，请添加实体映射程序集".FormatWith(this.GetType().FullName));
+                throw new InvalidOperationException(Resources.DbContextInitializerBase_MapperAssembliesIsEmpty.FormatWith(this.GetType().FullName));
             }
             Type baseType = typeof(IEntityMapper);
             Type[] mapperTypes = MapperAssemblies.SelectMany(assembly => assembly.GetTypes())

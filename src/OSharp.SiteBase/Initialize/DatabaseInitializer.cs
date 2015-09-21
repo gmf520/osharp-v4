@@ -21,6 +21,7 @@ using OSharp.Core.Data.Entity.Logging;
 using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;
 using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -124,7 +125,7 @@ namespace OSharp.SiteBase.Initialize
             DbContextInitializerBase initializer = Activator.CreateInstance(initializerType) as DbContextInitializerBase;
             if (initializer == null)
             {
-                throw new InvalidOperationException("类型“{0}”不是有效的上下文初始化类型".FormatWith(initializerType));
+                throw new InvalidOperationException(Resources.DatabaseInitializer_TypeNotDatabaseInitializer.FormatWith(initializerType));
             }
             foreach (Assembly mapperAssembly in config.EntityMapperAssemblies)
             {

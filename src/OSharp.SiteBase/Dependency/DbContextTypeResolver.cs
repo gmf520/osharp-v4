@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
+using OSharp.SiteBase.Properties;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
 
@@ -55,7 +56,7 @@ namespace OSharp.SiteBase.Dependency
             IUnitOfWork unitOfWork = (IUnitOfWork)IocResolver.Resolve(contextType);
             if (unitOfWork == null)
             {
-                throw new InvalidOperationException("实体类“{0}”所属的上下文“{1}”获取失败".FormatWith(entityType, contextType));
+                throw new InvalidOperationException(Resources.DbContextTypeResolver_DbContextResolveFailed.FormatWith(entityType, contextType));
             }
             return unitOfWork;
         }

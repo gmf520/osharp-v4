@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OSharp.Core.Properties {
+namespace OSharp.SiteBase.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OSharp.Core.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OSharp.Core.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OSharp.SiteBase.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,38 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   查找类似 缓存功能尚未初始化，未找到可用的 ICacheProvider 实现。 的本地化字符串。
+        ///   查找类似 类型“{0}”不是有效的上下文初始化类型 的本地化字符串。
         /// </summary>
-        internal static string Caching_CacheNotInitialized {
+        internal static string DatabaseInitializer_TypeNotDatabaseInitializer {
             get {
-                return ResourceManager.GetString("Caching_CacheNotInitialized", resourceCulture);
+                return ResourceManager.GetString("DatabaseInitializer_TypeNotDatabaseInitializer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 标识为“{0}”的项重复定义 的本地化字符串。
+        ///   查找类似 实体类“{0}”所属的上下文“{1}”获取失败 的本地化字符串。
         /// </summary>
-        internal static string ConfigFile_ItemKeyDefineRepeated {
+        internal static string DbContextTypeResolver_DbContextResolveFailed {
             get {
-                return ResourceManager.GetString("ConfigFile_ItemKeyDefineRepeated", resourceCulture);
+                return ResourceManager.GetString("DbContextTypeResolver_DbContextResolveFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 上下文初始化类型“{0}”不存在 的本地化字符串。
+        ///   查找类似 MVC初始化器不能为空，请为FrameworkInitializer.MvcIocInitializer属性赋值 的本地化字符串。
         /// </summary>
-        internal static string DbContextInitializerConfig_InitializerNotExists {
+        internal static string FrameworkInitializer_MvcIoCInitializerNull {
             get {
-                return ResourceManager.GetString("DbContextInitializerConfig_InitializerNotExists", resourceCulture);
+                return ResourceManager.GetString("FrameworkInitializer_MvcIoCInitializerNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 类型“{0}”不是实体类型 的本地化字符串。
+        ///   查找类似 类型“{0}”不是MVC控制器类型 的本地化字符串。
         /// </summary>
-        internal static string QueryCacheExtensions_TypeNotEntityType {
+        internal static string MvcActionMethodInfoFinder_TypeNotMvcControllerType {
             get {
-                return ResourceManager.GetString("QueryCacheExtensions_TypeNotEntityType", resourceCulture);
+                return ResourceManager.GetString("MvcActionMethodInfoFinder_TypeNotMvcControllerType", resourceCulture);
             }
         }
     }

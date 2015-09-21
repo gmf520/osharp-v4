@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
+using OSharp.Core.Data.Entity.Properties;
 using OSharp.Core.Logging;
 using OSharp.Utility.Exceptions;
 using OSharp.Utility.Extensions;
@@ -106,7 +107,7 @@ namespace OSharp.Core.Data.Entity
             string name = contextConfig.ConnectionStringName;
             if (ConfigurationManager.ConnectionStrings[name] == null)
             {
-                throw new InvalidOperationException("名称为“{0}”的数据库连接串不存在".FormatWith(name));
+                throw new InvalidOperationException(Resources.DbContextBase_ConnectionStringNameNotExist.FormatWith(name));
             }
             return name;
         }

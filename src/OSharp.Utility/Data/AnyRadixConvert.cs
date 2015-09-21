@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Properties;
 
 
 namespace OSharp.Utility.Data
@@ -48,7 +49,7 @@ namespace OSharp.Utility.Data
                 char @char = value[i];
                 if (!baseChar.Contains(@char))
                 {
-                    throw new ArgumentException(string.Format("参数中的字符\"{0}\"不是 {1} 进制数的有效字符。", @char, fromRadix));
+                    throw new ArgumentException(string.Format(Resources.AnyRadixConvert_CharacterIsNotValid, @char, fromRadix));
                 }
                 try
                 {
@@ -56,7 +57,7 @@ namespace OSharp.Utility.Data
                 }
                 catch (Exception)
                 {
-                    throw new OverflowException("运算溢出。");
+                    throw new OverflowException(Resources.AnyRadixConvert_Overflow);
                 }
             }
             return result;

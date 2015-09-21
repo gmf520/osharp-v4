@@ -17,12 +17,13 @@ using OSharp.Core;
 using OSharp.Core.Configs;
 using OSharp.Core.Initialize;
 using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.Properties;
 
 
 namespace OSharp.SiteBase.Initialize
 {
     /// <summary>
-    /// 框架初始化器基类
+    /// 框架初始化器
     /// </summary>
     public class FrameworkInitializer : IFrameworkInitializer
     {
@@ -79,7 +80,7 @@ namespace OSharp.SiteBase.Initialize
         {
             if (MvcIocInitializer == null)
             {
-                throw new InvalidCastException("MVC初始化器不能为空，请为FrameworkInitializer.MvcIocInitializer属性赋值");
+                throw new InvalidCastException(Resources.FrameworkInitializer_MvcIoCInitializerNull);
             }
             OSharpConfig config = OSharpConfig.Instance;
 
@@ -99,7 +100,6 @@ namespace OSharp.SiteBase.Initialize
             {
                 SignalRIocInitializer.Initialize(config);
             }
-            //DataLoggingInitializer.Initialize(config.LoggingConfig.DataLoggingConfig);
             DataHandlerInitializer.Initialize();
         }
 

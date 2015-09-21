@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OSharp.Core.Properties {
+namespace OSharp.Core.Data.Entity.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OSharp.Core.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OSharp.Core.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OSharp.Core.Data.Entity.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,56 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   查找类似 缓存功能尚未初始化，未找到可用的 ICacheProvider 实现。 的本地化字符串。
+        ///   查找类似 名称为“{0}”的数据库连接串不存在 的本地化字符串。
         /// </summary>
-        internal static string Caching_CacheNotInitialized {
+        internal static string DbContextBase_ConnectionStringNameNotExist {
             get {
-                return ResourceManager.GetString("Caching_CacheNotInitialized", resourceCulture);
+                return ResourceManager.GetString("DbContextBase_ConnectionStringNameNotExist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 标识为“{0}”的项重复定义 的本地化字符串。
+        ///   查找类似 上下文“{0}”初始化失败，实体映射程序集不存在 的本地化字符串。
         /// </summary>
-        internal static string ConfigFile_ItemKeyDefineRepeated {
+        internal static string DbContextInitializerBase_MapperAssembliesIsEmpty {
             get {
-                return ResourceManager.GetString("ConfigFile_ItemKeyDefineRepeated", resourceCulture);
+                return ResourceManager.GetString("DbContextInitializerBase_MapperAssembliesIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 上下文初始化类型“{0}”不存在 的本地化字符串。
+        ///   查找类似 实体类型“{0}”未映射到上下文中，请为实体派生 EntityConfigurationBase&lt;&gt; 类型，使之能被数据上下文加载。 的本地化字符串。
         /// </summary>
-        internal static string DbContextInitializerConfig_InitializerNotExists {
+        internal static string DbContextManager_EntityTypeNotMaptoDbContext {
             get {
-                return ResourceManager.GetString("DbContextInitializerConfig_InitializerNotExists", resourceCulture);
+                return ResourceManager.GetString("DbContextManager_EntityTypeNotMaptoDbContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 类型“{0}”不是 DbContextBase&lt;&gt; 类型的派生类 的本地化字符串。
+        /// </summary>
+        internal static string DbContextManager_TypeNotDbContextType {
+            get {
+                return ResourceManager.GetString("DbContextManager_TypeNotDbContextType", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 类型“{0}”不是实体类型 的本地化字符串。
         /// </summary>
-        internal static string QueryCacheExtensions_TypeNotEntityType {
+        internal static string DbContextManager_TypeNotEntityType {
             get {
-                return ResourceManager.GetString("QueryCacheExtensions_TypeNotEntityType", resourceCulture);
+                return ResourceManager.GetString("DbContextManager_TypeNotEntityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 仓储中的 {0} 方法不支持事务操作 的本地化字符串。
+        /// </summary>
+        internal static string Repository_MethodNotSupportedTransaction {
+            get {
+                return ResourceManager.GetString("Repository_MethodNotSupportedTransaction", resourceCulture);
             }
         }
     }

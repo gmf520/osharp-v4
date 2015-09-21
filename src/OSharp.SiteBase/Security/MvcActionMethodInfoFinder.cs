@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using OSharp.Core.Reflection;
+using OSharp.SiteBase.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -48,7 +49,7 @@ namespace OSharp.SiteBase.Security
         {
             if (!typeof(Controller).IsAssignableFrom(type))
             {
-                throw new InvalidOperationException("类型“{0}”不是MVC控制器类型".FormatWith(type.FullName));
+                throw new InvalidOperationException(Resources.MvcActionMethodInfoFinder_TypeNotMvcControllerType.FormatWith(type.FullName));
             }
             MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(m => typeof(ActionResult).IsAssignableFrom(m.ReturnType) || m.ReturnType == typeof(Task<ActionResult>))
