@@ -13,6 +13,9 @@ using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
 using OSharp.Demo.Contracts;
+using OSharp.Demo.Dtos.Identity;
+using OSharp.Demo.Services;
+using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 using OSharp.Utility.Logging;
 
@@ -145,8 +148,12 @@ namespace OSharp.Demo.Consoles
 
         private static void Method04()
         {
-            throw new NotImplementedException();
+            IIdentityContract identityContract = _program.IdentityContract;
+            
+            Console.WriteLine(identityContract.AddUsers(new UserDto[] { new UserDto() { UserName = "lianggui5", Email = "email",Password = "123567"} }).Result.Message);
+            Console.WriteLine(((IdentityService)identityContract).UserManager.Users.Count());
         }
+    
 
         private static void Method05()
         {

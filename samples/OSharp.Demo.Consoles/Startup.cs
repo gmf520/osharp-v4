@@ -15,6 +15,7 @@ using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
+using OSharp.Demo.Dtos;
 using OSharp.SiteBase.Initialize;
 using OSharp.Utility.Logging;
 
@@ -32,6 +33,7 @@ namespace OSharp.Demo.Consoles
             CachingInit();
             LoggingInit();
             DatabaseInit();
+            DtoMappers.MapperRegister();
         }
 
         private static void AutofacRegisters()
@@ -39,7 +41,7 @@ namespace OSharp.Demo.Consoles
             FrameworkConsoleInitializer initializer = new FrameworkConsoleInitializer();
             var autofacConsoleIocInitializer = new AutofacConsoleIocInitializer();
             initializer.ConsoleIocInitializer = autofacConsoleIocInitializer;
-            Container = autofacConsoleIocInitializer.Container;
+            Container = autofacConsoleIocInitializer.GetComtainer();
             initializer.Initialize();
         }
 

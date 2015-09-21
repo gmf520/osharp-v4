@@ -41,7 +41,7 @@ namespace OSharp.Autofac
         /// <summary>
         /// 获取或设置 Autofac组合IContainer
         /// </summary>
-        public IContainer Container { get; set; }
+        protected IContainer Container { get; set; }
 
         /// <summary>
         /// 重写以实现数据上下文类型的注册

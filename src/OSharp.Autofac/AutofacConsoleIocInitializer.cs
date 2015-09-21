@@ -33,6 +33,14 @@ namespace OSharp.Autofac
     public class AutofacConsoleIocInitializer : AutofacIocInitializerBase, IConsoleIocInitializer
     {
         /// <summary>
+        /// 返回基类Container
+        /// </summary>
+        /// <returns></returns>
+        public IContainer GetComtainer()
+        {
+            return Container;
+        }
+        /// <summary>
         /// 注册自定义类型
         /// </summary>
         protected override void RegisterCustomTypes()

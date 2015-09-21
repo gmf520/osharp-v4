@@ -71,6 +71,12 @@ namespace OSharp.Demo.Services
                 //密码单独处理
                 if (!dto.Password.IsNullOrEmpty())
                 {
+                    //PasswordValidator pv=new PasswordValidator()
+                    //{
+                    //    RequiredLength = 8
+                    //};
+                    //UserManager.PasswordValidator = pv;
+                    
                     result = await UserManager.PasswordValidator.ValidateAsync(dto.Password);
                     if (!result.Succeeded)
                     {
