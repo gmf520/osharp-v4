@@ -7,7 +7,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Routing;
 
+using OSharp.Core;
+using OSharp.Core.Context;
+using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 
 
@@ -24,6 +29,90 @@ namespace OSharp.Web.Http.Extensions
             return localFlag != null && localFlag.Value;
         }
 
+        /// <summary>
+        /// 获取区域信息，如不存在则返回null
+        /// </summary>
+        public static string GetAreaName(this HttpRequestMessage request)
+        {
+            const string key = "area";
+            object value;
+            IHttpRouteData data = request.GetRouteData();
+            if (data.Route.DataTokens == null)
+            {
+                if (data.Values.TryGetValue(key, out value))
+                {
+                    return value.ToString();
+                }
+                return null;
+            }
+            return data.Route.DataTokens.TryGetValue(key, out value) ? value.ToString() : null;
+        }
+
+        /// <summary>
+        /// 获取当前执行的功能信息
+        /// </summary>
+        public static IFunction GetExecuteFunction(this HttpRequestMessage request)
+        {
+            const string key = Constants.CurrentWebApiFunctionKey;
+            IDictionary<string, object> items = request.Properties;
+            if (items.ContainsKey(key))
+            {
+                return (IFunction)items[key];
+            }
+            string area = request.GetAreaName();
+            string controller = request.GetControllerName();
+            string action = request.GetActionName();
+            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, "WEBAPI");
+            if (function != null)
+            {
+                items.Add(key, function);
+            }
+            return function;
+        }
+
+        /// <summary>
+        /// 获取控制器名称
+        /// </summary>
+        public static string GetControllerName(this HttpRequestMessage request)
+        {
+            const string key = "controller";
+            object value;
+            IHttpRouteData data = request.GetRouteData();
+            if (data.Route.DataTokens == null)
+            {
+                if (data.Values.TryGetValue(key, out value))
+                {
+                    return value.ToString();
+                }
+                return null;
+            }
+            return data.Route.DataTokens.TryGetValue(key, out value) ? value.ToString() : null;
+        }
+
+        /// <summary>
+        /// 获取控制器名称
+        /// </summary>
+        public static string GetActionName(this HttpRequestMessage request)
+        {
+            const string key = "action";
+            object value;
+            IHttpRouteData data = request.GetRouteData();
+            if (data.Route.DataTokens == null)
+            {
+                if (data.Values.TryGetValue(key, out value))
+                {
+                    return value.ToString();
+                }
+                return null;
+            }
+            return data.Route.DataTokens.TryGetValue(key, out value) ? value.ToString() : null;
+        }
+
+        /// <summary>
+        /// 获取客户端IP
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public static string GetClientIpAddress(this HttpRequestMessage request)
         {
             if (request.Properties.ContainsKey(HttpContext))

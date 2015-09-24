@@ -26,6 +26,9 @@ using OSharp.Utility.Extensions;
 
 namespace OSharp.Web.Http.Selectors
 {
+    /// <summary>
+    /// WebApi区域控制器选择器
+    /// </summary>
     public class AreaHttpControllerSelector : DefaultHttpControllerSelector
     {
         private const string AreaRouteVariableName = "area";

@@ -29,7 +29,7 @@ namespace OSharp.Web.Mvc.Extensions
         /// </summary>
         public static IFunction GetExecuteFunction(this ControllerContext context)
         {
-            const string key = Constants.CurrentFunctionKey;
+            const string key = Constants.CurrentMvcFunctionKey;
             IDictionary items = context.HttpContext.Items;
             if (items.Contains(key))
             {
@@ -38,7 +38,7 @@ namespace OSharp.Web.Mvc.Extensions
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action);
+            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, "MVC");
             if (function != null)
             {
                 items.Add(key, function);

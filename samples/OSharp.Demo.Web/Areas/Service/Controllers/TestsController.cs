@@ -15,17 +15,27 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using OSharp.Core.Context;
+using OSharp.Core.Security;
+using OSharp.Utility.Extensions;
+using OSharp.Web.Http.Extensions;
+using OSharp.Web.Http.Logging;
+
 
 namespace OSharp.Demo.Web.Areas.Service.Controllers
 {
     [Description("服务-测试")]
+    [OperateLogFilter]
     public class TestsApiController : ApiController
     {
         [Description("服务-测试-测试001")]
         [HttpGet]
         public IHttpActionResult Test01()
         {
-            return Ok("Hello World.");
+            IFunction function = ControllerContext.Request.GetExecuteFunction();
+            string name = function?.Name;
+
+            return Ok("Hello World.{0}".FormatWith(name));
         }
     }
 }

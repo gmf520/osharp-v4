@@ -51,13 +51,8 @@ namespace OSharp.Demo.Web
         {
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
-
-            //IFrameworkInitializer initializer = new FrameworkInitializer()
-            //{
-            //    MvcIocInitializer = new AutofacMvcIocInitializer()
-            //};
-            //initializer.Initialize();
-
+            
+            //MVC初始化
             IFrameworkInitializer initializer = new MvcFrameworkInitializer()
             {
                 BasicLoggingInitializer = new Log4NetLoggingInitializer(),
@@ -65,6 +60,7 @@ namespace OSharp.Demo.Web
             };
             initializer.Initialize();
 
+            //WebApi初始化
             initializer = new WebApiFrameworkInitializer()
             {
                 BasicLoggingInitializer = new Log4NetLoggingInitializer(),
