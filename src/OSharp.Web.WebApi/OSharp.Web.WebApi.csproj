@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\OSharp.Web.WebApi.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OSharp.Keys.snk" />
+    <None Include="OSharp.Web.WebApi.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

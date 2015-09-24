@@ -26,11 +26,12 @@ namespace OSharp.Demo.Web.Areas.Service
                 "api/service/{controller}/{id}",
                 new { area = "Service", id = RouteParameter.Optional }
             );
-            //context.MapRoute(
-            //    "Service_default",
-            //    "service/{controller}/{action}/{id}",
-            //    new { action = "Index", id = UrlParameter.Optional }
-            //);
+             
+            context.MapRoute(
+                "Service_default",
+                "api/service/{controller}/{action}/{id}",
+                new { action = "Index", id = UrlParameter.Optional }
+            );
         }
     }
 }

@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\OSharp.Autofac.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,6 +89,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="OSharp.Keys.snk" />
+    <None Include="OSharp.Autofac.Mvc.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

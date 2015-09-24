@@ -47,7 +47,7 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 获取 当前单元操作对象
         /// </summary>
-        public IUnitOfWork UnitOfWork { get; }
+        public IUnitOfWork UnitOfWork { get; private set; }
 
         /// <summary>
         /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询
