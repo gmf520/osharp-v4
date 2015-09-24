@@ -22,6 +22,7 @@ using Microsoft.AspNet.SignalR;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.SignalR;
 
 
 namespace OSharp.Autofac

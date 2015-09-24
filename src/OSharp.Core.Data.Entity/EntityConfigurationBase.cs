@@ -26,7 +26,7 @@ namespace OSharp.Core.Data.Entity
         where TEntity : class, IEntity<TKey>
     {
         /// <summary>
-        /// 获取 相关上下文类型，如为null，将使用默认上下文，否则使用指定的上下文类型
+        /// 获取 相关上下文类型，如为null，将使用默认上下文<see cref="DefaultDbContext"/>，否则使用指定的上下文类型
         /// </summary>
         public virtual Type DbContextType
         {

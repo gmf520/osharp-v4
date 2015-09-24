@@ -13,6 +13,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Dependency;
+
 
 namespace OSharp.Core.Security
 {
@@ -25,7 +27,7 @@ namespace OSharp.Core.Security
         /// 从程序集中刷新实体信息数据
         /// </summary>
         void Initialize();
-         
+
         /// <summary>
         /// 查找指定实体类型的实体信息
         /// </summary>

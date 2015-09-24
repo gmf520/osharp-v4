@@ -147,10 +147,6 @@
       <Project>{F7C67C95-FACB-4160-9A88-CB738E65E034}</Project>
       <Name>OSharp.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OSharp.SiteBase\OSharp.SiteBase.csproj">
-      <Project>{78a2a1d4-64b1-4237-a71f-a2ba999ffb4d}</Project>
-      <Name>OSharp.SiteBase</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

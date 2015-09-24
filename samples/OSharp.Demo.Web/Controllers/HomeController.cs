@@ -13,8 +13,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using OSharp.SiteBase.Logging;
 using OSharp.Utility.Logging;
+using OSharp.Web.Mvc.Logging;
 
 
 namespace OSharp.Demo.Web.Controllers

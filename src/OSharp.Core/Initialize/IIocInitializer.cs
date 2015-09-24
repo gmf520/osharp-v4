@@ -29,6 +29,7 @@ namespace OSharp.Core.Initialize
         /// 初始化依赖注入
         /// </summary>
         /// <param name="config">框架配置信息</param>
-        void Initialize(OSharpConfig config);
+        /// <param name="initializer"></param>
+        void Initialize(OSharpConfig config, IFrameworkInitializer initializer);
     }
 }

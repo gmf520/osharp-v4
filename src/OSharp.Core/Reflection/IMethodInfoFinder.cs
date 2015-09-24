@@ -18,12 +18,12 @@ using System.Threading.Tasks;
 namespace OSharp.Core.Reflection
 {
     /// <summary>
-    /// 定义方法查找器
+    /// 定义方法信息查找器
     /// </summary>
     public interface IMethodInfoFinder
     {
         /// <summary>
-        /// 查找指定条件的项
+        /// 查找指定条件的方法信息
         /// </summary>
         /// <param name="type">控制器类型</param>
         /// <param name="predicate">筛选条件</param>

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DatabaseInitializer_TypeNotDatabaseInitializer" xml:space="preserve">
+    <value>类型“{0}”不是有效的上下文初始化类型</value>
+  </data>
   <data name="DbContextBase_ConnectionStringNameNotExist" xml:space="preserve">
     <value>名称为“{0}”的数据库连接串不存在</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="DbContextManager_TypeNotEntityType" xml:space="preserve">
     <value>类型“{0}”不是实体类型</value>
+  </data>
+  <data name="DbContextTypeResolver_DbContextResolveFailed" xml:space="preserve">
+    <value>实体类“{0}”所属的上下文“{1}”获取失败</value>
   </data>
   <data name="Repository_MethodNotSupportedTransaction" xml:space="preserve">
     <value>仓储中的 {0} 方法不支持事务操作</value>

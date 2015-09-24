@@ -22,6 +22,7 @@ using Autofac.Integration.WebApi;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.Http;
 
 
 namespace OSharp.Autofac

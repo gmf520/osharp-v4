@@ -129,4 +129,10 @@
   <data name="MvcActionMethodInfoFinder_TypeNotMvcControllerType" xml:space="preserve">
     <value>类型“{0}”不是MVC控制器类型</value>
   </data>
+  <data name="MvcFunctionHandler_MethodNotMvcAction" xml:space="preserve">
+    <value>方法“{0}”不是MVC的Action功能</value>
+  </data>
+  <data name="WebApiActionMethodInfoFinder_TypeNotApiControllerType" xml:space="preserve">
+    <value>类型“{0}”不是WebApi控制器类型</value>
+  </data>
 </root>

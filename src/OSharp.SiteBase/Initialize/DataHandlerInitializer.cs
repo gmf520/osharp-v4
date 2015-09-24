@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OSharp.Core.Context;
 using OSharp.Core.Initialize;
 using OSharp.Core.Security;
+using OSharp.SiteBase.Mvc;
 using OSharp.SiteBase.Security;
 
 
@@ -34,7 +35,7 @@ namespace OSharp.SiteBase.Initialize
         /// </summary>
         public DataHandlerInitializer()
         {
-            FunctionHandler = new DefaultFunctionHandler();
+            FunctionHandler = new MvcFunctionHandler();
             EntityInfoHandler = new DefaultEntityInfoHandler();
         }
 

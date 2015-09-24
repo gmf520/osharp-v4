@@ -35,7 +35,7 @@ namespace OSharp.SiteBase.Logging
         protected override ILog GetLoggerInternal(string name)
         {
             ILog log =  CreateLogger(name);
-            System.Diagnostics.Debug.WriteLine(log.GetHashCode());
+            //System.Diagnostics.Debug.WriteLine(log.GetHashCode());
             return log;
         }
 

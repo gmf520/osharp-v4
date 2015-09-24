@@ -73,6 +73,11 @@ namespace OSharp.Core.Security
         public bool IsCacheSliding { get; set; }
 
         /// <summary>
+        /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
+        /// </summary>
+        public string Provider { get; set; }
+
+        /// <summary>
         /// 获取或设置 功能地址
         /// </summary>
         public string Url { get; set; }

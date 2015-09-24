@@ -95,5 +95,23 @@ namespace OSharp.SiteBase.Properties {
                 return ResourceManager.GetString("MvcActionMethodInfoFinder_TypeNotMvcControllerType", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 方法“{0}”不是MVC的Action功能 的本地化字符串。
+        /// </summary>
+        internal static string MvcFunctionHandler_MethodNotMvcAction {
+            get {
+                return ResourceManager.GetString("MvcFunctionHandler_MethodNotMvcAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 类型“{0}”不是WebApi控制器类型 的本地化字符串。
+        /// </summary>
+        internal static string WebApiActionMethodInfoFinder_TypeNotApiControllerType {
+            get {
+                return ResourceManager.GetString("WebApiActionMethodInfoFinder_TypeNotApiControllerType", resourceCulture);
+            }
+        }
     }
 }

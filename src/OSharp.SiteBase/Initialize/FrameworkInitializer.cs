@@ -16,8 +16,10 @@ using System.Threading.Tasks;
 using OSharp.Core;
 using OSharp.Core.Configs;
 using OSharp.Core.Initialize;
-using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.Http;
+using OSharp.SiteBase.Mvc;
 using OSharp.SiteBase.Properties;
+using OSharp.SiteBase.SignalR;
 
 
 namespace OSharp.SiteBase.Initialize

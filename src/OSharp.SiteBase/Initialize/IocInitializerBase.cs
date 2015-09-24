@@ -99,7 +99,7 @@ namespace OSharp.SiteBase.Initialize
         /// <param name="repositoryType">数据仓储实现类型</param>
         /// <param name="iRepositoryType">数据仓储接口类型</param>
         protected abstract void RegisterRepositoryType(Type repositoryType, Type iRepositoryType);
-
+        
         /// <summary>
         /// 重写以实现依赖注入接口<see cref="IDependency"/>实现类型的注册
         /// </summary>

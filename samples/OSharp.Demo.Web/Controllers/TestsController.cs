@@ -15,10 +15,10 @@ using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
-using OSharp.SiteBase.Extensions;
-using OSharp.SiteBase.Logging;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Mvc;
+using OSharp.Web.Mvc.Extensions;
+using OSharp.Web.Mvc.Logging;
 
 
 namespace OSharp.Demo.Web.Controllers

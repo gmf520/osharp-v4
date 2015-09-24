@@ -50,7 +50,7 @@ namespace OSharp.Core.Configs.ConfigFile
         /// <summary>
         /// 获取或设置 数据日志输出适配器类型名称
         /// </summary>
-        [ConfigurationProperty(TypeKey, DefaultValue = "OSharp.Core.Data.Entity.Logging.DatabaseLoggerAdapter, OSharp.Core.Data.Entity")]
+        [ConfigurationProperty(TypeKey, DefaultValue = "OSharp.Core.Logging.DatabaseLoggerAdapter, OSharp.Core")]
         public virtual string AdapterTypeName
         {
             get { return (string)this[TypeKey]; }

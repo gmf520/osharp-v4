@@ -61,6 +61,15 @@ namespace OSharp.Core.Data.Entity.Properties {
         }
         
         /// <summary>
+        ///   查找类似 类型“{0}”不是有效的上下文初始化类型 的本地化字符串。
+        /// </summary>
+        internal static string DatabaseInitializer_TypeNotDatabaseInitializer {
+            get {
+                return ResourceManager.GetString("DatabaseInitializer_TypeNotDatabaseInitializer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 名称为“{0}”的数据库连接串不存在 的本地化字符串。
         /// </summary>
         internal static string DbContextBase_ConnectionStringNameNotExist {
@@ -102,6 +111,15 @@ namespace OSharp.Core.Data.Entity.Properties {
         internal static string DbContextManager_TypeNotEntityType {
             get {
                 return ResourceManager.GetString("DbContextManager_TypeNotEntityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 实体类“{0}”所属的上下文“{1}”获取失败 的本地化字符串。
+        /// </summary>
+        internal static string DbContextTypeResolver_DbContextResolveFailed {
+            get {
+                return ResourceManager.GetString("DbContextTypeResolver_DbContextResolveFailed", resourceCulture);
             }
         }
         

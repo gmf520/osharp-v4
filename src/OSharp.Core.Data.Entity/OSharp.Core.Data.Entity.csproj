@@ -75,13 +75,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="DbContextBase.cs" />
     <Compile Include="DbContextInitializerBase.cs" />
     <Compile Include="DbContextManager.cs" />
+    <Compile Include="DbContextTypeResolver.cs" />
     <Compile Include="Defaults\DefaultDbContextInitializer.cs" />
     <Compile Include="Defaults\DefaultDbContext.cs" />
     <Compile Include="EntityConfigurationBase.cs" />
+    <Compile Include="EntityMapperAssemblyFinder.cs" />
     <Compile Include="Extensions\AutoMapperExtension.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="IContextTypeResolver.cs" />

@@ -12,10 +12,14 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 using OSharp.Autofac;
+using OSharp.Autofac.Http;
+using OSharp.Autofac.Mvc;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Demo.Dtos;
 using OSharp.SiteBase.Initialize;
+using OSharp.Web.Http.Initialize;
+using OSharp.Web.Mvc.Initialize;
 using OSharp.Web.Mvc.Routing;
 
 
@@ -48,9 +52,23 @@ namespace OSharp.Demo.Web
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
-            IFrameworkInitializer initializer = new FrameworkInitializer()
+            //IFrameworkInitializer initializer = new FrameworkInitializer()
+            //{
+            //    MvcIocInitializer = new AutofacMvcIocInitializer()
+            //};
+            //initializer.Initialize();
+
+            IFrameworkInitializer initializer = new MvcFrameworkInitializer()
             {
-                MvcIocInitializer = new AutofacMvcIocInitializer()
+                BasicLoggingInitializer = new Log4NetLoggingInitializer(),
+                IocInitializer = new MvcAutofacIocInitializer()
+            };
+            initializer.Initialize();
+
+            initializer = new WebApiFrameworkInitializer()
+            {
+                BasicLoggingInitializer = new Log4NetLoggingInitializer(),
+                IocInitializer = new WebApiAutofacIocInitializer()
             };
             initializer.Initialize();
         }

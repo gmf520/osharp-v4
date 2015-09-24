@@ -16,6 +16,7 @@ using Autofac.Integration.Mvc;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.SiteBase.Dependency;
+using OSharp.SiteBase.Mvc;
 
 
 namespace OSharp.Autofac

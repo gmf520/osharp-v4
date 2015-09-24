@@ -129,6 +129,8 @@
     <Compile Include="Configs\ConfigFile\Logging\LoggingAdapterElement.cs" />
     <Compile Include="Configs\ConfigFile\Logging\LoggingElement.cs" />
     <Compile Include="Configs\ConfigFile\OSharpFrameworkSection.cs" />
+    <Compile Include="Initialize\DataLoggingInitializer.cs" />
+    <Compile Include="Initialize\FrameworkInitializerBase.cs" />
     <Compile Include="Initialize\IBasicLoggingInitializer.cs" />
     <Compile Include="Initialize\IDataHandlerInitializer.cs" />
     <Compile Include="Initialize\IDataLoggingInitializer.cs" />
@@ -136,10 +138,16 @@
     <Compile Include="Initialize\IIocInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifeCycleStyle.cs" />
+    <Compile Include="Initialize\IocInitializerBase.cs" />
+    <Compile Include="Logging\DatabaseLog.cs" />
+    <Compile Include="Logging\DatabaseLoggerAdapter.cs" />
+    <Compile Include="Logging\DatabaseOperateLogWriter.cs" />
     <Compile Include="Logging\DataLog.cs" />
+    <Compile Include="Logging\DataLogCache.cs" />
     <Compile Include="Logging\DataLogItem.cs" />
     <Compile Include="Logging\IDataLogCache.cs" />
     <Compile Include="Logging\IOperateLogWriter.cs" />
+    <Compile Include="Initialize\LoggingInitializerBase.cs" />
     <Compile Include="Logging\LogInfoBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -158,10 +166,14 @@
     <Compile Include="Reflection\IFinder.cs" />
     <Compile Include="Reflection\IMethodInfoFinder.cs" />
     <Compile Include="Reflection\ITypeFinder.cs" />
+    <Compile Include="Security\EntityInfoHandler.cs" />
     <Compile Include="Security\EntityInfo.cs" />
     <Compile Include="Security\EntityInfoBase.cs" />
+    <Compile Include="Security\EntityInfoHandlerBase.cs" />
+    <Compile Include="Security\EntityTypeFinder.cs" />
     <Compile Include="Security\Function.cs" />
     <Compile Include="Security\FunctionBase.cs" />
+    <Compile Include="Security\FunctionHandlerBase.cs" />
     <Compile Include="Security\FunctionType.cs" />
     <Compile Include="Security\IEntityInfo.cs" />
     <Compile Include="Security\IEntityInfoHandler.cs" />
@@ -190,6 +202,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
