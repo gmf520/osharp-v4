@@ -33,7 +33,7 @@ namespace OSharp.Demo.Web.Areas.Service.Controllers
         public IHttpActionResult Test01()
         {
             IFunction function = ControllerContext.Request.GetExecuteFunction();
-            string name = function?.Name;
+            string name = function != null ? function.Name : null;
 
             return Ok("Hello World.{0}".FormatWith(name));
         }
