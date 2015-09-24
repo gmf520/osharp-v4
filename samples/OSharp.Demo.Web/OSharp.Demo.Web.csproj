@@ -50,13 +50,9 @@
       <HintPath>..\..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper.Net4, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -106,9 +102,9 @@
       <HintPath>..\..\packages\MySql.Data.Entity.6.9.7\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -554,6 +550,10 @@
       <Project>{ec26e385-6ded-4695-9338-b7136152abc6}</Project>
       <Name>OSharp.Autofac.Mvc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj">
+      <Project>{6b7bc43b-7373-41f8-95c9-7e76fcfa3672}</Project>
+      <Name>OSharp.Autofac.SignalR</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj">
       <Project>{8A4E190D-7D67-4EA4-92C7-90477608C091}</Project>
       <Name>OSharp.Autofac.WebApi</Name>
@@ -585,6 +585,10 @@
     <ProjectReference Include="..\..\src\OSharp.Web.Mvc\OSharp.Web.Mvc.csproj">
       <Project>{15279347-b0d7-41f3-a955-f4c34aa1a03b}</Project>
       <Name>OSharp.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Web.SignalR\OSharp.Web.SignalR.csproj">
+      <Project>{47d3569d-7fe4-4a97-99af-8b16823f3b1f}</Project>
+      <Name>OSharp.Web.SignalR</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Web.WebApi\OSharp.Web.WebApi.csproj">
       <Project>{FA06BC09-11B9-4FBD-81CD-24075ED1EC57}</Project>
@@ -639,7 +643,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <Import Project="..\..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -28,6 +28,9 @@ using OSharp.Web.Http.Initialize;
 
 namespace OSharp.Autofac.Http
 {
+    /// <summary>
+    /// WebApi-Autofac依赖注入初始化类
+    /// </summary>
     public class WebApiAutofacIocInitializer : IocInitializerBase
     {
         /// <summary>

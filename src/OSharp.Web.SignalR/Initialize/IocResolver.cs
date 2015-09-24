@@ -20,6 +20,9 @@ using OSharp.Core.Dependency;
 
 namespace OSharp.Web.SignalR.Initialize
 {
+    /// <summary>
+    /// SignalR依赖注入解析器
+    /// </summary>
     public class IocResolver : IIocResolver
     {
         /// <summary>

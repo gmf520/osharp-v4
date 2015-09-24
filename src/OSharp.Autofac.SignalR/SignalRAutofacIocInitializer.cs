@@ -1,38 +1,42 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="MvcAutofacIocInitializer.cs" company="OSharp开源团队">
+//  <copyright file="SignalRAutofacIocInitializer.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 17:27</last-date>
+//  <last-date>2015-09-25 1:12</last-date>
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
+using System.Text;
+using System.Threading.Tasks;
 
 using Autofac;
-using Autofac.Core;
-using Autofac.Integration.Mvc;
+using Autofac.Integration.SignalR;
 
-using OSharp.Core;
+using Microsoft.AspNet.SignalR;
+
+using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
-using OSharp.Web.Mvc.Initialize;
+using OSharp.Web.SignalR.Initialize;
 
 
-namespace OSharp.Autofac.Mvc
+namespace OSharp.Autofac.SignalR
 {
     /// <summary>
-    /// Mvc-Autofac依赖注入初始化类
+    /// SignalR-Autofac依赖注入初始化类
     /// </summary>
-    public class MvcAutofacIocInitializer : IocInitializerBase
+    public class SignalRAutofacIocInitializer : IocInitializerBase
     {
         /// <summary>
-        /// 初始化一个<see cref="MvcAutofacIocInitializer"/>类型的新实例
+        /// 初始化一个<see cref="SignalRAutofacIocInitializer"/>类型的新实例
         /// </summary>
-        public MvcAutofacIocInitializer()
+        public SignalRAutofacIocInitializer()
         {
             ContainerBuilder builder = new ContainerBuilder();
             Container = builder.Build();
@@ -118,11 +122,10 @@ namespace OSharp.Autofac.Mvc
         protected override void SetResolver(Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterControllers(assemblies).AsSelf().PropertiesAutowired();
-            builder.RegisterFilterProvider();
+            builder.RegisterHubs();
             builder.Update(Container);
             IDependencyResolver resolver = new AutofacDependencyResolver(Container);
-            DependencyResolver.SetResolver(resolver);
+            GlobalHost.DependencyResolver = resolver;
         }
     }
 }

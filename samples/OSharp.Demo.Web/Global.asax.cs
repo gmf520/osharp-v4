@@ -7,13 +7,14 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-using OSharp.Autofac;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
+using OSharp.Autofac.SignalR;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Demo.Dtos;
@@ -21,6 +22,7 @@ using OSharp.SiteBase.Initialize;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
 using OSharp.Web.Mvc.Routing;
+using OSharp.Web.SignalR.Initialize;
 
 
 namespace OSharp.Demo.Web
@@ -67,6 +69,14 @@ namespace OSharp.Demo.Web
                 IocInitializer = new WebApiAutofacIocInitializer()
             };
             initializer.Initialize();
+
+            ////SignalR
+            //initializer = new SignalRFrameworkInitializer()
+            //{
+            //    BasicLoggingInitializer = new Log4NetLoggingInitializer(),
+            //    IocInitializer = new SignalRAutofacIocInitializer()
+            //};
+            //initializer.Initialize();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ActionMethodInfoFinder.cs" company="OSharp开源团队">
+//  <copyright file="HubMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -13,19 +13,20 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
+
+using Microsoft.AspNet.SignalR.Hubs;
 
 using OSharp.Core.Reflection;
 using OSharp.Utility.Extensions;
-using OSharp.Web.Http.Properties;
+using OSharp.Web.SignalR.Properties;
 
 
-namespace OSharp.Web.Http.Initialize
+namespace OSharp.Web.SignalR.Initialize
 {
     /// <summary>
-    /// WebApi功能方法查找器
+    /// Hub 方法信息查找器
     /// </summary>
-    public class ActionMethodInfoFinder : IMethodInfoFinder
+    public class HubMethodInfoFinder : IMethodInfoFinder
     {
         /// <summary>
         /// 查找指定条件的方法信息
@@ -45,13 +46,11 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public MethodInfo[] FindAll(Type type)
         {
-            if (!typeof(ApiController).IsAssignableFrom(type))
+            if (!typeof(IHub).IsAssignableFrom(type))
             {
-                throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
+                throw new InvalidOperationException(Resources.HubMethodInfoFinder_TypeNotHubType.FormatWith(type.FullName));
             }
-            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => typeof(IHttpActionResult).IsAssignableFrom(m.ReturnType) || m.ReturnType == typeof(Task<IHttpActionResult>))
-                .ToArray();
+            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public).ToArray();
             return methods;
         }
     }
