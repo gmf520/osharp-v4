@@ -35,6 +35,16 @@ namespace OSharp.Core.Initialize
 
 
         /// <summary>
+        /// 获取或设置 当前运行平台标识
+        /// </summary>
+        public PlatformToken PlatformToken { get; set; }
+
+        /// <summary>
+        /// 获取或设置 数据配置重置者
+        /// </summary>
+        public IDataConfigReseter DataConfigReseter { get; set; }
+
+        /// <summary>
         /// 获取或设置 基础日志初始化器
         /// </summary>
         public IBasicLoggingInitializer BasicLoggingInitializer { get; set; }
@@ -92,7 +102,7 @@ namespace OSharp.Core.Initialize
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_IocInitializeIsNull);
             }
-            IocInitializer.Initialize(config, this);
+            IocInitializer.Initialize(config);
 
             if (!_databaseInitialized)
             {
@@ -126,8 +136,12 @@ namespace OSharp.Core.Initialize
         /// </summary>
         /// <param name="config">原始配置信息</param>
         /// <returns>重置后的配置信息</returns>
-        protected virtual OSharpConfig ResetConfig(OSharpConfig config)
+        protected OSharpConfig ResetConfig(OSharpConfig config)
         {
+            if (DataConfigReseter != null)
+            {
+                config.DataConfig = DataConfigReseter.Reset(config.DataConfig);
+            }
             return config;
         }
     }

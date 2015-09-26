@@ -30,6 +30,8 @@ namespace OSharp.Web.Http.Initialize
         /// </summary>
         public WebApiFrameworkInitializer()
         {
+            PlatformToken = PlatformToken.WebApi;
+            DataConfigReseter = new DataConfigReseter();
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {

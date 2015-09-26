@@ -86,6 +86,7 @@
     <Compile Include="Configs\DbContextConfig.cs" />
     <Compile Include="Configs\DataConfig.cs" />
     <Compile Include="Configs\DbContextInitializerConfig.cs" />
+    <Compile Include="Configs\IDataConfigReseter.cs" />
     <Compile Include="Configs\LoggingAdapterConfig.cs" />
     <Compile Include="Configs\LoggingConfig.cs" />
     <Compile Include="Configs\LoggingEntryConfig.cs" />
@@ -139,6 +140,10 @@
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifeCycleStyle.cs" />
     <Compile Include="Initialize\IocInitializerBase.cs" />
+    <Compile Include="Reflection\NullMethodInfoFinder.cs" />
+    <Compile Include="Reflection\NullTypeFinder.cs" />
+    <Compile Include="Security\NullFunctionHandler.cs" />
+    <Compile Include="Security\PlatformToken.cs" />
     <Compile Include="Logging\DatabaseLog.cs" />
     <Compile Include="Logging\DatabaseLoggerAdapter.cs" />
     <Compile Include="Logging\DatabaseOperateLogWriter.cs" />

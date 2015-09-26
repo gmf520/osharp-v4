@@ -48,10 +48,7 @@ namespace OSharp.Web.SignalR.Initialize
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
-        protected override string ProviderToken
-        {
-            get { return "SIGNALR"; }
-        }
+        protected override PlatformToken PlatformToken { get { return PlatformToken.SignalR; } }
 
         /// <summary>
         /// 重写以实现从类型信息创建功能信息
@@ -71,7 +68,7 @@ namespace OSharp.Web.SignalR.Initialize
                 Controller = type.Name.Replace("Hub", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
-                Provider = ProviderToken
+                PlatformToken = PlatformToken
             };
             return function;
         }
@@ -109,7 +106,7 @@ namespace OSharp.Web.SignalR.Initialize
                 Controller = type.Name.Replace("Hub", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
-                Provider = ProviderToken,
+                PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = false,
                 IsChild = false

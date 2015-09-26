@@ -31,6 +31,8 @@ namespace OSharp.Web.Mvc.Initialize
         /// </summary>
         public MvcFrameworkInitializer()
         {
+            PlatformToken = PlatformToken.Mvc;
+            DataConfigReseter = new DataConfigReseter();
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {

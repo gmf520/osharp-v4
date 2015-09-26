@@ -48,9 +48,9 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
-        protected override string ProviderToken
+        protected override PlatformToken PlatformToken
         {
-            get { return "WEBAPI"; }
+            get { return PlatformToken.WebApi; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace OSharp.Web.Http.Initialize
                 Controller = type.Name.Replace("ApiController", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
-                Provider = ProviderToken
+                PlatformToken = PlatformToken
             };
             return function;
         }
@@ -113,7 +113,7 @@ namespace OSharp.Web.Http.Initialize
                 Controller = type.Name.Replace("ApiController", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
-                Provider = ProviderToken,
+                PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = false,
                 IsChild = false

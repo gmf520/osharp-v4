@@ -64,8 +64,7 @@ namespace OSharp.Core.Initialize
         /// 初始化依赖注入
         /// </summary>
         /// <param name="config">框架配置信息</param>
-        /// <param name="initializer"></param>
-        public void Initialize(OSharpConfig config, IFrameworkInitializer initializer)
+        public void Initialize(OSharpConfig config)
         {
             //注册数据上下文
             Type[] dbContexTypes = config.DataConfig.ContextConfigs.Where(m => m.Enabled).Select(m => m.ContextType).ToArray();

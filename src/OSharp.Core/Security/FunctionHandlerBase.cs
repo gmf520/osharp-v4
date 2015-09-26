@@ -16,6 +16,7 @@ using System.Reflection;
 
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
+using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;
 using OSharp.Utility.Collections;
 using OSharp.Utility.Logging;
@@ -64,7 +65,7 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
-        protected abstract string ProviderToken { get; }
+        protected abstract PlatformToken PlatformToken { get; }
 
         /// <summary>
         /// 从程序集中刷新功能数据，主要检索MVC的Controller-Action信息
@@ -94,7 +95,7 @@ namespace OSharp.Core.Security
             Debug.Assert(Functions != null, "Functions != null");
             return provider == null
                 ? Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action)
-                : Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action && m.Provider == provider);
+                : Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action && m.PlatformToken == PlatformToken);
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace OSharp.Core.Security
         {
             IRepository<TFunction, TKey> repository = IocResolver.Resolve<IRepository<TFunction, TKey>>();
             // DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
-            TFunction[] items = repository.GetByPredicate(m => m.Provider == ProviderToken).ToArray();
+            TFunction[] items = repository.GetByPredicate(m => m.PlatformToken == PlatformToken).ToArray();
 
             //删除的功能（排除自定义功能信息）
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,

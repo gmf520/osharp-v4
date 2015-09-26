@@ -9,6 +9,7 @@
 using System.ComponentModel.DataAnnotations;
 
 using OSharp.Core.Data;
+using OSharp.Core.Initialize;
 
 
 namespace OSharp.Core.Security
@@ -75,7 +76,7 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
         /// </summary>
-        public string Provider { get; set; }
+        public PlatformToken PlatformToken { get; set; }
 
         /// <summary>
         /// 获取或设置 功能地址

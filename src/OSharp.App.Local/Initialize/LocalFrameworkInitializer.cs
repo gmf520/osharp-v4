@@ -1,43 +1,38 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SignalRFrameworkInitializer.cs" company="OSharp开源团队">
+//  <copyright file="LocalFrameworkInitializer.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 0:51</last-date>
+//  <last-date>2015-09-25 12:39</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using OSharp.Core.Configs;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 
 
-namespace OSharp.Web.SignalR.Initialize
+namespace OSharp.App.Local.Initialize
 {
     /// <summary>
-    /// SignalR框架初始化
+    /// 本地程序初始化类
     /// </summary>
-    public class SignalRFrameworkInitializer : FrameworkInitializerBase
+    public class LocalFrameworkInitializer : FrameworkInitializerBase
     {
         /// <summary>
-        /// 初始化一个<see cref="SignalRFrameworkInitializer"/>类型的新实例
+        /// 初始化一个<see cref="LocalFrameworkInitializer"/>类型的新实例
         /// </summary>
-        public SignalRFrameworkInitializer()
+        public LocalFrameworkInitializer()
         {
-            PlatformToken = PlatformToken.SignalR;
+            PlatformToken = PlatformToken.Local;
             DataConfigReseter = new DataConfigReseter();
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {
                 IocResolver = new IocResolver()
             };
-            FunctionHandler = new FunctionHandler()
+            FunctionHandler = new NullFunctionHandler()
             {
                 IocResolver = new IocResolver()
             };
