@@ -84,18 +84,18 @@ namespace OSharp.Core.Security
         /// <param name="area">区域</param>
         /// <param name="controller">控制器</param>
         /// <param name="action">功能方法</param>
-        /// <param name="provider">技术提供者</param>
+        /// <param name="platformToken">技术提供者</param>
         /// <returns>符合条件的功能信息</returns>
-        public virtual IFunction GetFunction(string area, string controller, string action, string provider = null)
+        public virtual IFunction GetFunction(string area, string controller, string action, PlatformToken? platformToken)
         {
             if (Functions == null || Functions.Length == 0)
             {
                 RefreshCache();
             }
             Debug.Assert(Functions != null, "Functions != null");
-            return provider == null
+            return platformToken == null
                 ? Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action)
-                : Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action && m.PlatformToken == PlatformToken);
+                : Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action && m.PlatformToken == platformToken.Value);
         }
 
         /// <summary>
@@ -239,7 +239,11 @@ namespace OSharp.Core.Security
                     continue;
                 }
                 bool isUpdate = false;
-                TFunction function = functions.Single(m => m.Area == item.Area && m.Controller == item.Controller && m.Action == item.Action);
+                TFunction function = functions.SingleOrDefault(m => m.Area == item.Area && m.Controller == item.Controller && m.Action == item.Action);
+                if (function == null)
+                {
+                    continue;
+                }
                 if (item.Name != function.Name)
                 {
                     item.Name = function.Name;

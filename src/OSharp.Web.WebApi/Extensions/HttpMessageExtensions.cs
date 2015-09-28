@@ -62,7 +62,7 @@ namespace OSharp.Web.Http.Extensions
             string area = request.GetAreaName();
             string controller = request.GetControllerName();
             string action = request.GetActionName();
-            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, "WEBAPI");
+            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, PlatformToken.WebApi);
             if (function != null)
             {
                 items.Add(key, function);

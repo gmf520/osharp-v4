@@ -38,7 +38,7 @@ namespace OSharp.Web.Mvc.Extensions
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, "MVC");
+            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, PlatformToken.Mvc);
             if (function != null)
             {
                 items.Add(key, function);
