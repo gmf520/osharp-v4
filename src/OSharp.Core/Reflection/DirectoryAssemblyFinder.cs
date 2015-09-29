@@ -72,7 +72,7 @@ namespace OSharp.Core.Reflection
         private static string GetBinPath()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
-            return path == Environment.CurrentDirectory ? path : Path.Combine(path, "bin");
+            return path == Environment.CurrentDirectory + "\\" ? path : Path.Combine(path, "bin");
         }
     }
 }
