@@ -140,6 +140,7 @@
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifeCycleStyle.cs" />
     <Compile Include="Initialize\IocInitializerBase.cs" />
+    <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\NullMethodInfoFinder.cs" />
     <Compile Include="Reflection\NullTypeFinder.cs" />
     <Compile Include="Security\NullFunctionHandler.cs" />

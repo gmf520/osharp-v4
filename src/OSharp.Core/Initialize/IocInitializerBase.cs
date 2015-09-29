@@ -34,7 +34,7 @@ namespace OSharp.Core.Initialize
         /// </summary>
         protected IocInitializerBase()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
             TransientTypeFinder = new TransientDependencyTypeFinder();
             LifetimeScopeTypeFinder = new LifetimeScopeDependencyTypeFinder();
             SingletonTypeFinder = new SingletonDependencyTypeFinder();

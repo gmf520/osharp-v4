@@ -27,7 +27,7 @@ namespace OSharp.Web.Mvc.Initialize
         /// </summary>
         public ControllerTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>

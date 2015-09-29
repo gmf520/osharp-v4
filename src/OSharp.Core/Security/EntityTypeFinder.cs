@@ -31,7 +31,7 @@ namespace OSharp.SiteBase.Security
         /// </summary>
         public EntityTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>

@@ -144,6 +144,7 @@ namespace OSharp.Demo.Consoles
             Console.WriteLine("_program.IocResolver: {0}", _program.IocResolver.GetType());
             Console.WriteLine("IUnitOfWork: {0}", _program.IocResolver.Resolve<IUnitOfWork>().GetType());
             Console.WriteLine("IRepository<Function, Guid>: {0}", _program.IocResolver.Resolve<IRepository<Function, Guid>>().GetType());
+            Console.WriteLine(_program.IdentityContract.Roles.Count());
         }
 
         private static void Method02()

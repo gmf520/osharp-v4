@@ -30,7 +30,7 @@ namespace OSharp.Web.Http.Initialize
         /// </summary>
         public ControllerTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>

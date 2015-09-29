@@ -29,7 +29,7 @@ namespace OSharp.Core.Dependency
         /// </summary>
         public TransientDependencyTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>
