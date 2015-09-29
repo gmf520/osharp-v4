@@ -30,61 +30,18 @@ namespace OSharp.Core.Initialize
         private static bool _basicLoggingInitialized;
         private static bool _databaseInitialized;
         private static bool _entityInfoInitialized;
-        private IEntityInfoHandler _entityInfoHandler;
-        private IFunctionHandler _functionHandler;
+
+        private readonly InitializeOptionsBase _options;
 
 
         /// <summary>
-        /// 获取或设置 当前运行平台标识
+        /// 初始化一个<see cref="FrameworkInitializerBase"/>类型的新实例
         /// </summary>
-        public PlatformToken PlatformToken { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据配置重置者
-        /// </summary>
-        public IDataConfigReseter DataConfigReseter { get; set; }
-
-        /// <summary>
-        /// 获取或设置 基础日志初始化器
-        /// </summary>
-        public IBasicLoggingInitializer BasicLoggingInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据库初始化器
-        /// </summary>
-        public IDatabaseInitializer DatabaseInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 依赖注入初始化器
-        /// </summary>
-        public IIocInitializer IocInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 实体信息数据处理器
-        /// </summary>
-        public IEntityInfoHandler EntityInfoHandler
+        protected FrameworkInitializerBase(InitializeOptionsBase options)
         {
-            get { return _entityInfoHandler; }
-            set
-            {
-                _entityInfoHandler = value;
-                OSharpContext.Current.EntityInfoHandler = value;
-            }
+            _options = options;
         }
-
-        /// <summary>
-        /// 获取或设置 功能信息数据处理器
-        /// </summary>
-        public IFunctionHandler FunctionHandler
-        {
-            get { return _functionHandler; }
-            set
-            {
-                _functionHandler = value;
-                OSharpContext.Current.FunctionHandler = value;
-            }
-        }
-
+        
         /// <summary>
         /// 开始初始化
         /// </summary>
@@ -92,43 +49,43 @@ namespace OSharp.Core.Initialize
         {
             OSharpConfig config = ResetConfig(OSharpConfig.Instance);
 
-            if (!_basicLoggingInitialized && BasicLoggingInitializer != null)
+            if (!_basicLoggingInitialized && _options.BasicLoggingInitializer != null)
             {
-                BasicLoggingInitializer.Initialize(config.LoggingConfig);
+                _options.BasicLoggingInitializer.Initialize(config.LoggingConfig);
                 _basicLoggingInitialized = true;
             }
 
-            if (IocInitializer == null)
+            if (_options.IocInitializer == null)
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_IocInitializeIsNull);
             }
-            IocInitializer.Initialize(config);
+            _options.IocInitializer.Initialize(config);
 
             if (!_databaseInitialized)
             {
-                if (DatabaseInitializer == null)
+                if (_options.DatabaseInitializer == null)
                 {
                     throw new InvalidOperationException(Resources.FrameworkInitializerBase_DatabaseInitializeIsNull);
                 }
-                DatabaseInitializer.Initialize(config.DataConfig);
+                _options.DatabaseInitializer.Initialize(config.DataConfig);
                 _databaseInitialized = true;
             }
 
             if (!_entityInfoInitialized)
             {
-                if (EntityInfoHandler == null)
+                if (_options.EntityInfoHandler == null)
                 {
                     throw new InvalidOperationException(Resources.FrameworkInitializerBase_EntityInfoHandlerIsNull);
                 }
-                EntityInfoHandler.Initialize();
+                _options.EntityInfoHandler.Initialize();
                 _entityInfoInitialized = true;
             }
 
-            if (FunctionHandler == null)
+            if (_options.FunctionHandler == null)
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_FunctionHandlerIsNull);
             }
-            FunctionHandler.Initialize();
+            _options.FunctionHandler.Initialize();
         }
 
         /// <summary>
@@ -138,9 +95,9 @@ namespace OSharp.Core.Initialize
         /// <returns>重置后的配置信息</returns>
         protected OSharpConfig ResetConfig(OSharpConfig config)
         {
-            if (DataConfigReseter != null)
+            if (_options.DataConfigReseter != null)
             {
-                config.DataConfig = DataConfigReseter.Reset(config.DataConfig);
+                config.DataConfig = _options.DataConfigReseter.Reset(config.DataConfig);
             }
             return config;
         }

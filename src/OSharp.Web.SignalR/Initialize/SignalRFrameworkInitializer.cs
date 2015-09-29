@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 0:51</last-date>
+//  <last-date>2015-09-29 20:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,9 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Data.Entity;
 using OSharp.Core.Initialize;
-using OSharp.Core.Security;
 
 
 namespace OSharp.Web.SignalR.Initialize
@@ -28,19 +26,8 @@ namespace OSharp.Web.SignalR.Initialize
         /// <summary>
         /// 初始化一个<see cref="SignalRFrameworkInitializer"/>类型的新实例
         /// </summary>
-        public SignalRFrameworkInitializer()
-        {
-            PlatformToken = PlatformToken.SignalR;
-            DataConfigReseter = new DataConfigReseter();
-            DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler()
-            {
-                IocResolver = new IocResolver()
-            };
-            FunctionHandler = new FunctionHandler()
-            {
-                IocResolver = new IocResolver()
-            };
-        }
+        public SignalRFrameworkInitializer(SignalRInitializeOptions options)
+            : base(options)
+        { }
     }
 }

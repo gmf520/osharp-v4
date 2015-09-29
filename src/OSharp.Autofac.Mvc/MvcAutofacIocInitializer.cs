@@ -12,10 +12,8 @@ using System.Reflection;
 using System.Web.Mvc;
 
 using Autofac;
-using Autofac.Core;
 using Autofac.Integration.Mvc;
 
-using OSharp.Core;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;

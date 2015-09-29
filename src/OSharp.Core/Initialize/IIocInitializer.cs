@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
-using OSharp.Core.Dependency;
 
 
 namespace OSharp.Core.Initialize

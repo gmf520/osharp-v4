@@ -41,6 +41,10 @@
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,10 +101,12 @@
     <Compile Include="Handlers\TraceMessageHandler.cs" />
     <Compile Include="Handlers\UriFormatExtensionHandler.cs" />
     <Compile Include="Initialize\ActionMethodInfoFinder.cs" />
+    <Compile Include="Initialize\AppBuilderExtensions.cs" />
     <Compile Include="Initialize\ControllerTypeFinder.cs" />
     <Compile Include="Initialize\FunctionHandler.cs" />
     <Compile Include="Initialize\IocResolver.cs" />
     <Compile Include="Initialize\WebApiFrameworkInitializer.cs" />
+    <Compile Include="Initialize\WebApiInitializeOptions.cs" />
     <Compile Include="Internal\EnumerableExtensions.cs" />
     <Compile Include="Internal\HttpHeaderNames.cs" />
     <Compile Include="Internal\IsInExtensions.cs" />

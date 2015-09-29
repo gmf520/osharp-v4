@@ -37,13 +37,13 @@ namespace OSharp.Demo.Consoles
             {
                 Console.WriteLine("正在初始化，请稍候……");
                 Stopwatch watch = Stopwatch.StartNew();
+
+                Log4NetLoggingInitializer loggingInitializer = new Log4NetLoggingInitializer();
                 ConsolesAutofacInitializer iocInitializer = new ConsolesAutofacInitializer();
-                IFrameworkInitializer initializer = new LocalFrameworkInitializer()
-                {
-                    BasicLoggingInitializer = new Log4NetLoggingInitializer(),
-                    IocInitializer = iocInitializer
-                };
+                LocalInitializeOptions options = new LocalInitializeOptions(loggingInitializer, iocInitializer);
+                IFrameworkInitializer initializer = new LocalFrameworkInitializer(options);
                 initializer.Initialize();
+
                 _program = iocInitializer.Resolver.Resolve<Program>();
                 watch.Stop();
                 Console.WriteLine("程序初始化完毕并启动成功，耗时：{0}", watch.Elapsed);

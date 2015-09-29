@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Web.Mvc;
 
 using OSharp.Core;
@@ -54,6 +55,13 @@ namespace OSharp.Demo.Web.Controllers
             }
             return Content("实际时间：{0}，缓存时间：{1}".FormatWith(dt, dt1));
         }
-        
+
+        public ActionResult TestClaims()
+        {
+            ClaimsIdentity identity = User.Identity as ClaimsIdentity;
+            ViewBag.Identity = identity;
+            return View();
+        }
+
     }
 }
