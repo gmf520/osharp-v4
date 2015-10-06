@@ -93,7 +93,7 @@ namespace OSharp.App.Local.Initialize
             {
                 builderSource.InstancePerDependency();
             }
-            else if (baseType == typeof(ILifetimeScopeDependency))
+            else if (baseType == typeof(IScopeDependency))
             {
                 builderSource.InstancePerLifetimeScope();
             }

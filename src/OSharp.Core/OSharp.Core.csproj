@@ -116,8 +116,8 @@
     <Compile Include="Dependency\IIocResolver.cs" />
     <Compile Include="Dependency\ISingletonDependency.cs" />
     <Compile Include="Dependency\ITransientDependency.cs" />
-    <Compile Include="Dependency\ILifetimeScopeDependency.cs" />
-    <Compile Include="Dependency\LifetimeScopeDependencyTypeFinder.cs" />
+    <Compile Include="Dependency\IScopeDependency.cs" />
+    <Compile Include="Dependency\ScopeDependencyTypeFinder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
     <Compile Include="Exceptions\CacheExtensions.cs" />
@@ -138,7 +138,7 @@
     <Compile Include="Initialize\IDatabaseInitializer.cs" />
     <Compile Include="Initialize\IIocInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
-    <Compile Include="Dependency\LifeCycleStyle.cs" />
+    <Compile Include="Dependency\LifetimeStyle.cs" />
     <Compile Include="Initialize\InitializeOptionsBase.cs" />
     <Compile Include="Initialize\IocInitializerBase.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />

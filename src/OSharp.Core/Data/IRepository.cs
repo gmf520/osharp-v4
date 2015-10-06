@@ -25,7 +25,7 @@ namespace OSharp.Core.Data
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TKey">主键类型</typeparam>
-    public interface IRepository<TEntity, TKey> : ILifetimeScopeDependency where TEntity : IEntity<TKey>
+    public interface IRepository<TEntity, TKey> : IScopeDependency where TEntity : IEntity<TKey>
     {
         #region 属性
 

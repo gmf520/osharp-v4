@@ -25,7 +25,7 @@ namespace OSharp.Core.Dependency
     public class TransientDependencyTypeFinder : ITypeFinder
     {
         /// <summary>
-        /// 初始化一个<see cref="SingletonDependencyTypeFinder"/>类型的新实例
+        /// 初始化一个<see cref="TransientDependencyTypeFinder"/>类型的新实例
         /// </summary>
         public TransientDependencyTypeFinder()
         {

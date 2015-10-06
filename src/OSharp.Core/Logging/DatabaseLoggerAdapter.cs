@@ -16,7 +16,7 @@ namespace OSharp.Core.Logging
     /// <summary>
     /// 数据库日志适配器
     /// </summary>
-    public class DatabaseLoggerAdapter : LoggerAdapterBase, ILifetimeScopeDependency
+    public class DatabaseLoggerAdapter : LoggerAdapterBase, IScopeDependency
     {
         /// <summary>
         /// 获取或设置 依赖注入解析器

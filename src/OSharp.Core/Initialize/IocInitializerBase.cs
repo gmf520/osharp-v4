@@ -36,7 +36,7 @@ namespace OSharp.Core.Initialize
         {
             AssemblyFinder = new DirectoryAssemblyFinder();
             TransientTypeFinder = new TransientDependencyTypeFinder();
-            LifetimeScopeTypeFinder = new LifetimeScopeDependencyTypeFinder();
+            LifetimeScopeTypeFinder = new ScopeDependencyTypeFinder();
             SingletonTypeFinder = new SingletonDependencyTypeFinder();
         }
 
@@ -84,7 +84,7 @@ namespace OSharp.Core.Initialize
 
             //注册局部生命周期的映射
             dependencyTypes = LifetimeScopeTypeFinder.FindAll();
-            RegisterDependencyTypes<ILifetimeScopeDependency>(dependencyTypes);
+            RegisterDependencyTypes<IScopeDependency>(dependencyTypes);
 
             //注册单例生命周期的映射
             dependencyTypes = SingletonTypeFinder.FindAll();

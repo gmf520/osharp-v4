@@ -87,7 +87,7 @@ namespace OSharp.Autofac.Mvc
             {
                 builderSource.InstancePerDependency();
             }
-            else if (baseType == typeof(ILifetimeScopeDependency))
+            else if (baseType == typeof(IScopeDependency))
             {
                 builderSource.InstancePerLifetimeScope();
             }
