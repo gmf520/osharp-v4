@@ -1,28 +1,25 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocResolver.cs" company="OSharp开源团队">
+//  <copyright file="MvcIocResolver.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 21:51</last-date>
+//  <last-date>2015-10-06 15:27</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+using System.Web.Mvc;
 
 using OSharp.Core.Dependency;
 
 
-namespace OSharp.Web.Http.Initialize
+namespace OSharp.Web.Mvc.Initialize
 {
     /// <summary>
-    /// WebApi依赖注入对象解析器
+    /// MVC依赖注入对象解析器
     /// </summary>
-    public class IocResolver : IIocResolver
+    public class MvcIocResolver : IIocResolver
     {
         /// <summary>
         /// 获取指定类型的实例
@@ -31,7 +28,7 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public T Resolve<T>()
         {
-            return (T)Resolve(typeof(T));
+            return DependencyResolver.Current.GetService<T>();
         }
 
         /// <summary>
@@ -41,7 +38,7 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return GlobalConfiguration.Configuration.DependencyResolver.GetService(type);
+            return DependencyResolver.Current.GetService(type);
         }
 
         /// <summary>
@@ -51,7 +48,7 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public IEnumerable<T> Resolves<T>()
         {
-            return Resolves(typeof(T)).Cast<T>();
+            return DependencyResolver.Current.GetServices<T>();
         }
 
         /// <summary>
@@ -61,7 +58,7 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public IEnumerable<object> Resolves(Type type)
         {
-            return GlobalConfiguration.Configuration.DependencyResolver.GetServices(type);
+            return DependencyResolver.Current.GetServices(type);
         }
     }
 }

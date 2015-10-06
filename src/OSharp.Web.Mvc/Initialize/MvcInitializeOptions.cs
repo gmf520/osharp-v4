@@ -39,11 +39,11 @@ namespace OSharp.Web.Mvc.Initialize
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new MvcIocResolver()
             };
             FunctionHandler = new FunctionHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new MvcIocResolver()
             };
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;

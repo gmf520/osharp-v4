@@ -111,7 +111,7 @@ namespace OSharp.Autofac.SignalR
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterInstance(this).As<IIocInitializer>().SingleInstance();
-            builder.RegisterType<IocResolver>().As<IIocResolver>().SingleInstance();
+            builder.RegisterType<SignalRIocResolver>().As<IIocResolver>().SingleInstance();
             builder.Update(Container);
         }
 

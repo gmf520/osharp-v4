@@ -1,33 +1,29 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocResolver.cs" company="OSharp开源团队">
+//  <copyright file="WebApiIocResolver.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 13:08</last-date>
+//  <last-date>2015-10-06 15:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Autofac;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 using OSharp.Core.Dependency;
 
 
-namespace OSharp.App.Local.Initialize
+namespace OSharp.Web.Http.Initialize
 {
     /// <summary>
-    /// 本地应用依赖注入解析
+    /// WebApi依赖注入对象解析器
     /// </summary>
-    public class IocResolver : IIocResolver
+    public class WebApiIocResolver : IIocResolver
     {
-        /// <summary>
-        /// 获取 依赖注入容器
-        /// </summary>
-        internal static IContainer Container { get; set; }
-
         /// <summary>
         /// 获取指定类型的实例
         /// </summary>
@@ -35,7 +31,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public T Resolve<T>()
         {
-            return Container.Resolve<T>();
+            return (T)Resolve(typeof(T));
         }
 
         /// <summary>
@@ -45,7 +41,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return Container.Resolve(type);
+            return GlobalConfiguration.Configuration.DependencyResolver.GetService(type);
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public IEnumerable<T> Resolves<T>()
         {
-            return Container.Resolve<IEnumerable<T>>();
+            return Resolves(typeof(T)).Cast<T>();
         }
 
         /// <summary>
@@ -65,13 +61,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public IEnumerable<object> Resolves(Type type)
         {
-            Type typeToResolve = typeof(IEnumerable<>).MakeGenericType(type);
-            Array array = Container.Resolve(typeToResolve) as Array;
-            if (array != null)
-            {
-                return array.Cast<object>();
-            }
-            return new object[0];
+            return GlobalConfiguration.Configuration.DependencyResolver.GetServices(type);
         }
     }
 }

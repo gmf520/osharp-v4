@@ -111,7 +111,7 @@ namespace OSharp.App.Local.Initialize
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterInstance(this).As<IIocInitializer>().PropertiesAutowired().SingleInstance();
-            builder.RegisterType<IocResolver>().As<IIocResolver>().PropertiesAutowired().SingleInstance();
+            builder.RegisterType<LocalIocResolver>().As<IIocResolver>().PropertiesAutowired().SingleInstance();
             builder.Update(Container);
         }
 
@@ -122,7 +122,7 @@ namespace OSharp.App.Local.Initialize
         protected override void SetResolver(Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
-            IocResolver.Container = Container;
+            LocalIocResolver.Container = Container;
             Resolver = Container.Resolve<IIocResolver>();
         }
 

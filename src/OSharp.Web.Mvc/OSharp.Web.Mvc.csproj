@@ -100,7 +100,7 @@
     <Compile Include="Initialize\ControllerTypeFinder.cs" />
     <Compile Include="Initialize\ActionMethodInfoFinder.cs" />
     <Compile Include="Initialize\FunctionHandler.cs" />
-    <Compile Include="Initialize\IocResolver.cs" />
+    <Compile Include="Initialize\MvcIocResolver.cs" />
     <Compile Include="Initialize\MvcFrameworkInitializer.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Initialize\AppBuilderExtensions.cs" />

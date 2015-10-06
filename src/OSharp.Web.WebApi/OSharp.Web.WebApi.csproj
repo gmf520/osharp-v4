@@ -104,7 +104,7 @@
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
     <Compile Include="Initialize\ControllerTypeFinder.cs" />
     <Compile Include="Initialize\FunctionHandler.cs" />
-    <Compile Include="Initialize\IocResolver.cs" />
+    <Compile Include="Initialize\WebApiIocResolver.cs" />
     <Compile Include="Initialize\WebApiFrameworkInitializer.cs" />
     <Compile Include="Initialize\WebApiInitializeOptions.cs" />
     <Compile Include="Internal\EnumerableExtensions.cs" />

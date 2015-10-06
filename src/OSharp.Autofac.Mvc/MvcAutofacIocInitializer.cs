@@ -105,7 +105,7 @@ namespace OSharp.Autofac.Mvc
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterInstance(this).As<IIocInitializer>().SingleInstance();
-            builder.RegisterType<IocResolver>().As<IIocResolver>().SingleInstance();
+            builder.RegisterType<MvcIocResolver>().As<IIocResolver>().SingleInstance();
             builder.Update(Container);
         }
 

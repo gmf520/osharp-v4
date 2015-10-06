@@ -71,7 +71,7 @@
     <Compile Include="Initialize\FunctionHandler.cs" />
     <Compile Include="Initialize\HubMethodInfoFinder.cs" />
     <Compile Include="Initialize\HubTypeFinder.cs" />
-    <Compile Include="Initialize\IocResolver.cs" />
+    <Compile Include="Initialize\SignalRIocResolver.cs" />
     <Compile Include="Initialize\SignalRFrameworkInitializer.cs" />
     <Compile Include="Initialize\SignalRInitializeOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,11 +39,11 @@ namespace OSharp.Web.SignalR.Initialize
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new SignalRIocResolver()
             };
             FunctionHandler = new FunctionHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new SignalRIocResolver()
             };
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;

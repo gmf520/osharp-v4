@@ -111,7 +111,7 @@ namespace OSharp.Autofac.Http
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterInstance(this).As<IIocInitializer>().SingleInstance();
-            builder.RegisterType<IocResolver>().As<IIocResolver>().SingleInstance();
+            builder.RegisterType<WebApiIocResolver>().As<IIocResolver>().SingleInstance();
             builder.Update(Container);
         }
 

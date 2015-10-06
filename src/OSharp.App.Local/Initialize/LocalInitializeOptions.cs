@@ -39,11 +39,11 @@ namespace OSharp.App.Local.Initialize
             DatabaseInitializer = new DatabaseInitializer();
             EntityInfoHandler = new EntityInfoHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new LocalIocResolver()
             };
             FunctionHandler = new NullFunctionHandler()
             {
-                IocResolver = new IocResolver()
+                IocResolver = new LocalIocResolver()
             };
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;

@@ -1,26 +1,33 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocResolver.cs" company="OSharp开源团队">
+//  <copyright file="LocalIocResolver.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 14:42</last-date>
+//  <last-date>2015-10-06 15:28</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+using System.Linq;
+
+using Autofac;
 
 using OSharp.Core.Dependency;
 
 
-namespace OSharp.Web.Mvc.Initialize
+namespace OSharp.App.Local.Initialize
 {
     /// <summary>
-    /// MVC依赖注入对象解析器
+    /// 本地应用依赖注入解析
     /// </summary>
-    public class IocResolver : IIocResolver
+    public class LocalIocResolver : IIocResolver
     {
+        /// <summary>
+        /// 获取 依赖注入容器
+        /// </summary>
+        internal static IContainer Container { get; set; }
+
         /// <summary>
         /// 获取指定类型的实例
         /// </summary>
@@ -28,7 +35,7 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         public T Resolve<T>()
         {
-            return DependencyResolver.Current.GetService<T>();
+            return Container.Resolve<T>();
         }
 
         /// <summary>
@@ -38,7 +45,7 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return DependencyResolver.Current.GetService(type);
+            return Container.Resolve(type);
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         public IEnumerable<T> Resolves<T>()
         {
-            return DependencyResolver.Current.GetServices<T>();
+            return Container.Resolve<IEnumerable<T>>();
         }
 
         /// <summary>
@@ -58,7 +65,13 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         public IEnumerable<object> Resolves(Type type)
         {
-            return DependencyResolver.Current.GetServices(type);
+            Type typeToResolve = typeof(IEnumerable<>).MakeGenericType(type);
+            Array array = Container.Resolve(typeToResolve) as Array;
+            if (array != null)
+            {
+                return array.Cast<object>();
+            }
+            return new object[0];
         }
     }
 }
