@@ -7,40 +7,40 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 
-using OSharp.Core.Security;
+using OSharp.Core.Dependency;
+using OSharp.Core.Properties;
 
 
 namespace OSharp.Core.Context
 {
     /// <summary>
-    /// OSharp框架上下文，用于构造OSharp框架运行环境
+    /// OSharp上下文，存储OSharp全局配置信息
     /// </summary>
-    [Serializable]
-    public class OSharpContext : Dictionary<string, object>
+    public static class OSharpContext
     {
-        private static readonly Lazy<OSharpContext> ContextLazy = new Lazy<OSharpContext>(() => new OSharpContext());
-
-        private OSharpContext()
-        { }
+        private static IServiceCollection _iocRegisterServices;
 
         /// <summary>
-        /// 获取 当前上下文
+        /// 获取 依赖注入注册映射信息集合
         /// </summary>
-        public static OSharpContext Current
+        public static IServiceCollection IocRegisterServices
         {
-            get { return ContextLazy.Value; }
+            get
+            {
+                if (_iocRegisterServices == null)
+                {
+                    throw new InvalidOperationException(Resources.Context_BuildServicesFirst);
+                }
+                return _iocRegisterServices;
+            }
+            internal set { _iocRegisterServices = value; }
         }
 
         /// <summary>
-        /// 获取或设置 功能信息处理器
+        /// 获取或设置 依赖注入服务提供者
         /// </summary>
-        public IFunctionHandler FunctionHandler { get; set; }
-
-        /// <summary>
-        /// 获取或设置 实体数据信息处理器
-        /// </summary>
-        public IEntityInfoHandler EntityInfoHandler { get; set; }
+        public static IServiceProvider IocServiceProvider { get; set; }
+        
     }
 }

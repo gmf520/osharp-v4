@@ -9,16 +9,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
 
 using OSharp.Core.Dependency;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Autofac
@@ -33,16 +31,14 @@ namespace OSharp.Autofac
         /// </summary>
         /// <param name="builder">容器构建器</param>
         /// <param name="descriptors">类型映射描述信息集合</param>
-        /// <returns></returns>
-        public static ContainerBuilder Register(this ContainerBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
+        public static void Populate(this ContainerBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
         {
-            builder.RegisterType<AutofacServiceProvider>().As<IServiceProvider>();
-            builder.RegisterType<AutofacServiceScopeFactory>().As<IServiceScopeFactory>();
+            builder.RegisterType<IocServiceProvider>().As<IServiceProvider>().SingleInstance();
 
-            return RegisterInternal(builder, descriptors);
+            RegisterInternal(builder, descriptors);
         }
 
-        private static ContainerBuilder RegisterInternal(ContainerBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
+        private static void RegisterInternal(ContainerBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
         {
             foreach (ServiceDescriptor descriptor in descriptors)
             {
@@ -51,14 +47,25 @@ namespace OSharp.Autofac
                     TypeInfo serviceTypeInfo = descriptor.ServiceType.GetTypeInfo();
                     if (serviceTypeInfo.IsGenericTypeDefinition)
                     {
+                        if (!descriptor.ServiceType.IsGenericAssignableFrom(descriptor.ImplementationType))
+                        {
+                            throw new InvalidOperationException("泛型类型“{0}”不能由类型“{1}”指派".FormatWith(descriptor.ServiceType,
+                                descriptor.ImplementationType));
+                        }
                         builder.RegisterGeneric(descriptor.ImplementationType)
                             .As(descriptor.ServiceType)
+                            .PropertiesAutowired()
                             .ConfigureLifetimeStyle(descriptor.Lifetime);
                     }
                     else
                     {
+                        if (!descriptor.ServiceType.IsAssignableFrom(descriptor.ImplementationType))
+                        {
+                            throw new InvalidOperationException("类型“{0}”不能由类型“{1}”指派".FormatWith(descriptor.ServiceType, descriptor.ImplementationType));
+                        }
                         builder.RegisterType(descriptor.ImplementationType)
                             .As(descriptor.ServiceType)
+                            .PropertiesAutowired()
                             .ConfigureLifetimeStyle(descriptor.Lifetime);
                     }
                 }
@@ -78,10 +85,10 @@ namespace OSharp.Autofac
                 {
                     builder.RegisterInstance(descriptor.ImplementationInstance)
                         .As(descriptor.ServiceType)
+                        .PropertiesAutowired()
                         .ConfigureLifetimeStyle(descriptor.Lifetime);
                 }
             }
-            return builder;
         }
 
         private static IRegistrationBuilder<object, T, TU> ConfigureLifetimeStyle<T, TU>(this IRegistrationBuilder<object, T, TU> builder,

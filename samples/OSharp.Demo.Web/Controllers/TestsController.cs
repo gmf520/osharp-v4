@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 using OSharp.Core;
 using OSharp.Core.Caching;
+using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
@@ -28,6 +29,16 @@ namespace OSharp.Demo.Web.Controllers
     [Description("网站-测试")]
     public class TestsController : BaseController
     {
+        private readonly IServiceProvider _provider;
+
+        /// <summary>
+        /// 初始化一个<see cref="TestsController"/>类型的新实例
+        /// </summary>
+        public TestsController(IServiceProvider provider)
+        {
+            _provider = provider;
+        }
+
         public IDbContextTypeResolver ContextTypeResolver { get; set; }
 
         public ITestContract TestContract { get; set; }
@@ -63,5 +74,20 @@ namespace OSharp.Demo.Web.Controllers
             return View();
         }
 
+        public ActionResult TestIoc()
+        {
+            string format = "{0}: {1}";
+            List<string>lines = new List<string>()
+            {
+                format.FormatWith(nameof(_provider), _provider.GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), _provider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), _provider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), OSharpContext.IocServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), OSharpContext.IocServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), _provider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), _provider.GetService<IRepository<User,int>>().GetHashCode())
+            };
+            return Content(lines.ExpandAndToString("<br>"));
+        }
     }
 }

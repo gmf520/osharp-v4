@@ -42,7 +42,7 @@ namespace OSharp.Core.Dependency
         /// 获取 服务实现类型
         /// </summary>
         public Type ImplementationType { get; }
-
+        
         /// <summary>
         /// 获取 服务实例
         /// </summary>

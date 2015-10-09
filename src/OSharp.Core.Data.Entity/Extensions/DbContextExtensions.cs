@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -113,7 +114,8 @@ namespace OSharp.Core.Data.Entity
         /// </summary>
         public static IEnumerable<DataLog> GetEntityDataLogs(this DbContext dbContext)
         {
-            if (OSharpContext.Current.EntityInfoHandler == null)
+            IEntityInfoHandler entityInfoHandler = OSharpContext.IocServiceProvider.GetService<IEntityInfoHandler>();
+            if (entityInfoHandler == null)
             {
                 return Enumerable.Empty<DataLog>();
             }
@@ -122,17 +124,17 @@ namespace OSharp.Core.Data.Entity
             ObjectStateManager manager = objectContext.ObjectStateManager;
 
             IEnumerable<DataLog> logs = from entry in manager.GetObjectStateEntries(EntityState.Added).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetAddedLog(entry, entityInfo);
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Modified).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetModifiedLog(entry, entityInfo));
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Deleted).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetDeletedLog(entry, entityInfo));
 

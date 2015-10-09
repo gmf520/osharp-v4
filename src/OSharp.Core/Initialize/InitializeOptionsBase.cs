@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
 using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 
 
@@ -25,9 +26,30 @@ namespace OSharp.Core.Initialize
     /// </summary>
     public abstract class InitializeOptionsBase
     {
+        private static OSharpConfig _osharpConfig;
         private IEntityInfoHandler _entityInfoHandler;
         private IFunctionHandler _functionHandler;
-        
+
+        /// <summary>
+        /// 获取 框架配置信息
+        /// </summary>
+        public OSharpConfig OSharpConfig
+        {
+            get
+            {
+                if (_osharpConfig == null)
+                {
+                    OSharpConfig config = OSharpConfig.Instance;
+                    if (DataConfigReseter != null)
+                    {
+                        config.DataConfig = DataConfigReseter.Reset(config.DataConfig);
+                    }
+                    _osharpConfig = config;
+                }
+                return _osharpConfig;
+            }
+        }
+
         /// <summary>
         /// 获取或设置 当前运行平台标识
         /// </summary>
@@ -37,6 +59,11 @@ namespace OSharp.Core.Initialize
         /// 获取或设置 数据配置重置者
         /// </summary>
         public IDataConfigReseter DataConfigReseter { get; set; }
+
+        /// <summary>
+        /// 获取或设置 依赖注入映射创建器
+        /// </summary>
+        public IServicesBuilder ServicesBuilder { get; set; }
 
         /// <summary>
         /// 获取或设置 基础日志初始化器
@@ -62,7 +89,8 @@ namespace OSharp.Core.Initialize
             set
             {
                 _entityInfoHandler = value;
-                OSharpContext.Current.EntityInfoHandler = value;
+                //todo: set EntityInfoHandler
+                //OSharpContext.Current.EntityInfoHandler = value;
             }
         }
 
@@ -75,7 +103,8 @@ namespace OSharp.Core.Initialize
             set
             {
                 _functionHandler = value;
-                OSharpContext.Current.FunctionHandler = value;
+                //todo
+                //OSharpContext.Current.FunctionHandler = value;
             }
         }
     }

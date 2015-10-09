@@ -99,7 +99,7 @@
     <Compile Include="Filters\NonRequireHttpsAttribute.cs" />
     <Compile Include="Initialize\ControllerTypeFinder.cs" />
     <Compile Include="Initialize\ActionMethodInfoFinder.cs" />
-    <Compile Include="Initialize\FunctionHandler.cs" />
+    <Compile Include="Initialize\MvcFunctionHandler.cs" />
     <Compile Include="Initialize\MvcIocResolver.cs" />
     <Compile Include="Initialize\MvcFrameworkInitializer.cs" />
     <Compile Include="Extensions\Extensions.cs" />

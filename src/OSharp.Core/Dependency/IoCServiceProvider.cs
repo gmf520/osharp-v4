@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AutofacServiceProvider.cs" company="OSharp开源团队">
+//  <copyright file="IocServiceProvider.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-07 9:54</last-date>
+//  <last-date>2015-10-09 15:57</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,24 +13,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Autofac;
 
-
-namespace OSharp.Autofac
+namespace OSharp.Core.Dependency
 {
     /// <summary>
-    /// Autofac服务提供者
+    /// 默认IoC服务提供者实现
     /// </summary>
-    public class AutofacServiceProvider : IServiceProvider
+    public class IocServiceProvider : IServiceProvider
     {
-        private readonly IComponentContext _context;
+        private readonly IIocResolver _resolver;
 
         /// <summary>
-        /// 初始化一个<see cref="AutofacServiceProvider"/>类型的新实例
+        /// 初始化一个<see cref="IocServiceProvider"/>类型的新实例
         /// </summary>
-        public AutofacServiceProvider(IComponentContext context)
+        public IocServiceProvider(IIocResolver resolver)
         {
-            _context = context;
+            _resolver = resolver;
         }
 
         /// <summary>
@@ -42,7 +40,7 @@ namespace OSharp.Autofac
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。</param><filterpriority>2</filterpriority>
         public object GetService(Type serviceType)
         {
-            return _context.ResolveOptional(serviceType);
+            return _resolver.Resolve(serviceType);
         }
     }
 }

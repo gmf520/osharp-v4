@@ -314,7 +314,15 @@ namespace OSharp.Core.Dependency
             return collection.TryAdd(descriptor);
         }
 
-        private static IServiceCollection Add(IServiceCollection collection, Type serviceType, Type implementationType, LifetimeStyle lifetime)
+        /// <summary>
+        /// 注册指定生命周期类型的映射信息
+        /// </summary>
+        /// <param name="collection">服务映射信息集合</param>
+        /// <param name="serviceType">服务类型</param>
+        /// <param name="implementationType">服务实现类型</param>
+        /// <param name="lifetime">生命周期类型</param>
+        /// <returns></returns>
+        public static IServiceCollection Add(this IServiceCollection collection, Type serviceType, Type implementationType, LifetimeStyle lifetime)
         {
             ServiceDescriptor descriptor = new ServiceDescriptor(serviceType, implementationType, lifetime);
             return collection.TryAdd(descriptor);
@@ -361,10 +369,11 @@ namespace OSharp.Core.Dependency
         /// <returns></returns>
         public static IServiceCollection TryAdd(this IServiceCollection collection, ServiceDescriptor descriptor)
         {
-            if (collection.All(m => m.ServiceType != descriptor.ServiceType && m.ImplementationType != descriptor.ImplementationType))
+            if (collection.Any(m => m.ServiceType == descriptor.ServiceType && m.ImplementationType == descriptor.ImplementationType))
             {
-                collection.Add(descriptor);
+                return collection;
             }
+            collection.Add(descriptor);
             return collection;
         }
 

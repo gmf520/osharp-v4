@@ -22,11 +22,16 @@ namespace OSharp.Core.Data.Entity
     /// </summary>
     public class DbContextTypeResolver : IDbContextTypeResolver
     {
-        /// <summary>
-        /// 获取或设置 依赖注入实例获取器
-        /// </summary>
-        public IIocResolver IocResolver { get; set; }
+        private readonly IIocResolver _resolver;
 
+        /// <summary>
+        /// 初始化一个<see cref="DbContextTypeResolver"/>类型的新实例
+        /// </summary>
+        public DbContextTypeResolver(IIocResolver resolver)
+        {
+            _resolver = resolver;
+        }
+        
         /// <summary>
         /// 由实体类型获取关联的上下文类型
         /// </summary>
@@ -47,7 +52,7 @@ namespace OSharp.Core.Data.Entity
         {
             entityType.CheckNotNull("entityType" );
             Type contextType = DbContextManager.Instance.GetDbContexType(entityType);
-            IUnitOfWork unitOfWork = (IUnitOfWork)IocResolver.Resolve(contextType);
+            IUnitOfWork unitOfWork = (IUnitOfWork)_resolver.Resolve(contextType);
             if (unitOfWork == null)
             {
                 throw new InvalidOperationException(Resources.DbContextTypeResolver_DbContextResolveFailed.FormatWith(entityType, contextType));

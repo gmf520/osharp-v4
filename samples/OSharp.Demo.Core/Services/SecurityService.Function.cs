@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 using OSharp.Core.Context;
 using OSharp.Core.Data.Entity;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Demo.Dtos.Security;
 using OSharp.Utility;
@@ -83,7 +84,8 @@ namespace OSharp.Demo.Services
                 });
             if (result.ResultType == OperationResultType.Success)
             {
-                OSharpContext.Current.FunctionHandler.RefreshCache();
+                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                handler.RefreshCache();
             }
             return result;
         }
@@ -136,7 +138,8 @@ namespace OSharp.Demo.Services
                 : new OperationResult(OperationResultType.NoChanged);
             if (result.ResultType == OperationResultType.Success)
             {
-                OSharpContext.Current.FunctionHandler.RefreshCache();
+                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                handler.RefreshCache();
             }
             return result;
         }
@@ -171,7 +174,8 @@ namespace OSharp.Demo.Services
                 : new OperationResult(OperationResultType.NoChanged);
             if (result.ResultType == OperationResultType.Success)
             {
-                OSharpContext.Current.FunctionHandler.RefreshCache();
+                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                handler.RefreshCache();
             }
             return result;
         }

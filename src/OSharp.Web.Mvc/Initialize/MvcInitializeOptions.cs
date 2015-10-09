@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data.Entity;
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -36,15 +37,10 @@ namespace OSharp.Web.Mvc.Initialize
 
             PlatformToken = PlatformToken.Mvc;
             DataConfigReseter = new DataConfigReseter();
+            ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler()
-            {
-                IocResolver = new MvcIocResolver()
-            };
-            FunctionHandler = new FunctionHandler()
-            {
-                IocResolver = new MvcIocResolver()
-            };
+            EntityInfoHandler = new EntityInfoHandler();
+            FunctionHandler = new MvcFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

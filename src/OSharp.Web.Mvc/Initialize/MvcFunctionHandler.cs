@@ -1,33 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionHandler.cs" company="OSharp开源团队">
+//  <copyright file="MvcFunctionHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 22:19</last-date>
+//  <last-date>2015-10-09 16:17</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
+using System.Web.Mvc;
 
 using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
-using OSharp.Web.Http.Properties;
+using OSharp.Web.Mvc.Properties;
+using OSharp.Web.Mvc.Security;
 
 
-namespace OSharp.Web.Http.Initialize
+namespace OSharp.Web.Mvc.Initialize
 {
     /// <summary>
-    /// WebApi功能信息处理器
+    /// MVC功能信息处理器
     /// </summary>
-    public class FunctionHandler : FunctionHandlerBase<Function, Guid>
+    public class MvcFunctionHandler : FunctionHandlerBase<Function, Guid>
     {
         /// <summary>
         /// 获取或设置 控制器类型查找器
@@ -50,7 +48,7 @@ namespace OSharp.Web.Http.Initialize
         /// </summary>
         protected override PlatformToken PlatformToken
         {
-            get { return PlatformToken.WebApi; }
+            get { return PlatformToken.Mvc; }
         }
 
         /// <summary>
@@ -60,15 +58,15 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         protected override Function GetFunction(Type type)
         {
-            if (!typeof(ApiController).IsAssignableFrom(type))
+            if (!typeof(Controller).IsAssignableFrom(type))
             {
-                throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
+                throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotMvcControllerType.FormatWith(type.FullName));
             }
             Function function = new Function()
             {
                 Name = type.ToDescription(),
                 Area = GetArea(type),
-                Controller = type.Name.Replace("ApiController", string.Empty),
+                Controller = type.Name.Replace("Controller", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
                 PlatformToken = PlatformToken
@@ -79,13 +77,13 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 重写以实现从方法信息创建功能信息
         /// </summary>
-        /// <param name="method"></param>
+        /// <param name="method">功能信息</param>
         /// <returns></returns>
         protected override Function GetFunction(MethodInfo method)
         {
-            if (method.ReturnType != typeof(IHttpActionResult) && method.ReturnType != typeof(Task<IHttpActionResult>))
+            if (method.ReturnType != typeof(ActionResult) && method.ReturnType != typeof(Task<ActionResult>))
             {
-                throw new InvalidOperationException(Resources.FunctionHandler_MethodNotApiAction.FormatWith(method.Name));
+                throw new InvalidOperationException(Resources.FunctionHandler_MethodNotMvcAction.FormatWith(method.Name));
             }
 
             FunctionType functionType = FunctionType.Anonymouse;
@@ -110,24 +108,24 @@ namespace OSharp.Web.Http.Initialize
             {
                 Name = method.ToDescription(),
                 Area = GetArea(type),
-                Controller = type.Name.Replace("ApiController", string.Empty),
+                Controller = type.Name.Replace("Controller", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
                 PlatformToken = PlatformToken,
                 IsController = false,
-                IsAjax = false,
-                IsChild = false
+                IsAjax = method.HasAttribute<AjaxOnlyAttribute>(),
+                IsChild = method.HasAttribute<ChildActionOnlyAttribute>()
             };
             return function;
         }
 
         /// <summary>
-        /// 重写以实现从类型中获取功能的区域信息
+        /// 获取控制器类型所在的区域名称，无区域返回null
         /// </summary>
         protected override string GetArea(Type type)
         {
-            type.Required<Type, InvalidOperationException>(m => typeof(ApiController).IsAssignableFrom(m) && !m.IsAbstract,
-                Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
+            type.Required<Type, InvalidOperationException>(m => typeof(Controller).IsAssignableFrom(m) && !m.IsAbstract,
+                Resources.ActionMethodInfoFinder_TypeNotMvcControllerType.FormatWith(type.FullName));
             string @namespace = type.Namespace;
             if (@namespace == null)
             {

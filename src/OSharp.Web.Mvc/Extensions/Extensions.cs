@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using OSharp.Core;
 using OSharp.Core.Context;
 using OSharp.Core.Data;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Web.Mvc.UI;
 
@@ -38,7 +39,12 @@ namespace OSharp.Web.Mvc.Extensions
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, PlatformToken.Mvc);
+            IFunctionHandler functionHandler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+            if (functionHandler == null)
+            {
+                return null;
+            }
+            IFunction function = functionHandler.GetFunction(area, controller, action);
             if (function != null)
             {
                 items.Add(key, function);

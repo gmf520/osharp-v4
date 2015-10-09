@@ -8,15 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
-using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Properties;
-using OSharp.Core.Security;
 
 
 namespace OSharp.Core.Initialize
@@ -33,21 +28,28 @@ namespace OSharp.Core.Initialize
 
         private readonly InitializeOptionsBase _options;
 
-
         /// <summary>
         /// 初始化一个<see cref="FrameworkInitializerBase"/>类型的新实例
         /// </summary>
         protected FrameworkInitializerBase(InitializeOptionsBase options)
         {
             _options = options;
+            Services = options.ServicesBuilder.Build(options.OSharpConfig);
+            Services.AddInstance(options.FunctionHandler);
+            Services.AddInstance(options.EntityInfoHandler);
         }
-        
+
+        /// <summary>
+        /// 获取 依赖注入服务映射信息集合
+        /// </summary>
+        public IServiceCollection Services { get; private set; }
+
         /// <summary>
         /// 开始初始化
         /// </summary>
         public void Initialize()
         {
-            OSharpConfig config = ResetConfig(OSharpConfig.Instance);
+            OSharpConfig config = _options.OSharpConfig;
 
             if (!_basicLoggingInitialized && _options.BasicLoggingInitializer != null)
             {
@@ -59,7 +61,7 @@ namespace OSharp.Core.Initialize
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_IocInitializeIsNull);
             }
-            _options.IocInitializer.Initialize(config);
+            _options.IocInitializer.Initialize(Services);
 
             if (!_databaseInitialized)
             {
@@ -93,7 +95,7 @@ namespace OSharp.Core.Initialize
         /// </summary>
         /// <param name="config">原始配置信息</param>
         /// <returns>重置后的配置信息</returns>
-        protected OSharpConfig ResetConfig(OSharpConfig config)
+        protected virtual OSharpConfig ResetConfig(OSharpConfig config)
         {
             if (_options.DataConfigReseter != null)
             {

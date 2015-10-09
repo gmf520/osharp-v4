@@ -4,22 +4,15 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 10:34</last-date>
+//  <last-date>2015-10-08 19:16</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-using OSharp.Core.Configs;
-using OSharp.Core.Data;
+using OSharp.Core.Context;
 using OSharp.Core.Dependency;
-using OSharp.Core.Properties;
 using OSharp.Core.Reflection;
-using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Initialize
@@ -35,9 +28,6 @@ namespace OSharp.Core.Initialize
         protected IocInitializerBase()
         {
             AssemblyFinder = new DirectoryAssemblyFinder();
-            TransientTypeFinder = new TransientDependencyTypeFinder();
-            ScopeTypeFinder = new ScopeDependencyTypeFinder();
-            SingletonTypeFinder = new SingletonDependencyTypeFinder();
         }
 
         /// <summary>
@@ -46,96 +36,33 @@ namespace OSharp.Core.Initialize
         public IAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
-        /// 获取或设置 即时对象依赖类型查找器
-        /// </summary>
-        public ITypeFinder TransientTypeFinder { get; set; }
-
-        /// <summary>
-        /// 获取或设置 局部对象依赖类型查找器
-        /// </summary>
-        public ITypeFinder ScopeTypeFinder { get; set; }
-
-        /// <summary>
-        /// 获取或设置 单例对象依赖类型查找器
-        /// </summary>
-        public ITypeFinder SingletonTypeFinder { get; set; }
-
-        /// <summary>
         /// 初始化依赖注入
         /// </summary>
-        /// <param name="config">框架配置信息</param>
-        public void Initialize(OSharpConfig config)
+        /// <param name="services">服务映射信息集合</param>
+        public void Initialize(IServiceCollection services)
         {
-            //注册数据上下文
-            Type[] dbContexTypes = config.DataConfig.ContextConfigs.Where(m => m.Enabled).Select(m => m.ContextType).ToArray();
-            RegisterDbContextTypes(dbContexTypes, typeof(IUnitOfWork));
-
-            //注册数据仓储
-            Type repositoryType = GetRepositoryType();
-            if (!typeof(IRepository<,>).IsGenericAssignableFrom(repositoryType))
-            {
-                throw new InvalidOperationException(Resources.IocInitializerBase_TypeNotIRepositoryType.FormatWith(repositoryType.FullName));
-            }
-            RegisterRepositoryType(repositoryType, typeof(IRepository<,>));
-
-            //注册即时生命周期的映射
-            Type[] dependencyTypes = TransientTypeFinder.FindAll();
-            RegisterDependencyTypes<ITransientDependency>(dependencyTypes);
-
-            //注册局部生命周期的映射
-            dependencyTypes = ScopeTypeFinder.FindAll();
-            RegisterDependencyTypes<IScopeDependency>(dependencyTypes);
-
-            //注册单例生命周期的映射
-            dependencyTypes = SingletonTypeFinder.FindAll();
-            RegisterDependencyTypes<ISingletonDependency>(dependencyTypes);
-
-            //注册自定义映射
-            RegisterCustomTypes();
-
             //设置各个框架的DependencyResolver
             Assembly[] assemblies = AssemblyFinder.FindAll();
-            SetResolver(assemblies);
+
+            AddCustomTypes(services);
+
+            IServiceProvider provider = BuildServiceProvider(services, assemblies);
+            OSharpContext.IocServiceProvider = provider;
         }
 
         /// <summary>
-        /// 重写以返回数据仓储实现类型
+        /// 添加自定义服务映射
         /// </summary>
-        /// <returns></returns>
-        protected abstract Type GetRepositoryType();
-
-        /// <summary>
-        /// 重写以实现数据上下文类型的注册
-        /// </summary>
-        /// <param name="dbContexTypes">数据上下文类型</param>
-        /// <param name="asType">IUnitOfWork类型</param>
-        protected abstract void RegisterDbContextTypes(Type[] dbContexTypes, Type asType);
-
-        /// <summary>
-        /// 重写以实现数据仓储类型的注册
-        /// </summary>
-        /// <param name="repositoryType">数据仓储实现类型</param>
-        /// <param name="iRepositoryType">数据仓储接口类型</param>
-        protected abstract void RegisterRepositoryType(Type repositoryType, Type iRepositoryType);
-
-        /// <summary>
-        /// 重写以实现依赖注入接口<see cref="IDependency"/>实现类型的注册
-        /// </summary>
-        /// <param name="types">要注册的类型集合</param>
-        protected abstract void RegisterDependencyTypes<TDependency>(Type[] types)
-            where TDependency : IDependency;
-
-        /// <summary>
-        /// 注册自定义类型
-        /// </summary>
-        protected virtual void RegisterCustomTypes()
+        /// <param name="services">服务信息集合</param>
+        protected virtual void AddCustomTypes(IServiceCollection services)
         { }
 
         /// <summary>
-        /// 重写以实现设置Mvc、WebAPI、SignalR等框架的DependencyResolver
+        /// 将服务构建成服务提供者<see cref="IServiceProvider"/>的实例
         /// </summary>
-        /// <param name="assemblies"></param>
-        protected abstract void SetResolver(Assembly[] assemblies);
-        
+        /// <param name="services">服务映射信息集合</param>
+        /// <param name="assemblies">要检索的程序集集合</param>
+        /// <returns>服务提供者</returns>
+        protected abstract IServiceProvider BuildServiceProvider(IServiceCollection services, Assembly[] assemblies);
     }
 }

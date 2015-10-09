@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data.Entity;
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -36,15 +37,10 @@ namespace OSharp.Web.Http.Initialize
 
             PlatformToken = PlatformToken.WebApi;
             DataConfigReseter = new DataConfigReseter();
+            ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler()
-            {
-                IocResolver = new WebApiIocResolver()
-            };
-            FunctionHandler = new FunctionHandler()
-            {
-                IocResolver = new WebApiIocResolver()
-            };
+            EntityInfoHandler = new EntityInfoHandler();
+            FunctionHandler = new WebApiFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

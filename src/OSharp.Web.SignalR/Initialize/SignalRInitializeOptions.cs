@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data.Entity;
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -36,15 +37,10 @@ namespace OSharp.Web.SignalR.Initialize
 
             PlatformToken = PlatformToken.SignalR;
             DataConfigReseter = new DataConfigReseter();
+            ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler()
-            {
-                IocResolver = new SignalRIocResolver()
-            };
-            FunctionHandler = new FunctionHandler()
-            {
-                IocResolver = new SignalRIocResolver()
-            };
+            EntityInfoHandler = new EntityInfoHandler();
+            FunctionHandler = new SignalRFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }
