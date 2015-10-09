@@ -36,11 +36,5 @@ namespace OSharp.Core.Context
             }
             internal set { _iocRegisterServices = value; }
         }
-
-        /// <summary>
-        /// 获取或设置 依赖注入服务提供者
-        /// </summary>
-        public static IServiceProvider IocServiceProvider { get; set; }
-        
     }
 }

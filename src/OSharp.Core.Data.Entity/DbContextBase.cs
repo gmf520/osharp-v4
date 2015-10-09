@@ -123,6 +123,11 @@ namespace OSharp.Core.Data.Entity
         }
 
         /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据日志缓存
         /// </summary>
         public IDataLogCache DataLogCache { get; set; }
@@ -235,7 +240,7 @@ namespace OSharp.Core.Data.Entity
                 List<DataLog> logs = new List<DataLog>();
                 if (DataLoggingEnabled)
                 {
-                    logs = this.GetEntityDataLogs().ToList();
+                    logs = this.GetEntityDataLogs(ServiceProvider).ToList();
                 }
                 int count = 0;
                 try
@@ -325,7 +330,7 @@ namespace OSharp.Core.Data.Entity
                 List<DataLog> logs = new List<DataLog>();
                 if (DataLoggingEnabled)
                 {
-                    logs = (await this.GetEntityOperateLogsAsync()).ToList();
+                    logs = (await this.GetEntityOperateLogsAsync(ServiceProvider)).ToList();
                 }
                 int count = 0;
                 try

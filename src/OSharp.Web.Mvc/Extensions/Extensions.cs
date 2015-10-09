@@ -7,6 +7,7 @@
 //  <last-date>2015-09-23 17:37</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Web.Mvc;
 
@@ -28,7 +29,7 @@ namespace OSharp.Web.Mvc.Extensions
         /// <summary>
         /// 获取MVC操作的相关功能信息
         /// </summary>
-        public static IFunction GetExecuteFunction(this ControllerContext context)
+        public static IFunction GetExecuteFunction(this ControllerContext context, IServiceProvider provider)
         {
             const string key = Constants.CurrentMvcFunctionKey;
             IDictionary items = context.HttpContext.Items;
@@ -39,7 +40,7 @@ namespace OSharp.Web.Mvc.Extensions
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IFunctionHandler functionHandler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+            IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
                 return null;
@@ -55,9 +56,9 @@ namespace OSharp.Web.Mvc.Extensions
         /// <summary>
         /// 获取MVC操作的相关功能信息
         /// </summary>
-        public static IFunction GetExecuteFunction(this ControllerBase controller)
+        public static IFunction GetExecuteFunction(this ControllerBase controller, IServiceProvider provider)
         {
-            return controller.ControllerContext.GetExecuteFunction();
+            return controller.ControllerContext.GetExecuteFunction(provider);
         }
 
         /// <summary>

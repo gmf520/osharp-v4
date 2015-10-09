@@ -39,8 +39,6 @@ namespace OSharp.Web.Http.Initialize
             DataConfigReseter = new DataConfigReseter();
             ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler();
-            FunctionHandler = new WebApiFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

@@ -39,8 +39,6 @@ namespace OSharp.Web.SignalR.Initialize
             DataConfigReseter = new DataConfigReseter();
             ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler();
-            FunctionHandler = new SignalRFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

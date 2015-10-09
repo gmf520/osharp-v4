@@ -25,6 +25,11 @@ namespace OSharp.Demo.Services
     public partial class SecurityService : ISecurityContract
     {
         /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// 获取或设置 功能信息仓储对象
         /// </summary>
         public IRepository<Function, Guid> FunctionRepository { protected get; set; }

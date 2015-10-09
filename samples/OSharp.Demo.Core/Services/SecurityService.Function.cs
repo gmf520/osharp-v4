@@ -84,7 +84,7 @@ namespace OSharp.Demo.Services
                 });
             if (result.ResultType == OperationResultType.Success)
             {
-                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
                 handler.RefreshCache();
             }
             return result;
@@ -138,7 +138,7 @@ namespace OSharp.Demo.Services
                 : new OperationResult(OperationResultType.NoChanged);
             if (result.ResultType == OperationResultType.Success)
             {
-                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
                 handler.RefreshCache();
             }
             return result;
@@ -174,7 +174,7 @@ namespace OSharp.Demo.Services
                 : new OperationResult(OperationResultType.NoChanged);
             if (result.ResultType == OperationResultType.Success)
             {
-                IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+                IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
                 handler.RefreshCache();
             }
             return result;

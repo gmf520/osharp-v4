@@ -112,9 +112,13 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 获取数据上下文的变更日志信息
         /// </summary>
-        public static IEnumerable<DataLog> GetEntityDataLogs(this DbContext dbContext)
+        public static IEnumerable<DataLog> GetEntityDataLogs(this DbContext dbContext, IServiceProvider provider)
         {
-            IEntityInfoHandler entityInfoHandler = OSharpContext.IocServiceProvider.GetService<IEntityInfoHandler>();
+            if (provider == null)
+            {
+                return Enumerable.Empty<DataLog>();
+            }
+            IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
             if (entityInfoHandler == null)
             {
                 return Enumerable.Empty<DataLog>();
@@ -144,11 +148,10 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 异步获取数据上下文的变更日志信息
         /// </summary>
-        /// <param name="dbContext"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<DataLog>> GetEntityOperateLogsAsync(this DbContext dbContext)
+        public static async Task<IEnumerable<DataLog>> GetEntityOperateLogsAsync(this DbContext dbContext, IServiceProvider provider)
         {
-            return await Task.FromResult(dbContext.GetEntityDataLogs());
+            return await Task.FromResult(dbContext.GetEntityDataLogs(provider));
         }
 #endif
 

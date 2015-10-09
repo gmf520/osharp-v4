@@ -4,9 +4,10 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-29 21:31</last-date>
+//  <last-date>2015-10-09 18:12</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 
 
@@ -23,5 +24,13 @@ namespace OSharp.App.Local.Initialize
         public LocalFrameworkInitializer(LocalInitializeOptions options)
             : base(options)
         { }
+
+        /// <summary>
+        /// 获取 依赖注入解析器
+        /// </summary>
+        protected override IIocResolver IocResolver
+        {
+            get { return new LocalIocResolver(); }
+        }
     }
 }

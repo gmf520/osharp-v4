@@ -45,7 +45,7 @@ namespace OSharp.Demo.Services
 
             if (result.ResultType == OperationResultType.Success)
             {
-                IEntityInfoHandler handler = OSharpContext.IocServiceProvider.GetService<IEntityInfoHandler>();
+                IEntityInfoHandler handler = ServiceProvider.GetService<IEntityInfoHandler>();
                 handler.RefreshCache();
             }
             return result;

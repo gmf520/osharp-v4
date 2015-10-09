@@ -39,8 +39,6 @@ namespace OSharp.Web.Mvc.Initialize
             DataConfigReseter = new DataConfigReseter();
             ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler();
-            FunctionHandler = new MvcFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

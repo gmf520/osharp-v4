@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-29 20:09</last-date>
+//  <last-date>2015-10-09 18:12</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 
 
@@ -29,5 +30,13 @@ namespace OSharp.Web.Mvc.Initialize
         public MvcFrameworkInitializer(MvcInitializeOptions options)
             : base(options)
         { }
+
+        /// <summary>
+        /// 获取 依赖注入解析器
+        /// </summary>
+        protected override IIocResolver IocResolver
+        {
+            get { return new MvcIocResolver(); }
+        }
     }
 }

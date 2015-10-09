@@ -17,6 +17,7 @@ using Autofac.Integration.WebApi;
 
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
+using OSharp.Core.Security;
 using OSharp.Web.Http.Initialize;
 
 
@@ -35,15 +36,15 @@ namespace OSharp.Autofac.Http
         {
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, WebApiIocResolver>();
+            services.AddSingleton<IFunctionHandler, WebApiFunctionHandler>();
         }
 
         /// <summary>
-        /// 将服务构建成服务提供者<see cref="IServiceProvider"/>的实例
+        /// 构建服务并设置WebApi平台的Resolver
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">要检索的程序集集合</param>
-        /// <returns>服务提供者</returns>
-        protected override IServiceProvider BuildServiceProvider(IServiceCollection services, Assembly[] assemblies)
+        protected override void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterApiControllers(assemblies).AsSelf().PropertiesAutowired();
@@ -52,7 +53,6 @@ namespace OSharp.Autofac.Http
             builder.Populate(services);
             IContainer container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-            return container.Resolve<IServiceProvider>();
         }
     }
 }

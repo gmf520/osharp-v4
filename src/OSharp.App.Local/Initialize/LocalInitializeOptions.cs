@@ -39,8 +39,6 @@ namespace OSharp.App.Local.Initialize
             DataConfigReseter = new DataConfigReseter();
             ServicesBuilder = new ServicesBuilder();
             DatabaseInitializer = new DatabaseInitializer();
-            EntityInfoHandler = new EntityInfoHandler();
-            FunctionHandler = new NullFunctionHandler();
             BasicLoggingInitializer = basicLoggingInitializer;
             IocInitializer = iocInitializer;
         }

@@ -42,6 +42,11 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// 获取 所有功能信息集合
         /// </summary>
         protected TFunction[] Functions { get; private set; }
@@ -203,7 +208,7 @@ namespace OSharp.Core.Security
         /// <param name="functions">功能信息集合</param>
         protected virtual void UpdateToRepository(TFunction[] functions)
         {
-            IRepository<TFunction, TKey> repository = OSharpContext.IocServiceProvider.GetService<IRepository<TFunction, TKey>>();
+            IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
             // DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
             TFunction[] items = repository.GetByPredicate(m => m.PlatformToken == PlatformToken).ToArray();
 
@@ -290,7 +295,7 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         protected virtual TFunction[] GetLastestFunctions()
         {
-            IRepository<TFunction, TKey> repository = OSharpContext.IocServiceProvider.GetService<IRepository<TFunction, TKey>>();
+            IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
             if (repository == null)
             {
                 return new TFunction[0];

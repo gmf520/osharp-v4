@@ -29,15 +29,7 @@ namespace OSharp.Demo.Web.Controllers
     [Description("网站-测试")]
     public class TestsController : BaseController
     {
-        private readonly IServiceProvider _provider;
-
-        /// <summary>
-        /// 初始化一个<see cref="TestsController"/>类型的新实例
-        /// </summary>
-        public TestsController(IServiceProvider provider)
-        {
-            _provider = provider;
-        }
+        public IServiceProvider ServiceProvider { get; set; }
 
         public IDbContextTypeResolver ContextTypeResolver { get; set; }
 
@@ -57,7 +49,7 @@ namespace OSharp.Demo.Web.Controllers
             DateTime dt = DateTime.Now;
             ICache cache = CacheManager.GetCacher<TestsController>();
             const string key = "KEY__fdsaf";
-            IFunction function = this.GetExecuteFunction();
+            IFunction function = this.GetExecuteFunction(ServiceProvider);
             DateTime dt1 = cache.Get<DateTime>(key);
             if (dt1 == DateTime.MinValue)
             {
@@ -79,13 +71,11 @@ namespace OSharp.Demo.Web.Controllers
             string format = "{0}: {1}";
             List<string>lines = new List<string>()
             {
-                format.FormatWith(nameof(_provider), _provider.GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), _provider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), _provider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), OSharpContext.IocServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), OSharpContext.IocServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(IRepository<User,int>), _provider.GetService<IRepository<User,int>>().GetHashCode()),
-                format.FormatWith(nameof(IRepository<User,int>), _provider.GetService<IRepository<User,int>>().GetHashCode())
+                format.FormatWith(nameof(ServiceProvider), ServiceProvider.GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
             };
             return Content(lines.ExpandAndToString("<br>"));
         }

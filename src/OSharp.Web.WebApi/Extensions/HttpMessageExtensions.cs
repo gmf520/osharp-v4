@@ -66,7 +66,7 @@ namespace OSharp.Web.Http.Extensions
         /// <summary>
         /// 获取当前执行的功能信息
         /// </summary>
-        public static IFunction GetExecuteFunction(this HttpRequestMessage request)
+        public static IFunction GetExecuteFunction(this HttpRequestMessage request, IServiceProvider provider)
         {
             const string key = Constants.CurrentWebApiFunctionKey;
             IDictionary<string, object> items = request.Properties;
@@ -77,7 +77,7 @@ namespace OSharp.Web.Http.Extensions
             string area = request.GetAreaName();
             string controller = request.GetControllerName();
             string action = request.GetActionName();
-            IFunctionHandler handler = OSharpContext.IocServiceProvider.GetService<IFunctionHandler>();
+            IFunctionHandler handler = provider.GetService<IFunctionHandler>();
             if (handler == null)
             {
                 return null;

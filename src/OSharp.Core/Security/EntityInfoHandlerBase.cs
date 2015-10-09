@@ -49,7 +49,12 @@ namespace OSharp.Core.Security
         {
             get { return _logger ?? (_logger = LogManager.GetLogger(GetType())); }
         }
-        
+
+        /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
         /// <summary>
         /// 获取或设置 实体类型查找器
         /// </summary>
@@ -134,7 +139,7 @@ namespace OSharp.Core.Security
         /// <param name="entityInfos">实体信息集合</param>
         protected virtual void UpdateToRepository(TEntityInfo[] entityInfos)
         {
-            IRepository<TEntityInfo, TKey> repository = OSharpContext.IocServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
+            IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
             TEntityInfo[] items = repository.GetByPredicate(m => true).ToArray();
 
             //删除的实体信息
@@ -201,7 +206,7 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         protected virtual TEntityInfo[] GetLastestEntityInfos()
         {
-            IRepository<TEntityInfo, TKey> repository = OSharpContext.IocServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
+            IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
             if (repository == null)
             {
                 return new TEntityInfo[0];

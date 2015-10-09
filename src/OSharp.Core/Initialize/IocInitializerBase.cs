@@ -46,8 +46,7 @@ namespace OSharp.Core.Initialize
 
             AddCustomTypes(services);
 
-            IServiceProvider provider = BuildServiceProvider(services, assemblies);
-            OSharpContext.IocServiceProvider = provider;
+            BuildAndSetResolver(services, assemblies);
         }
 
         /// <summary>
@@ -58,11 +57,10 @@ namespace OSharp.Core.Initialize
         { }
 
         /// <summary>
-        /// 将服务构建成服务提供者<see cref="IServiceProvider"/>的实例
+        /// 重写以实现构建服务并设置各个平台的Resolver
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">要检索的程序集集合</param>
-        /// <returns>服务提供者</returns>
-        protected abstract IServiceProvider BuildServiceProvider(IServiceCollection services, Assembly[] assemblies);
+        protected abstract void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies);
     }
 }

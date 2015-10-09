@@ -27,8 +27,6 @@ namespace OSharp.Core.Initialize
     public abstract class InitializeOptionsBase
     {
         private static OSharpConfig _osharpConfig;
-        private IEntityInfoHandler _entityInfoHandler;
-        private IFunctionHandler _functionHandler;
 
         /// <summary>
         /// 获取 框架配置信息
@@ -79,33 +77,5 @@ namespace OSharp.Core.Initialize
         /// 获取或设置 数据库初始化器
         /// </summary>
         public IDatabaseInitializer DatabaseInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 实体信息数据处理器
-        /// </summary>
-        public IEntityInfoHandler EntityInfoHandler
-        {
-            get { return _entityInfoHandler; }
-            set
-            {
-                _entityInfoHandler = value;
-                //todo: set EntityInfoHandler
-                //OSharpContext.Current.EntityInfoHandler = value;
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置 功能信息数据处理器
-        /// </summary>
-        public IFunctionHandler FunctionHandler
-        {
-            get { return _functionHandler; }
-            set
-            {
-                _functionHandler = value;
-                //todo
-                //OSharpContext.Current.FunctionHandler = value;
-            }
-        }
     }
 }

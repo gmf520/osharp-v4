@@ -15,6 +15,7 @@ using Autofac;
 using OSharp.Autofac;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
+using OSharp.Core.Security;
 
 
 namespace OSharp.App.Local.Initialize
@@ -37,22 +38,21 @@ namespace OSharp.App.Local.Initialize
         {
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, LocalIocResolver>();
+            services.AddSingleton<IFunctionHandler, NullFunctionHandler>();
         }
 
         /// <summary>
-        /// 将服务构建成服务提供者<see cref="IServiceProvider"/>的实例
+        /// 构建服务并设置本地程序平台的Resolver
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">要检索的程序集集合</param>
-        /// <returns>服务提供者</returns>
-        protected override IServiceProvider BuildServiceProvider(IServiceCollection services, Assembly[] assemblies)
+        protected override void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.Populate(services);
             IContainer container = builder.Build();
             LocalIocResolver.Container = container;
             Resolver = container.Resolve<IIocResolver>();
-            return container.Resolve<IServiceProvider>();
         }
     }
 }

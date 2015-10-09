@@ -16,6 +16,7 @@ using Autofac.Integration.Mvc;
 
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
+using OSharp.Core.Security;
 using OSharp.Web.Mvc.Initialize;
 
 
@@ -34,15 +35,15 @@ namespace OSharp.Autofac.Mvc
         {
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, MvcIocResolver>();
+            services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
         }
 
         /// <summary>
-        /// 将服务构建成服务提供者<see cref="IServiceProvider"/>的实例
+        /// 构建服务并设置MVC平台的Resolver
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">程序集集合</param>
-        /// <returns>服务提供者</returns>
-        protected override IServiceProvider BuildServiceProvider(IServiceCollection services, Assembly[] assemblies)
+        protected override void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterControllers(assemblies).AsSelf().PropertiesAutowired();
@@ -50,7 +51,6 @@ namespace OSharp.Autofac.Mvc
             builder.Populate(services);
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-            return container.Resolve<IServiceProvider>();
         }
         
     }

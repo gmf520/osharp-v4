@@ -12,6 +12,7 @@ using System;
 using OSharp.Core.Configs;
 using OSharp.Core.Dependency;
 using OSharp.Core.Properties;
+using OSharp.Core.Security;
 
 
 namespace OSharp.Core.Initialize
@@ -35,9 +36,12 @@ namespace OSharp.Core.Initialize
         {
             _options = options;
             Services = options.ServicesBuilder.Build(options.OSharpConfig);
-            Services.AddInstance(options.FunctionHandler);
-            Services.AddInstance(options.EntityInfoHandler);
         }
+
+        /// <summary>
+        /// 获取 依赖注入解析器
+        /// </summary>
+        protected abstract IIocResolver IocResolver { get; }
 
         /// <summary>
         /// 获取 依赖注入服务映射信息集合
@@ -75,19 +79,21 @@ namespace OSharp.Core.Initialize
 
             if (!_entityInfoInitialized)
             {
-                if (_options.EntityInfoHandler == null)
+                IEntityInfoHandler entityInfoHandler = IocResolver.Resolve<IEntityInfoHandler>();
+                if (entityInfoHandler == null)
                 {
                     throw new InvalidOperationException(Resources.FrameworkInitializerBase_EntityInfoHandlerIsNull);
                 }
-                _options.EntityInfoHandler.Initialize();
+                entityInfoHandler.Initialize();
                 _entityInfoInitialized = true;
             }
 
-            if (_options.FunctionHandler == null)
+            IFunctionHandler functionHandler = IocResolver.Resolve<IFunctionHandler>();
+            if (functionHandler == null)
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_FunctionHandlerIsNull);
             }
-            _options.FunctionHandler.Initialize();
+            functionHandler.Initialize();
         }
 
         /// <summary>
