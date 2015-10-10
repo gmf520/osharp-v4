@@ -29,14 +29,10 @@ namespace OSharp.SiteBase.Initialize
         /// <summary>
         /// 开始初始化基础日志
         /// </summary>
-        /// <param name="config">基础日志配置信息</param>
-        public virtual void  Initialize(LoggingConfig config)
+        /// <param name="config">日志配置信息</param>
+        public void Initialize(LoggingConfig config)
         {
             LogManager.SetEntryInfo(config.EntryConfig.Enabled, config.EntryConfig.EntryLogLevel);
-            if (config.BasicLoggingConfig.AdapterConfigs.Count == 0)
-            {
-                config.BasicLoggingConfig.AdapterConfigs.Add(new LoggingAdapterConfig() { AdapterType = typeof(Log4NetLoggerAdapter) });
-            }
             foreach (LoggingAdapterConfig adapterConfig in config.BasicLoggingConfig.AdapterConfigs)
             {
                 SetLoggingFromAdapterConfig(adapterConfig);

@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core;
+using OSharp.Core.Dependency;
+using OSharp.Core.Initialize;
 using OSharp.Utility;
 
 using Owin;
@@ -29,12 +31,12 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 初始化WebApi框架
         /// </summary>
-        public static IAppBuilder UseWebApiInitialize(this IAppBuilder app, WebApiInitializeOptions options)
+        public static IAppBuilder UseWebApiInitialize(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
         {
-            app.CheckNotNull("app");
-            options.CheckNotNull("options");
-            IFrameworkInitializer initializer = new WebApiFrameworkInitializer(options);
-            initializer.Initialize();
+            services.CheckNotNull("services" );
+            iocBuilder.CheckNotNull("iocBuilder");
+            IFrameworkInitializer initializer = new FrameworkInitializer();
+            initializer.Initialize(services, iocBuilder);
             return app;
         }
     }

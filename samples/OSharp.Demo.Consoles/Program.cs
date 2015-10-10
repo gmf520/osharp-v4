@@ -15,8 +15,10 @@ using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
+using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
+using OSharp.Logging.Log4Net;
 using OSharp.SiteBase.Initialize;
 using OSharp.Utility.Extensions;
 
@@ -38,13 +40,15 @@ namespace OSharp.Demo.Consoles
                 Console.WriteLine("正在初始化，请稍候……");
                 Stopwatch watch = Stopwatch.StartNew();
 
-                Log4NetLoggingInitializer loggingInitializer = new Log4NetLoggingInitializer();
-                ConsolesAutofacInitializer iocInitializer = new ConsolesAutofacInitializer();
-                LocalInitializeOptions options = new LocalInitializeOptions(loggingInitializer, iocInitializer);
-                IFrameworkInitializer initializer = new LocalFrameworkInitializer(options);
-                initializer.Initialize();
-
-                _program = iocInitializer.Resolver.Resolve<Program>();
+                IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+                IServiceCollection services = builder.Build();
+                services.AddLog4NetServices();
+                services.AddDataServices();
+                ConsolesAutofacBuilder iocBuilder = new ConsolesAutofacBuilder();
+                IFrameworkInitializer initializer = new FrameworkInitializer();
+                initializer.Initialize(services, iocBuilder);
+                
+                _program = iocBuilder.Resolver.Resolve<Program>();
                 watch.Stop();
                 Console.WriteLine("程序初始化完毕并启动成功，耗时：{0}", watch.Elapsed);
             }

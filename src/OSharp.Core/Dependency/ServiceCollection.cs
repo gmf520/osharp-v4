@@ -162,5 +162,22 @@ namespace OSharp.Core.Dependency
             get { return _descriptors[index]; }
             set { _descriptors[index] = value; }
         }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public IServiceCollection Clone()
+        {
+            ServiceCollection collection = new ServiceCollection();
+            foreach (ServiceDescriptor descriptor in this)
+            {
+                collection.Add(descriptor);
+            }
+            return collection;
+        }
+
     }
 }

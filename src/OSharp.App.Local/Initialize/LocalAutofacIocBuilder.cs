@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="LocalAutofacIocInitializer.cs" company="OSharp开源团队">
+//  <copyright file="LocalAutofacIocBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-08 19:24</last-date>
+//  <last-date>2015-10-10 15:32</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -14,7 +14,6 @@ using Autofac;
 
 using OSharp.Autofac;
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 
 
@@ -23,7 +22,7 @@ namespace OSharp.App.Local.Initialize
     /// <summary>
     /// 本地程序-Autofac依赖注入初始化
     /// </summary>
-    public class LocalAutofacIocInitializer : IocInitializerBase
+    public class LocalAutofacIocBuilder : IocBuilderBase
     {
         /// <summary>
         /// 获取 依赖注入解析器
@@ -46,13 +45,15 @@ namespace OSharp.App.Local.Initialize
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">要检索的程序集集合</param>
-        protected override void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
+        /// <returns>服务提供者</returns>
+        protected override IServiceProvider BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.Populate(services);
             IContainer container = builder.Build();
             LocalIocResolver.Container = container;
             Resolver = container.Resolve<IIocResolver>();
+            return Resolver.Resolve<IServiceProvider>();
         }
     }
 }

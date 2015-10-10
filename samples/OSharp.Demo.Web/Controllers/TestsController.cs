@@ -68,14 +68,14 @@ namespace OSharp.Demo.Web.Controllers
 
         public ActionResult TestIoc()
         {
-            string format = "{0}: {1}";
+            const string format = "{0}: {1}";
             List<string>lines = new List<string>()
             {
-                format.FormatWith(nameof(ServiceProvider), ServiceProvider.GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
-                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
-                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
+                format.FormatWith("ServiceProvider", ServiceProvider.GetHashCode()),
+                format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
             };
             return Content(lines.ExpandAndToString("<br>"));
         }

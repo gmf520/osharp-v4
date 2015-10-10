@@ -61,6 +61,15 @@ namespace OSharp.Core.Data.Entity.Properties {
         }
         
         /// <summary>
+        ///   查找类似 上下文类型“{0}”不是IUnitOfWork接口的派生类 的本地化字符串。
+        /// </summary>
+        internal static string ContextTypeNotIUnitOfWorkType {
+            get {
+                return ResourceManager.GetString("ContextTypeNotIUnitOfWorkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”不是有效的上下文初始化类型 的本地化字符串。
         /// </summary>
         internal static string DatabaseInitializer_TypeNotDatabaseInitializer {

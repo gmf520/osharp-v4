@@ -15,12 +15,13 @@ using Microsoft.Owin;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
-using OSharp.Core.Initialize;
+using OSharp.Core;
+using OSharp.Core.Caching;
+using OSharp.Core.Dependency;
 using OSharp.Demo.Web;
-using OSharp.SiteBase.Initialize;
+using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
-using OSharp.Web.SignalR.Initialize;
 
 using Owin;
 
@@ -35,9 +36,16 @@ namespace OSharp.Demo.Web
         {
             // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
 
-            IBasicLoggingInitializer loggingInitializer = new Log4NetLoggingInitializer();
-            app.UseMvcInitialize(new MvcInitializeOptions(loggingInitializer, new MvcAutofacIocInitializer()));
-            app.UseWebApiInitialize(new WebApiInitializeOptions(loggingInitializer, new WebApiAutofacIocInitializer()));
+            ICacheProvider provider = new RuntimeMemoryCacheProvider();
+            CacheManager.SetProvider(provider, CacheLevel.First);
+
+            IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+            IServiceCollection services = builder.Build();
+            services.AddLog4NetServices();
+            services.AddDataServices();
+
+            app.UseMvcInitialize(services, new MvcAutofacIocBuilder());
+            app.UseWebApiInitialize(services, new WebApiAutofacIocBuilder());
 
             ConfigurationWebApi(app);
             ConfigureSignalR(app);

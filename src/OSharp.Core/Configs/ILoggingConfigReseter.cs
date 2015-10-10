@@ -1,34 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IIocInitializer.cs" company="OSharp开源团队">
+//  <copyright file="ILoggingConfigReseter.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-08 17:28</last-date>
+//  <last-date>2015-10-10 10:45</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Configs;
-using OSharp.Core.Dependency;
 
-
-namespace OSharp.Core.Initialize
+namespace OSharp.Core.Configs
 {
     /// <summary>
-    /// 定义依赖注入初始化器，解析依赖注入服务映射信息进行初始化
+    /// 定义日志配置信息重置功能
     /// </summary>
-    public interface IIocInitializer
+    public interface ILoggingConfigReseter
     {
         /// <summary>
-        /// 初始化依赖注入
+        /// 日志配置信息重置
         /// </summary>
-        /// <param name="services">服务信息集合</param>
-        void Initialize(IServiceCollection services);
+        /// <param name="config">待重置的日志配置信息</param>
+        /// <returns>重置后的日志配置信息</returns>
+        LoggingConfig Reset(LoggingConfig config);
     }
 }

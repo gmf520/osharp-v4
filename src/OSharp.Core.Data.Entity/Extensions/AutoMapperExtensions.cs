@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AutoMapperExtension.cs" company="OSharp开源团队">
+//  <copyright file="AutoMapperExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-03-24 15:02</last-date>
+//  <last-date>2015-10-10 11:33</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -18,7 +19,7 @@ namespace OSharp.Core.Data.Entity
     /// <summary>
     /// AutoMapper 辅助扩展方法
     /// </summary>
-    public static class AutoMapperExtension
+    public static class AutoMapperExtensions
     {
         /// <summary>
         /// 创建映射，使用源对象创建目标对象
@@ -39,7 +40,7 @@ namespace OSharp.Core.Data.Entity
         /// <param name="source">源对象</param>
         /// <param name="target">要更新的目标对象</param>
         /// <returns>更新后的目标对象</returns>
-        public static TTarget MapTo<TSource, TTarget>(this TSource source, TTarget target )
+        public static TTarget MapTo<TSource, TTarget>(this TSource source, TTarget target)
         {
             return Mapper.Map<TSource, TTarget>(source, target);
         }

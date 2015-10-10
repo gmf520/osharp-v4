@@ -19,7 +19,7 @@ namespace OSharp.Core.Data.Entity
     /// <summary>
     /// 实体映射程序集查找器
     /// </summary>
-    public class EntityMapperAssemblyFinder : IAssemblyFinder
+    public class EntityMapperAssemblyFinder : IEntityMapperAssemblyFinder
     {
         /// <summary>
         /// 初始化一个<see cref="EntityMapperAssemblyFinder"/>类型的新实例

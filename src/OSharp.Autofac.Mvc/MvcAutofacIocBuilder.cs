@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="MvcAutofacIocInitializer.cs" company="OSharp开源团队">
+//  <copyright file="MvcAutofacIocBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-08 18:00</last-date>
+//  <last-date>2015-10-10 15:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,7 +15,6 @@ using Autofac;
 using Autofac.Integration.Mvc;
 
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Core.Security;
 using OSharp.Web.Mvc.Initialize;
 
@@ -25,7 +24,7 @@ namespace OSharp.Autofac.Mvc
     /// <summary>
     /// Mvc-Autofac依赖注入初始化类
     /// </summary>
-    public class MvcAutofacIocInitializer : IocInitializerBase
+    public class MvcAutofacIocBuilder : IocBuilderBase
     {
         /// <summary>
         /// 添加自定义服务映射
@@ -43,15 +42,17 @@ namespace OSharp.Autofac.Mvc
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">程序集集合</param>
-        protected override void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
+        /// <returns>服务提供者</returns>
+        protected override IServiceProvider BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterControllers(assemblies).AsSelf().PropertiesAutowired();
             builder.RegisterFilterProvider();
             builder.Populate(services);
             IContainer container = builder.Build();
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            IDependencyResolver resolver = new AutofacDependencyResolver(container);
+            DependencyResolver.SetResolver(resolver);
+            return resolver.GetService<IServiceProvider>();
         }
-        
     }
 }

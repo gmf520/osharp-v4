@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core;
+using OSharp.Core.Dependency;
+using OSharp.Core.Initialize;
 using OSharp.Utility;
 
 using Owin;
@@ -29,11 +31,12 @@ namespace OSharp.Web.SignalR.Initialize
         /// <summary>
         /// 初始化SignalR框架
         /// </summary>
-        public static IAppBuilder UseSignalRInitialize(this IAppBuilder app, SignalRInitializeOptions options)
+        public static IAppBuilder UseSignalRInitialize(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
         {
-            options.CheckNotNull("options");
-            IFrameworkInitializer initializer = new SignalRFrameworkInitializer(options);
-            initializer.Initialize();
+            services.CheckNotNull("services");
+            iocBuilder.CheckNotNull("iocBuilder");
+            IFrameworkInitializer initializer = new FrameworkInitializer();
+            initializer.Initialize(services, iocBuilder);
             return app;
         }
     }

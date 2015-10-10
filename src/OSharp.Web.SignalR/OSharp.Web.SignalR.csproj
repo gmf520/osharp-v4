@@ -72,8 +72,6 @@
     <Compile Include="Initialize\HubMethodInfoFinder.cs" />
     <Compile Include="Initialize\HubTypeFinder.cs" />
     <Compile Include="Initialize\SignalRIocResolver.cs" />
-    <Compile Include="Initialize\SignalRFrameworkInitializer.cs" />
-    <Compile Include="Initialize\SignalRInitializeOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

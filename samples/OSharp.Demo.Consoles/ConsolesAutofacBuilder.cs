@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ConsolesAutofacInitializer.cs" company="OSharp开源团队">
+//  <copyright file="ConsolesAutofacBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-08 19:38</last-date>
+//  <last-date>2015-10-10 15:35</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -21,7 +21,7 @@ using OSharp.Core.Dependency;
 
 namespace OSharp.Demo.Consoles
 {
-    public class ConsolesAutofacInitializer : LocalAutofacIocInitializer
+    public class ConsolesAutofacBuilder : LocalAutofacIocBuilder
     {
         /// <summary>
         /// 添加自定义服务映射

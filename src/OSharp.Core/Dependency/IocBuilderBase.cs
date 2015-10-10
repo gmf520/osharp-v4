@@ -1,31 +1,29 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocInitializerBase.cs" company="OSharp开源团队">
+//  <copyright file="IocBuilderBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-08 19:16</last-date>
+//  <last-date>2015-10-10 15:28</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Reflection;
 
-using OSharp.Core.Context;
-using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
 
 
-namespace OSharp.Core.Initialize
+namespace OSharp.Core.Dependency
 {
     /// <summary>
-    /// 依赖注入初始化器基类，从程序集中反射进行依赖注入接口与实现的注册
+    /// 依赖注入构建器基类，从程序集中反射进行依赖注入接口与实现的注册
     /// </summary>
-    public abstract class IocInitializerBase : IIocInitializer
+    public abstract class IocBuilderBase : IIocBuilder
     {
         /// <summary>
-        /// 初始化一个<see cref="IocInitializerBase"/>类型的新实例
+        /// 初始化一个<see cref="IocBuilderBase"/>类型的新实例
         /// </summary>
-        protected IocInitializerBase()
+        protected IocBuilderBase()
         {
             AssemblyFinder = new DirectoryAssemblyFinder();
         }
@@ -36,17 +34,18 @@ namespace OSharp.Core.Initialize
         public IAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
-        /// 初始化依赖注入
+        /// 开始构建依赖注入映射
         /// </summary>
-        /// <param name="services">服务映射信息集合</param>
-        public void Initialize(IServiceCollection services)
+        /// <param name="services">服务信息集合</param>
+        /// <returns>服务提供者</returns>
+        public IServiceProvider Build(IServiceCollection services)
         {
             //设置各个框架的DependencyResolver
             Assembly[] assemblies = AssemblyFinder.FindAll();
 
             AddCustomTypes(services);
 
-            BuildAndSetResolver(services, assemblies);
+            return BuildAndSetResolver(services, assemblies);
         }
 
         /// <summary>
@@ -61,6 +60,7 @@ namespace OSharp.Core.Initialize
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="assemblies">要检索的程序集集合</param>
-        protected abstract void BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies);
+        /// <returns>服务提供者</returns>
+        protected abstract IServiceProvider BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies);
     }
 }

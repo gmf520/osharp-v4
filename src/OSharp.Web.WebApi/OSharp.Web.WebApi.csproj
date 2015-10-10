@@ -105,8 +105,6 @@
     <Compile Include="Initialize\ControllerTypeFinder.cs" />
     <Compile Include="Initialize\WebApiFunctionHandler.cs" />
     <Compile Include="Initialize\WebApiIocResolver.cs" />
-    <Compile Include="Initialize\WebApiFrameworkInitializer.cs" />
-    <Compile Include="Initialize\WebApiInitializeOptions.cs" />
     <Compile Include="Internal\EnumerableExtensions.cs" />
     <Compile Include="Internal\HttpHeaderNames.cs" />
     <Compile Include="Internal\IsInExtensions.cs" />

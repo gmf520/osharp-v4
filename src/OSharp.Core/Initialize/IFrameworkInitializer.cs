@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-29 12:13</last-date>
+//  <last-date>2015-10-10 14:44</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using OSharp.Core.Dependency;
 
 
 namespace OSharp.Core
@@ -22,8 +24,10 @@ namespace OSharp.Core
     public interface IFrameworkInitializer
     {
         /// <summary>
-        /// 开始初始化
+        /// 开始执行框架初始化
         /// </summary>
-        void Initialize();
+        /// <param name="services">服务映射集合</param>
+        /// <param name="iocBuilder">依赖注入构建器</param>
+        void Initialize(IServiceCollection services, IIocBuilder iocBuilder);
     }
 }

@@ -82,10 +82,12 @@
     <Compile Include="Defaults\DefaultDbContext.cs" />
     <Compile Include="EntityConfigurationBase.cs" />
     <Compile Include="EntityMapperAssemblyFinder.cs" />
-    <Compile Include="Extensions\AutoMapperExtension.cs" />
+    <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
+    <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
     <Compile Include="IContextTypeResolver.cs" />
     <Compile Include="IEntityMapper.cs" />
+    <Compile Include="IEntityMapperAssemblyFinder.cs" />
     <Compile Include="Logging\DataLogConfiguration.cs" />
     <Compile Include="Logging\DataLogItemConfiguration.cs" />
     <Compile Include="Logging\LoggingDbContext.cs" />

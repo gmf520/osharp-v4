@@ -31,17 +31,17 @@ namespace OSharp.Core.Dependency
         /// <summary>
         /// 获取 生命周期类型的描述
         /// </summary>
-        public LifetimeStyle Lifetime { get; }
+        public LifetimeStyle Lifetime { get; private set; }
 
         /// <summary>
         /// 获取 服务类型
         /// </summary>
-        public Type ServiceType { get; }
+        public Type ServiceType { get; private set; }
 
         /// <summary>
         /// 获取 服务实现类型
         /// </summary>
-        public Type ImplementationType { get; }
+        public Type ImplementationType { get; private set; }
         
         /// <summary>
         /// 获取 服务实例
@@ -250,7 +250,7 @@ namespace OSharp.Core.Dependency
         /// </summary>
         public static ServiceDescriptor Instance(Type serviceType, object instance)
         {
-            return new ServiceDescriptor(serviceType, instance);
+            return Describe(serviceType, instance);
         }
 
         private static ServiceDescriptor Describe<TService, TImplementation>(LifetimeStyle lifetime)

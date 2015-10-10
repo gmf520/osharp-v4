@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core;
+using OSharp.Core.Dependency;
 using OSharp.Utility;
 
 using Owin;
@@ -29,11 +30,12 @@ namespace OSharp.App.Local.Initialize
         /// <summary>
         /// 初始化本地程序集框架
         /// </summary>
-        public static IAppBuilder UseLocalInitialize(this IAppBuilder app, LocalInitializeOptions options)
+        public static IAppBuilder UseLocalInitialize(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
         {
-            options.CheckNotNull("options");
-            IFrameworkInitializer initializer = new LocalFrameworkInitializer(options);
-            initializer.Initialize();
+            services.CheckNotNull("services" );
+            iocBuilder.CheckNotNull("iocBuilder" );
+            IFrameworkInitializer initializer = new FrameworkInitializer();
+            initializer.Initialize(services, iocBuilder);
             return app;
         }
     }

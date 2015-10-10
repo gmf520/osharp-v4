@@ -51,10 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicLoggingInitializer.cs" />
+    <Compile Include="Log4NetLoggingInitializer.cs" />
     <Compile Include="Log4NetLog.cs" />
     <Compile Include="Log4NetLoggerAdapter.cs" />
+    <Compile Include="Log4NetLoggingConfigReseter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Core\OSharp.Core.csproj">

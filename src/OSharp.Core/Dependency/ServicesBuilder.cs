@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-09 13:57</last-date>
+//  <last-date>2015-10-10 14:16</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OSharp.Core.Configs;
 using OSharp.Core.Context;
 using OSharp.Core.Data;
+using OSharp.Core.Initialize;
 using OSharp.Core.Properties;
 using OSharp.Core.Reflection;
 using OSharp.Utility.Extensions;
@@ -28,83 +29,57 @@ namespace OSharp.Core.Dependency
     /// </summary>
     public class ServicesBuilder : IServicesBuilder
     {
+        private readonly ServiceBuildOptions _options;
+
         /// <summary>
         /// 初始化一个<see cref="ServicesBuilder"/>类型的新实例
         /// </summary>
         public ServicesBuilder()
+            : this(new ServiceBuildOptions())
+        { }
+
+        /// <summary>
+        /// 初始化一个<see cref="ServicesBuilder"/>类型的新实例
+        /// </summary>
+        public ServicesBuilder(ServiceBuildOptions options)
         {
-            AssemblyFinder = new DirectoryAssemblyFinder();
-            TransientTypeFinder = new TransientDependencyTypeFinder();
-            ScopeTypeFinder = new ScopeDependencyTypeFinder();
-            SingletonTypeFinder = new SingletonDependencyTypeFinder();
+            _options = options;
         }
-
+        
         /// <summary>
-        /// 获取或设置 程序集查找器
+        /// 将当前服务创建为
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
-
-        /// <summary>
-        /// 获取或设置 即时生命周期依赖类型查找器
-        /// </summary>
-        public ITypeFinder TransientTypeFinder { get; set; }
-
-        /// <summary>
-        /// 获取或设置 范围生命周期依赖类型查找器
-        /// </summary>
-        public ITypeFinder ScopeTypeFinder { get; set; }
-
-        /// <summary>
-        /// 获取或设置 单例生命周期依赖类型查找器
-        /// </summary>
-        public ITypeFinder SingletonTypeFinder { get; set; }
+        /// <returns>服务映射集合</returns>
+        public IServiceCollection Build()
+        {
+            return Create(_options);
+        }
 
         /// <summary>
         /// 创建依赖注入服务映射信息集合
         /// </summary>
-        /// <param name="config">OSharp配置信息</param>
         /// <returns>服务映射信息集合</returns>
-        public IServiceCollection Build(OSharpConfig config)
+        private IServiceCollection Create(ServiceBuildOptions options)
         {
             IServiceCollection services = new ServiceCollection();
             OSharpContext.IocRegisterServices = services;
 
-            //添加数据上下文
-            AddDbContextTypes(services, config.DataConfig);
-
             //添加即时生命周期类型的映射
-            Type[] dependencyTypes = TransientTypeFinder.FindAll();
+            Type[] dependencyTypes = options.TransientTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, LifetimeStyle.Transient);
 
             //添加局部生命周期类型的映射
-            dependencyTypes = ScopeTypeFinder.FindAll();
+            dependencyTypes = options.ScopeTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, LifetimeStyle.Scoped);
 
             //添加单例生命周期类型的映射
-            dependencyTypes = SingletonTypeFinder.FindAll();
+            dependencyTypes = options.SingletonTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, LifetimeStyle.Singleton);
 
-            return services;
-        }
+            //全局服务
+            AddGlobalTypes(services);
 
-        /// <summary>
-        /// 添加数据上下文类型
-        /// </summary>
-        /// <param name="services">服务映射信息集合</param>
-        /// <param name="dataConfig">数据配置信息</param>
-        protected virtual void AddDbContextTypes(IServiceCollection services, DataConfig dataConfig)
-        {
-            Type[] contextTypes = dataConfig.ContextConfigs.Where(m => m.Enabled).Select(m => m.ContextType).ToArray();
-            Type baseType = typeof(IUnitOfWork);
-            foreach (Type contextType in contextTypes)
-            {
-                if (!baseType.IsAssignableFrom(contextType))
-                {
-                    throw new InvalidOperationException(Resources.IocInitializerBase_TypeNotIUnitOfWorkType.FormatWith(contextType));
-                }
-                services.AddScoped(baseType, contextType); //注册IUnitOfWork映射
-                services.AddScoped(contextType, contextType); //注册自身映射
-            }
+            return services;
         }
 
         /// <summary>
@@ -134,6 +109,15 @@ namespace OSharp.Core.Dependency
             }
         }
 
+        /// <summary>
+        /// 重写以实现添加全局特殊类型映射
+        /// </summary>
+        /// <param name="services">服务映射信息集合</param>
+        protected virtual void AddGlobalTypes(IServiceCollection services)
+        {
+            services.AddSingleton<IAllAssemblyFinder, DirectoryAssemblyFinder>();
+        }
+
         private static Type[] GetImplementedInterfaces(Type type)
         {
             Type[] exceptInterfaces =
@@ -155,5 +139,6 @@ namespace OSharp.Core.Dependency
             }
             return interfaceTypes;
         }
+
     }
 }
