@@ -127,10 +127,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
-      <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
-      <Name>OSharp.Core.Data.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
       <Name>OSharp.Core</Name>
