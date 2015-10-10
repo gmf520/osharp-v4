@@ -31,7 +31,7 @@ namespace OSharp.Web.SignalR.Initialize
         /// </summary>
         public HubTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>

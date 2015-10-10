@@ -1,28 +1,43 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="HttpMessageExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-09 0:40</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
 
 using OSharp.Core;
 using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Web.Http.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class HttpMessageExtensions
     {
         private const string HttpContext = "MS_HttpContext";
         private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
 
+        /// <summary>
+        /// 返回请求<see cref="HttpRequestMessage"/>是否来自本地
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public static bool IsLocal(this HttpRequestMessage request)
         {
             var localFlag = request.Properties["MS_IsLocal"] as Lazy<bool>;
@@ -51,7 +66,7 @@ namespace OSharp.Web.Http.Extensions
         /// <summary>
         /// 获取当前执行的功能信息
         /// </summary>
-        public static IFunction GetExecuteFunction(this HttpRequestMessage request)
+        public static IFunction GetExecuteFunction(this HttpRequestMessage request, IServiceProvider provider)
         {
             const string key = Constants.CurrentWebApiFunctionKey;
             IDictionary<string, object> items = request.Properties;
@@ -62,7 +77,12 @@ namespace OSharp.Web.Http.Extensions
             string area = request.GetAreaName();
             string controller = request.GetControllerName();
             string action = request.GetActionName();
-            IFunction function = OSharpContext.Current.FunctionHandler.GetFunction(area, controller, action, "WEBAPI");
+            IFunctionHandler handler = provider.GetService<IFunctionHandler>();
+            if (handler == null)
+            {
+                return null;
+            }
+            IFunction function = handler.GetFunction(area, controller, action);
             if (function != null)
             {
                 items.Add(key, function);
@@ -136,6 +156,11 @@ namespace OSharp.Web.Http.Extensions
             return null;
         }
 
+        /// <summary>
+        /// 将<see cref="HttpResponseMessage"/>使用<see cref="Task{}"/>来包装
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <returns></returns>
         public static Task<HttpResponseMessage> ToTask(this HttpResponseMessage responseMessage)
         {
             TaskCompletionSource<HttpResponseMessage> taskCompletionSource = new TaskCompletionSource<HttpResponseMessage>();

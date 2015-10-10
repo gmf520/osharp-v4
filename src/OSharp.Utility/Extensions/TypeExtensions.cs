@@ -1,4 +1,13 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="TypeExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-09 11:27</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace OSharp.Utility.Extensions
 {

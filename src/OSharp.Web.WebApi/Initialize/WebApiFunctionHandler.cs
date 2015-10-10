@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionHandler.cs" company="OSharp开源团队">
+//  <copyright file="WebApiFunctionHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 22:19</last-date>
+//  <last-date>2015-10-09 16:15</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,7 +27,7 @@ namespace OSharp.Web.Http.Initialize
     /// <summary>
     /// WebApi功能信息处理器
     /// </summary>
-    public class FunctionHandler : FunctionHandlerBase<Function, Guid>
+    public class WebApiFunctionHandler : FunctionHandlerBase<Function, Guid>
     {
         /// <summary>
         /// 获取或设置 控制器类型查找器
@@ -48,9 +48,9 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
-        protected override string ProviderToken
+        protected override PlatformToken PlatformToken
         {
-            get { return "WEBAPI"; }
+            get { return PlatformToken.WebApi; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace OSharp.Web.Http.Initialize
                 Controller = type.Name.Replace("ApiController", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
-                Provider = ProviderToken
+                PlatformToken = PlatformToken
             };
             return function;
         }
@@ -113,7 +113,7 @@ namespace OSharp.Web.Http.Initialize
                 Controller = type.Name.Replace("ApiController", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
-                Provider = ProviderToken,
+                PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = false,
                 IsChild = false

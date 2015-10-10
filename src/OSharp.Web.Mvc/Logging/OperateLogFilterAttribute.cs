@@ -27,6 +27,11 @@ namespace OSharp.Web.Mvc.Logging
     public class OperateLogFilterAttribute : ActionFilterAttribute
     {
         /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据日志缓存
         /// </summary>
         public IDataLogCache DataLogCache { get; set; }
@@ -42,7 +47,7 @@ namespace OSharp.Web.Mvc.Logging
         /// <param name="filterContext">The filter context.</param>
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            IFunction function = filterContext.GetExecuteFunction();
+            IFunction function = filterContext.GetExecuteFunction(ServiceProvider);
             if (function == null || !function.OperateLogEnabled)
             {
                 return;

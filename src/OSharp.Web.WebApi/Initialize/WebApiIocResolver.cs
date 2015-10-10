@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocResolver.cs" company="OSharp开源团队">
+//  <copyright file="WebApiIocResolver.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 21:51</last-date>
+//  <last-date>2015-10-06 15:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -22,7 +22,7 @@ namespace OSharp.Web.Http.Initialize
     /// <summary>
     /// WebApi依赖注入对象解析器
     /// </summary>
-    public class IocResolver : IIocResolver
+    public class WebApiIocResolver : IIocResolver
     {
         /// <summary>
         /// 获取指定类型的实例

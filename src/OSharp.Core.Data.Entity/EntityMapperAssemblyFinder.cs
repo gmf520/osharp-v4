@@ -26,7 +26,7 @@ namespace OSharp.Core.Data.Entity
         /// </summary>
         public EntityMapperAssemblyFinder()
         {
-            AllAssemblyFinder = new CurrentDomainAssemblyFinder();
+            AllAssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>

@@ -1,0 +1,24 @@
+﻿// -----------------------------------------------------------------------
+//  <copyright file="IServiceCollection.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-06 20:34</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace OSharp.Core.Dependency
+{
+    /// <summary>
+    /// 定义服务映射信息集合，用于装载注册类型映射的描述信息
+    /// </summary>
+    public interface IServiceCollection : IList<ServiceDescriptor>
+    { }
+}

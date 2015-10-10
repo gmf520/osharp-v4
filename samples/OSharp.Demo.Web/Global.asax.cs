@@ -2,8 +2,9 @@
 //  <copyright file="Global.asax.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-06-29 21:58</last-date>
+//  <last-date>2015-09-29 20:35</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -17,6 +18,7 @@ using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
 using OSharp.Core;
 using OSharp.Core.Caching;
+using OSharp.Core.Initialize;
 using OSharp.Demo.Dtos;
 using OSharp.SiteBase.Initialize;
 using OSharp.Web.Http.Initialize;
@@ -35,7 +37,7 @@ namespace OSharp.Demo.Web
             RoutesRegister();
             DtoMappers.MapperRegister();
 
-            Initialize();
+            //Initialize();
         }
 
         private static void RoutesRegister()
@@ -53,29 +55,21 @@ namespace OSharp.Demo.Web
         {
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
-            
-            //MVC初始化
-            IFrameworkInitializer initializer = new MvcFrameworkInitializer()
-            {
-                BasicLoggingInitializer = new Log4NetLoggingInitializer(),
-                IocInitializer = new MvcAutofacIocInitializer()
-            };
+
+            IBasicLoggingInitializer loggingInitializer = new Log4NetLoggingInitializer();
+            //Mvc初始化
+            MvcInitializeOptions mvcOptions = new MvcInitializeOptions(loggingInitializer, new MvcAutofacIocInitializer());
+            IFrameworkInitializer initializer = new MvcFrameworkInitializer(mvcOptions);
             initializer.Initialize();
 
             //WebApi初始化
-            initializer = new WebApiFrameworkInitializer()
-            {
-                BasicLoggingInitializer = new Log4NetLoggingInitializer(),
-                IocInitializer = new WebApiAutofacIocInitializer()
-            };
+            WebApiInitializeOptions apiOptions = new WebApiInitializeOptions(loggingInitializer, new WebApiAutofacIocInitializer());
+            initializer = new WebApiFrameworkInitializer(apiOptions);
             initializer.Initialize();
 
-            ////SignalR
-            //initializer = new SignalRFrameworkInitializer()
-            //{
-            //    BasicLoggingInitializer = new Log4NetLoggingInitializer(),
-            //    IocInitializer = new SignalRAutofacIocInitializer()
-            //};
+            ////SignalR初始化
+            //SignalRInitializeOptions signalrOptions = new SignalRInitializeOptions(loggingInitializer, new SignalRAutofacIocInitializer());
+            //initializer = new SignalRFrameworkInitializer(signalrOptions);
             //initializer.Initialize();
         }
     }

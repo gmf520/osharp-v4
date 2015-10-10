@@ -8,13 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
-using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Properties;
 using OSharp.Core.Security;
 
@@ -30,95 +26,74 @@ namespace OSharp.Core.Initialize
         private static bool _basicLoggingInitialized;
         private static bool _databaseInitialized;
         private static bool _entityInfoInitialized;
-        private IEntityInfoHandler _entityInfoHandler;
-        private IFunctionHandler _functionHandler;
 
-
-        /// <summary>
-        /// 获取或设置 基础日志初始化器
-        /// </summary>
-        public IBasicLoggingInitializer BasicLoggingInitializer { get; set; }
+        private readonly InitializeOptionsBase _options;
 
         /// <summary>
-        /// 获取或设置 数据库初始化器
+        /// 初始化一个<see cref="FrameworkInitializerBase"/>类型的新实例
         /// </summary>
-        public IDatabaseInitializer DatabaseInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 依赖注入初始化器
-        /// </summary>
-        public IIocInitializer IocInitializer { get; set; }
-
-        /// <summary>
-        /// 获取或设置 实体信息数据处理器
-        /// </summary>
-        public IEntityInfoHandler EntityInfoHandler
+        protected FrameworkInitializerBase(InitializeOptionsBase options)
         {
-            get { return _entityInfoHandler; }
-            set
-            {
-                _entityInfoHandler = value;
-                OSharpContext.Current.EntityInfoHandler = value;
-            }
+            _options = options;
+            Services = options.ServicesBuilder.Build(options.OSharpConfig);
         }
 
         /// <summary>
-        /// 获取或设置 功能信息数据处理器
+        /// 获取 依赖注入解析器
         /// </summary>
-        public IFunctionHandler FunctionHandler
-        {
-            get { return _functionHandler; }
-            set
-            {
-                _functionHandler = value;
-                OSharpContext.Current.FunctionHandler = value;
-            }
-        }
+        protected abstract IIocResolver IocResolver { get; }
+
+        /// <summary>
+        /// 获取 依赖注入服务映射信息集合
+        /// </summary>
+        public IServiceCollection Services { get; private set; }
 
         /// <summary>
         /// 开始初始化
         /// </summary>
         public void Initialize()
         {
-            OSharpConfig config = ResetConfig(OSharpConfig.Instance);
+            OSharpConfig config = _options.OSharpConfig;
 
-            if (!_basicLoggingInitialized && BasicLoggingInitializer != null)
+            if (!_basicLoggingInitialized && _options.BasicLoggingInitializer != null)
             {
-                BasicLoggingInitializer.Initialize(config.LoggingConfig);
+                _options.BasicLoggingInitializer.Initialize(config.LoggingConfig);
                 _basicLoggingInitialized = true;
             }
 
-            if (IocInitializer == null)
+            if (_options.IocInitializer == null)
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_IocInitializeIsNull);
             }
-            IocInitializer.Initialize(config, this);
+            _options.IocInitializer.Initialize(Services);
 
             if (!_databaseInitialized)
             {
-                if (DatabaseInitializer == null)
+                if (_options.DatabaseInitializer == null)
                 {
                     throw new InvalidOperationException(Resources.FrameworkInitializerBase_DatabaseInitializeIsNull);
                 }
-                DatabaseInitializer.Initialize(config.DataConfig);
+                _options.DatabaseInitializer.Initialize(config.DataConfig);
                 _databaseInitialized = true;
             }
 
             if (!_entityInfoInitialized)
             {
-                if (EntityInfoHandler == null)
+                IEntityInfoHandler entityInfoHandler = IocResolver.Resolve<IEntityInfoHandler>();
+                if (entityInfoHandler == null)
                 {
                     throw new InvalidOperationException(Resources.FrameworkInitializerBase_EntityInfoHandlerIsNull);
                 }
-                EntityInfoHandler.Initialize();
+                entityInfoHandler.Initialize();
                 _entityInfoInitialized = true;
             }
 
-            if (FunctionHandler == null)
+            IFunctionHandler functionHandler = IocResolver.Resolve<IFunctionHandler>();
+            if (functionHandler == null)
             {
                 throw new InvalidOperationException(Resources.FrameworkInitializerBase_FunctionHandlerIsNull);
             }
-            FunctionHandler.Initialize();
+            functionHandler.Initialize();
         }
 
         /// <summary>
@@ -128,6 +103,10 @@ namespace OSharp.Core.Initialize
         /// <returns>重置后的配置信息</returns>
         protected virtual OSharpConfig ResetConfig(OSharpConfig config)
         {
+            if (_options.DataConfigReseter != null)
+            {
+                config.DataConfig = _options.DataConfigReseter.Reset(config.DataConfig);
+            }
             return config;
         }
     }

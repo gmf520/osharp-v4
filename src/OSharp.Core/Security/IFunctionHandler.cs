@@ -34,9 +34,8 @@ namespace OSharp.Core.Security
         /// <param name="area">区域</param>
         /// <param name="controller">控制器</param>
         /// <param name="action">功能方法</param>
-        /// <param name="provider">技术提供者</param>
         /// <returns>符合条件的功能信息</returns>
-        IFunction GetFunction(string area, string controller, string action, string provider = null);
+        IFunction GetFunction(string area, string controller, string action);
 
         /// <summary>
         /// 查找指定URL的功能信息

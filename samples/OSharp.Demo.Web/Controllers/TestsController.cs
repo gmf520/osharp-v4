@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Web.Mvc;
 
 using OSharp.Core;
 using OSharp.Core.Caching;
+using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
@@ -27,6 +29,8 @@ namespace OSharp.Demo.Web.Controllers
     [Description("网站-测试")]
     public class TestsController : BaseController
     {
+        public IServiceProvider ServiceProvider { get; set; }
+
         public IDbContextTypeResolver ContextTypeResolver { get; set; }
 
         public ITestContract TestContract { get; set; }
@@ -36,10 +40,16 @@ namespace OSharp.Demo.Web.Controllers
         [Description("测试-首页")]
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [Description("测试-缓存测试")]
+        public ActionResult TestCacher()
+        {
             DateTime dt = DateTime.Now;
             ICache cache = CacheManager.GetCacher<TestsController>();
             const string key = "KEY__fdsaf";
-            IFunction function = this.GetExecuteFunction();
+            IFunction function = this.GetExecuteFunction(ServiceProvider);
             DateTime dt1 = cache.Get<DateTime>(key);
             if (dt1 == DateTime.MinValue)
             {
@@ -47,45 +57,27 @@ namespace OSharp.Demo.Web.Controllers
                 dt1 = dt;
             }
             return Content("实际时间：{0}，缓存时间：{1}".FormatWith(dt, dt1));
-            return new EmptyResult();
         }
 
-        [Description("测试-测试01")]
-        public ActionResult Test01()
+        public ActionResult TestClaims()
         {
-            List<Type> entityTypes = new List<Type>()
-            {
-                typeof(User),
-                typeof(Role),
-                typeof(Function),
-                typeof(OperateLog),
-                typeof(DataLog)
-            };
-            List<string>strs = new List<string>();
-            foreach (Type entityType in entityTypes)
-            {
-                IUnitOfWork uow = ContextTypeResolver.Resolve(entityType);
-                strs.Add("{0}: {1} - {2}".FormatWith(entityType.FullName, uow.GetType().FullName, uow.GetHashCode()));
-            }
-            return Content(strs.ExpandAndToString("<br/>"));
-        }
-
-        [Description("测试-测试02")]
-        public ActionResult Test02()
-        {
-            TestContract.Test();
-            return Content("end");
-        }
-
-        [HttpPost]
-        public ActionResult Test03Ajax(List<int> ids)
-        {
-            return Json(ids);
-        }
-
-        public ActionResult Test03()
-        {
+            ClaimsIdentity identity = User.Identity as ClaimsIdentity;
+            ViewBag.Identity = identity;
             return View();
+        }
+
+        public ActionResult TestIoc()
+        {
+            string format = "{0}: {1}";
+            List<string>lines = new List<string>()
+            {
+                format.FormatWith(nameof(ServiceProvider), ServiceProvider.GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(DefaultDbContext), ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith(nameof(IRepository<User,int>), ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
+            };
+            return Content(lines.ExpandAndToString("<br>"));
         }
     }
 }

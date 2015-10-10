@@ -50,6 +50,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
@@ -69,6 +75,10 @@
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -83,22 +93,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsolesAutofacInitializer.cs" />
+    <Compile Include="EntityConfigurations\EntityInfoConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FunctionConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OSharp.App.Local\OSharp.App.Local.csproj">
+      <Project>{fab53f03-6932-4e2b-87be-4b818b5e85aa}</Project>
+      <Name>OSharp.App.Local</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
       <Name>OSharp.Core.Data.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj">
+      <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
+      <Name>OSharp.Core.Permissions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
       <Name>OSharp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj">
+      <Project>{6312040f-2467-4479-a764-46f687dba66b}</Project>
+      <Name>OSharp.Logging.Log4Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>

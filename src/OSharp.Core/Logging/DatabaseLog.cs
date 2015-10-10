@@ -20,7 +20,7 @@ namespace OSharp.Core.Logging
     /// <summary>
     /// 数据库日志输出者
     /// </summary>
-    public class DatabaseLog : LogBase, ILifetimeScopeDependency
+    public class DatabaseLog : LogBase, IScopeDependency
     {
         private static LogLevel? _outLogLevel;
 

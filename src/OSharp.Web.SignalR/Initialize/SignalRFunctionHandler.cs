@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionHandler.cs" company="OSharp开源团队">
+//  <copyright file="SignalRFunctionHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 0:32</last-date>
+//  <last-date>2015-10-09 16:16</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,14 +27,14 @@ namespace OSharp.Web.SignalR.Initialize
     /// <summary>
     /// SignalR功能处理器
     /// </summary>
-    public class FunctionHandler : FunctionHandlerBase<Function, Guid>
+    public class SignalRFunctionHandler : FunctionHandlerBase<Function, Guid>
     {
         /// <summary>
         /// 获取或设置 控制器类型查找器
         /// </summary>
         protected override ITypeFinder TypeFinder
         {
-            get { return new HubTypeFinder();}
+            get { return new HubTypeFinder(); }
         }
 
         /// <summary>
@@ -42,15 +42,15 @@ namespace OSharp.Web.SignalR.Initialize
         /// </summary>
         protected override IMethodInfoFinder MethodInfoFinder
         {
-            get { return new HubMethodInfoFinder();}
+            get { return new HubMethodInfoFinder(); }
         }
 
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
-        protected override string ProviderToken
+        protected override PlatformToken PlatformToken
         {
-            get { return "SIGNALR"; }
+            get { return PlatformToken.SignalR; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace OSharp.Web.SignalR.Initialize
                 Controller = type.Name.Replace("Hub", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
-                Provider = ProviderToken
+                PlatformToken = PlatformToken
             };
             return function;
         }
@@ -109,7 +109,7 @@ namespace OSharp.Web.SignalR.Initialize
                 Controller = type.Name.Replace("Hub", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
-                Provider = ProviderToken,
+                PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = false,
                 IsChild = false

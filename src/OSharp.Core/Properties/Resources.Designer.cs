@@ -79,6 +79,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 请先初始化依赖注入服务，再使用OSharpContext.IocRegisterServices属性 的本地化字符串。
+        /// </summary>
+        internal static string Context_BuildServicesFirst {
+            get {
+                return ResourceManager.GetString("Context_BuildServicesFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 上下文初始化类型“{0}”不存在 的本地化字符串。
         /// </summary>
         internal static string DbContextInitializerConfig_InitializerNotExists {
@@ -124,11 +133,47 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 无法解析类型“{0}”的构造函数中类型为“{1}”的参数 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_CannotResolveService {
+            get {
+                return ResourceManager.GetString("Ioc_CannotResolveService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 类型“{0}”的实现类型无法找到 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_ImplementationTypeNotFound {
+            get {
+                return ResourceManager.GetString("Ioc_ImplementationTypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 类型“{0}”中找不到合适参数的构造函数 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_NoConstructorMatch {
+            get {
+                return ResourceManager.GetString("Ioc_NoConstructorMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。 的本地化字符串。
         /// </summary>
         internal static string IocInitializerBase_TypeNotIRepositoryType {
             get {
                 return ResourceManager.GetString("IocInitializerBase_TypeNotIRepositoryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 类型“{0}”不是操作单元“IUnitOfWork”的派生类。 的本地化字符串。
+        /// </summary>
+        internal static string IocInitializerBase_TypeNotIUnitOfWorkType {
+            get {
+                return ResourceManager.GetString("IocInitializerBase_TypeNotIUnitOfWorkType", resourceCulture);
             }
         }
         

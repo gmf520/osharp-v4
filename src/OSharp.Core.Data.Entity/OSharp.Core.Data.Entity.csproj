@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseInitializer.cs" />
+    <Compile Include="DataConfigReseter.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="DbContextBase.cs" />
     <Compile Include="DbContextInitializerBase.cs" />

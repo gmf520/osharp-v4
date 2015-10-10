@@ -56,7 +56,6 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
                     new SortCondition("Name")
                 };
             }
-            IFunction function = this.GetExecuteFunction();
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
             var page = SecurityContract.Functions.ToPage(predicate,
                 request.PageCondition,

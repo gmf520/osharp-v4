@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="LifetimeScopeDependencyTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="ScopeDependencyTypeFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-31 17:15</last-date>
+//  <last-date>2015-10-06 19:32</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -20,16 +20,16 @@ using OSharp.Core.Reflection;
 namespace OSharp.Core.Dependency
 {
     /// <summary>
-    /// <see cref="ILifetimeScopeDependency"/>接口实现类查找器
+    /// <see cref="IScopeDependency"/>接口实现类查找器
     /// </summary>
-    public class LifetimeScopeDependencyTypeFinder : ITypeFinder
+    public class ScopeDependencyTypeFinder : ITypeFinder
     {
         /// <summary>
-        /// 初始化一个<see cref="SingletonDependencyTypeFinder"/>类型的新实例
+        /// 初始化一个<see cref="ScopeDependencyTypeFinder"/>类型的新实例
         /// </summary>
-        public LifetimeScopeDependencyTypeFinder()
+        public ScopeDependencyTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace OSharp.Core.Dependency
             Assembly[] assemblies = AssemblyFinder.FindAll();
             return assemblies.SelectMany(assembly =>
                 assembly.GetTypes().Where(type =>
-                    typeof(ILifetimeScopeDependency).IsAssignableFrom(type) && !type.IsAbstract))
+                    typeof(IScopeDependency).IsAssignableFrom(type) && !type.IsAbstract))
                 .Distinct().ToArray();
         }
     }

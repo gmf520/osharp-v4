@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-29 17:37</last-date>
+//  <last-date>2015-10-08 17:28</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -21,15 +21,14 @@ using OSharp.Core.Dependency;
 namespace OSharp.Core.Initialize
 {
     /// <summary>
-    /// 定义依赖注入初始化器，从程序集中反射进行依赖注入接口与实现的注册
+    /// 定义依赖注入初始化器，解析依赖注入服务映射信息进行初始化
     /// </summary>
     public interface IIocInitializer
     {
         /// <summary>
         /// 初始化依赖注入
         /// </summary>
-        /// <param name="config">框架配置信息</param>
-        /// <param name="initializer"></param>
-        void Initialize(OSharpConfig config, IFrameworkInitializer initializer);
+        /// <param name="services">服务信息集合</param>
+        void Initialize(IServiceCollection services);
     }
 }
