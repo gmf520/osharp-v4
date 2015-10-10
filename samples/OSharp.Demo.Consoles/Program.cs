@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +15,10 @@ using OSharp.App.Local.Initialize;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
+using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
+using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Logging.Log4Net;
@@ -153,12 +156,16 @@ namespace OSharp.Demo.Consoles
 
         private static void Method02()
         {
-            
+            IServiceProvider provider = _program.IocResolver.Resolve<IServiceProvider>();
+            Console.WriteLine(provider.GetType());
+            provider.GetServices<IUnitOfWork>().ToList().ForEach(Console.WriteLine);
+            provider.GetServices<IFinder<Assembly>>().ToList().ForEach(Console.WriteLine);
+            Console.WriteLine(provider.GetService<IServiceCollection>());
+
         }
 
         private static void Method03()
         {
-            throw new NotImplementedException();
         }
 
         private static void Method04()

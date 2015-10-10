@@ -13,6 +13,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Properties;
+using OSharp.Utility.Extensions;
+
 
 namespace OSharp.Core.Dependency
 {
@@ -340,9 +343,17 @@ namespace OSharp.Core.Dependency
         /// <param name="collection">服务映射集合</param>
         /// <param name="descriptor">服务映射信息</param>
         /// <returns></returns>
-        public static IServiceCollection Add(this IServiceCollection collection, ServiceDescriptor descriptor)
+        public static IServiceCollection AddDescriptor(this IServiceCollection collection, ServiceDescriptor descriptor)
         {
-            collection.Add(descriptor);
+            Type implementationType = descriptor.GetImplementationType();
+            if (implementationType == typeof(object) || implementationType == descriptor.ServiceType)
+            {
+                throw new InvalidOperationException(Resources.Ioc_TryAddIndistinguishableTypeToEnumerable.FormatWith(implementationType, descriptor.ServiceType));
+            }
+            if (!collection.Any(m=>m.ServiceType == descriptor.ServiceType && m.GetImplementationType() == implementationType))
+            {
+                collection.Add(descriptor);
+            }
             return collection;
         }
 
@@ -352,7 +363,7 @@ namespace OSharp.Core.Dependency
         /// <param name="collection">服务映射集合</param>
         /// <param name="descriptors">多个服务映射信息</param>
         /// <returns></returns>
-        public static IServiceCollection Add(this IServiceCollection collection, IEnumerable<ServiceDescriptor> descriptors)
+        public static IServiceCollection AddDescriptors(this IServiceCollection collection, IEnumerable<ServiceDescriptor> descriptors)
         {
             foreach (ServiceDescriptor descriptor in descriptors)
             {

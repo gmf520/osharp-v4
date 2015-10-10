@@ -52,17 +52,9 @@ namespace OSharp.Core.Dependency
         /// <returns>服务映射集合</returns>
         public IServiceCollection Build()
         {
-            return Create(_options);
-        }
-
-        /// <summary>
-        /// 创建依赖注入服务映射信息集合
-        /// </summary>
-        /// <returns>服务映射信息集合</returns>
-        private IServiceCollection Create(ServiceBuildOptions options)
-        {
             IServiceCollection services = new ServiceCollection();
             OSharpContext.IocRegisterServices = services;
+            ServiceBuildOptions options = _options;
 
             //添加即时生命周期类型的映射
             Type[] dependencyTypes = options.TransientTypeFinder.FindAll();
@@ -81,9 +73,14 @@ namespace OSharp.Core.Dependency
 
             return services;
         }
-
+        
         /// <summary>
-        /// 以类型实现的接口进行服务添加，需排除<see cref="ITransientDependency"/>、<see cref="IScopeDependency"/>、<see cref="ISingletonDependency"/>、<see cref="IDependency"/>、<see cref="IDisposable"/>等非业务接口，如无接口则注册自身
+        /// 以类型实现的接口进行服务添加，需排除
+        /// <see cref="ITransientDependency"/>、
+        /// <see cref="IScopeDependency"/>、
+        /// <see cref="ISingletonDependency"/>、
+        /// <see cref="IDependency"/>、
+        /// <see cref="IDisposable"/>等非业务接口，如无接口则注册自身
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
         /// <param name="implementationTypes">要注册的实现类型集合</param>

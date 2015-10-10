@@ -32,7 +32,7 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 获取或设置 所有程序集查找器
         /// </summary>
-        public IAssemblyFinder AllAssemblyFinder { get; set; }
+        public IAllAssemblyFinder AllAssemblyFinder { get; set; }
 
         /// <summary>
         /// 查找指定条件的项

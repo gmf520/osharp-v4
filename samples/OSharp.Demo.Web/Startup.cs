@@ -22,6 +22,7 @@ using OSharp.Demo.Web;
 using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
+using OSharp.Web.SignalR.Initialize;
 
 using Owin;
 
@@ -44,8 +45,9 @@ namespace OSharp.Demo.Web
             services.AddLog4NetServices();
             services.AddDataServices();
 
-            app.UseMvcInitialize(services, new MvcAutofacIocBuilder());
-            app.UseWebApiInitialize(services, new WebApiAutofacIocBuilder());
+            app.UseOsharpMvc(services, new MvcAutofacIocBuilder());
+            app.UseOsharpWebApi(services, new WebApiAutofacIocBuilder());
+            app.UseOsharpSignalR(services, new SignalRAutofacIocBuilder());
 
             ConfigurationWebApi(app);
             ConfigureSignalR(app);

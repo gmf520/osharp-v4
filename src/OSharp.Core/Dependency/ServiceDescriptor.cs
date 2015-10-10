@@ -26,35 +26,6 @@ namespace OSharp.Core.Dependency
     [DebuggerDisplay("Lifetime = {Lifetime}, ServiceType = {ServiceType}, ImplementationType = {ImplementationType}")]
     public class ServiceDescriptor
     {
-        #region 属性
-
-        /// <summary>
-        /// 获取 生命周期类型的描述
-        /// </summary>
-        public LifetimeStyle Lifetime { get; private set; }
-
-        /// <summary>
-        /// 获取 服务类型
-        /// </summary>
-        public Type ServiceType { get; private set; }
-
-        /// <summary>
-        /// 获取 服务实现类型
-        /// </summary>
-        public Type ImplementationType { get; private set; }
-        
-        /// <summary>
-        /// 获取 服务实例
-        /// </summary>
-        public object ImplementationInstance { get; private set; }
-
-        /// <summary>
-        /// 获取 服务实例创建工厂
-        /// </summary>
-        public Func<IServiceProvider, object> ImplementationFactory { get; private set; }
-
-        #endregion
-
         #region 构造函数
 
         /// <summary>
@@ -92,6 +63,35 @@ namespace OSharp.Core.Dependency
             Lifetime = lifetime;
             ServiceType = serviceType;
         }
+
+        #endregion
+
+        #region 属性
+
+        /// <summary>
+        /// 获取 生命周期类型的描述
+        /// </summary>
+        public LifetimeStyle Lifetime { get; private set; }
+
+        /// <summary>
+        /// 获取 服务类型
+        /// </summary>
+        public Type ServiceType { get; private set; }
+
+        /// <summary>
+        /// 获取 服务实现类型
+        /// </summary>
+        public Type ImplementationType { get; private set; }
+        
+        /// <summary>
+        /// 获取 服务实例
+        /// </summary>
+        public object ImplementationInstance { get; private set; }
+
+        /// <summary>
+        /// 获取 服务实例创建工厂
+        /// </summary>
+        public Func<IServiceProvider, object> ImplementationFactory { get; private set; }
 
         #endregion
 

@@ -86,7 +86,7 @@ namespace OSharp.Core.Security
         /// <returns>符合条件的功能信息</returns>
         public virtual IFunction GetFunction(string area, string controller, string action)
         {
-            if (Functions == null || Functions.Length == 0)
+            if (Functions == null)
             {
                 RefreshCache();
             }
@@ -102,10 +102,11 @@ namespace OSharp.Core.Security
         /// <returns>符合条件的功能信息</returns>
         public virtual IFunction GetFunction(string url)
         {
-            if (Functions.Length == 0)
+            if (Functions == null)
             {
                 RefreshCache();
             }
+            Debug.Assert(Functions != null, "Functions != null");
             return Functions.FirstOrDefault(m => m.Url != null && m.Url == url);
         }
 

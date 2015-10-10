@@ -157,6 +157,9 @@
   <data name="Ioc_NoConstructorMatch" xml:space="preserve">
     <value>类型“{0}”中找不到合适参数的构造函数</value>
   </data>
+  <data name="Ioc_TryAddIndistinguishableTypeToEnumerable" xml:space="preserve">
+    <value>实现类型不能为“{0}”，因为该类型与注册为“{1}”的其他类型无法区分</value>
+  </data>
   <data name="QueryCacheExtensions_TypeNotEntityType" xml:space="preserve">
     <value>类型“{0}”不是实体类型</value>
   </data>

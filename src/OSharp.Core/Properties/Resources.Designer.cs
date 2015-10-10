@@ -160,6 +160,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 实现类型不能为“{0}”，因为该类型与注册为“{1}”的其他类型无法区分 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_TryAddIndistinguishableTypeToEnumerable {
+            get {
+                return ResourceManager.GetString("Ioc_TryAddIndistinguishableTypeToEnumerable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。 的本地化字符串。
         /// </summary>
         internal static string IocInitializerBase_TypeNotIRepositoryType {

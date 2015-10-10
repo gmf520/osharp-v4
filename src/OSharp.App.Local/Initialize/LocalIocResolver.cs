@@ -35,7 +35,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public T Resolve<T>()
         {
-            return Container.Resolve<T>();
+            return (T)Resolve(typeof(T));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return Container.Resolve(type);
+            return Container.ResolveOptional(type);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace OSharp.App.Local.Initialize
         /// <returns></returns>
         public IEnumerable<T> Resolves<T>()
         {
-            return Container.Resolve<IEnumerable<T>>();
+            return Container.ResolveOptional<IEnumerable<T>>();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace OSharp.App.Local.Initialize
         public IEnumerable<object> Resolves(Type type)
         {
             Type typeToResolve = typeof(IEnumerable<>).MakeGenericType(type);
-            Array array = Container.Resolve(typeToResolve) as Array;
+            Array array = Container.ResolveOptional(typeToResolve) as Array;
             if (array != null)
             {
                 return array.Cast<object>();
