@@ -62,10 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
-      <Project>{D58A373C-1A9C-4BF7-833D-427E4AEF8502}</Project>
-      <Name>OSharp.Core.Data.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSharp.Core\OSharp.Core.csproj">
       <Project>{F7C67C95-FACB-4160-9A88-CB738E65E034}</Project>
       <Name>OSharp.Core</Name>

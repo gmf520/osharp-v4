@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -18,16 +17,10 @@ using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
 using OSharp.Core;
 using OSharp.Core.Caching;
-using OSharp.Core.Configs;
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Demo.Dtos;
 using OSharp.Logging.Log4Net;
-using OSharp.SiteBase.Initialize;
-using OSharp.Web.Http.Initialize;
-using OSharp.Web.Mvc.Initialize;
 using OSharp.Web.Mvc.Routing;
-using OSharp.Web.SignalR.Initialize;
 
 
 namespace OSharp.Demo.Web
@@ -65,7 +58,7 @@ namespace OSharp.Demo.Web
             services.AddDataServices();
 
             IFrameworkInitializer initializer = new FrameworkInitializer();
-            
+
             initializer.Initialize(services, new MvcAutofacIocBuilder());
             initializer.Initialize(services, new WebApiAutofacIocBuilder());
             initializer.Initialize(services, new SignalRAutofacIocBuilder());

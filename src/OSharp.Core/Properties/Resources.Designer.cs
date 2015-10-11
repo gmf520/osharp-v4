@@ -142,6 +142,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 OSharp框架尚未初始化，请先初始化 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_FrameworkNotInitialized {
+            get {
+                return ResourceManager.GetString("Ioc_FrameworkNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”的实现类型无法找到 的本地化字符串。
         /// </summary>
         internal static string Ioc_ImplementationTypeNotFound {

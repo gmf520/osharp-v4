@@ -150,6 +150,9 @@
   <data name="Ioc_CannotResolveService" xml:space="preserve">
     <value>无法解析类型“{0}”的构造函数中类型为“{1}”的参数</value>
   </data>
+  <data name="Ioc_FrameworkNotInitialized" xml:space="preserve">
+    <value>OSharp框架尚未初始化，请先初始化</value>
+  </data>
   <data name="Ioc_ImplementationTypeNotFound" xml:space="preserve">
     <value>类型“{0}”的实现类型无法找到</value>
     <comment>{0}=service type</comment>
