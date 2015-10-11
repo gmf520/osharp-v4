@@ -18,8 +18,11 @@ using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
 using OSharp.Core;
 using OSharp.Core.Caching;
+using OSharp.Core.Configs;
+using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Demo.Dtos;
+using OSharp.Logging.Log4Net;
 using OSharp.SiteBase.Initialize;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
@@ -55,22 +58,17 @@ namespace OSharp.Demo.Web
         {
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
+            
+            IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+            IServiceCollection services = builder.Build();
+            services.AddLog4NetServices();
+            services.AddDataServices();
 
-            IBasicLoggingInitializer loggingInitializer = new Log4NetLoggingInitializer();
-            //Mvc初始化
-            MvcInitializeOptions mvcOptions = new MvcInitializeOptions(loggingInitializer, new MvcAutofacIocInitializer());
-            IFrameworkInitializer initializer = new MvcFrameworkInitializer(mvcOptions);
-            initializer.Initialize();
-
-            //WebApi初始化
-            WebApiInitializeOptions apiOptions = new WebApiInitializeOptions(loggingInitializer, new WebApiAutofacIocInitializer());
-            initializer = new WebApiFrameworkInitializer(apiOptions);
-            initializer.Initialize();
-
-            ////SignalR初始化
-            //SignalRInitializeOptions signalrOptions = new SignalRInitializeOptions(loggingInitializer, new SignalRAutofacIocInitializer());
-            //initializer = new SignalRFrameworkInitializer(signalrOptions);
-            //initializer.Initialize();
+            IFrameworkInitializer initializer = new FrameworkInitializer();
+            
+            initializer.Initialize(services, new MvcAutofacIocBuilder());
+            initializer.Initialize(services, new WebApiAutofacIocBuilder());
+            initializer.Initialize(services, new SignalRAutofacIocBuilder());
         }
     }
 }

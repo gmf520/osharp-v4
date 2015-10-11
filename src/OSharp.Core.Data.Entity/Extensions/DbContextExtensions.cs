@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -111,9 +112,14 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 获取数据上下文的变更日志信息
         /// </summary>
-        public static IEnumerable<DataLog> GetEntityDataLogs(this DbContext dbContext)
+        public static IEnumerable<DataLog> GetEntityDataLogs(this DbContext dbContext, IServiceProvider provider)
         {
-            if (OSharpContext.Current.EntityInfoHandler == null)
+            if (provider == null)
+            {
+                return Enumerable.Empty<DataLog>();
+            }
+            IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
+            if (entityInfoHandler == null)
             {
                 return Enumerable.Empty<DataLog>();
             }
@@ -122,17 +128,17 @@ namespace OSharp.Core.Data.Entity
             ObjectStateManager manager = objectContext.ObjectStateManager;
 
             IEnumerable<DataLog> logs = from entry in manager.GetObjectStateEntries(EntityState.Added).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetAddedLog(entry, entityInfo);
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Modified).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetModifiedLog(entry, entityInfo));
 
             logs = logs.Concat(from entry in manager.GetObjectStateEntries(EntityState.Deleted).Where(entry => entry.Entity != null)
-                let entityInfo = OSharpContext.Current.EntityInfoHandler.GetEntityInfo(entry.Entity.GetType())
+                let entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType())
                 where entityInfo != null && entityInfo.DataLogEnabled
                 select GetDeletedLog(entry, entityInfo));
 
@@ -142,11 +148,10 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 异步获取数据上下文的变更日志信息
         /// </summary>
-        /// <param name="dbContext"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<DataLog>> GetEntityOperateLogsAsync(this DbContext dbContext)
+        public static async Task<IEnumerable<DataLog>> GetEntityOperateLogsAsync(this DbContext dbContext, IServiceProvider provider)
         {
-            return await Task.FromResult(dbContext.GetEntityDataLogs());
+            return await Task.FromResult(dbContext.GetEntityDataLogs(provider));
         }
 #endif
 

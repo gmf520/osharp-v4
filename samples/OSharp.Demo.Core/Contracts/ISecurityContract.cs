@@ -25,7 +25,7 @@ namespace OSharp.Demo.Contracts
     /// <summary>
     /// 业务契约——功能模块
     /// </summary>
-    public interface ISecurityContract : ILifetimeScopeDependency
+    public interface ISecurityContract : IScopeDependency
     {
         #region 功能信息业务
 

@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
@@ -50,9 +51,9 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
-        /// 获取或设置 依赖注入解析器
+        /// 获取或设置 服务提供者
         /// </summary>
-        public IIocResolver IocResolver { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 获取或设置 实体类型查找器
@@ -138,8 +139,7 @@ namespace OSharp.Core.Security
         /// <param name="entityInfos">实体信息集合</param>
         protected virtual void UpdateToRepository(TEntityInfo[] entityInfos)
         {
-            IRepository<TEntityInfo, TKey> repository = IocResolver.Resolve<IRepository<TEntityInfo, TKey>>();
-            //DependencyResolver.Current.GetService<IRepository<TEntityInfo, TKey>>();
+            IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
             TEntityInfo[] items = repository.GetByPredicate(m => true).ToArray();
 
             //删除的实体信息
@@ -206,8 +206,7 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         protected virtual TEntityInfo[] GetLastestEntityInfos()
         {
-            IRepository<TEntityInfo, TKey> repository = IocResolver.Resolve<IRepository<TEntityInfo, TKey>>();
-            //DependencyResolver.Current.GetService<IRepository<TEntityInfo, TKey>>();
+            IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
             if (repository == null)
             {
                 return new TEntityInfo[0];

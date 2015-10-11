@@ -9,14 +9,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;
 using OSharp.Utility.Collections;
 using OSharp.Utility.Logging;
@@ -43,9 +42,9 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
-        /// 获取或设置 依赖注入对象解析器
+        /// 获取或设置 服务提供者
         /// </summary>
-        public IIocResolver IocResolver { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 获取 所有功能信息集合
@@ -84,18 +83,16 @@ namespace OSharp.Core.Security
         /// <param name="area">区域</param>
         /// <param name="controller">控制器</param>
         /// <param name="action">功能方法</param>
-        /// <param name="platformToken">技术提供者</param>
         /// <returns>符合条件的功能信息</returns>
-        public virtual IFunction GetFunction(string area, string controller, string action, PlatformToken? platformToken)
+        public virtual IFunction GetFunction(string area, string controller, string action)
         {
-            if (Functions == null || Functions.Length == 0)
+            if (Functions == null)
             {
                 RefreshCache();
             }
             Debug.Assert(Functions != null, "Functions != null");
-            return platformToken == null
-                ? Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action)
-                : Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action && m.PlatformToken == platformToken.Value);
+            return Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller
+                && m.Action == action && m.PlatformToken == PlatformToken);
         }
 
         /// <summary>
@@ -105,10 +102,11 @@ namespace OSharp.Core.Security
         /// <returns>符合条件的功能信息</returns>
         public virtual IFunction GetFunction(string url)
         {
-            if (Functions.Length == 0)
+            if (Functions == null)
             {
                 RefreshCache();
             }
+            Debug.Assert(Functions != null, "Functions != null");
             return Functions.FirstOrDefault(m => m.Url != null && m.Url == url);
         }
 
@@ -177,7 +175,7 @@ namespace OSharp.Core.Security
         protected virtual bool ExistsFunction(IEnumerable<TFunction> functions, TFunction function)
         {
             return functions.Any(m => m.Action == function.Action && m.Controller == function.Controller
-                && m.Area == function.Area && m.Name == function.Name);
+                && m.Area == function.Area && m.Name == function.Name && m.PlatformToken == PlatformToken);
         }
 
         /// <summary>
@@ -191,7 +189,8 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         protected virtual TFunction GetFunction(IEnumerable<TFunction> functions, string action, string controller, string area, string name)
         {
-            return functions.SingleOrDefault(m => m.Action == action && m.Controller == controller && m.Area == area && m.Name == name);
+            return functions.FirstOrDefault(m => m.Action == action && m.Controller == controller
+                && m.Area == area && m.Name == name && m.PlatformToken == PlatformToken);
         }
 
         /// <summary>
@@ -210,13 +209,13 @@ namespace OSharp.Core.Security
         /// <param name="functions">功能信息集合</param>
         protected virtual void UpdateToRepository(TFunction[] functions)
         {
-            IRepository<TFunction, TKey> repository = IocResolver.Resolve<IRepository<TFunction, TKey>>();
+            IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
             // DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
             TFunction[] items = repository.GetByPredicate(m => m.PlatformToken == PlatformToken).ToArray();
 
             //删除的功能（排除自定义功能信息）
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,
-                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action)).ToArray();
+                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
             int removeCount = removeItems.Length;
             if (repository.Delete(removeItems) > 0)
             {
@@ -226,7 +225,7 @@ namespace OSharp.Core.Security
             repository.UnitOfWork.TransactionEnabled = true;
             //处理新增的功能
             TFunction[] addItems = functions.Except(items,
-                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action)).ToArray();
+                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
             int addCount = addItems.Length;
             repository.Insert(addItems.AsEnumerable());
 
@@ -239,7 +238,8 @@ namespace OSharp.Core.Security
                     continue;
                 }
                 bool isUpdate = false;
-                TFunction function = functions.SingleOrDefault(m => m.Area == item.Area && m.Controller == item.Controller && m.Action == item.Action);
+                TFunction function = functions.SingleOrDefault(m => m.Area == item.Area && m.Controller == item.Controller
+                    && m.Action == item.Action && m.PlatformToken == PlatformToken);
                 if (function == null)
                 {
                     continue;
@@ -296,13 +296,12 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         protected virtual TFunction[] GetLastestFunctions()
         {
-            IRepository<TFunction, TKey> repository = IocResolver.Resolve<IRepository<TFunction, TKey>>();
-            //DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
+            IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
             if (repository == null)
             {
                 return new TFunction[0];
             }
-            return repository.Entities.ToArray();
+            return repository.Entities.Where(m => m.PlatformToken == PlatformToken).ToArray();
         }
     }
 }

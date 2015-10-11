@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Demo.Dtos.Security;
 using OSharp.Utility.Data;
@@ -44,7 +45,8 @@ namespace OSharp.Demo.Services
 
             if (result.ResultType == OperationResultType.Success)
             {
-                OSharpContext.Current.EntityInfoHandler.RefreshCache();
+                IEntityInfoHandler handler = ServiceProvider.GetService<IEntityInfoHandler>();
+                handler.RefreshCache();
             }
             return result;
         }

@@ -28,11 +28,16 @@ namespace OSharp.Demo.Web.Areas.Service.Controllers
     [OperateLogFilter]
     public class TestsApiController : ApiController
     {
+        /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
         [Description("服务-测试-测试001")]
         [HttpGet]
         public IHttpActionResult Test01()
         {
-            IFunction function = ControllerContext.Request.GetExecuteFunction();
+            IFunction function = ControllerContext.Request.GetExecuteFunction(ServiceProvider);
             string name = function != null ? function.Name : null;
 
             return Ok("Hello World.{0}".FormatWith(name));

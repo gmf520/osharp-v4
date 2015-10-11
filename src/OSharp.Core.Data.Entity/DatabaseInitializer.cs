@@ -37,7 +37,7 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 获取或设置 实体映射程序集查找器
         /// </summary>
-        public IAssemblyFinder MapperAssemblyFinder { get; set; }
+        public IEntityMapperAssemblyFinder MapperAssemblyFinder { get; set; }
 
         /// <summary>
         /// 开始初始化数据库

@@ -21,7 +21,7 @@ namespace OSharp.Core.Reflection
     /// <summary>
     /// 目录程序集查找器
     /// </summary>
-    public class DirectoryAssemblyFinder : IAssemblyFinder
+    public class DirectoryAssemblyFinder : IAllAssemblyFinder
     {
         private static readonly IDictionary<string, Assembly[]> AssembliesesDict = new Dictionary<string, Assembly[]>();
         private readonly string _path;

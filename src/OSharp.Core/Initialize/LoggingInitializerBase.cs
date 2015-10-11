@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-29 13:51</last-date>
+//  <last-date>2015-10-10 12:41</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -26,6 +26,11 @@ namespace OSharp.Core.Initialize
     public abstract class LoggingInitializerBase
     {
         /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// 从日志适配器配置节点初始化日志适配器
         /// </summary>
         /// <param name="config">日志适配器配置节点</param>
@@ -36,7 +41,9 @@ namespace OSharp.Core.Initialize
             {
                 return;
             }
-            ILoggerAdapter adapter = Activator.CreateInstance(config.AdapterType) as ILoggerAdapter;
+            ILoggerAdapter adapter = ServiceProvider.GetService(config.AdapterType) as ILoggerAdapter;
+            //Activator.CreateInstance(config.AdapterType) as ILoggerAdapter;
+
             if (adapter == null)
             {
                 return;

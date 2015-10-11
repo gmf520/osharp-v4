@@ -21,7 +21,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体信息处理器
     /// </summary>
-    public interface IEntityInfoHandler
+    public interface IEntityInfoHandler : ISingletonDependency
     {
         /// <summary>
         /// 从程序集中刷新实体信息数据

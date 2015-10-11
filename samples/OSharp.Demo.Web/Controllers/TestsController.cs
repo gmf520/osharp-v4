@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 using OSharp.Core;
 using OSharp.Core.Caching;
+using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
@@ -28,6 +29,8 @@ namespace OSharp.Demo.Web.Controllers
     [Description("网站-测试")]
     public class TestsController : BaseController
     {
+        public IServiceProvider ServiceProvider { get; set; }
+
         public IDbContextTypeResolver ContextTypeResolver { get; set; }
 
         public ITestContract TestContract { get; set; }
@@ -46,7 +49,7 @@ namespace OSharp.Demo.Web.Controllers
             DateTime dt = DateTime.Now;
             ICache cache = CacheManager.GetCacher<TestsController>();
             const string key = "KEY__fdsaf";
-            IFunction function = this.GetExecuteFunction();
+            IFunction function = this.GetExecuteFunction(ServiceProvider);
             DateTime dt1 = cache.Get<DateTime>(key);
             if (dt1 == DateTime.MinValue)
             {
@@ -63,5 +66,18 @@ namespace OSharp.Demo.Web.Controllers
             return View();
         }
 
+        public ActionResult TestIoc()
+        {
+            const string format = "{0}: {1}";
+            List<string>lines = new List<string>()
+            {
+                format.FormatWith("ServiceProvider", ServiceProvider.GetHashCode()),
+                format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
+                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
+            };
+            return Content(lines.ExpandAndToString("<br>"));
+        }
     }
 }

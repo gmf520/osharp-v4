@@ -56,10 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
-    <Compile Include="Initialize\IocResolver.cs" />
-    <Compile Include="Initialize\LocalAutofacIocInitializer.cs" />
-    <Compile Include="Initialize\LocalFrameworkInitializer.cs" />
-    <Compile Include="Initialize\LocalInitializeOptions.cs" />
+    <Compile Include="Initialize\AutofacRegistration.cs" />
+    <Compile Include="Initialize\LocalIocResolver.cs" />
+    <Compile Include="Initialize\LocalAutofacIocBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

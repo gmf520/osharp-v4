@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core;
+using OSharp.Core.Dependency;
 using OSharp.Utility;
 
 using Owin;
@@ -29,11 +30,12 @@ namespace OSharp.Web.Mvc.Initialize
         /// <summary>
         /// 初始化Mvc框架
         /// </summary>
-        public static IAppBuilder UseMvcInitialize(this IAppBuilder app, MvcInitializeOptions options)
+        public static IAppBuilder UseOsharpMvc(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
         {
-            options.CheckNotNull("options");
-            IFrameworkInitializer initializer = new MvcFrameworkInitializer(options);
-            initializer.Initialize();
+            services.CheckNotNull("services");
+            iocBuilder.CheckNotNull("iocBuilder");
+            IFrameworkInitializer initializer = new FrameworkInitializer();
+            initializer.Initialize(services, iocBuilder);
             return app;
         }
     }
