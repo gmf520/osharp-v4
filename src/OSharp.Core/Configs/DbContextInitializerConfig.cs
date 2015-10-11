@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Configs.ConfigFile;
+using OSharp.Core.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -41,7 +42,7 @@ namespace OSharp.Core.Configs
             Type type = Type.GetType(element.InitializerTypeName);
             if (type == null)
             {
-                throw new InvalidOperationException("上下文初始化类型“{0}”不存在".FormatWith(element.InitializerTypeName));
+                throw new InvalidOperationException(Resources.DbContextInitializerConfig_InitializerNotExists.FormatWith(element.InitializerTypeName));
             }
             InitializerType = type;
 

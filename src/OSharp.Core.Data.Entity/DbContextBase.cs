@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
+using OSharp.Core.Data.Entity.Properties;
 using OSharp.Core.Logging;
 using OSharp.Utility.Exceptions;
 using OSharp.Utility.Extensions;
@@ -106,7 +107,7 @@ namespace OSharp.Core.Data.Entity
             string name = contextConfig.ConnectionStringName;
             if (ConfigurationManager.ConnectionStrings[name] == null)
             {
-                throw new InvalidOperationException("名称为“{0}”的数据库连接串不存在".FormatWith(name));
+                throw new InvalidOperationException(Resources.DbContextBase_ConnectionStringNameNotExist.FormatWith(name));
             }
             return name;
         }
@@ -120,6 +121,11 @@ namespace OSharp.Core.Data.Entity
             return _contextConfig ?? (_contextConfig = OSharpConfig.Instance.DataConfig.ContextConfigs
                 .FirstOrDefault(m => m.ContextType == typeof(TDbContext)));
         }
+
+        /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 获取或设置 数据日志缓存
@@ -234,7 +240,7 @@ namespace OSharp.Core.Data.Entity
                 List<DataLog> logs = new List<DataLog>();
                 if (DataLoggingEnabled)
                 {
-                    logs = this.GetEntityDataLogs().ToList();
+                    logs = this.GetEntityDataLogs(ServiceProvider).ToList();
                 }
                 int count = 0;
                 try
@@ -324,7 +330,7 @@ namespace OSharp.Core.Data.Entity
                 List<DataLog> logs = new List<DataLog>();
                 if (DataLoggingEnabled)
                 {
-                    logs = (await this.GetEntityOperateLogsAsync()).ToList();
+                    logs = (await this.GetEntityOperateLogsAsync(ServiceProvider)).ToList();
                 }
                 int count = 0;
                 try

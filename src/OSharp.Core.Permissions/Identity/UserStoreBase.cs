@@ -47,7 +47,7 @@ namespace OSharp.Core.Identity
         IUserPhoneNumberStore<TUser, TUserKey>,
         IUserTwoFactorStore<TUser, TUserKey>,
         IUserLockoutStore<TUser, TUserKey>,
-        ILifetimeScopeDependency
+        IScopeDependency
         where TUser : UserBase<TUserKey>
         where TRole : RoleBase<TRoleKey>
         where TUserRoleMap : IUserRoleMap<TUserRoleMapKey, TUser, TUserKey, TRole, TRoleKey>, new()

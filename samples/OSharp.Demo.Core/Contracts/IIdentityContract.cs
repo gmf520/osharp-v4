@@ -25,7 +25,7 @@ namespace OSharp.Demo.Contracts
     /// <summary>
     /// 业务契约——身份认证模块
     /// </summary>
-    public interface IIdentityContract : ILifetimeScopeDependency
+    public interface IIdentityContract : IScopeDependency
     {
         #region 组织机构信息业务
 

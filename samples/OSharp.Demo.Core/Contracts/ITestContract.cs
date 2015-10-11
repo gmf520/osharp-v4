@@ -9,7 +9,7 @@ using OSharp.Core.Dependency;
 
 namespace OSharp.Demo.Contracts
 {
-    public interface ITestContract : ILifetimeScopeDependency
+    public interface ITestContract : IScopeDependency
     {
         void Test();
     }

@@ -20,6 +20,7 @@ namespace OSharp.Core
     /// </summary>
     public class Constants
     {
-        public const string CurrentFunctionKey = "OSHARP_FUNCTION_CURRENT";
+        public const string CurrentMvcFunctionKey = "OSHARP_MVC_FUNCTION_CURRENT";
+        public const string CurrentWebApiFunctionKey = "OSHARP_WEBAPI_FUNCTION_CURRENT";
     }
 }

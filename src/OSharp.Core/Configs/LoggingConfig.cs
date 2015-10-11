@@ -38,7 +38,7 @@ namespace OSharp.Core.Configs
         internal LoggingConfig(LoggingElement element)
         {
             EntryConfig = new LoggingEntryConfig(element.LoggingEntry);
-            DataLoggingConfig = new DataLoggingConfig(element.DataLogging);
+            //DataLoggingConfig = new DataLoggingConfig(element.DataLogging);
             BasicLoggingConfig = new BasicLoggingConfig(element.BasicLogging);
         }
 

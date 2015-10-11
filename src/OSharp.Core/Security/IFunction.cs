@@ -64,6 +64,11 @@ namespace OSharp.Core.Security
         bool IsLocked { get; set; }
 
         /// <summary>
+        /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
+        /// </summary>
+        PlatformToken PlatformToken { get; set; }
+
+        /// <summary>
         /// 获取或设置 功能地址
         /// </summary>
         string Url { get; set; }

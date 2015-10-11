@@ -26,7 +26,7 @@ namespace OSharp.Core.Initialize
         /// <summary>
         /// 开始初始化基础日志
         /// </summary>
-        /// <param name="config">基础日志配置信息</param>
+        /// <param name="config">日志配置信息</param>
         void Initialize(LoggingConfig config);
     }
 }

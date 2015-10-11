@@ -30,15 +30,15 @@ namespace OSharp.Core.Configs.ConfigFile
             set { this[LoggingEntryKey] = value; }
         }
 
-        /// <summary>
-        /// 获取或设置 数据日志配置节点
-        /// </summary>
-        [ConfigurationProperty(DataLoggingKey)]
-        public virtual DataLoggingElement DataLogging
-        {
-            get { return (DataLoggingElement)this[DataLoggingKey]; }
-            set { this[DataLoggingKey] = value; }
-        }
+        ///// <summary>
+        ///// 获取或设置 数据日志配置节点
+        ///// </summary>
+        //[ConfigurationProperty(DataLoggingKey)]
+        //public virtual DataLoggingElement DataLogging
+        //{
+        //    get { return (DataLoggingElement)this[DataLoggingKey]; }
+        //    set { this[DataLoggingKey] = value; }
+        //}
 
         /// <summary>
         /// 获取或设置 基础日志配置节点

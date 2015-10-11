@@ -25,7 +25,7 @@ namespace OSharp.Demo.Identity
     /// <summary>
     /// 用户管理器
     /// </summary>
-    public class UserManager : UserManager<User, int>, ILifetimeScopeDependency
+    public class UserManager : UserManager<User, int>, IScopeDependency
     {
         /// <summary>
         /// 初始化一个<see cref="UserManager"/>类型的新实例
