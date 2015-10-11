@@ -44,7 +44,7 @@ namespace OSharp.Demo.Web
             IServiceCollection services = builder.Build();
             services.AddLog4NetServices();
             services.AddDataServices();
-
+            
             app.UseOsharpMvc(services, new MvcAutofacIocBuilder());
             app.UseOsharpWebApi(services, new WebApiAutofacIocBuilder());
             app.UseOsharpSignalR(services, new SignalRAutofacIocBuilder());
