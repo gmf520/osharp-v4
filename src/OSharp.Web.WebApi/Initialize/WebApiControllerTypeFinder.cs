@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ControllerTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="WebApiControllerTypeFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 22:18</last-date>
+//  <last-date>2015-10-12 20:51</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 
 
 namespace OSharp.Web.Http.Initialize
@@ -23,20 +24,12 @@ namespace OSharp.Web.Http.Initialize
     /// <summary>
     /// WebApi控制器类型查找器
     /// </summary>
-    public class ControllerTypeFinder : ITypeFinder
+    public class WebApiControllerTypeFinder : IFunctionTypeFinder
     {
-        /// <summary>
-        /// 初始化一个<see cref="ControllerTypeFinder"/>类型的新实例
-        /// </summary>
-        public ControllerTypeFinder()
-        {
-            AssemblyFinder = new DirectoryAssemblyFinder();
-        }
-
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
         /// 查找指定条件的项

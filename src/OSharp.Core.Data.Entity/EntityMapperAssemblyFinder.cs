@@ -22,14 +22,6 @@ namespace OSharp.Core.Data.Entity
     public class EntityMapperAssemblyFinder : IEntityMapperAssemblyFinder
     {
         /// <summary>
-        /// 初始化一个<see cref="EntityMapperAssemblyFinder"/>类型的新实例
-        /// </summary>
-        public EntityMapperAssemblyFinder()
-        {
-            AllAssemblyFinder = new DirectoryAssemblyFinder();
-        }
-
-        /// <summary>
         /// 获取或设置 所有程序集查找器
         /// </summary>
         public IAllAssemblyFinder AllAssemblyFinder { get; set; }

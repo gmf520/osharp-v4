@@ -43,6 +43,8 @@ namespace OSharp.Autofac.Mvc
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, MvcIocResolver>();
             services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
+            services.AddSingleton<IFunctionTypeFinder, MvcControllerTypeFinder>();
+            services.AddSingleton<IFunctionMethodInfoFinder, MvcActionMethodInfoFinder>();
         }
 
         /// <summary>

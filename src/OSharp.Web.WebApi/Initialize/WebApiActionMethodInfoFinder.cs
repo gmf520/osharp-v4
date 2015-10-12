@@ -1,32 +1,30 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="HubMethodInfoFinder.cs" company="OSharp开源团队">
+//  <copyright file="WebApiActionMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 0:09</last-date>
+//  <last-date>2015-10-12 21:02</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 
-using Microsoft.AspNet.SignalR.Hubs;
-
-using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
-using OSharp.Web.SignalR.Properties;
+using OSharp.Web.Http.Properties;
 
 
-namespace OSharp.Web.SignalR.Initialize
+namespace OSharp.Web.Http.Initialize
 {
     /// <summary>
-    /// Hub 方法信息查找器
+    /// WebApi功能方法查找器
     /// </summary>
-    public class HubMethodInfoFinder : IMethodInfoFinder
+    public class WebApiActionMethodInfoFinder : IFunctionMethodInfoFinder
     {
         /// <summary>
         /// 查找指定条件的方法信息
@@ -46,11 +44,13 @@ namespace OSharp.Web.SignalR.Initialize
         /// <returns></returns>
         public MethodInfo[] FindAll(Type type)
         {
-            if (!typeof(IHub).IsAssignableFrom(type))
+            if (!typeof(ApiController).IsAssignableFrom(type))
             {
-                throw new InvalidOperationException(Resources.HubMethodInfoFinder_TypeNotHubType.FormatWith(type.FullName));
+                throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
             }
-            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public).ToArray();
+            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(m => typeof(IHttpActionResult).IsAssignableFrom(m.ReturnType) || m.ReturnType == typeof(Task<IHttpActionResult>))
+                .ToArray();
             return methods;
         }
     }

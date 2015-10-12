@@ -44,6 +44,8 @@ namespace OSharp.Autofac.SignalR
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, SignalRIocResolver>();
             services.AddSingleton<IFunctionHandler, SignalRFunctionHandler>();
+            services.AddSingleton<IFunctionTypeFinder, SignalRHubTypeFinder>();
+            services.AddSingleton<IFunctionMethodInfoFinder, SignalRHubMethodInfoFinder>();
         }
 
         /// <summary>

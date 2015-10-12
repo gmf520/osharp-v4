@@ -102,9 +102,9 @@
     <Compile Include="Handlers\TokenAuthenticationHandlerBase.cs" />
     <Compile Include="Handlers\TraceMessageHandler.cs" />
     <Compile Include="Handlers\UriFormatExtensionHandler.cs" />
-    <Compile Include="Initialize\ActionMethodInfoFinder.cs" />
+    <Compile Include="Initialize\WebApiActionMethodInfoFinder.cs" />
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
-    <Compile Include="Initialize\ControllerTypeFinder.cs" />
+    <Compile Include="Initialize\WebApiControllerTypeFinder.cs" />
     <Compile Include="Initialize\WebApiFunctionHandler.cs" />
     <Compile Include="Initialize\WebApiIocResolver.cs" />
     <Compile Include="Internal\EnumerableExtensions.cs" />

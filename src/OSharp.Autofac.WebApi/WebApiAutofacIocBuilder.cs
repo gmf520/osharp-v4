@@ -44,6 +44,8 @@ namespace OSharp.Autofac.Http
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, WebApiIocResolver>();
             services.AddSingleton<IFunctionHandler, WebApiFunctionHandler>();
+            services.AddSingleton<IFunctionTypeFinder, WebApiControllerTypeFinder>();
+            services.AddSingleton<IFunctionMethodInfoFinder, WebApiActionMethodInfoFinder>();
         }
 
         /// <summary>

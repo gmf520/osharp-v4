@@ -1,43 +1,32 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="HubTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="ControllerTypeFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-24 23:42</last-date>
+//  <last-date>2015-09-23 14:44</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.AspNet.SignalR.Hubs;
+using System.Web.Mvc;
 
 using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 
 
-namespace OSharp.Web.SignalR.Initialize
+namespace OSharp.Web.Mvc.Initialize
 {
     /// <summary>
-    /// SignalR Hub 类型查找器
+    /// MVC控制器类型查找器
     /// </summary>
-    public class HubTypeFinder : ITypeFinder
+    public class MvcControllerTypeFinder : IFunctionTypeFinder
     {
-        /// <summary>
-        /// 初始化一个<see cref="HubTypeFinder"/>类型的新实例
-        /// </summary>
-        public HubTypeFinder()
-        {
-            AssemblyFinder = new DirectoryAssemblyFinder();
-        }
-
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
         /// 查找指定条件的项
@@ -57,7 +46,7 @@ namespace OSharp.Web.SignalR.Initialize
         {
             Assembly[] assemblies = AssemblyFinder.FindAll();
             return assemblies.SelectMany(assembly => assembly.GetTypes()
-                .Where(type => typeof(IHub).IsAssignableFrom(type) && !type.IsAbstract))
+                .Where(type => typeof(Controller).IsAssignableFrom(type) && !type.IsAbstract))
                 .Distinct().ToArray();
         }
     }

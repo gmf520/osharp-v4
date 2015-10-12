@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.SignalR.Hubs;
 
-using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 using OSharp.Web.SignalR.Properties;
@@ -29,22 +28,6 @@ namespace OSharp.Web.SignalR.Initialize
     /// </summary>
     public class SignalRFunctionHandler : FunctionHandlerBase<Function, Guid>
     {
-        /// <summary>
-        /// 获取或设置 控制器类型查找器
-        /// </summary>
-        protected override ITypeFinder TypeFinder
-        {
-            get { return new HubTypeFinder(); }
-        }
-
-        /// <summary>
-        /// 获取或设置 功能查找器
-        /// </summary>
-        protected override IMethodInfoFinder MethodInfoFinder
-        {
-            get { return new HubMethodInfoFinder(); }
-        }
-
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>

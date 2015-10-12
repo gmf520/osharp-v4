@@ -1,25 +1,22 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="NullTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="NullFunctionTypeFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 12:46</last-date>
+//  <last-date>2015-10-12 20:49</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
-namespace OSharp.Core.Reflection
+namespace OSharp.Core.Security
 {
     /// <summary>
-    /// 空的类型查找器
+    /// 空的功能信息类型查找器
     /// </summary>
-    public class NullTypeFinder : ITypeFinder
+    public class NullFunctionTypeFinder : IFunctionTypeFinder
     {
         /// <summary>
         /// 查找指定条件的项

@@ -1,35 +1,29 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ControllerTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="SignalRHubTypeFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 14:44</last-date>
+//  <last-date>2015-10-12 21:03</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
+
+using Microsoft.AspNet.SignalR.Hubs;
 
 using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 
 
-namespace OSharp.Web.Mvc.Initialize
+namespace OSharp.Web.SignalR.Initialize
 {
     /// <summary>
-    /// MVC控制器类型查找器
+    /// SignalR Hub 类型查找器
     /// </summary>
-    public class ControllerTypeFinder : ITypeFinder
+    public class SignalRHubTypeFinder : IFunctionTypeFinder
     {
-        /// <summary>
-        /// 初始化一个<see cref="ControllerTypeFinder"/>类型的新实例
-        /// </summary>
-        public ControllerTypeFinder()
-        {
-            AssemblyFinder = new DirectoryAssemblyFinder();
-        }
-
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
@@ -53,7 +47,7 @@ namespace OSharp.Web.Mvc.Initialize
         {
             Assembly[] assemblies = AssemblyFinder.FindAll();
             return assemblies.SelectMany(assembly => assembly.GetTypes()
-                .Where(type => typeof(Controller).IsAssignableFrom(type) && !type.IsAbstract))
+                .Where(type => typeof(IHub).IsAssignableFrom(type) && !type.IsAbstract))
                 .Distinct().ToArray();
         }
     }

@@ -37,7 +37,7 @@ namespace OSharp.Core.Dependency
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
         /// 获取或设置 即时生命周期依赖类型查找器

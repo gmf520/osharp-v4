@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ActionMethodInfoFinder.cs" company="OSharp开源团队">
+//  <copyright file="MvcActionMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-23 22:20</last-date>
+//  <last-date>2015-10-12 21:07</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Mvc.Properties;
 
@@ -23,7 +23,7 @@ namespace OSharp.Web.Mvc.Initialize
     /// <summary>
     /// MVC功能方法查找器
     /// </summary>
-    public class ActionMethodInfoFinder : IMethodInfoFinder
+    public class MvcActionMethodInfoFinder : IFunctionMethodInfoFinder
     {
         /// <summary>
         /// 查找指定条件的功能方法信息

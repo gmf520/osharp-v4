@@ -1,26 +1,23 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="NullMethodInfoFinder.cs" company="OSharp开源团队">
+//  <copyright file="NullFunctionMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 12:48</last-date>
+//  <last-date>2015-10-12 20:49</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 
-namespace OSharp.Core.Reflection
+namespace OSharp.Core.Security
 {
     /// <summary>
     /// 空的方法查找器
     /// </summary>
-    public class NullMethodInfoFinder : IMethodInfoFinder
+    public class NullFunctionMethodInfoFinder : IFunctionMethodInfoFinder
     {
         /// <summary>
         /// 查找指定条件的方法信息

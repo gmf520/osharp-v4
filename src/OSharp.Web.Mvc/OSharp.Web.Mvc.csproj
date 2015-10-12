@@ -99,8 +99,8 @@
     <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Filters\HandleAjaxErrorAttribute.cs" />
     <Compile Include="Filters\NonRequireHttpsAttribute.cs" />
-    <Compile Include="Initialize\ControllerTypeFinder.cs" />
-    <Compile Include="Initialize\ActionMethodInfoFinder.cs" />
+    <Compile Include="Initialize\MvcControllerTypeFinder.cs" />
+    <Compile Include="Initialize\MvcActionMethodInfoFinder.cs" />
     <Compile Include="Initialize\MvcFunctionHandler.cs" />
     <Compile Include="Initialize\MvcIocResolver.cs" />
     <Compile Include="Extensions\Extensions.cs" />

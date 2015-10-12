@@ -71,8 +71,8 @@
   <ItemGroup>
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
     <Compile Include="Initialize\SignalRFunctionHandler.cs" />
-    <Compile Include="Initialize\HubMethodInfoFinder.cs" />
-    <Compile Include="Initialize\HubTypeFinder.cs" />
+    <Compile Include="Initialize\SignalRHubMethodInfoFinder.cs" />
+    <Compile Include="Initialize\SignalRHubTypeFinder.cs" />
     <Compile Include="Initialize\SignalRIocResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

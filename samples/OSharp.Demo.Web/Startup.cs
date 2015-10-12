@@ -40,7 +40,7 @@ namespace OSharp.Demo.Web
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
-            IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+            IServicesBuilder builder = new ServicesBuilder();
             IServiceCollection services = builder.Build();
             services.AddLog4NetServices();
             services.AddDataServices();
