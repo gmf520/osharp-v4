@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -75,7 +76,7 @@ namespace OSharp.Core.Configs.ConfigFile
             var key = GetElementKey(element);
             if (BaseGet(key) != null)
             {
-                throw new InvalidOperationException("标识为“{0}”的项重复定义".FormatWith(key));
+                throw new InvalidOperationException(Resources.ConfigFile_ItemKeyDefineRepeated.FormatWith(key));
             }
 
             base.BaseAdd(element);
@@ -86,7 +87,7 @@ namespace OSharp.Core.Configs.ConfigFile
             var key = GetElementKey(element);
             if (BaseGet(key) != null)
             {
-                throw new InvalidOperationException("标识为“{0}”的项重复定义".FormatWith(key));
+                throw new InvalidOperationException(Resources.ConfigFile_ItemKeyDefineRepeated.FormatWith(key));
             }
 
             base.BaseAdd(index, element);

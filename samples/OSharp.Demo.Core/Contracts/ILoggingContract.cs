@@ -24,7 +24,7 @@ namespace OSharp.Demo.Contracts
     /// <summary>
     /// 业务契约——日志模块
     /// </summary>
-    public interface ILoggingContract : ILifetimeScopeDependency
+    public interface ILoggingContract : IScopeDependency
     {
         #region 数据日志信息业务
 

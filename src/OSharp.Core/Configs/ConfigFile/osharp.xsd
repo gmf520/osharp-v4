@@ -54,7 +54,7 @@
   <xs:complexType name="Type_Logging">
     <xs:all>
       <xs:element name="entry" type="Type_LoggingEntry" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="data" type="Type_DataLogging" minOccurs="1" maxOccurs="1"/>
+      <!--<xs:element name="data" type="Type_DataLogging" minOccurs="1" maxOccurs="1"/>-->
       <xs:element name="basic" type="Type_BasicLogging" minOccurs="1" maxOccurs="1"/>
     </xs:all>
   </xs:complexType>

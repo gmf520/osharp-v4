@@ -14,10 +14,10 @@ using System.Web.Mvc;
 
 using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
-using OSharp.SiteBase.Logging;
 using OSharp.Utility.Filter;
 using OSharp.Web.Mvc;
-using OSharp.Web.UI;
+using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.UI;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers

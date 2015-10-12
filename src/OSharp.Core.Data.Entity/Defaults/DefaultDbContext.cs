@@ -13,8 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Utility.Extensions;
-
 
 namespace OSharp.Core.Data.Entity
 {

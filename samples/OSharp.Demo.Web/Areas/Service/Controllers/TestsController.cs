@@ -1,0 +1,46 @@
+﻿// -----------------------------------------------------------------------
+//  <copyright file="TestsController.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-09-24 12:06</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+using OSharp.Core.Context;
+using OSharp.Core.Security;
+using OSharp.Utility.Extensions;
+using OSharp.Web.Http.Extensions;
+using OSharp.Web.Http.Logging;
+
+
+namespace OSharp.Demo.Web.Areas.Service.Controllers
+{
+    [Description("服务-测试")]
+    [OperateLogFilter]
+    public class TestsApiController : ApiController
+    {
+        /// <summary>
+        /// 获取或设置 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        [Description("服务-测试-测试001")]
+        [HttpGet]
+        public IHttpActionResult Test01()
+        {
+            IFunction function = ControllerContext.Request.GetExecuteFunction(ServiceProvider);
+            string name = function != null ? function.Name : null;
+
+            return Ok("Hello World.{0}".FormatWith(name));
+        }
+    }
+}

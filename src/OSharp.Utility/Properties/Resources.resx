@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AnyRadixConvert_CharacterIsNotValid" xml:space="preserve">
+    <value>参数中的字符\"{0}\"不是 {1} 进制数的有效字符。</value>
+  </data>
+  <data name="AnyRadixConvert_Overflow" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="Filter_GroupOperateError" xml:space="preserve">
     <value>查询条件组中的操作类型错误，只能为And或者Or。</value>
   </data>

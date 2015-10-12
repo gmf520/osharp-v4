@@ -20,7 +20,7 @@ namespace OSharp.Core.Logging
     /// <summary>
     /// 数据日志缓存接口
     /// </summary>
-    public interface IDataLogCache : ILifetimeScopeDependency
+    public interface IDataLogCache : IScopeDependency
     {
         /// <summary>
         /// 获取 数据日志集合

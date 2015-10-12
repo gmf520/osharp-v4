@@ -1,0 +1,14 @@
+﻿@using System.Security.Claims
+@using OSharp.Utility.Extensions
+@{
+    ClaimsIdentity identity = ViewBag.Identity;
+    bool flag = User.IsInRole("admin");
+}
+<h2>在线信息</h2>
+<p>@identity.ToJsonString()</p>
+<ul>
+    @foreach (var claim in identity.Claims)
+    {
+        <li>@claim.Issuer - @claim.Type - @claim.Value - @claim.ValueType</li>
+    }
+</ul>

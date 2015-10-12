@@ -16,14 +16,14 @@ using System.Web.Mvc;
 
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
-using OSharp.Demo.Models.Identity;
-using OSharp.SiteBase.Extensions;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
 using OSharp.Web.Mvc.Binders;
+using OSharp.Web.Mvc.Extensions;
+using OSharp.Web.Mvc.Logging;
 using OSharp.Web.Mvc.Security;
-using OSharp.Web.UI;
+using OSharp.Web.Mvc.UI;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
@@ -73,30 +73,30 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-角色-新增")]
-        public ActionResult Add([ModelBinder(typeof(JsonBinder<RoleDto>))] ICollection<RoleDto> dtos)
+        public ActionResult Add(RoleDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
-            OperationResult result = IdentityContract.AddRoles(dtos.ToArray());
+            OperationResult result = IdentityContract.AddRoles(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-角色-编辑")]
-        public ActionResult Edit([ModelBinder(typeof(JsonBinder<RoleDto>))] ICollection<RoleDto> dtos)
+        public ActionResult Edit(RoleDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
-            OperationResult result = IdentityContract.EditRoles(dtos.ToArray());
+            OperationResult result = IdentityContract.EditRoles(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-角色-删除")]
-        public ActionResult Delete([ModelBinder(typeof(JsonBinder<int>))] ICollection<int> ids)
+        public ActionResult Delete(int[] ids)
         {
             ids.CheckNotNull("ids" );
-            OperationResult result = IdentityContract.DeleteRoles(ids.ToArray());
+            OperationResult result = IdentityContract.DeleteRoles(ids);
             return Json(result.ToAjaxResult());
         }
 

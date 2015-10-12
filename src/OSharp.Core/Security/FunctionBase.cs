@@ -9,6 +9,7 @@
 using System.ComponentModel.DataAnnotations;
 
 using OSharp.Core.Data;
+using OSharp.Core.Initialize;
 
 
 namespace OSharp.Core.Security
@@ -71,6 +72,11 @@ namespace OSharp.Core.Security
         /// 获取或设置 是否相对过期时间，否则为绝对过期
         /// </summary>
         public bool IsCacheSliding { get; set; }
+
+        /// <summary>
+        /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
+        /// </summary>
+        public PlatformToken PlatformToken { get; set; }
 
         /// <summary>
         /// 获取或设置 功能地址

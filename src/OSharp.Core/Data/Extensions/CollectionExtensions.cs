@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
+using OSharp.Core.Properties;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
@@ -127,7 +128,7 @@ namespace OSharp.Core.Data.Extensions
 
             if (!typeof(TEntity).IsEntityType())
             {
-                throw new InvalidOperationException("类型“{0}”不是实体类型".FormatWith(typeof(TEntity).FullName));
+                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
             }
 
             total = source.Count(predicate);

@@ -104,11 +104,11 @@
         }
 
         function submitAdds(objs) {
-            $.post("@ViewBag.AddUrl", { dtos: JSON.stringify(objs) }, ajaxResultHandler);
+            $.post("@ViewBag.AddUrl", { dtos: /*JSON.stringify(objs)*/objs }, ajaxResultHandler);
         }
 
         function submitEdits(objs) {
-            $.post("@ViewBag.EditUrl", { dtos: JSON.stringify(objs) }, ajaxResultHandler);
+            $.post("@ViewBag.EditUrl", { dtos: /*JSON.stringify(objs)*/objs }, ajaxResultHandler);
         }
 
         var deleteRows = function () {
@@ -119,7 +119,7 @@
             }
             var ids = $.Enumerable.From(selectRows).Select(function (m) { return m.Id; }).ToArray();
             $.osharp.easyui.msg.confirm("是否要删除所有选中的行？此操作是不可恢复的。", null, function () {
-                $.post("@ViewBag.DeleteUrl", { ids: JSON.stringify(ids) }, ajaxResultHandler);
+                $.post("@ViewBag.DeleteUrl", { ids: /*JSON.stringify(ids)*/ids }, ajaxResultHandler);
             });
         };
 

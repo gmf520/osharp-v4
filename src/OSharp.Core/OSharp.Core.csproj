@@ -86,13 +86,14 @@
     <Compile Include="Configs\DbContextConfig.cs" />
     <Compile Include="Configs\DataConfig.cs" />
     <Compile Include="Configs\DbContextInitializerConfig.cs" />
+    <Compile Include="Configs\IDataConfigReseter.cs" />
+    <Compile Include="Configs\ILoggingConfigReseter.cs" />
     <Compile Include="Configs\LoggingAdapterConfig.cs" />
     <Compile Include="Configs\LoggingConfig.cs" />
     <Compile Include="Configs\LoggingEntryConfig.cs" />
     <Compile Include="Configs\OSharpConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
-    <Compile Include="Context\OSharpContext.cs" />
     <Compile Include="Data\DataPage.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
@@ -112,11 +113,24 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\TransactionalBehavior.cs" />
+    <Compile Include="Dependency\ActivatorUtilities.cs" />
+    <Compile Include="Dependency\IIocBuilder.cs" />
     <Compile Include="Dependency\IIocResolver.cs" />
+    <Compile Include="Dependency\IocBuilderBase.cs" />
+    <Compile Include="Dependency\IServiceCollection.cs" />
     <Compile Include="Dependency\ISingletonDependency.cs" />
     <Compile Include="Dependency\ITransientDependency.cs" />
-    <Compile Include="Dependency\ILifetimeScopeDependency.cs" />
-    <Compile Include="Dependency\LifetimeScopeDependencyTypeFinder.cs" />
+    <Compile Include="Dependency\IScopeDependency.cs" />
+    <Compile Include="Dependency\ObjectFactory.cs" />
+    <Compile Include="Dependency\ScopeDependencyTypeFinder.cs" />
+    <Compile Include="Dependency\IocServiceProvider.cs" />
+    <Compile Include="Dependency\ServiceBuildOptions.cs" />
+    <Compile Include="Dependency\ServicesBuilder.cs" />
+    <Compile Include="Dependency\ServiceCollection.cs" />
+    <Compile Include="Dependency\ServiceCollectionExtensions.cs" />
+    <Compile Include="Dependency\ServiceDescriptor.cs" />
+    <Compile Include="Dependency\ServiceProviderExtensions.cs" />
+    <Compile Include="Dependency\IServicesBuilder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
     <Compile Include="Exceptions\CacheExtensions.cs" />
@@ -129,17 +143,29 @@
     <Compile Include="Configs\ConfigFile\Logging\LoggingAdapterElement.cs" />
     <Compile Include="Configs\ConfigFile\Logging\LoggingElement.cs" />
     <Compile Include="Configs\ConfigFile\OSharpFrameworkSection.cs" />
+    <Compile Include="Initialize\DataLoggingInitializer.cs" />
+    <Compile Include="Initialize\FrameworkInitializer.cs" />
     <Compile Include="Initialize\IBasicLoggingInitializer.cs" />
     <Compile Include="Initialize\IDataHandlerInitializer.cs" />
     <Compile Include="Initialize\IDataLoggingInitializer.cs" />
     <Compile Include="Initialize\IDatabaseInitializer.cs" />
-    <Compile Include="Initialize\IIocInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
-    <Compile Include="Dependency\LifeCycleStyle.cs" />
+    <Compile Include="Dependency\LifetimeStyle.cs" />
+    <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
+    <Compile Include="Reflection\IAllAssemblyFinder.cs" />
+    <Compile Include="Reflection\NullMethodInfoFinder.cs" />
+    <Compile Include="Reflection\NullTypeFinder.cs" />
+    <Compile Include="Security\NullFunctionHandler.cs" />
+    <Compile Include="Security\PlatformToken.cs" />
+    <Compile Include="Logging\DatabaseLog.cs" />
+    <Compile Include="Logging\DatabaseLoggerAdapter.cs" />
+    <Compile Include="Logging\DatabaseOperateLogWriter.cs" />
     <Compile Include="Logging\DataLog.cs" />
+    <Compile Include="Logging\DataLogCache.cs" />
     <Compile Include="Logging\DataLogItem.cs" />
     <Compile Include="Logging\IDataLogCache.cs" />
     <Compile Include="Logging\IOperateLogWriter.cs" />
+    <Compile Include="Initialize\LoggingInitializerBase.cs" />
     <Compile Include="Logging\LogInfoBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,15 +179,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\CurrentDomainAssemblyFinder.cs" />
     <Compile Include="Reflection\IAssemblyFinder.cs" />
     <Compile Include="Reflection\IFinder.cs" />
     <Compile Include="Reflection\IMethodInfoFinder.cs" />
     <Compile Include="Reflection\ITypeFinder.cs" />
+    <Compile Include="Security\EntityInfoHandler.cs" />
     <Compile Include="Security\EntityInfo.cs" />
     <Compile Include="Security\EntityInfoBase.cs" />
+    <Compile Include="Security\EntityInfoHandlerBase.cs" />
+    <Compile Include="Security\EntityTypeFinder.cs" />
     <Compile Include="Security\Function.cs" />
     <Compile Include="Security\FunctionBase.cs" />
+    <Compile Include="Security\FunctionHandlerBase.cs" />
     <Compile Include="Security\FunctionType.cs" />
     <Compile Include="Security\IEntityInfo.cs" />
     <Compile Include="Security\IEntityInfoHandler.cs" />
@@ -190,6 +219,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
