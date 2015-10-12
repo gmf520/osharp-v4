@@ -60,7 +60,7 @@ namespace OSharp.Demo.Web
             IFrameworkInitializer initializer = new FrameworkInitializer();
             initializer.Initialize(new MvcAutofacIocBuilder(services));
             initializer.Initialize(new WebApiAutofacIocBuilder(services));
-            initializer.Initialize(new SignalRAutofacIocBuilder(services));
+            //initializer.Initialize(new SignalRAutofacIocBuilder(services));
         }
     }
 }

@@ -47,7 +47,7 @@ namespace OSharp.Demo.Web
             
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
             app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
-            app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
+            //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
             ConfigurationWebApi(app);
             ConfigureSignalR(app);

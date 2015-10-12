@@ -30,8 +30,6 @@
 	services.AddDataServices();
 	IFrameworkInitializer initializer = new FrameworkInitializer();
 	initializer.Initialize(new MvcAutofacIocBuilder(services));
-	initializer.Initialize(new WebApiAutofacIocBuilder(services));
-	initializer.Initialize(new SignalRAutofacIocBuilder(services));
 #### 添加EntityInfo与Function实体类的实体映射配置
     public class EntityInfoConfiguration : EntityConfigurationBase<EntityInfo, Guid>
     { }
