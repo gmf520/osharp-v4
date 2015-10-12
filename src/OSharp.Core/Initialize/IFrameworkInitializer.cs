@@ -26,8 +26,7 @@ namespace OSharp.Core
         /// <summary>
         /// 开始执行框架初始化
         /// </summary>
-        /// <param name="services">服务映射集合</param>
         /// <param name="iocBuilder">依赖注入构建器</param>
-        void Initialize(IServiceCollection services, IIocBuilder iocBuilder);
+        void Initialize(IIocBuilder iocBuilder);
     }
 }

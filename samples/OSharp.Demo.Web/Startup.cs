@@ -45,9 +45,9 @@ namespace OSharp.Demo.Web
             services.AddLog4NetServices();
             services.AddDataServices();
             
-            app.UseOsharpMvc(services, new MvcAutofacIocBuilder());
-            app.UseOsharpWebApi(services, new WebApiAutofacIocBuilder());
-            app.UseOsharpSignalR(services, new SignalRAutofacIocBuilder());
+            app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
+            app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
+            app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
             ConfigurationWebApi(app);
             ConfigureSignalR(app);

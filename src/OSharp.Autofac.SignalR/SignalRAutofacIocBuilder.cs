@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-10 15:31</last-date>
+//  <last-date>2015-10-12 15:25</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,6 +27,14 @@ namespace OSharp.Autofac.SignalR
     /// </summary>
     public class SignalRAutofacIocBuilder : IocBuilderBase
     {
+        /// <summary>
+        /// 初始化一个<see cref="SignalRAutofacIocBuilder"/>类型的新实例
+        /// </summary>
+        /// <param name="services">服务信息集合</param>
+        public SignalRAutofacIocBuilder(IServiceCollection services)
+            : base(services)
+        { }
+
         /// <summary>
         /// 添加自定义服务映射
         /// </summary>

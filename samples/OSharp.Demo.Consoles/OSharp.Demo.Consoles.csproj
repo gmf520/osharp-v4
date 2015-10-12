@@ -93,7 +93,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsolesAutofacBuilder.cs" />
     <Compile Include="EntityConfigurations\EntityInfoConfiguration.cs" />
     <Compile Include="EntityConfigurations\FunctionConfiguration.cs" />
     <Compile Include="Program.cs" />

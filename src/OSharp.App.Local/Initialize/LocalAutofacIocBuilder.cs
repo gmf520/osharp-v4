@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-10 15:32</last-date>
+//  <last-date>2015-10-12 15:23</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -24,6 +24,14 @@ namespace OSharp.App.Local.Initialize
     /// </summary>
     public class LocalAutofacIocBuilder : IocBuilderBase
     {
+        /// <summary>
+        /// 初始化一个<see cref="LocalAutofacIocBuilder"/>类型的新实例
+        /// </summary>
+        /// <param name="services">服务信息集合</param>
+        public LocalAutofacIocBuilder(IServiceCollection services)
+            : base(services)
+        { }
+
         /// <summary>
         /// 获取 依赖注入解析器
         /// </summary>

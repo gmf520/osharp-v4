@@ -58,9 +58,9 @@ namespace OSharp.Demo.Web
             services.AddDataServices();
 
             IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(services, new MvcAutofacIocBuilder());
-            initializer.Initialize(services, new WebApiAutofacIocBuilder());
-            initializer.Initialize(services, new SignalRAutofacIocBuilder());
+            initializer.Initialize(new MvcAutofacIocBuilder(services));
+            initializer.Initialize(new WebApiAutofacIocBuilder(services));
+            initializer.Initialize(new SignalRAutofacIocBuilder(services));
         }
     }
 }

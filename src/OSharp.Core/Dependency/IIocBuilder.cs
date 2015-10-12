@@ -18,10 +18,14 @@ namespace OSharp.Core.Dependency
     public interface IIocBuilder
     {
         /// <summary>
+        /// 获取 服务提供者
+        /// </summary>
+        IServiceProvider ServiceProvider { get; }
+
+        /// <summary>
         /// 开始构建依赖注入映射
         /// </summary>
-        /// <param name="services">服务信息集合</param>
         /// <returns>服务提供者</returns>
-        IServiceProvider Build(IServiceCollection services);
+        IServiceProvider Build();
     }
 }
