@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CD943B7-DF8C-444B-A341-93894542B8CF}"
 EndProject
@@ -62,6 +62,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{2F9BC5E5-8782-4A7E-863A-EC944EAFAC4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Utility.Tests", "tests\OSharp.Utility.Tests\OSharp.Utility.Tests.csproj", "{AB8E170C-A389-4700-88D8-E3C42B1DB65C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "developing", "developing", "{C01340DD-F6E0-4AD0-9254-E60111A3E0E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RK.TZ.Core", "developing\RK.TZ.Core\RK.TZ.Core.csproj", "{A8D87560-1197-4299-8305-A7F88C3B884E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RK.TZ.Service", "developing\RK.TZ.Service\RK.TZ.Service.csproj", "{1504A84A-C017-42D3-897F-E84837A24CDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RK.TZ.Web", "RK.TZ.Web\RK.TZ.Web.csproj", "{BF524F71-A53E-431C-9D78-BD269D387D3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +133,18 @@ Global
 		{AB8E170C-A389-4700-88D8-E3C42B1DB65C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB8E170C-A389-4700-88D8-E3C42B1DB65C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB8E170C-A389-4700-88D8-E3C42B1DB65C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D87560-1197-4299-8305-A7F88C3B884E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D87560-1197-4299-8305-A7F88C3B884E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D87560-1197-4299-8305-A7F88C3B884E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D87560-1197-4299-8305-A7F88C3B884E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1504A84A-C017-42D3-897F-E84837A24CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1504A84A-C017-42D3-897F-E84837A24CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1504A84A-C017-42D3-897F-E84837A24CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1504A84A-C017-42D3-897F-E84837A24CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF524F71-A53E-431C-9D78-BD269D387D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF524F71-A53E-431C-9D78-BD269D387D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF524F71-A53E-431C-9D78-BD269D387D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF524F71-A53E-431C-9D78-BD269D387D3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +165,8 @@ Global
 		{50A2B6A0-8E08-4554-9595-6801F627E16B} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{2F9BC5E5-8782-4A7E-863A-EC944EAFAC4B} = {9B597CC9-7726-4D9D-A79F-78B5254B0C97}
 		{AB8E170C-A389-4700-88D8-E3C42B1DB65C} = {9B597CC9-7726-4D9D-A79F-78B5254B0C97}
+		{A8D87560-1197-4299-8305-A7F88C3B884E} = {C01340DD-F6E0-4AD0-9254-E60111A3E0E7}
+		{1504A84A-C017-42D3-897F-E84837A24CDE} = {C01340DD-F6E0-4AD0-9254-E60111A3E0E7}
+		{BF524F71-A53E-431C-9D78-BD269D387D3F} = {C01340DD-F6E0-4AD0-9254-E60111A3E0E7}
 	EndGlobalSection
 EndGlobal
