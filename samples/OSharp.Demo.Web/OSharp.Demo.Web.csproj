@@ -526,6 +526,7 @@
     <Content Include="Content\fonts\ionicons.ttf" />
     <Content Include="Content\fonts\ionicons.eot" />
     <Content Include="Areas\Manage\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Uploader\Index.cshtml" />
     <None Include="Properties\PublishProfiles\OSharp.Demo.Web.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -556,15 +557,34 @@
     <Content Include="Scripts\plugins\datagrid-detailview.js" />
     <Content Include="Scripts\plugins\datagrid-filter.js" />
     <Content Include="Scripts\plugins\datagrid-groupview.js" />
+    <Content Include="Scripts\plugins\webuploader\Uploader.swf" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.css" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.custom.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.custom.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.fis.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.flashonly.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.flashonly.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.html5only.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.html5only.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.noimage.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.noimage.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.nolog.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.nolog.min.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.withoutimage.js" />
+    <Content Include="Scripts\plugins\webuploader\webuploader.withoutimage.min.js" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Compile Include="Areas\Manage\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Manage\Controllers\UploaderController.cs" />
     <Compile Include="Startup\Startup.SignalR.cs" />
     <Compile Include="Startup\Startup.WebApi.cs" />
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Tests\TestClaims.cshtml" />
+    <Content Include="Scripts\plugins\webuploader\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
