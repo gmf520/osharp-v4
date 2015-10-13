@@ -23,7 +23,7 @@ namespace OSharp.Core.Security
     /// 定义功能角色映射存储
     /// </summary>
     public interface IFunctionRoleStore<in TFunctionRoleMapDto, in TKey, in TFunctionKey, TRoleKey>
-        where TFunctionRoleMapDto : FunctionRoleMapBaseDto<TKey, TFunctionKey, TRoleKey>
+        where TFunctionRoleMapDto : FunctionRoleMapBaseInputDto<TKey, TFunctionKey, TRoleKey>
     {
         /// <summary>
         /// 增加功能角色映射信息

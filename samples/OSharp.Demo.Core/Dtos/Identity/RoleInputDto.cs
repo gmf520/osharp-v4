@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="RoleDto.cs" company="OSharp开源团队">
-//      Copyright (c) 2015 OSharp. All rights reserved.
+//  <copyright file="RoleInputDto.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-01-08 0:31</last-date>
+//  <last-date>2015-10-14 3:38</last-date>
 // -----------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
@@ -13,13 +14,8 @@ using OSharp.Core.Data;
 
 namespace OSharp.Demo.Dtos.Identity
 {
-    public class RoleDto : IAddDto, IEditDto<int>
+    public class RoleInputDto : IInputDto<int>
     {
-        /// <summary>
-        /// 获取或设置 主键，唯一标识
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// 获取或设置 角色名称
         /// </summary>
@@ -51,5 +47,10 @@ namespace OSharp.Demo.Dtos.Identity
         /// 获取或设置 组织机构编号
         /// </summary>
         public int? OrganizationId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 主键，唯一标识
+        /// </summary>
+        public int Id { get; set; }
     }
 }

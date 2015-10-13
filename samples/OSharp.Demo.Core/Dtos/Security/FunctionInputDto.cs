@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionDto.cs" company="OSharp开源团队">
+//  <copyright file="FunctionInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-07-14 23:11</last-date>
+//  <last-date>2015-10-14 3:38</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -22,13 +23,8 @@ namespace OSharp.Demo.Dtos.Security
     /// <summary>
     /// DTO——功能信息
     /// </summary>
-    public class FunctionDto : IAddDto, IEditDto<Guid>
+    public class FunctionInputDto : IInputDto<Guid>
     {
-        /// <summary>
-        /// 获取或设置 主键，唯一标识
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// 获取 功能名称
         /// </summary>
@@ -103,5 +99,9 @@ namespace OSharp.Demo.Dtos.Security
         /// </summary>
         public bool IsLocked { get; set; }
 
+        /// <summary>
+        /// 获取或设置 主键，唯一标识
+        /// </summary>
+        public Guid Id { get; set; }
     }
 }

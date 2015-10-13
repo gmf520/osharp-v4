@@ -23,7 +23,7 @@ namespace OSharp.Core.Security
     /// 定义功能用户映射存储
     /// </summary>
     public interface IFunctionUserStore<in TFunctionUserMapDto, in TKey, in TFunctionKey, TUserKey>
-        where TFunctionUserMapDto : FunctionUserMapBaseDto<TKey, TFunctionKey, TUserKey>
+        where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TKey, TFunctionKey, TUserKey>
     {
         /// <summary>
         /// 增加功能用户映射信息

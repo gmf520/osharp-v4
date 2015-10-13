@@ -45,16 +45,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加功能信息信息
         /// </summary>
-        /// <param name="dtos">要添加的功能信息DTO信息</param>
+        /// <param name="inputDtos">要添加的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddFunctions(params FunctionDto[] dtos);
+        OperationResult AddFunctions(params FunctionInputDto[] inputDtos);
 
         /// <summary>
         /// 更新功能信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的功能信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditFunctions(params FunctionDto[] dtos);
+        OperationResult EditFunctions(params FunctionInputDto[] inputDtos);
 
         /// <summary>
         /// 删除功能信息信息
@@ -75,9 +75,9 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的实体数据信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的实体数据信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditEntityInfos(params EntityInfoDto[] dtos);
+        OperationResult EditEntityInfos(params EntityInfoInputDto[] inputDtos);
 
         #endregion
 

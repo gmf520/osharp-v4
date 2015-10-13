@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionRoleMapDto.cs" company="OSharp开源团队">
+//  <copyright file="EntityInfoInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-08-04 11:45</last-date>
+//  <last-date>2015-10-14 3:38</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,31 +16,31 @@ using System.Threading.Tasks;
 using OSharp.Core.Data;
 
 
-namespace OSharp.Core.Security.Dtos
+namespace OSharp.Demo.Dtos.Security
 {
     /// <summary>
-    /// 功能角色映射基类DTO
+    /// DTO——实体数据信息
     /// </summary>
-    public abstract class FunctionRoleMapBaseDto<TKey, TFunctionKey, TRoleKey> : IAddDto, IEditDto<TKey>
+    public class EntityInfoInputDto : IInputDto<Guid>
     {
+        /// <summary>
+        /// 获取 实体数据显示名称
+        /// </summary>
+        public string ClassName { get; set; }
+
+        /// <summary>
+        /// 获取 实体数据类型名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 获取 是否启用数据日志
+        /// </summary>
+        public bool DataLogEnabled { get; set; }
+
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
-        public TKey Id { get; set; }
-
-        /// <summary>
-        /// 获取或设置 功能编号
-        /// </summary>
-        public TFunctionKey FunctionId { get; set; }
-
-        /// <summary>
-        /// 获取或设置 角色编号
-        /// </summary>
-        public TRoleKey RoleId { get; set; }
-
-        /// <summary>
-        /// 获取或设置 限制类型
-        /// </summary>
-        public FilterType FilterType { get; set; }
+        public Guid Id { get; set; }
     }
 }

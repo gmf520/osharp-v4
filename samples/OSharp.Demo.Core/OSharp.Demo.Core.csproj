@@ -40,10 +40,6 @@
     <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -78,16 +74,16 @@
     <Compile Include="Data\DemoDbContextInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dtos\DtoMappers.cs" />
-    <Compile Include="Dtos\Identity\OrganizationDto.cs" />
-    <Compile Include="Dtos\Identity\RoleDto.cs" />
-    <Compile Include="Dtos\Identity\UserDto.cs" />
-    <Compile Include="Dtos\Security\EntityInfoDto.cs" />
-    <Compile Include="Dtos\Security\EntityRoleMapDto.cs" />
-    <Compile Include="Dtos\Security\EntityUserMapDto.cs" />
-    <Compile Include="Dtos\Security\FunctionDto.cs" />
-    <Compile Include="Dtos\Security\FunctionRoleMapDto.cs" />
-    <Compile Include="Dtos\Security\FunctionUserMapDto.cs" />
+    <Compile Include="Dtos\Identity\OrganizationInputDto.cs" />
+    <Compile Include="Dtos\Identity\RoleInputDto.cs" />
+    <Compile Include="Dtos\Identity\UserInputDto.cs" />
+    <Compile Include="Dtos\Identity\UserRoleMapInputDto.cs" />
+    <Compile Include="Dtos\Security\EntityInfoInputDto.cs" />
+    <Compile Include="Dtos\Security\EntityRoleMapInputDto.cs" />
+    <Compile Include="Dtos\Security\EntityUserMapInputDto.cs" />
+    <Compile Include="Dtos\Security\FunctionInputDto.cs" />
+    <Compile Include="Dtos\Security\FunctionRoleMapInputDto.cs" />
+    <Compile Include="Dtos\Security\FunctionUserMapInputDto.cs" />
     <Compile Include="Identity\RoleStore.cs" />
     <Compile Include="Identity\UserManager.cs" />
     <Compile Include="Identity\UserStore.cs" />

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityRoleMapDto.cs" company="OSharp开源团队">
+//  <copyright file="UserRoleMapInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-08-07 3:51</last-date>
+//  <last-date>2015-10-14 3:38</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,14 +13,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Security.Dtos;
+using OSharp.Core.Identity.Dtos;
 
 
-namespace OSharp.Demo.Dtos.Security
+namespace OSharp.Demo.Dtos.Identity
 {
-    /// <summary>
-    /// 数据角色映射DTO
-    /// </summary>
-    public class EntityRoleMapDto : EntityRoleMapBaseDto<int, Guid, int>
+    public class UserRoleMapInputDto : UserRoleMapBaseInputDto<int, int, int>
     { }
 }

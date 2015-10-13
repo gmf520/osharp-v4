@@ -53,6 +53,7 @@ namespace OSharp.Core.Mapping
                     if (IsMatch(sourceType, targetType))
                     {
                         CreateMapper(sourceType, targetType);
+                        break;
                     }
                 }
             }

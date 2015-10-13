@@ -83,7 +83,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [AllowAnonymous]
         [Description("管理-用户-新增")]
-        public async Task<ActionResult> Add(UserDto[] dtos)
+        public async Task<ActionResult> Add(UserInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
             OperationResult result = await IdentityContract.AddUsers(dtos);
@@ -94,7 +94,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [Logined]
         [Description("管理-用户-编辑")]
-        public async Task<ActionResult> Edit(UserDto[] dtos)
+        public async Task<ActionResult> Edit(UserInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
             OperationResult result = await IdentityContract.EditUsers(dtos);

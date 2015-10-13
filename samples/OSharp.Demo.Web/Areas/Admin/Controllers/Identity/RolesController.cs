@@ -73,7 +73,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-角色-新增")]
-        public ActionResult Add(RoleDto[] dtos)
+        public ActionResult Add(RoleInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
             OperationResult result = IdentityContract.AddRoles(dtos);
@@ -83,7 +83,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-角色-编辑")]
-        public ActionResult Edit(RoleDto[] dtos)
+        public ActionResult Edit(RoleInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
             OperationResult result = IdentityContract.EditRoles(dtos);
