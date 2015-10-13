@@ -11,7 +11,7 @@ namespace RK.TZ.Core.Services
 {
     public class DepartmentService : IDepartmentContract
     {
-        public IRepository<Department, int> DepartmentRepository { get; set; }
+        public IRepository<Department, int> DepartmentRepository {protected get; set; }
 
 
         public IQueryable<Department> GetInfos()

@@ -15,5 +15,17 @@ namespace RK.TZ.Core.Models
         /// </summary>
         [Required, StringLength(50)]
         public string Name { get; set; }
+
+        public DateTime CreatedTime
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

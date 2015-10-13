@@ -1,4 +1,8 @@
-﻿using System;
+﻿using OSharp.Autofac;
+using OSharp.Core;
+using OSharp.Core.Caching;
+using OSharp.SiteBase.Initialize;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +20,20 @@ namespace RK.TZ.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Initialize();
+        }
+
+        private static void Initialize()
+        {
+            ICacheProvider provider = new RuntimeMemoryCacheProvider();
+            CacheManager.SetProvider(provider, CacheLevel.First);
+
+            IFrameworkInitializer initializer = new FrameworkInitializer()
+            {
+                MvcIocInitializer = new AutofacMvcIocInitializer()
+            };
+            initializer.Initialize();
         }
     }
 }

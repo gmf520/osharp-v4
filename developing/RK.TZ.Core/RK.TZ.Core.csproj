@@ -56,7 +56,6 @@
     <Compile Include="Data\RKDbContextInitializer.cs" />
     <Compile Include="Dtos\DepartmentDto.cs" />
     <Compile Include="Dtos\DtoMappers.cs" />
-    <Compile Include="ModelConfigurations\DepartmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\DepartmentConfiguration.generated.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
