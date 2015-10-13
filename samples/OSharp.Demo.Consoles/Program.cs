@@ -12,6 +12,7 @@ using Autofac;
 using Newtonsoft.Json;
 
 using OSharp.App.Local.Initialize;
+using OSharp.AutoMapper;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
@@ -47,6 +48,7 @@ namespace OSharp.Demo.Consoles
                 IServiceCollection services = builder.Build();
                 services.AddLog4NetServices();
                 services.AddDataServices();
+                services.AddAutoMapperServices();
                 IIocBuilder iocBuilder = new LocalAutofacIocBuilder(services);
                 IFrameworkInitializer initializer = new FrameworkInitializer();
                 initializer.Initialize(iocBuilder);

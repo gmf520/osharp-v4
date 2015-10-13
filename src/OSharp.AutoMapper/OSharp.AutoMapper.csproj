@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OSharp.Keys.snk" />
+    <None Include="OSharp.AutoMapper.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -104,6 +104,10 @@
       <Project>{fab53f03-6932-4e2b-87be-4b818b5e85aa}</Project>
       <Name>OSharp.App.Local</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
+      <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
+      <Name>OSharp.AutoMapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
       <Name>OSharp.Core.Data.Entity</Name>
