@@ -151,6 +151,16 @@
     <Compile Include="Initialize\IDatabaseInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifetimeStyle.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\IMappersBuilder.cs" />
+    <Compile Include="Mapping\IMapSourceTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTargetTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTuple.cs" />
+    <Compile Include="Mapping\InputDtoTypeFinder.cs" />
+    <Compile Include="Mapping\MappersBuilder.cs" />
+    <Compile Include="Mapping\MapperExtensions.cs" />
+    <Compile Include="Mapping\MapTupleBase.cs" />
+    <Compile Include="Mapping\OutputDtoTypeFinder.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\IAllAssemblyFinder.cs" />
     <Compile Include="Security\IEntityTypeFinder.cs" />
@@ -225,9 +235,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -8,10 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 using OSharp.Core.Configs;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
+using OSharp.Core.Mapping;
 using OSharp.Core.Properties;
 using OSharp.Core.Security;
 using OSharp.Utility;
@@ -25,6 +27,7 @@ namespace OSharp.Core
     public class FrameworkInitializer : IFrameworkInitializer
     {
         //基础模块，只初始化一次
+        private static bool _mapperInitialized;
         private static bool _basicLoggingInitialized;
         private static bool _databaseInitialized;
         private static bool _entityInfoInitialized;
@@ -41,6 +44,23 @@ namespace OSharp.Core
             
             //依赖注入初始化
             IServiceProvider provider = iocBuilder.Build();
+
+            //对象映射功能初始化
+            IMappersBuilder mappersBuilder = provider.GetService<IMappersBuilder>();
+            IMapper mapper = provider.GetService<IMapper>();
+            if (!_mapperInitialized)
+            {
+                if (mappersBuilder != null)
+                {
+                    IEnumerable<IMapTuple> mapTuples = provider.GetServices<IMapTuple>();
+                    mappersBuilder.Build(mapTuples);
+                }
+                if (mapper != null)
+                {
+                    MapperExtensions.SetMaper(mapper);
+                }
+                _mapperInitialized = true;
+            }
 
             //日志功能初始化
             IBasicLoggingInitializer loggingInitializer = provider.GetService<IBasicLoggingInitializer>();

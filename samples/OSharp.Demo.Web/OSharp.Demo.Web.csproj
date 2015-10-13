@@ -559,6 +559,10 @@
       <Project>{8A4E190D-7D67-4EA4-92C7-90477608C091}</Project>
       <Name>OSharp.Autofac.WebApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
+      <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
+      <Name>OSharp.AutoMapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj">
       <Project>{ef0fecd8-4a75-4d0e-8d98-1af4218d2618}</Project>
       <Name>OSharp.Core.Data.Entity.MySql</Name>
