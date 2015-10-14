@@ -37,7 +37,7 @@ namespace OSharp.Utility.Filter.Tests
             //单条件，属性不存在
             FilterRule rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
             FilterRule rule1 = rule;
-            ExceptionAssert.IsException<OSharpException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
+            Assert.Throws<OSharpException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
 
             //单条件
             rule = new FilterRule("Name", "5", FilterOperate.EndsWith);
@@ -50,7 +50,7 @@ namespace OSharp.Utility.Filter.Tests
             Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5)));
 
             //多条件，异常
-            ExceptionAssert.IsException<OSharpException>(() => new FilterGroup
+            Assert.Throws<OSharpException>(() => new FilterGroup
             {
                 Rules = new List<FilterRule> { rule, new FilterRule("IsDeleted", true) },
                 Operate = FilterOperate.Equal

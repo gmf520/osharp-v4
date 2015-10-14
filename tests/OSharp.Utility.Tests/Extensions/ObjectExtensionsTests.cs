@@ -37,7 +37,7 @@ namespace OSharp.Utility.Extensions.Tests
 
             Assert.Equal("abc".CastTo<int>(123), 123);
             
-            ExceptionAssert.IsException<FormatException>(() => "abc".CastTo<int>());
+            Assert.Throws<FormatException>(() => "abc".CastTo<int>());
         }
 
         [Fact]

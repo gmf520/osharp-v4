@@ -43,7 +43,7 @@ namespace OSharp.Utility.Secutiry.Tests
             //弱密钥
             key = "123456781234567812345678";
             des = new DesHelper(Encoding.UTF8.GetBytes(key));
-            ExceptionAssert.IsException<CryptographicException>(() => des.Encrypt("admin"));
+            Assert.Throws<CryptographicException>(() => des.Encrypt("admin"));
 
             key = "!@#$%^&*QWERTYUI12345678";
             actual = "Qp4r67VJ8Z0=";

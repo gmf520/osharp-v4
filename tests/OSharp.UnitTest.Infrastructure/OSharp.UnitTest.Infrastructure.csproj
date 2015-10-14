@@ -52,7 +52,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="ExceptionAssert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestEntity.cs" />
     <Compile Include="UnitTestBase.cs" />
@@ -67,6 +66,7 @@
       <Name>OSharp.Utility</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

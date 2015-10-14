@@ -30,10 +30,10 @@ namespace OSharp.Utility.Extensions.Tests
         public void IsNullableTypeTest()
         {
             // ReSharper disable ConvertNullableToShortForm
-            //Assert.True(typeof(int?).NullableType());
-            //Assert.True(typeof(Nullable<int>).NullableType());
+            Assert.True(typeof(int?).IsNullableType());
+            Assert.True(typeof(Nullable<int>).IsNullableType());
 
-            //Assert.False(typeof(int).NullableType());
+            Assert.False(typeof(int).IsNullableType());
         }
 
         [Fact]
@@ -83,10 +83,9 @@ namespace OSharp.Utility.Extensions.Tests
         [Fact]
         public void HasAttributeTest()
         {
-            //Type type = GetType();
-            //Assert.True(type.HasAttribute<TestClassAttribute>());
-            //MethodInfo method = type.GetMethod("HasAttributeTest");
-            //Assert.True(method.HasAttribute<TestMethodAttribute>());
+            Type type = GetType();
+            MethodInfo method = type.GetMethod("HasAttributeTest");
+            Assert.True(method.HasAttribute<FactAttribute>());
         }
 
         [Fact]
@@ -97,7 +96,7 @@ namespace OSharp.Utility.Extensions.Tests
             PropertyInfo property = type.GetProperty("Id");
             Assert.Equal(property.GetAttribute<DescriptionAttribute>().Description, "编号");
             MethodInfo method = GetType().GetMethod("GetAttributeTest");
-            //Assert.False(method.GetAttribute<TestMethodAttribute>() == null);
+            Assert.False(method.GetAttribute<FactAttribute>() == null);
         }
 
         [Fact]
@@ -105,7 +104,6 @@ namespace OSharp.Utility.Extensions.Tests
         {
             Type type = GetType();
             Assert.Equal(type.GetAttributes<DescriptionAttribute>().Length, 0);
-            //Assert.Equal(type.GetAttributes<TestClassAttribute>().Length, 1);
         }
 
         [Fact]
@@ -114,7 +112,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(typeof(IEnumerable<>).IsGenericAssignableFrom(typeof(List<>)));
             Assert.True(typeof(List<>).IsGenericAssignableFrom(typeof(List<string>)));
 
-            ExceptionAssert.IsException<ArgumentException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 (typeof(string)).IsGenericAssignableFrom(typeof(int)));
         }
     }

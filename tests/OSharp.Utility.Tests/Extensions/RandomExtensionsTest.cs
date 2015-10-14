@@ -33,7 +33,7 @@ namespace OSharp.Utility.Extensions.Tests
         public void NextBytesTest()
         {
             Random rnd = new Random();
-            ExceptionAssert.IsException<ArgumentOutOfRangeException>(() => rnd.NextBytes(-5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.NextBytes(-5));
 
             Byte[] bytes = rnd.NextBytes(10);
             Assert.True(bytes.Length == 10);
@@ -46,7 +46,7 @@ namespace OSharp.Utility.Extensions.Tests
             Random rnd = new Random();
             int[] array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             int item = rnd.NextItem(array);
-            //CollectionAssert.Contains(array, item);
+            Assert.Contains(item, array);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomNumberStringTest()
         {
             Random rnd = new Random();
-            ExceptionAssert.IsException<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
             string rndNum = rnd.GetRandomNumberString(10);
             Assert.True(rndNum.Length == 10);
         }
@@ -78,7 +78,7 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomLetterStringTest()
         {
             Random rnd = new Random();
-            ExceptionAssert.IsException<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
             string rndNum = rnd.GetRandomLetterString(10);
             Assert.True(rndNum.Length == 10);
         }
@@ -87,7 +87,7 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomLetterAndNumberString()
         {
             Random rnd = new Random();
-            ExceptionAssert.IsException<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
             string rndNum = rnd.GetRandomLetterAndNumberString(10);
             Assert.True(rndNum.Length == 10);
         }

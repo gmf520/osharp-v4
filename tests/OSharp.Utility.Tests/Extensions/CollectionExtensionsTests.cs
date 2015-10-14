@@ -23,7 +23,7 @@ using Xunit;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    
+
     public class CollectionExtensionsTests
     {
         [Fact]
@@ -47,7 +47,7 @@ namespace OSharp.Utility.Extensions.Tests
             List<int> source = new List<int> { 1, 2, 3, 4, 5, 6 };
 
             //转换委托不能为空
-            ExceptionAssert.IsException<ArgumentNullException>(() => source.ExpandAndToString(null));
+            Assert.Throws<ArgumentNullException>(() => source.ExpandAndToString(itemFormatFunc: null));
             //没有分隔符时，默认为逗号
             Assert.Equal(source.ExpandAndToString(item => (item + 1).ToString()), "2,3,4,5,6,7");
             Assert.Equal(source.ExpandAndToString(item => (item + 1).ToString(), "|"), "2|3|4|5|6|7");
@@ -66,18 +66,18 @@ namespace OSharp.Utility.Extensions.Tests
         [Fact]
         public void WhereIfTest_IEnumerable()
         {
-            //List<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-            //CollectionAssert.Equal(source.WhereIf(m => m > 5, false).ToList(), source);
-            //List<int> actual = new List<int> { 6, 7 };
-            //CollectionAssert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
+            List<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+            Assert.Equal(source.WhereIf(m => m > 5, false).ToList(), source);
+            List<int> actual = new List<int> { 6, 7 };
+            Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
         [Fact]
         public void DistinctByTest_IEnumerable()
         {
-            //List<int> source = new List<int> { 1, 2, 3, 3, 4, 4, 5, 6, 7, 7 };
-            //List<int> actual = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-            //CollectionAssert.Equal(source.DistinctBy(m => m).ToList(), actual);
+            List<int> source = new List<int> { 1, 2, 3, 3, 4, 4, 5, 6, 7, 7 };
+            List<int> actual = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+            Assert.Equal(source.DistinctBy(m => m).ToList(), actual);
         }
 
         [Fact]
@@ -116,11 +116,11 @@ namespace OSharp.Utility.Extensions.Tests
         [Fact]
         public void WhereIfTest_IQueryable()
         {
-            //IQueryable<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 }.AsQueryable();
-            //CollectionAssert.Equal(source.WhereIf(m => m > 5, false).ToList(), source.ToList());
+            IQueryable<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 }.AsQueryable();
+            Assert.Equal(source.WhereIf(m => m > 5, false).ToList(), source.ToList());
 
-            //List<int> actual = new List<int> { 6, 7 };
-            //CollectionAssert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
+            List<int> actual = new List<int> { 6, 7 };
+            Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
         [Fact]
