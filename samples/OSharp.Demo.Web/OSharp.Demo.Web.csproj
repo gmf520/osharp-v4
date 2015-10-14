@@ -557,6 +557,13 @@
     <Content Include="Scripts\plugins\datagrid-detailview.js" />
     <Content Include="Scripts\plugins\datagrid-filter.js" />
     <Content Include="Scripts\plugins\datagrid-groupview.js" />
+    <Content Include="Scripts\plugins\webuploader\css\mulibox.css" />
+    <Content Include="Scripts\plugins\webuploader\images\bg.png" />
+    <Content Include="Scripts\plugins\webuploader\images\image.png" />
+    <Content Include="Scripts\plugins\webuploader\images\progress.png" />
+    <Content Include="Scripts\plugins\webuploader\images\success.png" />
+    <Content Include="Scripts\plugins\webuploader\site.js" />
+    <Content Include="Scripts\plugins\webuploader\images\icons.png" />
     <Content Include="Scripts\plugins\webuploader\Uploader.swf" />
     <Content Include="Scripts\plugins\webuploader\webuploader.css" />
     <Content Include="Scripts\plugins\webuploader\webuploader.custom.js" />
