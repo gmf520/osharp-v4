@@ -201,6 +201,10 @@
       <Project>{a8d87560-1197-4299-8305-a7f88c3b884e}</Project>
       <Name>RK.TZ.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RK.TZ.Service\RK.TZ.Service.csproj">
+      <Project>{1504a84a-c017-42d3-897f-e84837a24cde}</Project>
+      <Name>RK.TZ.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
