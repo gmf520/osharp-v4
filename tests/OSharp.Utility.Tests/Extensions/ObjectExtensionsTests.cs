@@ -15,53 +15,53 @@ using System.Threading.Tasks;
 using OSharp.UnitTest.Infrastructure;
 using OSharp.Utility.Extensions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    [TestClass()]
+    
     public class ObjectExtensionsTests
     {
-        [TestMethod()]
+        [Fact]
         public void CastToTest()
         {
-            Assert.AreEqual(((object)null).CastTo<object>(), null);
-            Assert.AreEqual("123".CastTo<int>(), 123);
-            Assert.AreEqual(123.CastTo<string>(), "123");
-            Assert.AreEqual(true.CastTo<string>(), "True");
-            Assert.AreEqual("true".CastTo<bool>(), true);
-            Assert.AreEqual("56D768A3-3D74-43B4-BD7B-2871D675CC4B".CastTo<Guid>(), new Guid("56D768A3-3D74-43B4-BD7B-2871D675CC4B"));
-            Assert.AreEqual(1.CastTo<UriKind>(), UriKind.Absolute);
-            Assert.AreEqual("RelativeOrAbsolute".CastTo<UriKind>(), UriKind.RelativeOrAbsolute);
+            Assert.Equal(((object)null).CastTo<object>(), null);
+            Assert.Equal("123".CastTo<int>(), 123);
+            Assert.Equal(123.CastTo<string>(), "123");
+            Assert.Equal(true.CastTo<string>(), "True");
+            Assert.Equal("true".CastTo<bool>(), true);
+            Assert.Equal("56D768A3-3D74-43B4-BD7B-2871D675CC4B".CastTo<Guid>(), new Guid("56D768A3-3D74-43B4-BD7B-2871D675CC4B"));
+            Assert.Equal(1.CastTo<UriKind>(), UriKind.Absolute);
+            Assert.Equal("RelativeOrAbsolute".CastTo<UriKind>(), UriKind.RelativeOrAbsolute);
 
-            Assert.AreEqual("abc".CastTo<int>(123), 123);
+            Assert.Equal("abc".CastTo<int>(123), 123);
             
             ExceptionAssert.IsException<FormatException>(() => "abc".CastTo<int>());
         }
 
-        [TestMethod()]
+        [Fact]
         public void IsBetweenTest()
         {
             const int num = 5;
-            Assert.IsTrue(num.IsBetween(0, 10));
-            Assert.IsFalse(num.IsBetween(5, 10));
-            Assert.IsTrue(num.IsBetween(5, 10, true));
-            Assert.IsFalse(num.IsBetween(0, 5));
-            Assert.IsTrue(num.IsBetween(0, 5, false, true));
-            Assert.IsFalse(num.IsBetween(5, 5));
-            Assert.IsFalse(num.IsBetween(5, 5, true));
-            Assert.IsFalse(num.IsBetween(5, 5, false, true));
-            Assert.IsTrue(num.IsBetween(5, 5, true, true));
+            Assert.True(num.IsBetween(0, 10));
+            Assert.False(num.IsBetween(5, 10));
+            Assert.True(num.IsBetween(5, 10, true));
+            Assert.False(num.IsBetween(0, 5));
+            Assert.True(num.IsBetween(0, 5, false, true));
+            Assert.False(num.IsBetween(5, 5));
+            Assert.False(num.IsBetween(5, 5, true));
+            Assert.False(num.IsBetween(5, 5, false, true));
+            Assert.True(num.IsBetween(5, 5, true, true));
         }
 
-        [TestMethod()]
+        [Fact]
         public void ToDynamicTest()
         {
             var obj1 = new { Name = "GMF" };
-            Assert.IsTrue(obj1.ToDynamic().Name == "GMF");
+            Assert.True(obj1.ToDynamic().Name == "GMF");
             var obj2 = new { Name = "GMF", Value = new { IsLocked = true } };
-            Assert.IsTrue(obj2.ToDynamic().Value.IsLocked);
+            Assert.True(obj2.ToDynamic().Value.IsLocked);
         }
     }
 }

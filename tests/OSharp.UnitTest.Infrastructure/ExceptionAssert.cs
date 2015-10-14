@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.UnitTest.Infrastructure
@@ -40,7 +40,7 @@ namespace OSharp.UnitTest.Infrastructure
             {
                 return;
             }
-            Assert.AreEqual(e.GetType(), exceptionType);
+            Assert.Equal(e.GetType(), exceptionType);
         }
 
         /// <summary>

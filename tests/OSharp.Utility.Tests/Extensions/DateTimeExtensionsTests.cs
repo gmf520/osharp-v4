@@ -14,39 +14,39 @@ using System.Threading.Tasks;
 
 using OSharp.Utility.Extensions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    [TestClass()]
+    
     public class DateTimeExtensionsTests
     {
-        [TestMethod()]
+        [Fact]
         public void IsWeekendTest()
         {
             DateTime dt = new DateTime(2015, 5, 2);
-            Assert.IsTrue(dt.IsWeekend());
+            Assert.True(dt.IsWeekend());
             dt = new DateTime(2015, 5, 3);
-            Assert.IsTrue(dt.IsWeekend());
+            Assert.True(dt.IsWeekend());
             for (int i = 0; i < 5; i++)
             {
                 dt = new DateTime(2015, 5, 4 + i);
-                Assert.IsFalse(dt.IsWeekend());
+                Assert.False(dt.IsWeekend());
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void IsWeekdayTest()
         {
             DateTime dt = new DateTime(2015, 5, 2);
-            Assert.IsFalse(dt.IsWeekday());
+            Assert.False(dt.IsWeekday());
             dt = new DateTime(2015, 5, 3);
-            Assert.IsFalse(dt.IsWeekday());
+            Assert.False(dt.IsWeekday());
             for (int i = 0; i < 5; i++)
             {
                 dt = new DateTime(2015, 5, 4 + i);
-                Assert.IsTrue(dt.IsWeekday());
+                Assert.True(dt.IsWeekday());
             }
         }
     }
