@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="UnitTestBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-14 17:15</last-date>
+// -----------------------------------------------------------------------
 
-using Microsoft.QualityTools.Testing.Fakes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 using OSharp.Utility.Extensions;
 
 
 namespace OSharp.UnitTest.Infrastructure
 {
-    [TestClass]
     public abstract class UnitTestBase
     {
-        protected IDisposable Shims;
-        protected readonly IEnumerable<TestEntity> Entities; 
+        protected readonly IEnumerable<TestEntity> Entities;
 
         protected UnitTestBase()
         {
-            List<TestEntity>entities = new List<TestEntity>();
+            List<TestEntity> entities = new List<TestEntity>();
             DateTime dt = DateTime.Now;
             Random rnd = new Random();
             for (int i = 0; i < 1000; i++)
@@ -34,18 +35,6 @@ namespace OSharp.UnitTest.Infrastructure
                 });
             }
             Entities = entities;
-        }
-
-        [TestInitialize]
-        public virtual void TestInitialize()
-        {
-            Shims = ShimsContext.Create();            
-        }
-        
-        [TestCleanup]
-        public virtual void TestCleanup()
-        {
-            Shims.Dispose();
         }
     }
 }
