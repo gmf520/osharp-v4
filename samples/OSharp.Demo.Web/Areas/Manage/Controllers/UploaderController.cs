@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OSharp.Demo.Contracts;
+using Qiniu.IO.Resumable;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace OSharp.Demo.Web.Areas.Manage.Controllers
     public class UploaderController : Controller
     {
         const int ChunkSize = 1024 * 1024;
+
+        IQiniuContract QiniuContract { get; set; }
 
         // GET: Manage/Uploader
         public ActionResult Index()
@@ -34,11 +38,35 @@ namespace OSharp.Demo.Web.Areas.Manage.Controllers
             {
                 Directory.CreateDirectory(@"c:\temp");
             }
-
+            
             filePathName = @"c:\temp\" + filePathName;
             file.SaveAs(filePathName);
 
+            Stream stream = file.InputStream;
+
+            //using (FileStream fs = stream)
+            //{
+
+            //}
+
+
+            ResumablePutFile("magiccook", Guid.NewGuid().ToString("N"),stream);
+
             return Json(new { success = true });
+        }
+
+        public void ResumablePutFile(string bucket, string key, System.IO.Stream stream)
+        {
+
+            Qiniu.Conf.Config.ACCESS_KEY = "_DN2l8Cb2ZjfajZWFiJ7uLsRgasrqDDlGkkq5bBS";
+            Qiniu.Conf.Config.SECRET_KEY = "34Wig1rOV0wLnGGQ7E7aUDrogXdT8lDLKDsifA_l";
+
+            Qiniu.RS.PutPolicy policy = new Qiniu.RS.PutPolicy(bucket, 3600);
+            string uptoken = policy.Token();
+            Qiniu.IO.Resumable.Settings setting = new Settings();
+            ResumablePutExtra extra = new ResumablePutExtra();
+            ResumablePut client = new ResumablePut(setting, extra);
+            client.PutFile(uptoken, Guid.NewGuid().ToString("N"), stream);
         }
 
         public class UploadFileInfo
@@ -71,7 +99,11 @@ namespace OSharp.Demo.Web.Areas.Manage.Controllers
                     fileContents = fileContents.Concat(buffer).ToArray();
                 }
             }
-            using (var fs=new FileStream(@"C:\\temp\\"+DateTime.Now.ToString("yyyyMMddHHHmmss")+Path.GetExtension(filename).ToLower(),FileMode.Create))
+
+            
+
+
+                using (var fs=new FileStream(@"C:\\temp\\"+DateTime.Now.ToString("yyyyMMddHHHmmss")+Path.GetExtension(filename).ToLower(),FileMode.Create))
             {
                 using (var bw=new BinaryWriter(fs))
                 {

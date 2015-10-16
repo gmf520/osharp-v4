@@ -48,9 +48,8 @@
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Qiniu.4.0">
+      <HintPath>bin\Release\Qiniu.4.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -64,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IIdentityContract.cs" />
     <Compile Include="Contracts\ILoggingContract.cs" />
+    <Compile Include="Contracts\IQiniuContract.cs" />
     <Compile Include="Contracts\ISecurityContract.cs" />
     <Compile Include="Contracts\ITestContract.cs" />
     <Compile Include="Data\CreateDatabaseIfNotExistsWithSeed.cs" />
@@ -148,6 +148,7 @@
     <Compile Include="Services\IdentityService.User.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\LoggingService.DataLog.cs" />
+    <Compile Include="Services\QiniuService.cs" />
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\SecurityService.EntityInfo.cs" />
     <Compile Include="Services\SecurityService.Function.cs" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="OSharp.Keys.snk" />
+    <None Include="Osharp.New.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
