@@ -3,6 +3,8 @@
  - [简介][1]
  - [相关技术][2]
  - [快速启动][3]
+ - [开发计划与进度][4]
+ - [版本更新日志][5]
 
 ## <a id="title01"/>简介
 1. OSharp是个快速开发框架，但不是一个大而全的包罗万象的框架，严格的说，OSharp中什么都没有实现。与其他大而全的框架最大的不同点，就是OSharp只做抽象封装，不做实现。依赖注入、ORM、对象映射、日志、缓存等等功能，都只定义了一套最基础最通用的抽象封装，提供了一套统一的API、约定与规则，并定义了部分执行流程，主要是让项目在一定的规范下进行开发。所有的功能实现端，都是通过现有的成熟的第三方组件来实现的，除了EntityFramework之外，所有的第三方实现都可以轻松的替换成另一种第三方实现，OSharp框架正是要起隔离作用，保证这种变更不会对业务代码造成影响，使用统一的API来进行业务实现，解除与第三方实现的耦合，保持业务代码的规范与稳定。
@@ -21,20 +23,29 @@
 ## <a id="title03"/>快速启动
 #### 从nuget中引用需要的osharp组件
 #### 在Web.Config中添名为name="default"的数据库连接
-    <connectionStrings>
-        <add name="default" connectionString="Data Source=.; Integrated Security=True; Initial Catalog=OSharp.Default; Pooling=True; MultipleActiveResultSets=True;" providerName="System.Data.SqlClient" />
-    </connectionStrings>
+```
+<connectionStrings>
+    <add name="default" connectionString="Data Source=.; Integrated Security=True; Initial Catalog=OSharp.Default; Pooling=True; MultipleActiveResultSets=True;" providerName="System.Data.SqlClient" />
+</connectionStrings>
+```
+
 #### 在Global的Application_Start方法中添加初始化代码
-	IServicesBuilder builder = new ServicesBuilder();
-	IServiceCollection services = builder.Build();
-	services.AddDataServices();
-	IFrameworkInitializer initializer = new FrameworkInitializer();
-	initializer.Initialize(new MvcAutofacIocBuilder(services));
+```
+IServicesBuilder builder = new ServicesBuilder();
+IServiceCollection services = builder.Build();
+services.AddDataServices();
+IFrameworkInitializer initializer = new FrameworkInitializer();
+initializer.Initialize(new MvcAutofacIocBuilder(services));
+```
+
 #### 添加EntityInfo与Function实体类的实体映射配置
-    public class EntityInfoConfiguration : EntityConfigurationBase<EntityInfo, Guid>
-    { }
-    public class FunctionConfiguration : EntityConfigurationBase<Function, Guid>
-    { }
+```
+public class EntityInfoConfiguration : EntityConfigurationBase<EntityInfo, Guid>
+{ }
+public class FunctionConfiguration : EntityConfigurationBase<Function, Guid>
+{ }
+```
+
 #### 运行项目，即可初始化完成，将会自动生成相应的数据库
     
     
@@ -43,3 +54,5 @@
   [1]: #title01
   [2]: #title02
   [3]: #title03
+  [4]: https://github.com/i66soft/osharp/wiki/plan-rate
+  [5]: https://github.com/i66soft/osharp/wiki/update-logs
