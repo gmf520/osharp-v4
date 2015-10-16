@@ -10,5 +10,6 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.App.Local\OSharp.App.Local.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj" -Properties Configuration=Debug -IncludeReferencedProjects

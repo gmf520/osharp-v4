@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Identity.Models;
+using OSharp.Core.Mapping;
 using OSharp.Core.Security.Dtos;
 using OSharp.Core.Security.Models;
 using OSharp.Utility;
@@ -45,8 +46,8 @@ namespace OSharp.Core.Security
           IFunctionUserStore<TFunctionUserMapDto, TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TFunctionRoleMap : IFunctionRoleMap<TFunctionRoleMapKey, TFunction, TFunctionKey, TRole, TRoleKey>
         where TFunctionUserMap : IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
-        where TFunctionRoleMapDto : FunctionRoleMapBaseDto<TFunctionRoleMapKey, TFunctionKey, TRoleKey>
-        where TFunctionUserMapDto : FunctionUserMapBaseDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
+        where TFunctionRoleMapDto : FunctionRoleMapBaseInputDto<TFunctionRoleMapKey, TFunctionKey, TRoleKey>
+        where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TFunction : FunctionBase<TFunctionKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>

@@ -196,6 +196,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 MapperExtensions.Mapper不能为空，请先设置值 的本地化字符串。
+        /// </summary>
+        internal static string Map_MapperIsNull {
+            get {
+                return ResourceManager.GetString("Map_MapperIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”不是实体类型 的本地化字符串。
         /// </summary>
         internal static string QueryCacheExtensions_TypeNotEntityType {

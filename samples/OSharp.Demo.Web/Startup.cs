@@ -15,6 +15,7 @@ using Microsoft.Owin;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
+using OSharp.AutoMapper;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
@@ -44,7 +45,8 @@ namespace OSharp.Demo.Web
             IServiceCollection services = builder.Build();
             services.AddLog4NetServices();
             services.AddDataServices();
-            
+            services.AddAutoMapperServices();
+
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
             app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));

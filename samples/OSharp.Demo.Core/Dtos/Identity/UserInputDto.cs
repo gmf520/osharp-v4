@@ -1,14 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="UserDto.cs" company="OSharp开源团队">
-//      Copyright (c) 2015 OSharp. All rights reserved.
+//  <copyright file="UserInputDto.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-01-08 0:31</last-date>
+//  <last-date>2015-10-14 3:38</last-date>
 // -----------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
-
-using AutoMapper;
 
 using OSharp.Core.Data;
 
@@ -18,13 +17,8 @@ namespace OSharp.Demo.Dtos.Identity
     /// <summary>
     /// 用户信息DTO
     /// </summary>
-    public class UserDto : IAddDto, IEditDto<int>
+    public class UserInputDto : IInputDto<int>
     {
-        /// <summary>
-        /// 获取或设置 主键，唯一标识
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Unique username
         /// </summary>
@@ -40,7 +34,6 @@ namespace OSharp.Demo.Dtos.Identity
         /// <summary>
         /// 获取或设置 登录密码
         /// </summary>
-        [IgnoreMap]
         public string Password { get; set; }
 
         /// <summary>
@@ -74,5 +67,10 @@ namespace OSharp.Demo.Dtos.Identity
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// 获取或设置 主键，唯一标识
+        /// </summary>
+        public int Id { get; set; }
     }
 }

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Identity.Models;
+using OSharp.Core.Mapping;
 using OSharp.Core.Security.Dtos;
 using OSharp.Core.Security.Models;
 using OSharp.Utility;
@@ -35,8 +36,8 @@ namespace OSharp.Core.Security
           IEntityUserStore<TEntityUserMapDto, TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TEntityRoleMap : IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
         where TEntityUserMap : IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
-        where TEntityRoleMapDto : EntityRoleMapBaseDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
-        where TEntityUserMapDto : EntityUserMapBaseDto<TEntityUserMapKey, TEntityInfoKey, TUserKey>
+        where TEntityRoleMapDto : EntityRoleMapBaseInputDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
+        where TEntityUserMapDto : EntityUserMapBaseInputDto<TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>

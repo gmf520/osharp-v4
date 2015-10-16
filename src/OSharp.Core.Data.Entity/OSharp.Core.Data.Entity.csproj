@@ -48,10 +48,6 @@
     <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -82,7 +78,6 @@
     <Compile Include="Defaults\DefaultDbContext.cs" />
     <Compile Include="EntityConfigurationBase.cs" />
     <Compile Include="EntityMapperAssemblyFinder.cs" />
-    <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
     <Compile Include="IContextTypeResolver.cs" />

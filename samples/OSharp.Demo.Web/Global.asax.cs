@@ -31,7 +31,6 @@ namespace OSharp.Demo.Web
         {
             AreaRegistration.RegisterAllAreas();
             RoutesRegister();
-            DtoMappers.MapperRegister();
 
             //Initialize();
         }

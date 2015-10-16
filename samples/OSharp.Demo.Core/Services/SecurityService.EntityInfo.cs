@@ -37,11 +37,11 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的实体数据信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的实体数据信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult EditEntityInfos(params EntityInfoDto[] dtos)
+        public OperationResult EditEntityInfos(params EntityInfoInputDto[] inputDtos)
         {
-            OperationResult result = EntityInfoRepository.Update(dtos);
+            OperationResult result = EntityInfoRepository.Update(inputDtos);
 
             if (result.ResultType == OperationResultType.Success)
             {

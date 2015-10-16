@@ -29,7 +29,7 @@ namespace OSharp.Core.Configs
             = new Lazy<OSharpConfig>(() => new OSharpConfig());
 
         /// <summary>
-        /// 初始化一个心得<see cref="OSharpConfig"/>实例
+        /// 初始化一个新的<see cref="OSharpConfig"/>实例
         /// </summary>
         private OSharpConfig()
         {

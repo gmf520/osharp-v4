@@ -17,40 +17,40 @@ using OSharp.UnitTest.Infrastructure;
 using OSharp.Utility.Exceptions;
 using OSharp.Utility.Filter;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.Filter.Tests
 {
-    [TestClass()]
+    
     public class FilterHelperTests : UnitTestBase
     {
-        [TestMethod()]
+        [Fact]
         public void GetExpressionTest()
         {
             IQueryable<TestEntity> source = Entities.AsQueryable();
 
             //空条件
             Expression<Func<TestEntity, bool>> predicate = FilterHelper.GetExpression<TestEntity>();
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source));
+            Assert.True(source.Where(predicate).SequenceEqual(source));
 
             //单条件，属性不存在
             FilterRule rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
             FilterRule rule1 = rule;
-            ExceptionAssert.IsException<OSharpException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
+            Assert.Throws<OSharpException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
 
             //单条件
             rule = new FilterRule("Name", "5", FilterOperate.EndsWith);
             predicate = FilterHelper.GetExpression<TestEntity>(rule);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.EndsWith("5"))));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.EndsWith("5"))));
 
             //二级条件
             rule = new FilterRule("Name.Length", 5, FilterOperate.Greater);
             predicate = FilterHelper.GetExpression<TestEntity>(rule);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5)));
 
             //多条件，异常
-            ExceptionAssert.IsException<OSharpException>(() => new FilterGroup
+            Assert.Throws<OSharpException>(() => new FilterGroup
             {
                 Rules = new List<FilterRule> { rule, new FilterRule("IsDeleted", true) },
                 Operate = FilterOperate.Equal
@@ -63,7 +63,7 @@ namespace OSharp.Utility.Filter.Tests
                 Operate = FilterOperate.And
             };
             predicate = FilterHelper.GetExpression<TestEntity>(group);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5 && m.IsDeleted)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5 && m.IsDeleted)));
 
             //条件组嵌套
             DateTime dt = DateTime.Now;
@@ -77,7 +77,7 @@ namespace OSharp.Utility.Filter.Tests
                 Operate = FilterOperate.Or
             };
             predicate = FilterHelper.GetExpression<TestEntity>(group);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.AddDate > dt || m.Name.Length > 5 && m.IsDeleted)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.AddDate > dt || m.Name.Length > 5 && m.IsDeleted)));
 
         }
     }

@@ -24,7 +24,7 @@ namespace OSharp.Core.Security
     /// 定义数据用户映射存储
     /// </summary>
     public interface IEntityUserStore<in TEntityUserMapDto, in TKey, in TEntityInfoKey, in TUserKey>
-        where TEntityUserMapDto : EntityUserMapBaseDto<TKey, TEntityInfoKey, TUserKey>
+        where TEntityUserMapDto : EntityUserMapBaseInputDto<TKey, TEntityInfoKey, TUserKey>
     {
         /// <summary>
         /// 增加数据用户映射信息

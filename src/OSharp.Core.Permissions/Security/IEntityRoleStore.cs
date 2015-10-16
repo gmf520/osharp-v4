@@ -24,7 +24,7 @@ namespace OSharp.Core.Security
     /// 定义数据角色映射存储
     /// </summary>
     public interface IEntityRoleStore<in TEntityRoleMapDto, in TKey, in TEntityInfoKey, in TRoleKey>
-        where TEntityRoleMapDto : EntityRoleMapBaseDto<TKey, TEntityInfoKey, TRoleKey>
+        where TEntityRoleMapDto : EntityRoleMapBaseInputDto<TKey, TEntityInfoKey, TRoleKey>
     {
         /// <summary>
         /// 增加数据角色映射信息

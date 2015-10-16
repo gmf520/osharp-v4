@@ -50,10 +50,6 @@
       <HintPath>..\..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -637,6 +633,10 @@
     <ProjectReference Include="..\..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj">
       <Project>{8A4E190D-7D67-4EA4-92C7-90477608C091}</Project>
       <Name>OSharp.Autofac.WebApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
+      <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
+      <Name>OSharp.AutoMapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj">
       <Project>{ef0fecd8-4a75-4d0e-8d98-1af4218d2618}</Project>

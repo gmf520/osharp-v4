@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using OSharp.Core.Data;
+using OSharp.Core.Mapping;
 using OSharp.Core.Reflection;
 using OSharp.Utility.Extensions;
 
@@ -21,7 +22,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体类型查找器
     /// </summary>
-    public class EntityTypeFinder : IEntityTypeFinder
+    public class EntityTypeFinder : IEntityTypeFinder, IMapSourceTypeFinder, IMapTargetTypeFinder
     {
         /// <summary>
         /// 获取或设置 程序集查找器

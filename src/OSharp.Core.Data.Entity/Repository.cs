@@ -18,6 +18,7 @@ using EntityFramework.Extensions;
 
 using OSharp.Core.Data.Entity.Properties;
 using OSharp.Core.Data.Extensions;
+using OSharp.Core.Mapping;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
@@ -89,19 +90,19 @@ namespace OSharp.Core.Data.Entity
         /// <summary>
         /// 以DTO为载体批量插入实体
         /// </summary>
-        /// <typeparam name="TAddDto">添加DTO类型</typeparam>
+        /// <typeparam name="TInputDto">添加DTO类型</typeparam>
         /// <param name="dtos">添加DTO信息集合</param>
         /// <param name="checkAction">添加信息合法性检查委托</param>
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult Insert<TAddDto>(ICollection<TAddDto> dtos,
-            Action<TAddDto> checkAction = null,
-            Func<TAddDto, TEntity, TEntity> updateFunc = null)
-            where TAddDto : IAddDto
+        public OperationResult Insert<TInputDto>(ICollection<TInputDto> dtos,
+            Action<TInputDto> checkAction = null,
+            Func<TInputDto, TEntity, TEntity> updateFunc = null)
+            where TInputDto : IInputDto<TKey>
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
-            foreach (TAddDto dto in dtos)
+            foreach (TInputDto dto in dtos)
             {
                 try
                 {
@@ -392,7 +393,7 @@ namespace OSharp.Core.Data.Entity
         public OperationResult Update<TEditDto>(ICollection<TEditDto> dtos,
             Action<TEditDto> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
-            where TEditDto : IEditDto<TKey>
+            where TEditDto : IInputDto<TKey>
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
