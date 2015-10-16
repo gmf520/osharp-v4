@@ -523,6 +523,10 @@
     <Content Include="Content\fonts\ionicons.eot" />
     <Content Include="Areas\Manage\Views\Home\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Uploader\Index.cshtml" />
+    <Content Include="Areas\BootStrap\Views\web.config" />
+    <Content Include="Areas\BootStrap\Views\Home\Index.cshtml" />
+    <Content Include="Areas\BootStrap\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\BootStrap\Views\Uploader\Index.cshtml" />
     <None Include="Properties\PublishProfiles\OSharp.Demo.Web.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -581,6 +585,9 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Compile Include="Areas\BootStrap\BootStrapAreaRegistration.cs" />
+    <Compile Include="Areas\BootStrap\Controllers\HomeController.cs" />
+    <Compile Include="Areas\BootStrap\Controllers\UploaderController.cs" />
     <Compile Include="Areas\Manage\Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploaderController.cs" />
     <Compile Include="Startup\Startup.SignalR.cs" />
@@ -680,6 +687,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\BootStrap\Models\" />
     <Folder Include="Areas\Manage\Models\" />
     <Folder Include="Content\admin-lte\js\pages\" />
     <Folder Include="Views\Account\" />
