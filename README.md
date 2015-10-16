@@ -6,7 +6,7 @@
 
 ## <a id="title01"/>简介
 1. OSharp是一个依赖于EntityFramework，专注于业务数据模型与EntityFramework解耦的适用于中小型项目开发的（插件式）框架。
-2. 相关博客：[OSharp框架解说系列](http://www.cnblogs.com/guomingfeng/category/742791.html)
+2. 相关博客：[OSharp框架解说系列文章](http://www.cnblogs.com/guomingfeng/p/osharp-overall-design.html)
 3. QQ交流群：85895249 [![OSharp开发框架交流群](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=250897a8ee4c2d3146d798a6111274bfa7bb6306d0f07418bfc6d8c45f26e269 "OSharp开发框架交流群")
 
 ## <a id="title02"/>相关技术
