@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using OSharp.UnitTest.Infrastructure;
-
 using Smocks;
-using Smocks.Setups;
 
 using Xunit;
 
@@ -12,7 +9,7 @@ using Xunit;
 namespace OSharp.Utility.Extensions.Tests
 {
 
-    public class ParamterCheckExtensionsTests : UnitTestBase
+    public class ParamterCheckExtensionsTests
     {
         [Fact]
         public void RequiredTest()

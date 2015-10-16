@@ -9,17 +9,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using OSharp.Utility.Extensions;
 
 
 namespace OSharp.UnitTest.Infrastructure
 {
-    public abstract class UnitTestBase
+    public abstract class EntityTestBase
     {
         protected readonly IEnumerable<TestEntity> Entities;
 
-        protected UnitTestBase()
+        protected EntityTestBase()
         {
             List<TestEntity> entities = new List<TestEntity>();
             DateTime dt = DateTime.Now;
@@ -36,5 +37,6 @@ namespace OSharp.UnitTest.Infrastructure
             }
             Entities = entities;
         }
+        
     }
 }

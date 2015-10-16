@@ -23,7 +23,7 @@ using Xunit;
 namespace OSharp.Utility.Filter.Tests
 {
     
-    public class FilterHelperTests : UnitTestBase
+    public class FilterHelperTests : EntityTestBase
     {
         [Fact]
         public void GetExpressionTest()

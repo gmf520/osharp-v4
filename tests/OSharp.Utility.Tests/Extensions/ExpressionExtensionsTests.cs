@@ -19,7 +19,7 @@ using Xunit;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    public class ExpressionExtensionsTests : UnitTestBase
+    public class ExpressionExtensionsTests : EntityTestBase
     {
         [Fact]
         public void ComposeTest()

@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
-//      Copyright (c) 2014 OSharp. All rights reserved.
+//  <copyright file="CollectionExtensionsTests.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2014:07:10 10:59</last-date>
+//  <last-date>2015-10-16 2:30</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -23,7 +24,6 @@ using Xunit;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-
     public class CollectionExtensionsTests
     {
         [Fact]
@@ -112,7 +112,9 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
             Assert.Equal(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
                 "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
         }
+
         [Fact]
         public void WhereIfTest_IQueryable()
         {
@@ -138,7 +140,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
             Assert.Equal(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
             Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
-            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length)).ToArray()[1].Name, "fda");
+            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length, ListSortDirection.Ascending)).ToArray()[1].Name, "fda");
             Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
         }
 
@@ -155,7 +157,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
             Assert.Equal(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
                 "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
         }
-
     }
 }

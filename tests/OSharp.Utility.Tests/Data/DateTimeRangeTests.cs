@@ -18,7 +18,7 @@ using Smocks;
 
 namespace OSharp.Utility.Data.Tests
 {
-    public class DateTimeRangeTests : UnitTestBase
+    public class DateTimeRangeTests
     {
         [Fact]
         public void DateTimeRangeTest_Ctor()
