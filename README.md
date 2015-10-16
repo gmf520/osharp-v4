@@ -5,7 +5,7 @@
  - [快速启动][3]
 
 ## <a id="title01"/>简介
-1. OSharp是一个依赖于EntityFramework，专注于业务数据模型与EntityFramework解耦的适用于中小型项目开发的（插件式）框架。
+1. OSharp是个快速开发框架，但不是一个大而全的包罗万象的框架，严格的说，OSharp中什么都没有实现。与其他大而全的框架最大的不同点，就是OSharp只做抽象封装，不做实现。依赖注入、ORM、对象映射、日志、缓存等等功能，都只定义了一套最基础最通用的抽象封装，提供了一套统一的API、约定与规则，并定义了部分执行流程，主要是让项目在一定的规范下进行开发。所有的功能实现端，都是通过现有的成熟的第三方组件来实现的，除了EntityFramework之外，所有的第三方实现都可以轻松的替换成另一种第三方实现，OSharp框架正是要起隔离作用，保证这种变更不会对业务代码造成影响，使用统一的API来进行业务实现，解除与第三方实现的耦合，保持业务代码的规范与稳定。
 2. 相关博客：[OSharp框架解说系列文章](http://www.cnblogs.com/guomingfeng/p/osharp-overall-design.html)
 3. QQ交流群：85895249 [![OSharp开发框架交流群](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=250897a8ee4c2d3146d798a6111274bfa7bb6306d0f07418bfc6d8c45f26e269 "OSharp开发框架交流群")
 
