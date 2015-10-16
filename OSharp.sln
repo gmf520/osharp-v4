@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8
 		docs\OSharp日志模块示图.vsd = docs\OSharp日志模块示图.vsd
 		docs\OSharp权限系统设计.png = docs\OSharp权限系统设计.png
 		docs\OSharp权限系统设计.vsd = docs\OSharp权限系统设计.vsd
+		docs\OSharp框架初始化总体流程图.png = docs\OSharp框架初始化总体流程图.png
+		docs\OSharp框架初始化流程图.vsd = docs\OSharp框架初始化流程图.vsd
 		docs\操作数据日志.vsd = docs\操作数据日志.vsd
 	EndProjectSection
 EndProject
@@ -80,6 +82,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.App.Local", "src\OSharp.App.Local\OSharp.App.Local.csproj", "{FAB53F03-6932-4E2B-87BE-4B818B5E85AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,6 +167,10 @@ Global
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,5 +200,6 @@ Global
 		{34320480-00D5-4399-B4B1-25BF7B297EAB} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
+		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal

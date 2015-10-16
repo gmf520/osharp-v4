@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Properties;
+using OSharp.Utility;
 using OSharp.Utility.Extensions;
 
 
@@ -33,6 +34,10 @@ namespace OSharp.Core.Dependency
         /// <returns>指定类型的实例</returns>
         public static T GetService<T>(this IServiceProvider provider)
         {
+            if (provider == null)
+            {
+                throw new InvalidOperationException(Resources.Ioc_FrameworkNotInitialized);
+            }
             return (T)provider.GetService(typeof(T));
         }
 
@@ -44,6 +49,10 @@ namespace OSharp.Core.Dependency
         /// <returns>指定类型的非空实例</returns>
         public static object GetRequiredService(this IServiceProvider provider, Type serviceType)
         {
+            if (provider == null)
+            {
+                throw new InvalidOperationException(Resources.Ioc_FrameworkNotInitialized);
+            }
             object value =  provider.GetService(serviceType);
             if (value == null)
             {
@@ -60,6 +69,10 @@ namespace OSharp.Core.Dependency
         /// <returns>指定类型的非空实例</returns>
         public static T GetRequiredService<T>(this IServiceProvider provider)
         {
+            if (provider == null)
+            {
+                throw new InvalidOperationException(Resources.Ioc_FrameworkNotInitialized);
+            }
             return (T)GetRequiredService(provider, typeof(T));
         }
 
@@ -71,6 +84,10 @@ namespace OSharp.Core.Dependency
         /// <returns>指定类型的所有实例</returns>
         public static IEnumerable<T> GetServices<T>(this IServiceProvider provider)
         {
+            if (provider == null)
+            {
+                throw new InvalidOperationException(Resources.Ioc_FrameworkNotInitialized);
+            }
             return provider.GetRequiredService<IEnumerable<T>>();
         }
 
@@ -82,6 +99,10 @@ namespace OSharp.Core.Dependency
         /// <returns>指定类型的所有实例</returns>
         public static IEnumerable<object> GetServices(this IServiceProvider provider, Type serviceType)
         {
+            if (provider == null)
+            {
+                throw new InvalidOperationException(Resources.Ioc_FrameworkNotInitialized);
+            }
             Type genericEnumerable = typeof(IEnumerable<>).MakeGenericType(serviceType);
             return (IEnumerable<object>)provider.GetRequiredService(genericEnumerable);
         }

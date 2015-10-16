@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Identity;
+using OSharp.Core.Mapping;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
 using OSharp.Demo.Identity;
@@ -60,11 +61,11 @@ namespace OSharp.Demo.Services
         /// </summary>
         /// <param name="dtos">要添加的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> AddUsers(params UserDto[] dtos)
+        public async Task<OperationResult> AddUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
             UserRepository.UnitOfWork.TransactionEnabled = true;
-            foreach (UserDto dto in dtos)
+            foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
                 User user = dto.MapTo<User>();
@@ -96,11 +97,11 @@ namespace OSharp.Demo.Services
         /// </summary>
         /// <param name="dtos">包含更新信息的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> EditUsers(params UserDto[] dtos)
+        public async Task<OperationResult> EditUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
             UserRepository.UnitOfWork.TransactionEnabled = true;
-            foreach (UserDto dto in dtos)
+            foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
                 User user = UserManager.FindById(dto.Id);

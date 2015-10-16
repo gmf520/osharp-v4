@@ -19,6 +19,7 @@ using OSharp.Core.Data;
 using OSharp.Core.Initialize;
 using OSharp.Core.Properties;
 using OSharp.Core.Reflection;
+using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 
 
@@ -53,7 +54,6 @@ namespace OSharp.Core.Dependency
         public IServiceCollection Build()
         {
             IServiceCollection services = new ServiceCollection();
-            OSharpContext.IocRegisterServices = services;
             ServiceBuildOptions options = _options;
 
             //添加即时生命周期类型的映射
@@ -112,7 +112,7 @@ namespace OSharp.Core.Dependency
         /// <param name="services">服务映射信息集合</param>
         protected virtual void AddGlobalTypes(IServiceCollection services)
         {
-            services.AddSingleton<IAllAssemblyFinder, DirectoryAssemblyFinder>();
+            //services.AddSingleton<IAllAssemblyFinder, DirectoryAssemblyFinder>();
         }
 
         private static Type[] GetImplementedInterfaces(Type type)

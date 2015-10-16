@@ -7,24 +7,18 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 
 using OSharp.Core.Caching;
-using OSharp.Core.Data;
-using OSharp.Core.Data.Extensions;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Security;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
-using OSharp.Web.Mvc.Binders;
 using OSharp.Web.Mvc.Extensions;
-using OSharp.Web.Mvc.Logging;
 using OSharp.Web.Mvc.Security;
 using OSharp.Web.Mvc.UI;
 
@@ -75,7 +69,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-实体数据-编辑")]
-        public ActionResult Edit(EntityInfoDto[] dtos)
+        public ActionResult Edit(EntityInfoInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
             OperationResult result = SecurityContract.EditEntityInfos(dtos);

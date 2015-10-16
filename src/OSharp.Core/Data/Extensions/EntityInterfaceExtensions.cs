@@ -20,7 +20,7 @@ namespace OSharp.Core.Data.Extensions
     public static class EntityInterfaceExtensions
     {
         /// <summary>
-        /// 检测并执行<see cref="IAudited"/>接口的逻辑
+        /// 检测并执行<see cref="ICreatedTime"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
         public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>

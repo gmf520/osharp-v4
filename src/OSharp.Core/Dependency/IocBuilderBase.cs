@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-10 15:28</last-date>
+//  <last-date>2015-10-12 15:33</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -20,32 +20,61 @@ namespace OSharp.Core.Dependency
     /// </summary>
     public abstract class IocBuilderBase : IIocBuilder
     {
+        private readonly IServiceCollection _services;
+        private bool _isBuilded;
+        private IServiceProvider _provider;
+        
         /// <summary>
         /// 初始化一个<see cref="IocBuilderBase"/>类型的新实例
         /// </summary>
-        protected IocBuilderBase()
+        /// <param name="services">服务信息集合</param>
+        protected IocBuilderBase(IServiceCollection services)
         {
             AssemblyFinder = new DirectoryAssemblyFinder();
+            _services = services.Clone();
         }
 
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
+
+        /// <summary>
+        /// 获取 服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider
+        {
+            get
+            {
+                if (_isBuilded)
+                {
+                    return _provider;
+                }
+                _provider = Build();
+                _isBuilded = true;
+                return _provider;
+            }
+        }
 
         /// <summary>
         /// 开始构建依赖注入映射
         /// </summary>
-        /// <param name="services">服务信息集合</param>
         /// <returns>服务提供者</returns>
-        public IServiceProvider Build(IServiceCollection services)
+        public IServiceProvider Build()
         {
+            if (_isBuilded)
+            {
+                return _provider;
+            }
+
             //设置各个框架的DependencyResolver
             Assembly[] assemblies = AssemblyFinder.FindAll();
 
-            AddCustomTypes(services);
+            AddCustomTypes(_services);
 
-            return BuildAndSetResolver(services, assemblies);
+            _provider = BuildAndSetResolver(_services, assemblies);
+            _isBuilded = true;
+            return _provider;
         }
 
         /// <summary>

@@ -45,16 +45,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加组织机构信息信息
         /// </summary>
-        /// <param name="dtos">要添加的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">要添加的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddOrganizations(params OrganizationDto[] dtos);
+        OperationResult AddOrganizations(params OrganizationInputDto[] inputDtos);
 
         /// <summary>
         /// 更新组织机构信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditOrganizations(params OrganizationDto[] dtos);
+        OperationResult EditOrganizations(params OrganizationInputDto[] inputDtos);
 
         /// <summary>
         /// 删除组织机构信息信息
@@ -83,16 +83,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加角色信息信息
         /// </summary>
-        /// <param name="dtos">要添加的角色信息DTO信息</param>
+        /// <param name="inputDtos">要添加的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddRoles(params RoleDto[] dtos);
+        OperationResult AddRoles(params RoleInputDto[] inputDtos);
 
         /// <summary>
         /// 更新角色信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的角色信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditRoles(params RoleDto[] dtos);
+        OperationResult EditRoles(params RoleInputDto[] inputDtos);
 
         /// <summary>
         /// 删除角色信息信息
@@ -123,14 +123,14 @@ namespace OSharp.Demo.Contracts
         /// </summary>
         /// <param name="dtos">要添加的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddUsers(params UserDto[] dtos);
+        Task<OperationResult> AddUsers(params UserInputDto[] dtos);
 
         /// <summary>
         /// 更新用户信息信息
         /// </summary>
         /// <param name="dtos">包含更新信息的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditUsers(params UserDto[] dtos);
+        Task<OperationResult> EditUsers(params UserInputDto[] dtos);
 
         /// <summary>
         /// 删除用户信息信息

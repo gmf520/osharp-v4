@@ -4,13 +4,11 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-25 12:45</last-date>
+//  <last-date>2015-10-12 20:50</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Reflection;
-
-using OSharp.Core.Reflection;
 
 
 namespace OSharp.Core.Security
@@ -21,27 +19,20 @@ namespace OSharp.Core.Security
     public class NullFunctionHandler : FunctionHandlerBase<Function, Guid>
     {
         /// <summary>
-        /// 获取或设置 控制器类型查找器
+        /// 初始化一个<see cref="NullFunctionHandler"/>类型的新实例
         /// </summary>
-        protected override ITypeFinder TypeFinder
+        public NullFunctionHandler()
         {
-            get { return new NullTypeFinder();}
+            TypeFinder = new NullFunctionTypeFinder();
+            MethodInfoFinder = new NullFunctionMethodInfoFinder();
         }
-
-        /// <summary>
-        /// 获取或设置 功能查找器
-        /// </summary>
-        protected override IMethodInfoFinder MethodInfoFinder
-        {
-            get { return new NullMethodInfoFinder();}
-        }
-
+        
         /// <summary>
         /// 获取 功能技术提供者，如Mvc/WebApi/SignalR等，用于区分功能来源，各技术更新功能时，只更新属于自己技术的功能
         /// </summary>
         protected override PlatformToken PlatformToken
         {
-            get { return PlatformToken.Local;}
+            get { return PlatformToken.Local; }
         }
 
         /// <summary>

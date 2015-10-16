@@ -94,7 +94,6 @@
     <Compile Include="Configs\OSharpConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
-    <Compile Include="Context\OSharpContext.cs" />
     <Compile Include="Data\DataPage.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
@@ -152,11 +151,24 @@
     <Compile Include="Initialize\IDatabaseInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifetimeStyle.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\IMappersBuilder.cs" />
+    <Compile Include="Mapping\IMapSourceTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTargetTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTuple.cs" />
+    <Compile Include="Mapping\InputDtoTypeFinder.cs" />
+    <Compile Include="Mapping\MappersBuilder.cs" />
+    <Compile Include="Mapping\MapperExtensions.cs" />
+    <Compile Include="Mapping\MapTupleBase.cs" />
+    <Compile Include="Mapping\OutputDtoTypeFinder.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\IAllAssemblyFinder.cs" />
-    <Compile Include="Reflection\NullMethodInfoFinder.cs" />
-    <Compile Include="Reflection\NullTypeFinder.cs" />
+    <Compile Include="Security\IEntityTypeFinder.cs" />
+    <Compile Include="Security\IFunctionMethodFinder.cs" />
+    <Compile Include="Security\IFunctionTypeFinder.cs" />
     <Compile Include="Security\NullFunctionHandler.cs" />
+    <Compile Include="Security\NullFunctionMethodInfoFinder.cs" />
+    <Compile Include="Security\NullFunctionTypeFinder.cs" />
     <Compile Include="Security\PlatformToken.cs" />
     <Compile Include="Logging\DatabaseLog.cs" />
     <Compile Include="Logging\DatabaseLoggerAdapter.cs" />
@@ -223,6 +235,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

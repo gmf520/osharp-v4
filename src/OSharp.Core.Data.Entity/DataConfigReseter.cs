@@ -30,13 +30,16 @@ namespace OSharp.Core.Data.Entity
         /// </summary>
         public DataConfigReseter()
         {
-            MapperAssemblyFinder = new EntityMapperAssemblyFinder();
+            MapperAssemblyFinder = new EntityMapperAssemblyFinder()
+            {
+                AllAssemblyFinder = new DirectoryAssemblyFinder()
+            };
         }
 
         /// <summary>
         /// 获取或设置 实体映射程序集查找器
         /// </summary>
-        public IAssemblyFinder MapperAssemblyFinder { get; set; }
+        public IEntityMapperAssemblyFinder MapperAssemblyFinder { get; set; }
 
         /// <summary>
         /// 重置数据配置信息

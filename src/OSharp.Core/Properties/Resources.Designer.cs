@@ -142,6 +142,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 OSharp框架尚未初始化，请先初始化 的本地化字符串。
+        /// </summary>
+        internal static string Ioc_FrameworkNotInitialized {
+            get {
+                return ResourceManager.GetString("Ioc_FrameworkNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 类型“{0}”的实现类型无法找到 的本地化字符串。
         /// </summary>
         internal static string Ioc_ImplementationTypeNotFound {
@@ -183,6 +192,15 @@ namespace OSharp.Core.Properties {
         internal static string IocInitializerBase_TypeNotIUnitOfWorkType {
             get {
                 return ResourceManager.GetString("IocInitializerBase_TypeNotIUnitOfWorkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MapperExtensions.Mapper不能为空，请先设置值 的本地化字符串。
+        /// </summary>
+        internal static string Map_MapperIsNull {
+            get {
+                return ResourceManager.GetString("Map_MapperIsNull", resourceCulture);
             }
         }
         

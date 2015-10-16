@@ -15,7 +15,6 @@ using OSharp.Core.Configs;
 using OSharp.Core.Data.Entity.Logging;
 using OSharp.Core.Data.Entity.Properties;
 using OSharp.Core.Initialize;
-using OSharp.Core.Reflection;
 using OSharp.Utility.Extensions;
 
 
@@ -26,14 +25,6 @@ namespace OSharp.Core.Data.Entity
     /// </summary>
     public class DatabaseInitializer : IDatabaseInitializer
     {
-        /// <summary>
-        /// 初始化一个<see cref="DatabaseInitializer"/>类型的新实例
-        /// </summary>
-        public DatabaseInitializer()
-        {
-            MapperAssemblyFinder = new EntityMapperAssemblyFinder();
-        }
-
         /// <summary>
         /// 获取或设置 实体映射程序集查找器
         /// </summary>

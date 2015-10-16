@@ -25,9 +25,9 @@ namespace OSharp.Core.Logging
         private static LogLevel? _outLogLevel;
 
         /// <summary>
-        /// 获取或设置 依赖注入解析器
+        /// 获取或设置 服务提供者
         /// </summary>
-        public IIocResolver IocResolver { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 获取 是否数据日志对象
@@ -118,7 +118,7 @@ namespace OSharp.Core.Logging
             {
                 return;
             }
-            IDataLogCache logCache = IocResolver.Resolve<IDataLogCache>();
+            IDataLogCache logCache = ServiceProvider.GetService<IDataLogCache>();
             foreach (DataLog dataLog in dataLogs)
             {
                 logCache.AddDataLog(dataLog);

@@ -15,6 +15,7 @@ using Microsoft.Owin;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
+using OSharp.AutoMapper;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
@@ -40,14 +41,15 @@ namespace OSharp.Demo.Web
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
-            IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+            IServicesBuilder builder = new ServicesBuilder();
             IServiceCollection services = builder.Build();
             services.AddLog4NetServices();
             services.AddDataServices();
+            services.AddAutoMapperServices();
 
-            app.UseOsharpMvc(services, new MvcAutofacIocBuilder());
-            app.UseOsharpWebApi(services, new WebApiAutofacIocBuilder());
-            app.UseOsharpSignalR(services, new SignalRAutofacIocBuilder());
+            app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
+            app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
+            //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
             ConfigurationWebApi(app);
             ConfigureSignalR(app);
