@@ -21,7 +21,7 @@ namespace OSharp.Utility.Extensions.Tests
 {
     public class ExpressionExtensionsTests : EntityTestBase
     {
-        [Fact]
+        [Fact()]
         public void ComposeTest()
         {
             Expression<Func<TestEntity, bool>> predicate = m => m.IsDeleted;
@@ -35,7 +35,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(list1.SequenceEqual(list2));
         }
 
-        [Fact]
+        [Fact()]
         public void AndTest()
         {
             Expression<Func<TestEntity, bool>> predicate = m => m.IsDeleted;
@@ -46,7 +46,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(list1.SequenceEqual(list2));
         }
 
-        [Fact]
+        [Fact()]
         public void OrTest()
         {
             Expression<Func<TestEntity, bool>> predicate = m => m.IsDeleted;

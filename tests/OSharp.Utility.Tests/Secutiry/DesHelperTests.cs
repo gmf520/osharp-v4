@@ -24,14 +24,14 @@ namespace OSharp.Utility.Secutiry.Tests
     
     public class DesHelperTests
     {
-        [Fact]
+        [Fact()]
         public void DesHelperTest()
         {
             Assert.Equal(new DesHelper(false).Key.Length, 8);
             Assert.Equal(new DesHelper(true).Key.Length, 24);
         }
 
-        [Fact]
+        [Fact()]
         public void EncryptTest()
         {
             string key = "12345678";
@@ -52,7 +52,7 @@ namespace OSharp.Utility.Secutiry.Tests
             Assert.Equal(DesHelper.Encrypt("admin", key), actual);
         }
 
-        [Fact]
+        [Fact()]
         public void DecryptTest()
         {
             string key = "12345678";

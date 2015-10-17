@@ -16,7 +16,7 @@
 2. 技术平台：ASP.NET MVC5 + WebAPI5 + SignalR2
 3. 数据存储：EntityFramework 6.1.3
 4. 数据序列化：使用JSON.NET作为JSON序列化的主要工具
-5. 数据映射：AutoMapper，主要用于数据传输对象DTO与数据实体模型Model之间的相互转化，免于繁杂的对象属性赋值
+5. 数据映射：定义通用对象映射操作API，并提供基于AutoMapper的实现，主要用于数据传输对象DTO与数据实体模型Model之间的相互转化，免于繁杂的对象属性赋值
 6. IoC组件：参考ASP.NET 5，从框架级别对依赖注入功能进行了抽象与封装，并提供基于Autofac的依赖注入实现
 7. 日志记录：定义通用日志记录接口与基础API，日志输出方式可以使用现成的任意日志组件（如log4net）
 

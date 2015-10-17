@@ -26,7 +26,7 @@ namespace OSharp.Utility.Extensions.Tests
 {
     public class CollectionExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void ExpandAndToStringTest_IEnumerable()
         {
             List<int> source = new List<int>();
@@ -41,7 +41,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.ExpandAndToString("|"), "1|2|3|4|5|6");
         }
 
-        [Fact]
+        [Fact()]
         public void ExpandAndToStringTest_IEnumerable2()
         {
             List<int> source = new List<int> { 1, 2, 3, 4, 5, 6 };
@@ -53,7 +53,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.ExpandAndToString(item => (item + 1).ToString(), "|"), "2|3|4|5|6|7");
         }
 
-        [Fact]
+        [Fact()]
         public void IsEmptyTest_IEnumerable()
         {
             List<int> source = new List<int>();
@@ -63,7 +63,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(source.IsEmpty());
         }
 
-        [Fact]
+        [Fact()]
         public void WhereIfTest_IEnumerable()
         {
             List<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
@@ -72,7 +72,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
-        [Fact]
+        [Fact()]
         public void DistinctByTest_IEnumerable()
         {
             List<int> source = new List<int> { 1, 2, 3, 3, 4, 4, 5, 6, 7, 7 };
@@ -80,7 +80,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.DistinctBy(m => m).ToList(), actual);
         }
 
-        [Fact]
+        [Fact()]
         public void OrderByTest_IEnumerable()
         {
             IEnumerable<TestEntity> source = new List<TestEntity>
@@ -99,7 +99,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
         }
 
-        [Fact]
+        [Fact()]
         public void ThenByTest_IEnumerable()
         {
             IEnumerable<TestEntity> source = new List<TestEntity>
@@ -115,7 +115,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
         }
 
-        [Fact]
+        [Fact()]
         public void WhereIfTest_IQueryable()
         {
             IQueryable<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 }.AsQueryable();
@@ -125,7 +125,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
-        [Fact]
+        [Fact()]
         public void OrderByTest_IQueryable()
         {
             IQueryable<TestEntity> source = new List<TestEntity>
@@ -144,7 +144,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
         }
 
-        [Fact]
+        [Fact()]
         public void ThenByTest_IQueryable()
         {
             IQueryable<TestEntity> source = new List<TestEntity>

@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="LinqToXmlExtensions.cs" company="OSharp开源团队">
-//      Copyright (c) 2014 OSharp. All rights reserved.
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2014-07-18 17:43</last-date>
+//  <last-date>2015-10-16 12:46</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -22,8 +23,6 @@ namespace OSharp.Utility.Extensions
     /// </summary>
     public static class LinqToXmlExtensions
     {
-        #region 公共方法
-
         /// <summary>
         /// 将XmlNode转换为XElement
         /// </summary>
@@ -51,7 +50,5 @@ namespace OSharp.Utility.Extensions
                 return xml;
             }
         }
-
-        #endregion
     }
 }

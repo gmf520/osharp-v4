@@ -16,7 +16,7 @@ namespace OSharp.Utility.Tests
     
     public class UnitTest1
     {
-        [Fact]
+        [Fact()]
         public void Test01()
         {
             Type t1 = typeof(List<>);
