@@ -22,7 +22,7 @@ namespace OSharp.Utility.DataAnnotations.Tests
     
     public class PasswordAttributeTests
     {
-        [Fact]
+        [Fact()]
         public void IsValidTest()
         {
             PasswordAttribute attr = new PasswordAttribute()

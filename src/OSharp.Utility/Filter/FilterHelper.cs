@@ -128,11 +128,8 @@ namespace OSharp.Utility.Filter
             MemberInfo[] members = type.GetMember(operate.CastTo<string>());
             if (members.Length > 0)
             {
-                object[] attributes = members[0].GetCustomAttributes(typeof(OperateCodeAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    return ((OperateCodeAttribute)attributes[0]).Code;
-                }
+                OperateCodeAttribute attribute = members[0].GetAttribute<OperateCodeAttribute>();
+                return attribute == null ? null : attribute.Code;
             }
             return null;
         }
@@ -144,6 +141,7 @@ namespace OSharp.Utility.Filter
         /// <returns></returns>
         public static FilterOperate GetFilterOperate(string code)
         {
+            code.CheckNotNullOrEmpty("code");
             Type type = typeof(FilterOperate);
             MemberInfo[] members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
             foreach (MemberInfo member in members)
@@ -204,7 +202,7 @@ namespace OSharp.Utility.Filter
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
                 {
-                    throw new OSharpException(string.Format(Resources.Filter_RuleFieldInTypeNotFound, rule.Field, type.FullName));
+                    throw new InvalidOperationException(string.Format(Resources.Filter_RuleFieldInTypeNotFound, rule.Field, type.FullName));
                 }
                 type = property.PropertyType;
                 propertyAccess = Expression.MakeMemberAccess(propertyAccess, property);

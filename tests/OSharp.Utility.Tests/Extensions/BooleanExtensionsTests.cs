@@ -22,7 +22,7 @@ namespace OSharp.Utility.Extensions.Tests
     
     public class BooleanExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void ToLowerTest()
         {
             Assert.Equal(true.ToLower(), "true");

@@ -22,7 +22,7 @@ namespace OSharp.Utility.Extensions.Tests
     
     public class EnumExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void ToDescriptionTest()
         {
             TestEnum value = TestEnum.EnumItemA;

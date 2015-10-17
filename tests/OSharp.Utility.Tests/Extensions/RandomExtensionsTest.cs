@@ -13,7 +13,7 @@ namespace OSharp.Utility.Extensions.Tests
     
     public class RandomExtensionsTest
     {
-        [Fact]
+        [Fact()]
         public void NextBooleanTest()
         {
             Random rnd = new Random();
@@ -21,7 +21,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(new[] { true, false }.Contains(value));
         }
 
-        [Fact]
+        [Fact()]
         public void NextEnumTest()
         {
             Random rnd = new Random();
@@ -29,7 +29,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(new[] { UriKind.Absolute, UriKind.Relative, UriKind.RelativeOrAbsolute }.Contains(kind));
         }
 
-        [Fact]
+        [Fact()]
         public void NextBytesTest()
         {
             Random rnd = new Random();
@@ -40,7 +40,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(bytes.Distinct().Count() > 8);
         }
 
-        [Fact]
+        [Fact()]
         public void NextItemTest()
         {
             Random rnd = new Random();
@@ -49,7 +49,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Contains(item, array);
         }
 
-        [Fact]
+        [Fact()]
         public void NextDateTimeTest()
         {
             Random rnd = new Random();
@@ -65,7 +65,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(dt <= dtMax);
         }
 
-        [Fact]
+        [Fact()]
         public void GetRandomNumberStringTest()
         {
             Random rnd = new Random();
@@ -74,7 +74,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(rndNum.Length == 10);
         }
 
-        [Fact]
+        [Fact()]
         public void GetRandomLetterStringTest()
         {
             Random rnd = new Random();
@@ -83,7 +83,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(rndNum.Length == 10);
         }
 
-        [Fact]
+        [Fact()]
         public void GetRandomLetterAndNumberString()
         {
             Random rnd = new Random();
