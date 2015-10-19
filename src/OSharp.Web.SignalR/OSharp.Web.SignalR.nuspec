@@ -14,6 +14,11 @@
     <copyright>Copyright © OSharp 2015</copyright>
     <language>zh-CN</language>
     <tags>OSharp</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.SignalR.Core" version="2.2.0" />
+      <dependency id="Microsoft.Owin" version="3.0.1" />
+      <dependency id="Microsoft.Owin.Security" version="3.0.1" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\$configuration$\$id$.pdb" target="lib\net45\" />

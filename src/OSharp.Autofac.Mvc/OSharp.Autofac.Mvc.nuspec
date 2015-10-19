@@ -16,6 +16,9 @@
     <tags>OSharp</tags>
     <dependencies>
       <dependency id="Autofac" version="3.5.2" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
     </dependencies>
   </metadata>
   <files>
