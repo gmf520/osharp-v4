@@ -72,6 +72,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ArrayHelper.cs" />
     <Compile Include="Collections\ComparisonHelper.cs" />
     <Compile Include="Collections\EqualityHelper.cs" />
     <Compile Include="DataAnnotations\PasswordAttribute.cs" />
