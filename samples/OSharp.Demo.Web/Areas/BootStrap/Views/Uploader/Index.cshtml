@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "webuploader上传控件Demo";
+    Layout = "~/Areas/BootStrap/Views/Shared/_Layout.cshtml";
+}
+
+@section Header{ 
+    <link href="~/Scripts/plugins/webuploader/webuploader.css" rel="stylesheet" />
+    <link href="~/Scripts/plugins/webuploader/css/mulibox.css" rel="stylesheet" />
+    <style type="text/css">
+        .wu-example {
+            position: relative;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: #fafafa;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, .05);
+            border-color: #e5e5e5 #eee #eee;
+            border-style: solid;
+            border-width: 1px 0;
+        }
+    </style>
+}
+
+<h2>webuploader上传控件</h2>
+
+<div id="uploader" class="wu-example">
+    <div class="queueList">
+        <div id="dndArea" class="placeholder">
+            <div id="filePicker" class="webuploader-container">
+            <div class="webuploader-pick">点击选择图片</div>
+                <div  style="position: absolute; top: 0px; left: 448px; width: 168px; height: 44px; overflow: hidden; bottom: auto; right: auto;">
+                    <input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*">
+                    <label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);">
+                    </label>
+                </div>
+            </div>
+            <p>或将照片拖到这里，单次最多可选300张</p>
+        </div>
+        <ul class="filelist"></ul>
+    </div>
+    <div class="statusBar" style="display:none;">
+        <div class="progress" style="display: none;">
+            <span class="text">0%</span>
+            <span class="percentage" style="width: 0%;"></span>
+        </div><div class="info">共0张（0B），已上传0张</div>
+        <div class="btns">
+            <div id="filePicker2" class="webuploader-container">
+            <div class="webuploader-pick">继续添加</div>
+                <div  style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px; overflow: hidden;">
+                    <input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*">
+                    <label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);">
+                    </label>
+                </div>
+            </div>
+            <div class="uploadBtn state-pedding">开始上传</div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+
+<script src="~/Scripts/plugins/webuploader/webuploader.js"></script>
+<script src="~/Scripts/plugins/webuploader/site.js"></script>
+    
+
+}
+
