@@ -464,7 +464,6 @@
     <Content Include="Areas\Admin\Views\Logging\SystemLogs.cshtml" />
     <Content Include="Areas\Admin\Views\Functions\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EntityInfos\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\web.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -529,7 +528,6 @@
     <Compile Include="Areas\Admin\Controllers\Security\EntityInfosController.cs" />
     <Compile Include="Areas\Admin\Controllers\Security\FunctionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Systems\LoggingController.cs" />
-    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Service\Controllers\TestsController.cs" />
     <Compile Include="Areas\Service\ServiceAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -601,9 +599,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Manage\Controllers\" />
-    <Folder Include="Areas\Manage\Models\" />
-    <Folder Include="Areas\Manage\Views\Shared\" />
+    <Folder Include="Content\metronic\" />
+    <Folder Include="Scripts\metronic\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <PropertyGroup>
