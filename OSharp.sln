@@ -204,9 +204,7 @@ Global
 	EndGlobalSection
 	GlobalSection(AutomaticVersions) = postSolution
 		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = True
-		AssemblyFileVersionSettings = None.None.Increment.DateStamp
-		AssemblyInfoVersionSettings = None.None.Increment.None
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
 	EndGlobalSection
 EndGlobal
