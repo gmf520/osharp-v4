@@ -70,7 +70,7 @@ namespace OSharp.Demo.Web
 
             config.MessageHandlers.Add(new ThrottlingHandler(new InMemoryThrottleStore(), id => 60, TimeSpan.FromMinutes(1)));
 
-            app.UseWebApi(config);
+            //app.UseWebApi(config);
         }
     }
 }
