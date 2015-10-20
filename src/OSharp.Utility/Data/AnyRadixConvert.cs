@@ -38,10 +38,6 @@ namespace OSharp.Utility.Data
             fromRadix.CheckBetween("fromRadix", 2, 62, true, true);
 
             value = value.Trim();
-            if (value == string.Empty)
-            {
-                return 0L;
-            }
             string baseChar = BaseChar.Substring(0, fromRadix);
             ulong result = 0;
             for (int i = 0; i < value.Length; i++)
@@ -51,14 +47,7 @@ namespace OSharp.Utility.Data
                 {
                     throw new ArgumentException(string.Format(Resources.AnyRadixConvert_CharacterIsNotValid, @char, fromRadix));
                 }
-                try
-                {
-                    result += (ulong)baseChar.IndexOf(@char) * (ulong)Math.Pow(baseChar.Length, value.Length - i - 1);
-                }
-                catch (Exception)
-                {
-                    throw new OverflowException(Resources.AnyRadixConvert_Overflow);
-                }
+                result += (ulong)baseChar.IndexOf(@char) * (ulong)Math.Pow(baseChar.Length, value.Length - i - 1);
             }
             return result;
         }
@@ -72,7 +61,10 @@ namespace OSharp.Utility.Data
         public static string H2X(ulong value, int toRadix)
         {
             toRadix.CheckBetween("fromRadix", 2, 62, true, true);
-
+            if (value == 0)
+            {
+                return "0";
+            }
             string baseChar = BaseChar.Substring(0, toRadix);
             string result = string.Empty;
             while (value > 0)
@@ -108,6 +100,7 @@ namespace OSharp.Utility.Data
         /// <returns>16进制数的字符串</returns>
         public static string _10To16(int value)
         {
+            value.CheckGreaterThan("value", 0, true);
             string str = X2X(value.ToString(CultureInfo.InvariantCulture), 10, 16);
             return str.IsNullOrEmpty() ? "0" : str[0] == '0' ? str : '0' + str;
         }

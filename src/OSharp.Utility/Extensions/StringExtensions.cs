@@ -88,7 +88,7 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIpAddress(this string value)
         {
-            const string pattern = @"^(\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d\.){3}\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d$";
+            const string pattern = @"^(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5])$";
             return value.IsMatch(pattern);
         }
 

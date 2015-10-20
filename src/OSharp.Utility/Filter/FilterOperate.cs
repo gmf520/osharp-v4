@@ -71,13 +71,13 @@ namespace OSharp.Utility.Filter
         /// <summary>
         /// 以……开始
         /// </summary>
-        [OperateCode("startwith")]
+        [OperateCode("startswith")]
         StartsWith = 9,
 
         /// <summary>
         /// 以……结束
         /// </summary>
-        [OperateCode("endwith")]
+        [OperateCode("endswith")]
         EndsWith = 10,
 
         /// <summary>

@@ -18,9 +18,9 @@ using Smocks;
 
 namespace OSharp.Utility.Data.Tests
 {
-    public class DateTimeRangeTests : UnitTestBase
+    public class DateTimeRangeTests
     {
-        [Fact]
+        [Fact()]
         public void DateTimeRangeTest_Ctor()
         {
             DateTimeRange range = new DateTimeRange();
@@ -33,7 +33,7 @@ namespace OSharp.Utility.Data.Tests
             Assert.Equal(range.EndTime.Day, 9);
         }
 
-        [Fact]
+        [Fact()]
         public void DateTimeRangeTest_Properties()
         {
             DateTime now = new DateTime(2015, 8, 7, 11, 15, 22);

@@ -8,10 +8,10 @@ using Xunit;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    
+
     public class StringExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void IsMatchTest()
         {
             const string pattern = @"\d.*";
@@ -20,7 +20,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True("abc123".IsMatch(pattern));
         }
 
-        [Fact]
+        [Fact()]
         public void MatchTest()
         {
             const string pattern = @"\d.*";
@@ -29,7 +29,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal("abc123".Match(pattern), "123");
         }
 
-        [Fact]
+        [Fact()]
         public void MatchesTest()
         {
             const string pattern = @"\d";
@@ -38,7 +38,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal("abc123".Matches(pattern).Count(), 3);
         }
 
-        [Fact]
+        [Fact()]
         public void StrLengthTest()
         {
             Assert.Equal("".TextLength(), 0);
@@ -48,7 +48,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal("汉字测试".TextLength(), 8);
         }
 
-        [Fact]
+        [Fact()]
         public void IsEmailTest()
         {
             string value = null;
@@ -61,6 +61,21 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(value.IsEmail());
             value = "abc@yeah.net";
             Assert.True(value.IsEmail());
+        }
+
+        [Fact()]
+        public void IsIpAddressTest()
+        {
+            string value = null;
+            Assert.False(value.IsIpAddress());
+            value = "0.0.0.0";
+            Assert.False(value.IsIpAddress());
+            value = "1.1.1.1";
+            Assert.False(value.IsIpAddress());
+            value = "192.168.0.1";
+            Assert.False(value.IsIpAddress());
+            value = "255.255.255.255";
+            Assert.True(value.IsIpAddress());
         }
     }
 }
