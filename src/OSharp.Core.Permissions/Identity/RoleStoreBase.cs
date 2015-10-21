@@ -25,7 +25,9 @@ namespace OSharp.Core.Identity
     /// </summary>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class RoleStoreBase<TRole, TRoleKey> : IRoleStore<TRole, TRoleKey>, ITransientDependency
+    public abstract class RoleStoreBase<TRole, TRoleKey> :
+        IQueryableRoleStore<TRole, TRoleKey>,
+        ITransientDependency
         where TRole : RoleBase<TRoleKey>
     {
         private bool _disposed;
@@ -106,9 +108,22 @@ namespace OSharp.Core.Identity
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             _disposed = true;
         }
+
+        /// <summary>
+        /// 角色信息查询数据集
+        /// </summary>
+        public IQueryable<TRole> Roles
+        {
+            get { return RoleRepository.Entities; }
+        }
+
     }
 }
