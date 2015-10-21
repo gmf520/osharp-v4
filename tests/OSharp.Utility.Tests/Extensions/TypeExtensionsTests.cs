@@ -23,10 +23,10 @@ using OSharp.Utility.Extensions;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    
+
     public class TypeExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void IsNullableTypeTest()
         {
             // ReSharper disable ConvertNullableToShortForm
@@ -36,7 +36,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(typeof(int).IsNullableType());
         }
 
-        [Fact]
+        [Fact()]
         public void IsEnumerableTest()
         {
             Assert.True(typeof(string[]).IsEnumerable());
@@ -50,7 +50,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(typeof(string).IsEnumerable());
         }
 
-        [Fact]
+        [Fact()]
         public void GetNonNummableType()
         {
             Assert.Equal(typeof(int?).GetNonNummableType(), typeof(int));
@@ -59,7 +59,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(typeof(int).GetNonNummableType(), typeof(int));
         }
 
-        [Fact]
+        [Fact()]
         public void GetUnNullableTypeTest()
         {
             Assert.Equal(typeof(int?).GetUnNullableType(), typeof(int));
@@ -68,7 +68,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(typeof(int).GetUnNullableType(), typeof(int));
         }
 
-        [Fact]
+        [Fact()]
         public void ToDescriptionTest()
         {
             Type type = typeof(TestEntity);
@@ -80,7 +80,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(type.ToDescription(), "OSharp.Utility.Extensions.Tests.TypeExtensionsTests");
         }
 
-        [Fact]
+        [Fact()]
         public void HasAttributeTest()
         {
             Type type = GetType();
@@ -88,7 +88,7 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(method.HasAttribute<FactAttribute>());
         }
 
-        [Fact]
+        [Fact()]
         public void GetAttributeTest()
         {
             Type type = typeof(TestEntity);
@@ -99,14 +99,14 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(method.GetAttribute<FactAttribute>() == null);
         }
 
-        [Fact]
+        [Fact()]
         public void GetAttributesTest()
         {
             Type type = GetType();
             Assert.Equal(type.GetAttributes<DescriptionAttribute>().Length, 0);
         }
 
-        [Fact]
+        [Fact()]
         public void IsGenericAssignableFromTest()
         {
             Assert.True(typeof(IEnumerable<>).IsGenericAssignableFrom(typeof(List<>)));
@@ -114,6 +114,17 @@ namespace OSharp.Utility.Extensions.Tests
 
             Assert.Throws<ArgumentException>(() =>
                 (typeof(string)).IsGenericAssignableFrom(typeof(int)));
+        }
+
+        [Fact()]
+        public void IsBaseOnTest()
+        {
+            Assert.True(typeof(List<>).IsBaseOn(typeof(List<>)));
+            Assert.True(typeof(List<>).IsBaseOn(typeof(IList<>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(List<string>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(IList<string>)));
+
+            Assert.True(typeof(string).IsBaseOn<IEnumerable>());
         }
     }
 }

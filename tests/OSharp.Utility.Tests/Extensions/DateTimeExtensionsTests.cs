@@ -22,7 +22,7 @@ namespace OSharp.Utility.Extensions.Tests
     
     public class DateTimeExtensionsTests
     {
-        [Fact]
+        [Fact()]
         public void IsWeekendTest()
         {
             DateTime dt = new DateTime(2015, 5, 2);
@@ -36,7 +36,7 @@ namespace OSharp.Utility.Extensions.Tests
             }
         }
 
-        [Fact]
+        [Fact()]
         public void IsWeekdayTest()
         {
             DateTime dt = new DateTime(2015, 5, 2);

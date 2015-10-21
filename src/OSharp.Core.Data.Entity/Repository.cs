@@ -582,6 +582,56 @@ namespace OSharp.Core.Data.Entity
         }
 
         /// <summary>
+        /// 异步以DTO为载体批量插入实体
+        /// </summary>
+        /// <typeparam name="TInputDto">添加DTO类型</typeparam>
+        /// <param name="dtos">添加DTO信息集合</param>
+        /// <param name="checkAction">添加信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
+            Action<TInputDto> checkAction = null,
+            Func<TInputDto, TEntity, TEntity> updateFunc = null)
+            where TInputDto : IInputDto<TKey>
+        {
+            dtos.CheckNotNull("dtos");
+            List<string> names = new List<string>();
+            foreach (TInputDto dto in dtos)
+            {
+                try
+                {
+                    if (checkAction != null)
+                    {
+                        checkAction(dto);
+                    }
+                    TEntity entity = dto.MapTo<TEntity>();
+                    if (updateFunc != null)
+                    {
+                        entity = updateFunc(dto, entity);
+                    }
+                    entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
+                    _dbSet.Add(entity);
+                }
+                catch (Exception e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
+                string name = GetNameValue(dto);
+                if (name != null)
+                {
+                    names.Add(name);
+                }
+            }
+            int count = await SaveChangesAsync();
+            return count > 0
+                ? new OperationResult(OperationResultType.Success,
+                    names.Count > 0
+                        ? "信息“{0}”添加成功".FormatWith(names.ExpandAndToString())
+                        : "{0}个信息添加成功".FormatWith(dtos.Count))
+                : OperationResult.NoChanged;
+        }
+
+        /// <summary>
         /// 异步逻辑删除实体
         /// </summary>
         /// <param name="entity">实体对象</param>
@@ -739,6 +789,54 @@ namespace OSharp.Core.Data.Entity
         }
 
         /// <summary>
+        /// 异步以标识集合批量删除实体
+        /// </summary>
+        /// <param name="ids">标识集合</param>
+        /// <param name="checkAction">删除前置检查委托</param>
+        /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> DeleteAsync(ICollection<TKey> ids,
+            Action<TEntity> checkAction = null,
+            Func<TEntity, TEntity> deleteFunc = null)
+        {
+            ids.CheckNotNull("ids");
+            List<string> names = new List<string>();
+            foreach (TKey id in ids)
+            {
+                TEntity entity = await _dbSet.FindAsync(id);
+                try
+                {
+                    if (checkAction != null)
+                    {
+                        checkAction(entity);
+                    }
+                    if (deleteFunc != null)
+                    {
+                        entity = deleteFunc(entity);
+                    }
+                    entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
+                    _dbSet.Remove(entity);
+                }
+                catch (Exception e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
+                string name = GetNameValue(entity);
+                if (name != null)
+                {
+                    names.Add(name);
+                }
+            }
+            int count = await SaveChangesAsync();
+            return count > 0
+                ? new OperationResult(OperationResultType.Success,
+                    names.Count > 0
+                        ? "信息“{0}”删除成功".FormatWith(names.ExpandAndToString())
+                        : "{0}个信息删除成功".FormatWith(ids.Count))
+                : new OperationResult(OperationResultType.NoChanged);
+        }
+
+        /// <summary>
         /// 直接删除指定编号的实体，此方法不支持事务
         /// </summary>
         /// <param name="key">实体主键</param>
@@ -778,6 +876,60 @@ namespace OSharp.Core.Data.Entity
             entity.CheckNotNull("entity");
             ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             return await SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 异步以DTO为载体批量更新实体
+        /// </summary>
+        /// <typeparam name="TEditDto">更新DTO类型</typeparam>
+        /// <param name="dtos">更新DTO信息集合</param>
+        /// <param name="checkAction">更新信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
+            Action<TEditDto> checkAction = null,
+            Func<TEditDto, TEntity, TEntity> updateFunc = null)
+            where TEditDto : IInputDto<TKey>
+        {
+            dtos.CheckNotNull("dtos");
+            List<string> names = new List<string>();
+            foreach (TEditDto dto in dtos)
+            {
+                try
+                {
+                    if (checkAction != null)
+                    {
+                        checkAction(dto);
+                    }
+                    TEntity entity = await _dbSet.FindAsync(dto.Id);
+                    if (entity == null)
+                    {
+                        return new OperationResult(OperationResultType.QueryNull);
+                    }
+                    entity = dto.MapTo(entity);
+                    if (updateFunc != null)
+                    {
+                        entity = updateFunc(dto, entity);
+                    }
+                    ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
+                }
+                catch (Exception e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
+                string name = GetNameValue(dto);
+                if (name != null)
+                {
+                    names.Add(name);
+                }
+            }
+            int count = await SaveChangesAsync();
+            return count > 0
+                ? new OperationResult(OperationResultType.Success,
+                    names.Count > 0
+                        ? "信息“{0}”更新成功".FormatWith(names.ExpandAndToString())
+                        : "{0}个信息更新成功".FormatWith(dtos.Count))
+                : new OperationResult(OperationResultType.NoChanged);
         }
 
         /// <summary>

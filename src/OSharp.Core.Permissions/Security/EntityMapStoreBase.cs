@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
-using OSharp.Core.Data.Entity;
 using OSharp.Core.Identity.Models;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security.Dtos;

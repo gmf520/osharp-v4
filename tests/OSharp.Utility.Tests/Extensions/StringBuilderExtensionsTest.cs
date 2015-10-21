@@ -14,7 +14,7 @@ namespace OSharp.Utility.Tests.Extensions
     
     public class StringBuilderExtensionsTest
     {
-        [Fact]
+        [Fact()]
         public void TrimTest()
         {
             StringBuilder sb = null;
@@ -22,7 +22,7 @@ namespace OSharp.Utility.Tests.Extensions
             Assert.Equal(sb.Trim().ToString(), "asd sdf");
         }
 
-        [Fact]
+        [Fact()]
         public void TrimStartTest()
         {
             StringBuilder sb = new StringBuilder("asdfgef");
@@ -33,7 +33,7 @@ namespace OSharp.Utility.Tests.Extensions
             Assert.Equal(sb.TrimStart("gef").ToString(), string.Empty);
         }
 
-        [Fact]
+        [Fact()]
         public void TriemEndTest()
         {
             StringBuilder sb;

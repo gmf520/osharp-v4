@@ -45,7 +45,7 @@ namespace OSharp.Utility.IO
             {
                 foreach (string dir in dirs)
                 {
-                    Copy(dir, targetPath + targetPath + dir.Substring(dir.LastIndexOf("\\", StringComparison.Ordinal)));
+                    Copy(dir, targetPath + dir.Substring(dir.LastIndexOf("\\", StringComparison.Ordinal)));
                 }
             }
             if (searchPatterns != null && searchPatterns.Length > 0)
