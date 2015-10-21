@@ -11,7 +11,7 @@ using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Data.Entity;
 using OSharp.Core.Dependency;
-using OSharp.Core.Exceptions;
+using OSharp.Core.Extensions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;

@@ -43,5 +43,10 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 验证类型
         /// </summary>
         public FilterType FilterType { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }

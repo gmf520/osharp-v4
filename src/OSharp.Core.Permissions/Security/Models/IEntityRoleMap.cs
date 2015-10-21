@@ -23,7 +23,7 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 定义实体角色映射信息
     /// </summary>
-    public interface IEntityRoleMap<TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>:IEntity<TKey>
+    public interface IEntityRoleMap<TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey> : IEntity<TKey>, ILockable
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TRole : RoleBase<TRoleKey>
     {

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 using EntityFramework.Extensions;
@@ -1054,7 +1055,7 @@ namespace OSharp.Core.Data.Entity
                 return null;
             }
         }
-
+        
         #endregion
     }
 }

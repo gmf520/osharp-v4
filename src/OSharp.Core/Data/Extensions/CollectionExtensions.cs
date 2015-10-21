@@ -83,7 +83,7 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>集合 中查询指定分页条件的子数据集
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询指定分页条件的子数据集
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <param name="source">要查询的数据集</param>
@@ -104,7 +104,7 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>集合 中查询指定分页条件的子数据集
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询指定分页条件的子数据集
         /// </summary>
         /// <typeparam name="TEntity">动态实体类型</typeparam>
         /// <param name="source">要查询的数据集</param>
@@ -155,6 +155,34 @@ namespace OSharp.Core.Data.Extensions
                 : Enumerable.Empty<TEntity>().AsQueryable();
         }
 
-        
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Unexpired<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : IExpirable
+        {
+            DateTime now = DateTime.Now;
+            Expression<Func<TEntity, bool>> predicate = m => m.BeginTime <= now && (m.EndTime != null && m.EndTime.Value >= now);
+            return source.Where(predicate);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>数据集中查询未逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Unrecycled<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : IRecyclable
+        {
+            return source.Where(m => !m.IsDeleted);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>数据集中查询未锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Unlocked<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : ILockable
+        {
+            return source.Where(m => !m.IsLocked);
+        }
+
     }
 }

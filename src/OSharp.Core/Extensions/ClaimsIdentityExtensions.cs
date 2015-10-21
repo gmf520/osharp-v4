@@ -2,19 +2,16 @@
 //  <copyright file="ClaimsIdentityExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-06-21 15:18</last-date>
+//  <last-date>2015-10-21 18:08</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 
-namespace OSharp.Core.Exceptions
+namespace OSharp.Core.Extensions
 {
     /// <summary>
     /// <see cref="ClaimsIdentity"/>扩展操作类

@@ -29,52 +29,16 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     public abstract class UserRoleMapBase<TKey, TUser, TUserKey, TRole, TRoleKey>
-        : EntityBase<TKey>, IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey>
+        : ExpirableBase<TKey>,
+        IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey>,
+        ILockable
         where TUser : IUser<TUserKey>
         where TRole : IRole<TRoleKey>
     {
-        private DateTime _beginTime;
-        private DateTime? _endTime;
-
         /// <summary>
-        /// 
+        /// 获取或设置 是否锁定
         /// </summary>
-        protected UserRoleMapBase()
-        {
-            _beginTime = DateTime.Now;
-        }
-
-        /// <summary>
-        /// 获取或设置 生效时间
-        /// </summary>
-        public DateTime BeginTime
-        {
-            get { return _beginTime; }
-            set
-            {
-                if (EndTime != null && value > EndTime.Value)
-                {
-                    throw new InvalidOperationException("生效时间不能大于过期时间");
-                }
-                _beginTime = value;
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置 过期时间
-        /// </summary>
-        public DateTime? EndTime
-        {
-            get { return _endTime; }
-            set
-            {
-                if (value != null && value < BeginTime)
-                {
-                    throw new InvalidOperationException("过期时间不能小于生效时间");
-                }
-                _endTime = value;
-            }
-        }
+        public bool IsLocked { get; set; }
 
         /// <summary>
         /// 获取或设置 用户信息

@@ -24,7 +24,7 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public interface IFunctionUserMap<TKey, TFunction, TFunctionKey, TUser, TUserKey> : IEntity<TKey>
+    public interface IFunctionUserMap<TKey, TFunction, TFunctionKey, TUser, TUserKey> : IEntity<TKey>, ILockable
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
     {

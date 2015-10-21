@@ -38,7 +38,7 @@ namespace OSharp.Core.Identity
     /// <typeparam name="TUserClaimKey">用户摘要标识编号类型</typeparam>
     public abstract class UserStoreBase<TUser, TUserKey, TRole, TRoleKey, TUserRoleMap, TUserRoleMapKey, TUserLogin, TUserLoginKey, TUserClaim, TUserClaimKey> :
         IQueryableUserStore<TUser, TUserKey>,
-        IUserRoleStore<TUser, TUserKey>,
+        //IUserRoleStore<TUser, TUserKey>,
         IUserLoginStore<TUser, TUserKey>,
         IUserClaimStore<TUser, TUserKey>,
         IUserPasswordStore<TUser, TUserKey>,
@@ -182,6 +182,7 @@ namespace OSharp.Core.Identity
         /// <returns/>
         public virtual async Task AddToRoleAsync(TUser user, string roleName)
         {
+            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
             bool exists = UserRoleMapRepository.Entities.Any(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName));
@@ -205,6 +206,7 @@ namespace OSharp.Core.Identity
         /// <returns/>
         public virtual async Task RemoveFromRoleAsync(TUser user, string roleName)
         {
+            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
             TUserRoleMap map = (await UserRoleMapRepository.GetByPredicateAsync(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName)))
@@ -223,6 +225,7 @@ namespace OSharp.Core.Identity
         /// <returns/>
         public virtual async Task<IList<string>> GetRolesAsync(TUser user)
         {
+            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
             user.CheckNotNull("user");
             return await Task.FromResult(UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(user.Id)).Select(m => m.Role.Name).ToList());
         }
@@ -234,6 +237,7 @@ namespace OSharp.Core.Identity
         /// <returns/>
         public virtual async Task<bool> IsInRoleAsync(TUser user, string roleName)
         {
+            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
             return await Task.FromResult(UserRoleMapRepository.Entities.Any(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName)));

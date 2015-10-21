@@ -57,6 +57,7 @@
     <Compile Include="Identity\Dtos\RoleBaseInputDto.cs" />
     <Compile Include="Identity\Dtos\UserBaseInputDto.cs" />
     <Compile Include="Identity\Dtos\UserRoleMapBaseInputDto.cs" />
+    <Compile Include="Identity\IUserRoleMapStore.cs" />
     <Compile Include="Identity\Models\IUserClaim.cs" />
     <Compile Include="Identity\Models\IUserLogin.cs" />
     <Compile Include="Identity\Models\IUserRoleMap.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Identity\RoleStoreBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Identity\UserRoleMapStoreBase.cs" />
     <Compile Include="Identity\UserStoreBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AuthenticationResult.cs" />

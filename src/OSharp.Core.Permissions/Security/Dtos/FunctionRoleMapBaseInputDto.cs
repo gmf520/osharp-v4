@@ -39,6 +39,11 @@ namespace OSharp.Core.Security.Dtos
         public FilterType FilterType { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        public bool IsLocked { get; set; }
+
+        /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
         public TKey Id { get; set; }

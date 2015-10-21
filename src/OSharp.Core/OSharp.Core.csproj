@@ -95,6 +95,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
     <Compile Include="Data\DataPage.cs" />
+    <Compile Include="Data\ExpirableBase.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
       <SubType>Code</SubType>
@@ -105,7 +106,9 @@
     <Compile Include="Data\Infrastructure\IAudited.cs" />
     <Compile Include="Data\Infrastructure\ICreatedAudited.cs" />
     <Compile Include="Data\Infrastructure\ICreatedTime.cs" />
-    <Compile Include="Data\Infrastructure\IRecycle.cs" />
+    <Compile Include="Data\Infrastructure\IExpirable.cs" />
+    <Compile Include="Data\Infrastructure\ILockable.cs" />
+    <Compile Include="Data\Infrastructure\IRecyclable.cs" />
     <Compile Include="Data\Infrastructure\ITimestamp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,8 +136,8 @@
     <Compile Include="Dependency\IServicesBuilder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
-    <Compile Include="Exceptions\CacheExtensions.cs" />
-    <Compile Include="Exceptions\ClaimsIdentityExtensions.cs" />
+    <Compile Include="Extensions\CacheExtensions.cs" />
+    <Compile Include="Extensions\ClaimsIdentityExtensions.cs" />
     <Compile Include="Dependency\IDependency.cs" />
     <Compile Include="Configs\ConfigFile\Data\CreateDatabaseInitializerElement.cs" />
     <Compile Include="Configs\ConfigFile\Data\DataElement.cs" />

@@ -60,5 +60,10 @@ namespace OSharp.Core.Security.Models
                 return FilterGroupJson.FromJsonString<FilterGroup>();
             }
         }
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }

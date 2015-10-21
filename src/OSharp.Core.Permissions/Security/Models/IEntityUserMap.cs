@@ -23,7 +23,7 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 定义实体用户映射信息
     /// </summary>
-    public interface IEntityUserMap<TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey> : IEntity<TKey>
+    public interface IEntityUserMap<TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey> : IEntity<TKey>, ILockable
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TUser : UserBase<TUserKey>
     {

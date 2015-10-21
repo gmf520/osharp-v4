@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
+using OSharp.Core.Data.Extensions;
 using OSharp.Core.Identity.Models;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security.Dtos;
@@ -169,7 +170,7 @@ namespace OSharp.Core.Security
         /// <returns>角色及其限制类型的集合</returns>
         public virtual Task<IEnumerable<Tuple<string, FilterType>>> GetRolesAsync(TFunctionKey functionId)
         {
-            var result = FunctionRoleMapRepository.Entities.Where(m => m.Function.Id.Equals(functionId))
+            var result = FunctionRoleMapRepository.Entities.Unlocked().Where(m => m.Function.Id.Equals(functionId))
                 .Select(m => new Tuple<string, FilterType>(m.Role.Name, m.FilterType));
             return Task.FromResult(result.AsEnumerable());
         }
@@ -292,7 +293,7 @@ namespace OSharp.Core.Security
         /// <returns>用户及其限制类型的集合</returns>
         public virtual Task<IEnumerable<Tuple<string, FilterType>>> GetUsersAsync(TFunctionKey functionId)
         {
-            var result = FunctionUserMapRepository.Entities.Where(m => m.Function.Id.Equals(functionId))
+            var result = FunctionUserMapRepository.Entities.Unlocked().Where(m => m.Function.Id.Equals(functionId))
                 .Select(m => new Tuple<string, FilterType>(m.User.UserName, m.FilterType));
             return Task.FromResult(result.AsEnumerable());
         }
