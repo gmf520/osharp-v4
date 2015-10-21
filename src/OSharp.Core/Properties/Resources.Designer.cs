@@ -97,38 +97,29 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   查找类似 数据库初始化器不能为空，请为框架初始化类的DatabaseInitializer属性赋值 的本地化字符串。
+        ///   查找类似 数据库初始化器不能为空，请确定IoC组件已加载了IDatabaseInitializer的实现类 的本地化字符串。
         /// </summary>
-        internal static string FrameworkInitializerBase_DatabaseInitializeIsNull {
+        internal static string FrameworkInitializer_DatabaseInitializeIsNull {
             get {
-                return ResourceManager.GetString("FrameworkInitializerBase_DatabaseInitializeIsNull", resourceCulture);
+                return ResourceManager.GetString("FrameworkInitializer_DatabaseInitializeIsNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 数据处理初始化器不能为空，请为框架初始化类的EntityInfoHandler属性赋值 的本地化字符串。
+        ///   查找类似 数据处理初始化器不能为空，请确定IoC组件已加载了IEntityInfoHandler的实现类 的本地化字符串。
         /// </summary>
-        internal static string FrameworkInitializerBase_EntityInfoHandlerIsNull {
+        internal static string FrameworkInitializer_EntityInfoHandlerIsNull {
             get {
-                return ResourceManager.GetString("FrameworkInitializerBase_EntityInfoHandlerIsNull", resourceCulture);
+                return ResourceManager.GetString("FrameworkInitializer_EntityInfoHandlerIsNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 数据处理初始化器不能为空，请为框架初始化类的FunctionHandler属性赋值 的本地化字符串。
+        ///   查找类似 数据处理初始化器不能为空，请确定IoC组件已加载了IFunctionHandler的实现类 的本地化字符串。
         /// </summary>
-        internal static string FrameworkInitializerBase_FunctionHandlerIsNull {
+        internal static string FrameworkInitializer_FunctionHandlerIsNull {
             get {
-                return ResourceManager.GetString("FrameworkInitializerBase_FunctionHandlerIsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 依赖注入初始化器不能为空，请为框架初始化类的IocInitializer属性赋值 的本地化字符串。
-        /// </summary>
-        internal static string FrameworkInitializerBase_IocInitializeIsNull {
-            get {
-                return ResourceManager.GetString("FrameworkInitializerBase_IocInitializeIsNull", resourceCulture);
+                return ResourceManager.GetString("FrameworkInitializer_FunctionHandlerIsNull", resourceCulture);
             }
         }
         
