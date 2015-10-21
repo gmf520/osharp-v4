@@ -76,7 +76,7 @@ namespace OSharp.Core
             {
                 if (databaseInitializer == null)
                 {
-                    throw new InvalidOperationException(Resources.FrameworkInitializerBase_DatabaseInitializeIsNull);
+                    throw new InvalidOperationException(Resources.FrameworkInitializer_DatabaseInitializeIsNull);
                 }
                 databaseInitializer.Initialize(config.DataConfig);
                 _databaseInitialized = true;
@@ -88,7 +88,7 @@ namespace OSharp.Core
                 IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
                 if (entityInfoHandler == null)
                 {
-                    throw new InvalidOperationException(Resources.FrameworkInitializerBase_EntityInfoHandlerIsNull);
+                    throw new InvalidOperationException(Resources.FrameworkInitializer_EntityInfoHandlerIsNull);
                 }
                 entityInfoHandler.Initialize();
                 _entityInfoInitialized = true;
@@ -97,7 +97,7 @@ namespace OSharp.Core
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
-                throw new InvalidOperationException(Resources.FrameworkInitializerBase_FunctionHandlerIsNull);
+                throw new InvalidOperationException(Resources.FrameworkInitializer_FunctionHandlerIsNull);
             }
             functionHandler.Initialize();
         }

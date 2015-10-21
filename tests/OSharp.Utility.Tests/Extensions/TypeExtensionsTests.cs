@@ -23,7 +23,7 @@ using OSharp.Utility.Extensions;
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    
+
     public class TypeExtensionsTests
     {
         [Fact()]
@@ -114,6 +114,17 @@ namespace OSharp.Utility.Extensions.Tests
 
             Assert.Throws<ArgumentException>(() =>
                 (typeof(string)).IsGenericAssignableFrom(typeof(int)));
+        }
+
+        [Fact()]
+        public void IsBaseOnTest()
+        {
+            Assert.True(typeof(List<>).IsBaseOn(typeof(List<>)));
+            Assert.True(typeof(List<>).IsBaseOn(typeof(IList<>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(List<string>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(IList<string>)));
+
+            Assert.True(typeof(string).IsBaseOn<IEnumerable>());
         }
     }
 }
