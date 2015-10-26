@@ -67,7 +67,7 @@ namespace OSharp.Web.Http.Selectors
         private static string GetAreaName(HttpRequestMessage request)
         {
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 return null;
             }

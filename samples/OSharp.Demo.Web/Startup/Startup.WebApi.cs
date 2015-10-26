@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using System.Web.Mvc;
 
 using Newtonsoft.Json;
 
@@ -24,7 +25,10 @@ namespace OSharp.Demo.Web
     {
         public void ConfigurationWebApi(IAppBuilder app)
         {
-            HttpConfiguration config = GlobalConfiguration.Configuration;
+            HttpConfiguration config = new HttpConfiguration
+            {
+                DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver
+            };
 
             FieldInfo suffix = typeof(DefaultHttpControllerSelector).GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
             if (suffix != null)
@@ -33,6 +37,19 @@ namespace OSharp.Demo.Web
             }
 
             config.Services.Replace(typeof(IHttpControllerSelector), new AreaHttpControllerSelector(config));
+
+            #region 如果为控制台，请取消注释此段代码，在/Areas/Service/ServiceAreaRegistration.cs 中注释的代码
+            //config.Routes.MapHttpRoute(
+            //  "ServiceActionApi",
+            //  "api/service/{controller}/{action}/{id}",
+            //  new { area = "Service", id = RouteParameter.Optional }
+            //  );
+            //config.Routes.MapHttpRoute(
+            //    "ServiceApi",
+            //    "api/service/{controller}/{id}",
+            //    new { area = "Service", id = RouteParameter.Optional }
+            //    );
+            #endregion
 
             config.Routes.MapHttpRoute(
                 "ActionApi",
@@ -44,7 +61,7 @@ namespace OSharp.Demo.Web
                 new { id = RouteParameter.Optional }/*,new { action = new StartsWithConstraint() }*/
             );
 
-			config.Filters.Add(new ExceptionHandlingAttribute());
+            config.Filters.Add(new ExceptionHandlingAttribute());
 
             var formatter = config.Formatters.JsonFormatter;
             formatter.SerializerSettings.PreserveReferencesHandling =
@@ -52,6 +69,8 @@ namespace OSharp.Demo.Web
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             config.MessageHandlers.Add(new ThrottlingHandler(new InMemoryThrottleStore(), id => 60, TimeSpan.FromMinutes(1)));
+
+            //app.UseWebApi(config);
         }
     }
 }

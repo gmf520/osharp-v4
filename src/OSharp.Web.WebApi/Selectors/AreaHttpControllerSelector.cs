@@ -22,6 +22,7 @@ using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Collections;
 
 
 namespace OSharp.Web.Http.Selectors
@@ -36,13 +37,21 @@ namespace OSharp.Web.Http.Selectors
         private readonly HttpConfiguration _configuration;
         private readonly Lazy<ConcurrentDictionary<string, Type>> _apiControllerTypes;
 
+        /// <summary>
+        /// 区域请求控制器检索
+        /// </summary>
+        /// <param name="configuration"></param>
         public AreaHttpControllerSelector(HttpConfiguration configuration)
             : base(configuration)
         {
             _configuration = configuration;
             _apiControllerTypes = new Lazy<ConcurrentDictionary<string, Type>>(GetControllerTypes);
         }
-
+        /// <summary>
+        /// 检索控制器
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             return GetApiController(request);
@@ -71,8 +80,9 @@ namespace OSharp.Web.Http.Selectors
         {
             IHttpRouteData data = request.GetRouteData();
             object areaName;
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
+
                 if (data.Values.TryGetValue(AreaRouteVariableName, out areaName))
                 {
                     return areaName.ToString();

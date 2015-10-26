@@ -47,6 +47,7 @@ namespace OSharp.Demo.Web
             services.AddDataServices();
             services.AddAutoMapperServices();
 
+            //用控制台启动，需要注释这里
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
             app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
