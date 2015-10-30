@@ -26,7 +26,7 @@ namespace OSharp.Demo.Web.Areas.Service.Controllers
 {
     [Description("服务-测试")]
     [OperateLogFilter]
-    public class TestsApiController : ApiController
+    public class TestsController : ApiController
     {
         /// <summary>
         /// 获取或设置 服务提供者

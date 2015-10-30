@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Security.Dtos;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
@@ -23,7 +24,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义数据用户映射存储
     /// </summary>
-    public interface IEntityUserStore<in TEntityUserMapDto, in TKey, in TEntityInfoKey, in TUserKey>
+    public interface IEntityUserStore<in TEntityUserMapDto, in TKey, in TEntityInfoKey, in TUserKey> : IScopeDependency
         where TEntityUserMapDto : EntityUserMapBaseInputDto<TKey, TEntityInfoKey, TUserKey>
     {
         /// <summary>

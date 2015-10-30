@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Identity.Dtos;
 using OSharp.Utility.Data;
 
@@ -22,7 +23,7 @@ namespace OSharp.Core.Identity
     /// <summary>
     /// 定义用户角色映射存储
     /// </summary>
-    public interface IUserRoleMapStore<in TUserRoleMapInputDto, in TKey, in TUserKey, TRoleKey>
+    public interface IUserRoleMapStore<in TUserRoleMapInputDto, in TKey, in TUserKey, TRoleKey> : IScopeDependency
         where TUserRoleMapInputDto : UserRoleMapBaseInputDto<TKey, TUserKey, TRoleKey>
     {
         /// <summary>

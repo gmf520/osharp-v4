@@ -7,14 +7,7 @@
 //  <last-date>2015-08-28 1:18</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace OSharp.Core.Data
+namespace OSharp.Utility.Filter
 {
     /// <summary>
     /// 数据分页信息

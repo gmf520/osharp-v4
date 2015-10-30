@@ -93,5 +93,13 @@ namespace OSharp.Utility.Data
         public OperationResult(OperationResultType resultType, string message, TData data)
             : base(resultType, message, data)
         { }
+
+        /// <summary>
+        /// 获取 是否成功
+        /// </summary>
+        public bool Successed
+        {
+            get { return ResultType == OperationResultType.Success; }
+        }
     }
 }

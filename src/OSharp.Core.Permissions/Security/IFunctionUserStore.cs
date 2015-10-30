@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Security.Dtos;
 using OSharp.Utility.Data;
 
@@ -22,7 +23,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义功能用户映射存储
     /// </summary>
-    public interface IFunctionUserStore<in TFunctionUserMapDto, in TKey, in TFunctionKey, TUserKey>
+    public interface IFunctionUserStore<in TFunctionUserMapDto, in TKey, in TFunctionKey, TUserKey> : IScopeDependency
         where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TKey, TFunctionKey, TUserKey>
     {
         /// <summary>

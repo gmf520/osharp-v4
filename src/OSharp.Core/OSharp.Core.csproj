@@ -94,7 +94,6 @@
     <Compile Include="Configs\OSharpConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
-    <Compile Include="Data\DataPage.cs" />
     <Compile Include="Data\ExpirableBase.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
