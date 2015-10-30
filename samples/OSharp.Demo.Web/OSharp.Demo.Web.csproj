@@ -557,17 +557,17 @@
       <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
       <Name>OSharp.AutoMapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj">
       <Project>{ef0fecd8-4a75-4d0e-8d98-1af4218d2618}</Project>
-      <Name>OSharp.Core.Data.Entity.MySql</Name>
+      <Name>OSharp.Data.Entity.MySql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
-      <Name>OSharp.Core.Data.Entity</Name>
+      <Name>OSharp.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">
       <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
-      <Name>OSharp.Core.Permissions</Name>
+      <Name>OSharp.Permissions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>

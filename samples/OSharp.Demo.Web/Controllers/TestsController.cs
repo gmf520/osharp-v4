@@ -9,7 +9,7 @@ using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Context;
 using OSharp.Core.Data;
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Extensions;
 using OSharp.Core.Logging;

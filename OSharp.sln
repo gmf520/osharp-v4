@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Utility", "src\OShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core", "src\OSharp.Core\OSharp.Core.csproj", "{F7C67C95-FACB-4160-9A88-CB738E65E034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Data.Entity", "src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj", "{D58A373C-1A9C-4BF7-833D-427E4AEF8502}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Data.Entity", "src\OSharp.Data.Entity\OSharp.Data.Entity.csproj", "{D58A373C-1A9C-4BF7-833D-427E4AEF8502}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2DFA1EE8-C9D7-4A06-8490-C49EC170FE9F}"
 EndProject
@@ -40,11 +40,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A8B16B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Permissions", "src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj", "{E34D7585-25DA-4622-9019-89DBC766AD67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions", "src\OSharp.Permissions\OSharp.Permissions.csproj", "{E34D7585-25DA-4622-9019-89DBC766AD67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Core", "samples\OSharp.Demo.Core\OSharp.Demo.Core.csproj", "{4E6DC732-C77F-420C-B162-869496520D99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Data.Entity.MySql", "src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj", "{EF0FECD8-4A75-4D0E-8D98-1AF4218D2618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Data.Entity.MySql", "src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj", "{EF0FECD8-4A75-4D0E-8D98-1AF4218D2618}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "developing", "developing", "{B60BCD28-D10E-4ACF-86A4-CDBB6FE2BA90}"
 EndProject
