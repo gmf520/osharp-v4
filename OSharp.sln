@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.App.Local", "src\OSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth", "src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj", "{85C8D5B7-1692-434C-AFCD-01940930F6C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,5 +207,6 @@ Global
 		{6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal

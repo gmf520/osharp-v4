@@ -39,7 +39,7 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 用户信息
         /// </summary>

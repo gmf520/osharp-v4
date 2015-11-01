@@ -145,7 +145,7 @@ namespace OSharp.Data.Entity
 
             return logs;
         }
-#if NET45
+
         /// <summary>
         /// 异步获取数据上下文的变更日志信息
         /// </summary>
@@ -154,8 +154,7 @@ namespace OSharp.Data.Entity
         {
             return await Task.FromResult(dbContext.GetEntityDataLogs(provider));
         }
-#endif
-
+        
         /// <summary>
         /// 获取添加数据的日志信息
         /// </summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -168,11 +169,19 @@ namespace OSharp.Demo.Consoles
 
         private static void Method03()
         {
+            const string path = @"D:\WorkSpace\github\Repos\osharp";
+            string[] files = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+            Console.WriteLine("cs文件个数：{0}", files.Length);
+            int total = files.Sum(file => File.ReadAllLines(file).Count(m => !m.Trim().IsNullOrEmpty()));
+            Console.WriteLine("代码行数：{0}", total);
         }
 
         private static void Method04()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(DateTime.Now);
+            Console.WriteLine(DateTime.UtcNow);
+            Console.WriteLine(DateTimeOffset.Now);
+            Console.WriteLine(DateTimeOffset.UtcNow);
         }
 
         private static void Method05()

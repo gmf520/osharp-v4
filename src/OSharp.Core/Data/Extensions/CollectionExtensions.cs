@@ -162,7 +162,8 @@ namespace OSharp.Core.Data.Extensions
             where TEntity : IExpirable
         {
             DateTime now = DateTime.Now;
-            Expression<Func<TEntity, bool>> predicate = m => m.BeginTime <= now && (m.EndTime != null && m.EndTime.Value >= now);
+            Expression<Func<TEntity, bool>> predicate =
+                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
             return source.Where(predicate);
         }
 
