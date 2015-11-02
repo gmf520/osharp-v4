@@ -51,7 +51,7 @@ namespace OSharp.Demo.Web
             app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
-            ConfigurationWebApi(app);
+            ConfigureWebApi(app);
             ConfigureSignalR(app);
         }
     }

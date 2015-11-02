@@ -6,7 +6,7 @@
 
 using System;
 
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 
 using OSharp.Demo.Models.Identity;
 

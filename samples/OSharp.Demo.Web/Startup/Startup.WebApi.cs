@@ -22,16 +22,10 @@ namespace OSharp.Demo.Web
 {
     public partial class Startup
     {
-        public void ConfigurationWebApi(IAppBuilder app)
+        private static void ConfigureWebApi(IAppBuilder app)
         {
             HttpConfiguration config = GlobalConfiguration.Configuration;
-
-            FieldInfo suffix = typeof(DefaultHttpControllerSelector).GetField("ControllerSuffix", BindingFlags.Static | BindingFlags.Public);
-            if (suffix != null)
-            {
-                suffix.SetValue(null, "ApiController");
-            }
-
+            
             config.Services.Replace(typeof(IHttpControllerSelector), new AreaHttpControllerSelector(config));
 
             config.Routes.MapHttpRoute(
@@ -47,11 +41,12 @@ namespace OSharp.Demo.Web
 			config.Filters.Add(new ExceptionHandlingAttribute());
 
             var formatter = config.Formatters.JsonFormatter;
-            formatter.SerializerSettings.PreserveReferencesHandling =
-                PreserveReferencesHandling.Objects;
+            formatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             config.MessageHandlers.Add(new ThrottlingHandler(new InMemoryThrottleStore(), id => 60, TimeSpan.FromMinutes(1)));
+
+            config.EnsureInitialized();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using OSharp.Core.Context;
-using OSharp.Core.Exceptions;
+using OSharp.Core.Extensions;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
 
@@ -75,18 +75,18 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 检测并执行<see cref="IRecycle"/>接口的逻辑
+        /// 检测并执行<see cref="IRecyclable"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
         /// <param name="operation">回收站操作类型</param>
         public static TEntity CheckIRecycle<TEntity, TKey>(this TEntity entity, RecycleOperation operation)
             where TEntity : IEntity<TKey>
         {
-            if (!(entity is IRecycle))
+            if (!(entity is IRecyclable))
             {
                 return entity;
             }
-            IRecycle entity1 = entity as IRecycle;
+            IRecyclable entity1 = entity as IRecyclable;
             switch (operation)
             {
                 case RecycleOperation.LogicDelete:

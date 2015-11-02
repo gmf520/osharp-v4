@@ -16,7 +16,7 @@ using OSharp.AutoMapper;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;

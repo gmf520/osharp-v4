@@ -82,7 +82,7 @@ namespace OSharp.Utility.Extensions
             collection = collection as IList<T> ?? collection.ToList();
             return !collection.Any();
         }
-
+        
         /// <summary>
         /// 根据第三方条件是否为真来决定是否执行指定条件的查询
         /// </summary>
@@ -123,11 +123,11 @@ namespace OSharp.Utility.Extensions
         /// <param name="propertyName">排序属性名</param>
         /// <param name="sortDirection">排序方向</param>
         /// <returns>排序后的数据集</returns>
-        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T>source, 
+        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T> source,
             string propertyName,
             ListSortDirection sortDirection = ListSortDirection.Ascending)
         {
-            propertyName.CheckNotNullOrEmpty("propertyName" );
+            propertyName.CheckNotNullOrEmpty("propertyName");
             return CollectionPropertySorter<T>.OrderBy(source, propertyName, sortDirection);
         }
 
@@ -138,9 +138,9 @@ namespace OSharp.Utility.Extensions
         /// <param name="source">要排序的数据集</param>
         /// <param name="sortCondition">列表字段排序条件</param>
         /// <returns></returns>
-        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T>source, SortCondition sortCondition )
+        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T> source, SortCondition sortCondition)
         {
-            sortCondition.CheckNotNull("sortCondition" );
+            sortCondition.CheckNotNull("sortCondition");
             return source.OrderBy(sortCondition.SortField, sortCondition.ListSortDirection);
         }
 
