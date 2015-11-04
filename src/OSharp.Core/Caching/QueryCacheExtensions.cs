@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 
 using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
-using OSharp.Core.Exceptions;
+using OSharp.Core.Extensions;
 using OSharp.Core.Properties;
 using OSharp.Core.Security;
 using OSharp.Utility.Data;

@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Web.Mvc;
 
 using OSharp.Core.Context;
-using OSharp.Core.Exceptions;
+using OSharp.Core.Extensions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Web.Mvc.Extensions;

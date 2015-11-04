@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Identity;
 using OSharp.Core.Mapping;
 using OSharp.Demo.Contracts;
