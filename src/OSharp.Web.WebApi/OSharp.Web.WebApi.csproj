@@ -81,6 +81,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BaseApiController.cs" />
     <Compile Include="Caching\CachingHandler.cs" />
     <Compile Include="Caching\EntityTagKey.cs" />

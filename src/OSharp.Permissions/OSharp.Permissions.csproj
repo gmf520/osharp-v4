@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Identity\Dtos\RoleBaseInputDto.cs" />
     <Compile Include="Identity\Dtos\UserBaseInputDto.cs" />

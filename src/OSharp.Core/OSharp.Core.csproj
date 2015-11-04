@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Caching\CacheBase.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />

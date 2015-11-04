@@ -79,6 +79,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
     <Compile Include="Models\ClientRedirectUriBase.cs" />
@@ -94,7 +97,6 @@
     <Compile Include="ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Keys.snk" />
     <None Include="OSharp.Permissions.OAuth.nuspec" />
     <None Include="packages.config" />

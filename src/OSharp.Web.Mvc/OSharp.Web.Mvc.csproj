@@ -89,6 +89,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AdminBaseController.cs" />
     <Compile Include="BaseController.cs" />
     <Compile Include="Binders\JsonBinder.cs" />

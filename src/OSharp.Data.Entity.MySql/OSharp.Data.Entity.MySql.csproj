@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DefaultMySqlDbContextInitializer.cs" />
     <Compile Include="MySqlHistoryContext.cs" />
     <Compile Include="MySqlLoggingDbContextInitializer.cs" />

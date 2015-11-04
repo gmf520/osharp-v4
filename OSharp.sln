@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8
 		docs\OSharp权限系统设计.vsd = docs\OSharp权限系统设计.vsd
 		docs\OSharp框架初始化总体流程图.png = docs\OSharp框架初始化总体流程图.png
 		docs\OSharp框架初始化流程图.vsd = docs\OSharp框架初始化流程图.vsd
+		README.md = README.md
 		docs\操作数据日志.vsd = docs\操作数据日志.vsd
 	EndProjectSection
 EndProject

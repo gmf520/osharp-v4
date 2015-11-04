@@ -90,6 +90,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Http\BaseApiController.cs" />
     <Compile Include="Http\Caching\CachingHandler.cs" />
     <Compile Include="Http\Caching\EntityTagKey.cs" />

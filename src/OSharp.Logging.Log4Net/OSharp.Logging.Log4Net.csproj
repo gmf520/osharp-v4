@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Log4NetLoggingInitializer.cs" />
     <Compile Include="Log4NetLog.cs" />
     <Compile Include="Log4NetLoggerAdapter.cs" />
