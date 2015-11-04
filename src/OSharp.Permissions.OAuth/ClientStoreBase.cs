@@ -82,14 +82,14 @@ namespace OSharp.Core.Security
                     return entity;
                 });
         }
-
+        
         /// <summary>
-        /// 验证客户端
+        /// 验证客户端编号与客户端密钥有效性
         /// </summary>
         /// <param name="clientId">客户端编号</param>
         /// <param name="clientSecret">客户端密钥</param>
-        /// <returns>业务操作结果</returns>
-        public virtual Task<bool> ValidateClient(string clientId, string clientSecret)
+        /// <returns>是否验证通过</returns>
+        public Task<bool> Validate(string clientId, string clientSecret)
         {
             clientId.CheckNotNull("clientId");
             clientSecret.CheckNotNull("clientSecret");
@@ -104,13 +104,27 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
+        /// 获取指定客户端的重定向地址
+        /// </summary>
+        /// <param name="clientId">客户端编号</param>
+        /// <returns></returns>
+        public Task<string> GetRedirectUrl(string clientId)
+        {
+            clientId.CheckNotNull("clientId" );
+            return Task.Run(() =>
+            {
+                return ClientRepository.Entities.Where(m => m.ClientId == clientId).Select(m => m.RedirectUrl).SingleOrDefault();
+            });
+        }
+
+        /// <summary>
         /// 新增客户端密钥信息
         /// </summary>
         /// <param name="dto">客户端密钥信息输入DTO</param>
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> AddClientSecret(TClientSecretInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             return ClientSecretRepository.InsertAsync(new[] { dto },
                 null,
                 (_, entity) =>
@@ -132,7 +146,7 @@ namespace OSharp.Core.Security
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> EditClientSecret(TClientSecretInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             return ClientSecretRepository.UpdateAsync(new[] { dto });
         }
 
@@ -145,5 +159,6 @@ namespace OSharp.Core.Security
         {
             return ClientSecretRepository.DeleteAsync(new[] { id });
         }
+
     }
 }
