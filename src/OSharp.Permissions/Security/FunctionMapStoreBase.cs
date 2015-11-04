@@ -55,27 +55,27 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 功能仓储对象
         /// </summary>
-        public IRepository<TFunction, TFunctionKey> FunctionRepository { get; set; }
+        public IRepository<TFunction, TFunctionKey> FunctionRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 角色仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 功能角色映射仓储对象
         /// </summary>
-        public IRepository<TFunctionRoleMap, TFunctionRoleMapKey> FunctionRoleMapRepository { get; set; }
+        public IRepository<TFunctionRoleMap, TFunctionRoleMapKey> FunctionRoleMapRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 用户仓储对象
         /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { get; set; }
+        public IRepository<TUser, TUserKey> UserRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 功能用户映射仓储对象
         /// </summary>
-        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { get; set; }
+        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { private get; set; }
 
         #region Implementation of IFunctionRoleStore<in TFunctionRoleMapDto,in TFunctionRoleMapKey,in TFunctionKey,TRoleKey>
 

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityRoleMapBaseInputDto.cs" company="OSharp开源团队">
+//  <copyright file="ClientSecretBaseInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-14 3:37</last-date>
+//  <last-date>2015-11-04 15:45</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -14,30 +14,34 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
-using OSharp.Utility.Filter;
 
 
 namespace OSharp.Core.Security.Dtos
 {
     /// <summary>
-    /// 实体角色映射输入DTO基类
+    /// 客户端密钥输入DTO基类
     /// </summary>
-    public abstract class EntityRoleMapBaseInputDto<TKey, TEntityInfoKey, TRoleKey> : IInputDto<TKey>
+    public class ClientSecretBaseInputDto<TKey, TClientKey> : IInputDto<TKey>
     {
         /// <summary>
-        /// 获取或设置 实体编号
+        /// 获取或设置 主键，唯一标识
         /// </summary>
-        public TEntityInfoKey EntityInfoId { get; set; }
+        public TKey Id { get; set; }
 
         /// <summary>
-        /// 获取或设置 角色编号
+        /// 获取或设置 密钥值
         /// </summary>
-        public TRoleKey RoleId { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
-        /// 获取或设置 过滤条件组
+        /// 获取或设置 密钥类型
         /// </summary>
-        public FilterGroup FilterGroup { get; set; }
+        public string Type { get; set; }
+
+        /// <summary>
+        /// 获取或设置 描述
+        /// </summary>
+        public string Remark { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
@@ -45,8 +49,8 @@ namespace OSharp.Core.Security.Dtos
         public bool IsLocked { get; set; }
 
         /// <summary>
-        /// 获取或设置 主键，唯一标识
+        /// 获取或设置 客户端信息编号
         /// </summary>
-        public TKey Id { get; set; }
+        public TClientKey ClientId { get; set; }
     }
 }

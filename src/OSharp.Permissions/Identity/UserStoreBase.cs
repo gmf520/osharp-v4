@@ -61,27 +61,27 @@ namespace OSharp.Core.Identity
         /// <summary>
         /// 获取或设置 用户仓储对象
         /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { get; set; }
+        public IRepository<TUser, TUserKey> UserRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 角色仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 用户角色映射仓储对象
         /// </summary>
-        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { get; set; }
+        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 用户第三方登录仓储对象
         /// </summary>
-        public IRepository<TUserLogin, TUserLoginKey> UserLoginRepository { get; set; }
+        public IRepository<TUserLogin, TUserLoginKey> UserLoginRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 用户摘要标识仓储对象
         /// </summary>
-        public IRepository<TUserClaim, TUserClaimKey> UserClaimRepository { get; set; }
+        public IRepository<TUserClaim, TUserClaimKey> UserClaimRepository { private get; set; }
 
         #endregion
 

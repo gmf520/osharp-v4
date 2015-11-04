@@ -15,17 +15,23 @@ using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 
-
 namespace OSharp.Core.Security.Models
 {
     /// <summary>
     /// 客户端信息基类
     /// </summary>
-    public abstract class ClientBase<TKey, TClientSecret, TClientSecretKey, TClientRedirectUri, TClientRedirectUriKey> 
+    public abstract class ClientBase<TKey, TClientSecret, TClientSecretKey> 
         : EntityBase<TKey>, IClient<TKey>, ILockable, ICreatedTime
         where TClientSecret : IClientSecret<TClientSecretKey>
-        where TClientRedirectUri : IClientRedirectUri<TClientRedirectUriKey>
     {
+        /// <summary>
+        /// 初始化一个<see cref="ClientBase{TKey, TClientSecret, TClientSecretKey}"/>类型的新实例
+        /// </summary>
+        protected ClientBase()
+        {
+            ClientSecrets = new List<TClientSecret>();
+        }
+
         /// <summary>
         /// 获取或设置 应用名称
         /// </summary>
@@ -47,6 +53,11 @@ namespace OSharp.Core.Security.Models
         public string LogoUrl { get; set; }
 
         /// <summary>
+        /// 获取或设置 重定向地址
+        /// </summary>
+        public string RedirectUrl { get; set; }
+
+        /// <summary>
         /// 获取或设置 需要授权
         /// </summary>
         public bool RequireConsent { get; set; }
@@ -55,6 +66,11 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 允许记住授权
         /// </summary>
         public bool AllowRememberConsent { get; set; }
+
+        /// <summary>
+        /// 获取或设置 只允许ClientCrdentials
+        /// </summary>
+        public bool AllowClientCredentialsOnly { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
@@ -70,10 +86,6 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 客户端密钥集合
         /// </summary>
         public virtual ICollection<TClientSecret> ClientSecrets { get; set; }
-
-        /// <summary>
-        /// 获取或设置 客户端重定向地址集合
-        /// </summary>
-        public virtual ICollection<TClientRedirectUri> ClientRedirectUris { get; set; }
+        
     }
 }

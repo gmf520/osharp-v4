@@ -184,6 +184,5 @@ namespace OSharp.Core.Data.Extensions
         {
             return source.Where(m => !m.IsLocked);
         }
-
     }
 }

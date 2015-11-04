@@ -82,14 +82,16 @@
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ClientStoreBase.cs" />
+    <Compile Include="Dtos\ClientBaseInputDto.cs" />
+    <Compile Include="Dtos\ClientSecretBaseInputDto.cs" />
+    <Compile Include="IClientStore.cs" />
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
-    <Compile Include="Models\ClientRedirectUriBase.cs" />
     <Compile Include="Models\ClientScopeBase.cs" />
     <Compile Include="Models\ClientSecretBase.cs" />
     <Compile Include="Models\IClient.cs" />
     <Compile Include="Models\IClientClaim.cs" />
-    <Compile Include="Models\IClientRedirectUri.cs" />
     <Compile Include="Models\IClientScope.cs" />
     <Compile Include="Models\IClientSecret.cs" />
     <Compile Include="OsharpAuthorizationServerProvider.cs" />
