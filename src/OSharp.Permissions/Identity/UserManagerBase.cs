@@ -16,7 +16,7 @@ namespace OSharp.Core.Identity
     /// </summary>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户主键类型</typeparam>
-    public class UserManagerBase<TUser, TUserKey> : UserManager<TUser, TUserKey>, IPasswordValidator
+    public abstract class UserManagerBase<TUser, TUserKey> : UserManager<TUser, TUserKey>, IPasswordValidator
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
@@ -24,7 +24,7 @@ namespace OSharp.Core.Identity
         /// 
         /// </summary>
         /// <param name="store"></param>
-        public UserManagerBase(IUserStore<TUser, TUserKey> store)
+        protected UserManagerBase(IUserStore<TUser, TUserKey> store)
             : base(store)
         { }
 

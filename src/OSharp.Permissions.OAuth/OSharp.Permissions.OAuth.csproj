@@ -70,6 +70,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -82,20 +83,27 @@
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ClientIdProvider.cs" />
     <Compile Include="ClientStoreBase.cs" />
     <Compile Include="Dtos\ClientBaseInputDto.cs" />
     <Compile Include="Dtos\ClientSecretBaseInputDto.cs" />
+    <Compile Include="GuidClientSecretProvider.cs" />
+    <Compile Include="IClientIdProvider.cs" />
+    <Compile Include="IClientSecretProvider.cs" />
     <Compile Include="IClientStore.cs" />
     <Compile Include="IClientValidator.cs" />
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
     <Compile Include="Models\ClientScopeBase.cs" />
     <Compile Include="Models\ClientSecretBase.cs" />
+    <Compile Include="Models\ClientType.cs" />
     <Compile Include="Models\IClient.cs" />
     <Compile Include="Models\IClientClaim.cs" />
     <Compile Include="Models\IClientScope.cs" />
     <Compile Include="Models\IClientSecret.cs" />
+    <Compile Include="OsharpAuthorizationCodeProvider.cs" />
     <Compile Include="OsharpAuthorizationServerProvider.cs" />
+    <Compile Include="OsharpRefreshTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

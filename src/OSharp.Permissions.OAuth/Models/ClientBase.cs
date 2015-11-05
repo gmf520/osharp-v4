@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,26 +36,36 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 应用名称
         /// </summary>
+        [Required, StringLength(100)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端类型
+        /// </summary>
+        public ClientType ClientType { get; set; }
 
         /// <summary>
         /// 获取或设置 客户端编号
         /// </summary>
+        [Required, StringLength(100)]
         public string ClientId { get; set; }
 
         /// <summary>
         /// 获取或设置 应用地址
         /// </summary>
+        [Required]
         public string Url { get; set; }
 
         /// <summary>
         /// 获取或设置 应用Logo地址
         /// </summary>
+        [Required]
         public string LogoUrl { get; set; }
 
         /// <summary>
         /// 获取或设置 重定向地址
         /// </summary>
+        [Required]
         public string RedirectUrl { get; set; }
 
         /// <summary>

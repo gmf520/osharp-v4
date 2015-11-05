@@ -31,8 +31,6 @@ namespace OSharp.Demo.Web
         {
             AreaRegistration.RegisterAllAreas();
             RoutesRegister();
-
-            //Initialize();
         }
 
         private static void RoutesRegister()
@@ -44,22 +42,6 @@ namespace OSharp.Demo.Web
                 "{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new[] { "OSharp.Demo.Web.Controllers" });
-        }
-
-        private static void Initialize()
-        {
-            ICacheProvider provider = new RuntimeMemoryCacheProvider();
-            CacheManager.SetProvider(provider, CacheLevel.First);
-            
-            IServicesBuilder builder = new ServicesBuilder();
-            IServiceCollection services = builder.Build();
-            services.AddLog4NetServices();
-            services.AddDataServices();
-
-            IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(new MvcAutofacIocBuilder(services));
-            initializer.Initialize(new WebApiAutofacIocBuilder(services));
-            //initializer.Initialize(new SignalRAutofacIocBuilder(services));
         }
     }
 }

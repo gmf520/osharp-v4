@@ -27,7 +27,12 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 应用名称
         /// </summary>
         string Name { get; set; }
-        
+
+        /// <summary>
+        /// 获取或设置 客户端类型
+        /// </summary>
+        ClientType ClientType { get; set; }
+
         /// <summary>
         /// 获取或设置 客户端编号
         /// </summary>

@@ -16,9 +16,12 @@ using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
 using OSharp.AutoMapper;
-using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
+using OSharp.Core.Security;
+using OSharp.Data.Entity;
+using OSharp.Demo.Identity;
+using OSharp.Demo.Services;
 using OSharp.Demo.Web;
 using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
@@ -46,11 +49,15 @@ namespace OSharp.Demo.Web
             services.AddLog4NetServices();
             services.AddDataServices();
             services.AddAutoMapperServices();
+            services.AddOAuthServices();
+            services.AddDemoServices(app);
 
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
-            app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
+            IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);
+            app.UseOsharpWebApi(apiAutofacIocBuilder);
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
+            ConfigureOAuth(app, apiAutofacIocBuilder.ServiceProvider);
             ConfigureWebApi(app);
             ConfigureSignalR(app);
         }

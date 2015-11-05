@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
+using OSharp.Core.Security.Models;
 
 
 namespace OSharp.Core.Security.Dtos
@@ -34,10 +35,10 @@ namespace OSharp.Core.Security.Dtos
         public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 客户端编号
+        /// 获取或设置 客户端类型
         /// </summary>
-        public string ClientId { get; set; }
-
+        public ClientType ClientType { get; set; }
+        
         /// <summary>
         /// 获取或设置 应用地址
         /// </summary>

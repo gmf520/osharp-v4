@@ -43,6 +43,16 @@ namespace OSharp.Core.Security
         public IRepository<TClientSecret, TClientSecretKey> ClientSecretRepository { private get; set; }
 
         /// <summary>
+        /// 获取或设置 客户端编号生成器
+        /// </summary>
+        public IClientIdProvider ClientIdProvider { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端密钥生成器
+        /// </summary>
+        public IClientSecretProvider ClientSecretProvider { get; set; }
+
+        /// <summary>
         /// 新增客户端信息
         /// </summary>
         /// <param name="dto">客户端信息输入DTO</param>
@@ -50,7 +60,12 @@ namespace OSharp.Core.Security
         public virtual Task<OperationResult> AddClient(TClientInputDto dto)
         {
             dto.CheckNotNull("dto");
-            return ClientRepository.InsertAsync(new[] { dto });
+            return ClientRepository.InsertAsync(new[] { dto }, null,
+                (_, entity) =>
+                {
+                    entity.ClientId = ClientIdProvider.CreateClientId(_.ClientType);
+                    return entity;
+                });
         }
 
         /// <summary>
@@ -129,6 +144,9 @@ namespace OSharp.Core.Security
                 null,
                 (_, entity) =>
                 {
+                    //生成密钥
+                    entity.Value = ClientSecretProvider.CreateSecret();
+
                     TClient client = ClientRepository.GetByKey(dto.ClientId);
                     if (client == null)
                     {

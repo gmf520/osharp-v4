@@ -8,21 +8,16 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs;
 using OSharp.Core.Data;
-using OSharp.Data.Entity;
-using OSharp.Data.Entity.Properties;
 using OSharp.Core.Dependency;
+using OSharp.Data.Entity.Properties;
 using OSharp.Utility.Extensions;
 
 
-namespace OSharp.Core
+namespace OSharp.Data.Entity
 {
     /// <summary>
     /// 服务映射集合扩展操作

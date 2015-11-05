@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 密钥值
         /// </summary>
+        [Required]
         public string Value { get; set; }
 
         /// <summary>

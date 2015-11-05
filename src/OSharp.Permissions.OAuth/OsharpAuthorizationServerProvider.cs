@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 
 using OSharp.Core.Dependency;
@@ -51,16 +54,13 @@ namespace OSharp.Core.Security
             string clientId, clientSecret;
             context.TryGetBasicCredentials(out clientId, out clientSecret);
             //判断客户端Id与客户端密钥的合法性，不合法的拦截
-            //这里只做简单判断，实际项目中可以结合密钥分派，存储系统进行判断
             bool validated = await _clientValidator.Validate(clientId, clientSecret);
-            if (validated)
-            {
-                context.Validated(clientId);
-            }
-            else
+            if (!validated)
             {
                 context.SetError("invalid_client", "client is not valid.");
+                return;
             }
+            context.Validated(clientId);
             await base.ValidateClientAuthentication(context);
         }
 
@@ -73,8 +73,13 @@ namespace OSharp.Core.Security
         {
             ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.ClientId));
-            context.Validated(identity);
-            return base.GrantClientCredentials(context);
+            identity.AddClaims(context.Scope.Select(m => new Claim("urn:oauth:scope", m)));
+
+            AuthenticationProperties properties = new AuthenticationProperties(
+                new Dictionary<string, string>() { { "as:client_id", context.ClientId } });
+            AuthenticationTicket ticket = new AuthenticationTicket(identity, properties);
+            context.Validated(ticket);
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -86,19 +91,20 @@ namespace OSharp.Core.Security
         {
             //调用登录服务验证用户名与密码
             bool validated = await _passwordValidator.Validate(context.UserName, context.Password);
-            if (validated)
-            {
-                //生成令牌
-                ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
-                identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-                context.Validated(identity);
-            }
-            else
+            if (!validated)
             {
                 context.SetError("invalid_user", "username or password is not valid.");
+                return;
             }
+            //生成令牌
+            ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaims(context.Scope.Select(m => new Claim("urn:oauth:scope", m)));
 
-            await base.GrantResourceOwnerCredentials(context);
+            AuthenticationProperties properties = new AuthenticationProperties(
+                new Dictionary<string, string>() { {"as:client_id", context.ClientId} });
+            AuthenticationTicket ticket = new AuthenticationTicket(identity, properties);
+            context.Validated(ticket);
         }
 
         /// <summary>
@@ -108,10 +114,22 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
-            if (context.Ticket == null || context.Ticket.Identity == null || !context.Ticket.Identity.IsAuthenticated)
+            //if (context.Ticket == null || context.Ticket.Identity == null || !context.Ticket.Identity.IsAuthenticated)
+            //{
+            //    context.SetError("invalid_grant", "Refresh token is not valid");
+            //}
+            //return base.GrantRefreshToken(context);
+            string originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
+            string currentClient = context.ClientId;
+            if (originalClient != currentClient)
             {
-                context.SetError("invalid_grant", "Refresh token is not valid");
+                context.Rejected();
+                return Task.FromResult(0);
             }
+            ClaimsIdentity identity = new ClaimsIdentity(context.Ticket.Identity);
+            identity.AddClaim(new Claim("newClaim", "refreshToken"));
+            AuthenticationTicket ticket = new AuthenticationTicket(identity, context.Ticket.Properties);
+            context.Validated(ticket);
             return base.GrantRefreshToken(context);
         }
 

@@ -33,6 +33,9 @@ namespace OSharp.Core.Security
         {
             services.CheckNotNull("services" );
             services.AddSingleton<IOAuthAuthorizationServerProvider, OsharpAuthorizationServerProvider>();
+            
+            services.AddSingleton<IClientIdProvider, DatetimeClientIdProvider>();
+            services.AddSingleton<IClientSecretProvider, GuidClientSecretProvider>();
         }
     }
 }

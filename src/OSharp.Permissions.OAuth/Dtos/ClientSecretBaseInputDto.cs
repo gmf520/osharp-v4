@@ -27,12 +27,7 @@ namespace OSharp.Core.Security.Dtos
         /// 获取或设置 主键，唯一标识
         /// </summary>
         public TKey Id { get; set; }
-
-        /// <summary>
-        /// 获取或设置 密钥值
-        /// </summary>
-        public string Value { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 密钥类型
         /// </summary>
