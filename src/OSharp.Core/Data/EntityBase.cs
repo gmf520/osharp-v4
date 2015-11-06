@@ -53,7 +53,7 @@ namespace OSharp.Core.Data
             {
                 return false;
             }
-            return Id.Equals(Id);
+            return entity.Id.Equals(Id);
         }
 
         /// <summary>

@@ -551,9 +551,7 @@ namespace OSharp.Data.Entity
                 ? _dbSet.SqlQuery(sql, parameters)
                 : _dbSet.SqlQuery(sql, parameters).AsNoTracking();
         }
-
-#if NET45
-
+        
         /// <summary>
         /// 异步插入实体
         /// </summary>
@@ -1006,24 +1004,18 @@ namespace OSharp.Data.Entity
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-#endif
-
         #region 私有方法
 
         private int SaveChanges()
         {
             return UnitOfWork.TransactionEnabled ? 0 : UnitOfWork.SaveChanges();
         }
-
-#if NET45
-
+        
         private async Task<int> SaveChangesAsync()
         {
             return UnitOfWork.TransactionEnabled ? 0 : await UnitOfWork.SaveChangesAsync();
         }
-
-#endif
-
+        
         private static void CheckEntityKey(object key, string keyName)
         {
             key.CheckNotNull("key");

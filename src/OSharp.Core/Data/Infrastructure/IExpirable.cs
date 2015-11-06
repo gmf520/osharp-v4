@@ -24,7 +24,7 @@ namespace OSharp.Core.Data
         /// <summary>
         /// 获取或设置 生效时间
         /// </summary>
-        DateTime BeginTime { get; set; }
+        DateTime? BeginTime { get; set; }
 
         /// <summary>
         /// 获取或设置 过期时间

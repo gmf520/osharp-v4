@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
     <Compile Include="Initialize\AutofacRegistration.cs" />
     <Compile Include="Initialize\LocalIocResolver.cs" />

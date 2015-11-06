@@ -38,17 +38,17 @@ namespace OSharp.Core.Identity
         /// <summary>
         /// 获取或设置 用户信息仓储对象
         /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { get; set; }
+        public IRepository<TUser, TUserKey> UserRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 角色信息仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
 
         /// <summary>
         /// 获取或设置 用户角色映射信息仓储对象
         /// </summary>
-        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { get; set; }
+        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { private get; set; }
 
         /// <summary>
         /// 添加用户角色映射信息

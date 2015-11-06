@@ -72,6 +72,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Collections\ComparisonHelper.cs" />
     <Compile Include="Collections\EqualityHelper.cs" />
     <Compile Include="DataAnnotations\PasswordAttribute.cs" />

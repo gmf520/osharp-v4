@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using OSharp.Core;
@@ -14,9 +15,13 @@ using OSharp.Core.Dependency;
 using OSharp.Core.Extensions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
+using OSharp.Core.Security.Models;
 using OSharp.Demo.Contracts;
+using OSharp.Demo.Dtos.OAuth;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
+using OSharp.Demo.OAuth;
+using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Mvc;
 using OSharp.Web.Mvc.Extensions;
@@ -78,6 +83,28 @@ namespace OSharp.Demo.Web.Controllers
                 format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
             };
             return Content(lines.ExpandAndToString("<br>"));
+        }
+
+        public async Task<ActionResult> Test1()
+        {
+            ClientStore clientStore = ServiceProvider.GetService<ClientStore>();
+            //ClientInputDto clientDto = new ClientInputDto()
+            //{
+            //    Name = "测试客户端01",
+            //    ClientType = ClientType.Application,
+            //    Url = "http://localhost:10240",
+            //    LogoUrl= "http://localhost:10240",
+            //    RedirectUrl = "http://localhost:10240"
+            //};
+            //OperationResult result = clientStore.AddClient(clientDto).Result;
+            ClientSecretInputDto secretDto = new ClientSecretInputDto()
+            {
+                Type = "Test Type",
+                Remark = "Remark",
+                ClientId = 1
+            };
+            OperationResult result = await clientStore.AddClientSecret(secretDto);
+            return Content(result.Message);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace OSharp.Demo.Web.Areas.Service.Controllers
         /// </summary>
         public IServiceProvider ServiceProvider { get; set; }
 
-        [Description("服务-测试-测试001")]
+        [Description("服务-测试-匿名数据")]
         [HttpGet]
         public IHttpActionResult Test01()
         {
@@ -41,6 +41,14 @@ namespace OSharp.Demo.Web.Areas.Service.Controllers
             string name = function != null ? function.Name : null;
 
             return Ok("Hello World.{0}".FormatWith(name));
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Description("服务-测试-保护数据")]
+        public IHttpActionResult Test02()
+        {
+            return Ok("受保护的数据");
         }
     }
 }

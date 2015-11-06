@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AutoMapperMapper.cs" />
     <Compile Include="EntityOutputDtoMapTuple.cs" />
     <Compile Include="InputDtoEntityMapTuple.cs" />

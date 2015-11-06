@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 
 using OSharp.Core.Caching;
+using OSharp.Core.Data.Extensions;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Security;
@@ -50,7 +51,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
                 };
             }
             Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
-            var page = SecurityContract.EntityInfos.ToPageCache(predicate,
+            var page = SecurityContract.EntityInfos.ToPage(predicate,
                 request.PageCondition,
                 m => new
                 {

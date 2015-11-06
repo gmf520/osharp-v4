@@ -85,6 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AutofacRegistration.cs" />
     <Compile Include="MvcAutofacIocBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
