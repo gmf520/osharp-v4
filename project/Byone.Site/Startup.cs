@@ -1,0 +1,61 @@
+﻿// -----------------------------------------------------------------------
+//  <copyright file="Startup.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-09-29 23:12</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+
+using Microsoft.Owin;
+
+//using OSharp.Autofac.Http;
+using OSharp.Autofac.Mvc;
+//using OSharp.Autofac.SignalR;
+using OSharp.AutoMapper;
+using OSharp.Core;
+using OSharp.Core.Caching;
+using OSharp.Core.Dependency;
+using Byone.Site;
+using OSharp.Logging.Log4Net;
+//using OSharp.Web.Http.Initialize;
+using OSharp.Web.Mvc.Initialize;
+//using OSharp.Web.SignalR.Initialize;
+using Byone.APIStore;
+using Owin;
+using System.Collections.Generic;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+
+namespace Byone.Site
+{
+    public partial class Startup
+    {
+        public void Configuration(IAppBuilder app)
+        {
+            // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("cityname", "北京");
+            string result = WeatherService.Get(dic);
+            ICacheProvider provider = new RuntimeMemoryCacheProvider();
+            CacheManager.SetProvider(provider, CacheLevel.First);
+
+            IServicesBuilder builder = new ServicesBuilder();
+            IServiceCollection services = builder.Build();
+            services.AddLog4NetServices();
+            services.AddDataServices();
+            services.AddAutoMapperServices();
+
+            app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
+            //app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
+            //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
+
+            //ConfigureWebApi(app);
+            //ConfigureSignalR(app);
+        }
+    }
+}
