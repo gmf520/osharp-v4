@@ -508,10 +508,6 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Compile Include="Startup\Paths.cs" />
-    <Compile Include="Startup\Startup.OAuth.cs" />
-    <Compile Include="Startup\Startup.SignalR.cs" />
-    <Compile Include="Startup\Startup.WebApi.cs" />
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Tests\TestClaims.cshtml" />
     <None Include="Web.Debug.config">

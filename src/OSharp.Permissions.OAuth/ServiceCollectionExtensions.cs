@@ -31,9 +31,11 @@ namespace OSharp.Core.Security
         /// </summary>
         public static void AddOAuthServices(this IServiceCollection services)
         {
-            services.CheckNotNull("services" );
+            services.CheckNotNull("services");
             services.AddSingleton<IOAuthAuthorizationServerProvider, OsharpAuthorizationServerProvider>();
-            
+            services.AddSingleton<IAuthorizationCodeProvider, OsharpAuthorizationCodeProvider>();
+            services.AddSingleton<IRefreshTokenProvider, OsharpRefreshTokenProvider>();
+
             services.AddSingleton<IClientIdProvider, DatetimeClientIdProvider>();
             services.AddSingleton<IClientSecretProvider, GuidClientSecretProvider>();
         }

@@ -61,6 +61,15 @@ namespace OSharp.Core.Security.Properties {
         }
         
         /// <summary>
+        ///   查找类似 AuthorizationCode服务提供者获取失败，请确定IoC组件已加载了IAuthorizationCodeProvider的实现类 的本地化字符串。
+        /// </summary>
+        internal static string AuthorizationCodeProviderIsNull {
+            get {
+                return ResourceManager.GetString("AuthorizationCodeProviderIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 客户端验证器初始化失败，请确认IClientValidator接口已注册到依赖注入中 的本地化字符串。
         /// </summary>
         internal static string ClientValidatorIsNull {
@@ -70,11 +79,29 @@ namespace OSharp.Core.Security.Properties {
         }
         
         /// <summary>
+        ///   查找类似 OAuth服务提供者获取失败，请确定IoC组件已加载了IOAuthAuthorizationServerProvider的实现类 的本地化字符串。
+        /// </summary>
+        internal static string OAuthServerProviderIsNull {
+            get {
+                return ResourceManager.GetString("OAuthServerProviderIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 用户名密码验证器初始化失败，请确认IPasswordValidator接口已注册到依赖注入中 的本地化字符串。
         /// </summary>
         internal static string PasswordValidatorIsNull {
             get {
                 return ResourceManager.GetString("PasswordValidatorIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RefreshToken服务提供者获取失败，请确定IoC组件已加载了IRefreshTokenProvider的实现类 的本地化字符串。
+        /// </summary>
+        internal static string RefreshTokenProviderIsNull {
+            get {
+                return ResourceManager.GetString("RefreshTokenProviderIsNull", resourceCulture);
             }
         }
     }

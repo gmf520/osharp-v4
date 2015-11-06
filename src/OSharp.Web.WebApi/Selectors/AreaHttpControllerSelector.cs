@@ -71,7 +71,7 @@ namespace OSharp.Web.Http.Selectors
         {
             IHttpRouteData data = request.GetRouteData();
             object areaName;
-            if (data.Route.DataTokens == null)
+            if (data.Route == null || data.Route.DataTokens == null)
             {
                 if (data.Values.TryGetValue(AreaRouteVariableName, out areaName))
                 {

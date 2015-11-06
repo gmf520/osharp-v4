@@ -83,15 +83,18 @@
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="ClientIdProvider.cs" />
     <Compile Include="ClientStoreBase.cs" />
     <Compile Include="Dtos\ClientBaseInputDto.cs" />
     <Compile Include="Dtos\ClientSecretBaseInputDto.cs" />
     <Compile Include="GuidClientSecretProvider.cs" />
+    <Compile Include="IAuthorizationCodeProvider.cs" />
     <Compile Include="IClientIdProvider.cs" />
     <Compile Include="IClientSecretProvider.cs" />
     <Compile Include="IClientStore.cs" />
     <Compile Include="IClientValidator.cs" />
+    <Compile Include="IRefreshTokenProvider.cs" />
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
     <Compile Include="Models\ClientScopeBase.cs" />

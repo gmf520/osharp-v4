@@ -23,7 +23,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// Osharp-RefreshToken提供者
     /// </summary>
-    public class OsharpRefreshTokenProvider : AuthenticationTokenProvider
+    public class OsharpRefreshTokenProvider : AuthenticationTokenProvider, IRefreshTokenProvider
     {
         private readonly ConcurrentDictionary<string, string> _refreshTokens = new ConcurrentDictionary<string, string>();
 

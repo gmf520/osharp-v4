@@ -40,7 +40,6 @@ namespace OSharp.Demo.Web
         public void Configuration(IAppBuilder app)
         {
             // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
-
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
@@ -56,10 +55,10 @@ namespace OSharp.Demo.Web
             IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);
             app.UseOsharpWebApi(apiAutofacIocBuilder);
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
-
-            ConfigureOAuth(app, apiAutofacIocBuilder.ServiceProvider);
-            ConfigureWebApi(app);
-            ConfigureSignalR(app);
+            
+            app.ConfigureOAuth(apiAutofacIocBuilder.ServiceProvider);
+            app.ConfigureWebApi();
+            //app.ConfigureSignalR();
         }
     }
 }

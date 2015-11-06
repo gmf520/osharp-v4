@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthorizationCodeProviderIsNull" xml:space="preserve">
+    <value>AuthorizationCode服务提供者获取失败，请确定IoC组件已加载了IAuthorizationCodeProvider的实现类</value>
+  </data>
   <data name="ClientValidatorIsNull" xml:space="preserve">
     <value>客户端验证器初始化失败，请确认IClientValidator接口已注册到依赖注入中</value>
   </data>
+  <data name="OAuthServerProviderIsNull" xml:space="preserve">
+    <value>OAuth服务提供者获取失败，请确定IoC组件已加载了IOAuthAuthorizationServerProvider的实现类</value>
+  </data>
   <data name="PasswordValidatorIsNull" xml:space="preserve">
     <value>用户名密码验证器初始化失败，请确认IPasswordValidator接口已注册到依赖注入中</value>
+  </data>
+  <data name="RefreshTokenProviderIsNull" xml:space="preserve">
+    <value>RefreshToken服务提供者获取失败，请确定IoC组件已加载了IRefreshTokenProvider的实现类</value>
   </data>
 </root>

@@ -38,5 +38,16 @@ namespace OSharp.Web.SignalR.Initialize
             initializer.Initialize(iocBuilder);
             return app;
         }
+
+        /// <summary>
+        /// 初始化SignalR
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IAppBuilder ConfigureSignalR(this IAppBuilder app)
+        {
+            app.MapSignalR();
+            return app;
+        }
     }
 }

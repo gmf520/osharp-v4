@@ -22,7 +22,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// osharp-认证码验证提供者
     /// </summary>
-    public class OsharpAuthorizationCodeProvider : AuthenticationTokenProvider
+    public class OsharpAuthorizationCodeProvider : AuthenticationTokenProvider, IAuthorizationCodeProvider
     {
         private readonly ConcurrentDictionary<string, string> _codes = new ConcurrentDictionary<string, string>();
 
