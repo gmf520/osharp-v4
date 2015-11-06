@@ -176,6 +176,14 @@
       <Project>{ec26e385-6ded-4695-9338-b7136152abc6}</Project>
       <Name>OSharp.Autofac.Mvc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj">
+      <Project>{6b7bc43b-7373-41f8-95c9-7e76fcfa3672}</Project>
+      <Name>OSharp.Autofac.SignalR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj">
+      <Project>{8a4e190d-7d67-4ea4-92c7-90477608c091}</Project>
+      <Name>OSharp.Autofac.WebApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
       <Project>{d4ab25fe-eac2-469f-8cea-79c5894e7ff0}</Project>
       <Name>OSharp.AutoMapper</Name>
@@ -203,6 +211,14 @@
     <ProjectReference Include="..\..\src\OSharp.Web.Mvc\OSharp.Web.Mvc.csproj">
       <Project>{15279347-b0d7-41f3-a955-f4c34aa1a03b}</Project>
       <Name>OSharp.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Web.SignalR\OSharp.Web.SignalR.csproj">
+      <Project>{47d3569d-7fe4-4a97-99af-8b16823f3b1f}</Project>
+      <Name>OSharp.Web.SignalR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Web.WebApi\OSharp.Web.WebApi.csproj">
+      <Project>{fa06bc09-11b9-4fbd-81cd-24075ed1ec57}</Project>
+      <Name>OSharp.Web.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\Byone.APIStore\Byone.APIStore.csproj">
       <Project>{d704b5e6-9470-46ee-b99c-680ecdb3456f}</Project>

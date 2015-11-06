@@ -12,21 +12,23 @@ using System.Threading.Tasks;
 
 using Microsoft.Owin;
 
-//using OSharp.Autofac.Http;
+using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
-//using OSharp.Autofac.SignalR;
+using OSharp.Autofac.SignalR;
 using OSharp.AutoMapper;
-using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
+using OSharp.Core.Security;
+using OSharp.Data.Entity;
+using Byone.Core.Identity;
+using Byone.Core.Services;
 using Byone.Site;
 using OSharp.Logging.Log4Net;
-//using OSharp.Web.Http.Initialize;
+using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
-//using OSharp.Web.SignalR.Initialize;
-using Byone.APIStore;
+using OSharp.Web.SignalR.Initialize;
+
 using Owin;
-using System.Collections.Generic;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -37,10 +39,6 @@ namespace Byone.Site
     {
         public void Configuration(IAppBuilder app)
         {
-            // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("cityname", "北京");
-            string result = WeatherService.Get(dic);
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
@@ -49,13 +47,17 @@ namespace Byone.Site
             services.AddLog4NetServices();
             services.AddDataServices();
             services.AddAutoMapperServices();
+            services.AddOAuthServices();
+            services.AddDemoServices(app);
 
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
-            //app.UseOsharpWebApi(new WebApiAutofacIocBuilder(services));
+            IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);
+            app.UseOsharpWebApi(apiAutofacIocBuilder);
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
 
-            //ConfigureWebApi(app);
-            //ConfigureSignalR(app);
+            app.ConfigureOAuth(apiAutofacIocBuilder.ServiceProvider);
+            app.ConfigureWebApi();
+            //app.ConfigureSignalR();
         }
     }
 }
