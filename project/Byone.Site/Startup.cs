@@ -48,7 +48,7 @@ namespace Byone.Site
             services.AddDataServices();
             services.AddAutoMapperServices();
             services.AddOAuthServices();
-            services.AddDemoServices(app);
+            services.AddByoneServices(app);
 
             app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
             IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);

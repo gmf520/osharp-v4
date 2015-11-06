@@ -144,10 +144,27 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -160,6 +177,10 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="osharp.config" />
+    <Content Include="log4net.config" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -168,8 +189,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\OSharp.Autofac.Mvc\OSharp.Autofac.Mvc.csproj">
@@ -199,6 +220,14 @@
     <ProjectReference Include="..\..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj">
       <Project>{6312040f-2467-4479-a764-46f687dba66b}</Project>
       <Name>OSharp.Logging.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj">
+      <Project>{85c8d5b7-1692-434c-afcd-01940930f6c5}</Project>
+      <Name>OSharp.Permissions.OAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">
+      <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
+      <Name>OSharp.Permissions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>

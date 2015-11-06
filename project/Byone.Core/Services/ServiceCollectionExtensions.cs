@@ -18,7 +18,7 @@ namespace Byone.Core.Services
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddDemoServices(this IServiceCollection services, IAppBuilder app)
+        public static void AddByoneServices(this IServiceCollection services, IAppBuilder app)
         {
             //Identity
             services.AddScoped<RoleManager<Role, int>, RoleManager>();
