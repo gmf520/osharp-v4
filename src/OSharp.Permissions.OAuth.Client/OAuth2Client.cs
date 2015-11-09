@@ -85,6 +85,7 @@ namespace OSharp.Web.Http.OAuth
             IDictionary<string, string> paramters = new Dictionary<string, string>();
             paramters.Add(GrantTypes.ClientCredentials);
             HttpResponseMessage response = await this.PostAsync(TokenPath, new FormUrlEncodedContent(paramters));
+            string str = await response.Content.ReadAsStringAsync();
             JObject obj = await response.Content.ReadAsAsync<JObject>();
             OAuth2Token token = new OAuth2Token(obj);
             DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BearerScheme, token.AccessToken);
@@ -106,6 +107,7 @@ namespace OSharp.Web.Http.OAuth
             paramters.Add("username", userName);
             paramters.Add("password", password);
             HttpResponseMessage response = await this.PostAsync(TokenPath, new FormUrlEncodedContent(paramters));
+            string str = await response.Content.ReadAsStringAsync();
             JObject obj = await response.Content.ReadAsAsync<JObject>();
             OAuth2Token token = new OAuth2Token(obj);
             DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BearerScheme, token.AccessToken);
@@ -124,6 +126,7 @@ namespace OSharp.Web.Http.OAuth
             paramters.Add(GrantTypes.RefreshToken);
             paramters.Add("refresh_token", refreshToken);
             HttpResponseMessage response = await this.PostAsync(TokenPath, new FormUrlEncodedContent(paramters));
+            string str = await response.Content.ReadAsStringAsync();
             JObject obj = await response.Content.ReadAsAsync<JObject>();
             OAuth2Token token = new OAuth2Token(obj);
             DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BearerScheme, token.AccessToken);

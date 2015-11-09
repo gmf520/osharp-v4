@@ -20,7 +20,7 @@ namespace OSharp.Core.Data
     /// 可过期实体基类
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class ExpirableBase<TKey> : EntityBase<TKey>, IExpirable
+    public abstract class ExpirableBase<TKey> : EntityBase<TKey>, IExpirable 
     {
         private DateTime? _beginTime;
         private DateTime? _endTime;

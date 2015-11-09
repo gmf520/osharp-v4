@@ -52,7 +52,7 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 重定向地址
         /// </summary>
         string RedirectUrl { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 需要授权
         /// </summary>

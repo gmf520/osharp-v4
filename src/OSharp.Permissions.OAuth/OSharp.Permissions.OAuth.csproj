@@ -95,13 +95,16 @@
     <Compile Include="IClientStore.cs" />
     <Compile Include="IClientValidator.cs" />
     <Compile Include="IRefreshTokenProvider.cs" />
+    <Compile Include="IClientRefreshTokenStore.cs" />
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
+    <Compile Include="Models\ClientRefreshTokenBase.cs" />
     <Compile Include="Models\ClientScopeBase.cs" />
     <Compile Include="Models\ClientSecretBase.cs" />
     <Compile Include="Models\ClientType.cs" />
     <Compile Include="Models\IClient.cs" />
     <Compile Include="Models\IClientClaim.cs" />
+    <Compile Include="Models\IClientRefreshToken.cs" />
     <Compile Include="Models\IClientScope.cs" />
     <Compile Include="Models\IClientSecret.cs" />
     <Compile Include="OsharpAuthorizationCodeProvider.cs" />
@@ -113,6 +116,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RefreshTokenInfo.cs" />
+    <Compile Include="ClientRefreshTokenStoreBase.cs" />
     <Compile Include="ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

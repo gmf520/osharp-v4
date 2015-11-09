@@ -79,7 +79,7 @@ namespace OSharp.Core.Security
             {
                 identity.AddClaims(scopes.Select(m => new Claim("urn:oauth:scope", m)));
             }
-
+            
             AuthenticationProperties properties = new AuthenticationProperties(
                 new Dictionary<string, string>() { { "as:client_id", context.ClientId } });
             AuthenticationTicket ticket = new AuthenticationTicket(identity, properties);
