@@ -20,7 +20,7 @@ using Newtonsoft.Json.Linq;
 namespace OSharp.Web.Http.OAuth
 {
     /// <summary>
-    /// OAuth2客户端
+    /// OAuth2-Http客户端
     /// </summary>
     public class OAuth2Client : HttpClient
     {

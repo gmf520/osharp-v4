@@ -45,7 +45,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -227,7 +227,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="OSharp.Core.nuspec" />
-    <None Include="OSharp.Keys.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">

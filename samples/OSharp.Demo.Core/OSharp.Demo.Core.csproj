@@ -183,7 +183,6 @@
     <Compile Include="Services\TestService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>

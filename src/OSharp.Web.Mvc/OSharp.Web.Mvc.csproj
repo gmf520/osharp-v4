@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Owin">
@@ -127,7 +127,6 @@
     <Compile Include="UI\GridRequest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OSharp.Keys.snk" />
     <None Include="OSharp.Web.Mvc.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
