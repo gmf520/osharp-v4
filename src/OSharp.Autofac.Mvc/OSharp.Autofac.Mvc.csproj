@@ -93,7 +93,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Keys.snk" />
     <None Include="OSharp.Autofac.Mvc.nuspec" />
     <None Include="packages.config" />
