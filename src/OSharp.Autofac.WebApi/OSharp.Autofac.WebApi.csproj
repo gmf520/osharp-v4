@@ -81,7 +81,6 @@
     <Compile Include="WebApiAutofacIocBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Autofac.WebApi.nuspec" />
     <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />

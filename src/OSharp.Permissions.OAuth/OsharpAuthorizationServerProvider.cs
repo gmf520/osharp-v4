@@ -14,6 +14,7 @@ using OSharp.Core.Dependency;
 using OSharp.Core.Identity;
 using OSharp.Core.Security.Properties;
 using OSharp.Utility;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Security
@@ -73,7 +74,11 @@ namespace OSharp.Core.Security
         {
             ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.ClientId));
-            identity.AddClaims(context.Scope.Select(m => new Claim("urn:oauth:scope", m)));
+            List<string> scopes = context.Scope.Where(m => !m.IsMissing()).ToList();
+            if (scopes.Any())
+            {
+                identity.AddClaims(scopes.Select(m => new Claim("urn:oauth:scope", m)));
+            }
 
             AuthenticationProperties properties = new AuthenticationProperties(
                 new Dictionary<string, string>() { { "as:client_id", context.ClientId } });
@@ -99,10 +104,14 @@ namespace OSharp.Core.Security
             //生成令牌
             ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaims(context.Scope.Select(m => new Claim("urn:oauth:scope", m)));
+            List<string> scopes = context.Scope.Where(m => !m.IsMissing()).ToList();
+            if (scopes.Any())
+            {
+                identity.AddClaims(scopes.Select(m => new Claim("urn:oauth:scope", m)));
+            }
 
             AuthenticationProperties properties = new AuthenticationProperties(
-                new Dictionary<string, string>() { {"as:client_id", context.ClientId} });
+                new Dictionary<string, string>() { { "as:client_id", context.ClientId } });
             AuthenticationTicket ticket = new AuthenticationTicket(identity, properties);
             context.Validated(ticket);
         }
@@ -114,11 +123,6 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
-            //if (context.Ticket == null || context.Ticket.Identity == null || !context.Ticket.Identity.IsAuthenticated)
-            //{
-            //    context.SetError("invalid_grant", "Refresh token is not valid");
-            //}
-            //return base.GrantRefreshToken(context);
             string originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
             string currentClient = context.ClientId;
             if (originalClient != currentClient)
