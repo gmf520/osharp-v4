@@ -393,7 +393,7 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public OperationResult Update<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
+            Action<TEditDto, TEntity> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
             where TEditDto : IInputDto<TKey>
         {
@@ -403,14 +403,14 @@ namespace OSharp.Data.Entity
             {
                 try
                 {
-                    if (checkAction != null)
-                    {
-                        checkAction(dto);
-                    }
                     TEntity entity = _dbSet.Find(dto.Id);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
+                    }
+                    if (checkAction != null)
+                    {
+                        checkAction(dto, entity);
                     }
                     entity = dto.MapTo(entity);
                     if (updateFunc != null)
@@ -887,7 +887,7 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
+            Action<TEditDto, TEntity> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
             where TEditDto : IInputDto<TKey>
         {
@@ -897,14 +897,14 @@ namespace OSharp.Data.Entity
             {
                 try
                 {
-                    if (checkAction != null)
-                    {
-                        checkAction(dto);
-                    }
                     TEntity entity = await _dbSet.FindAsync(dto.Id);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
+                    }
+                    if (checkAction != null)
+                    {
+                        checkAction(dto, entity);
                     }
                     entity = dto.MapTo(entity);
                     if (updateFunc != null)
