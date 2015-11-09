@@ -51,7 +51,8 @@ namespace OSharp.Demo.Web
             services.AddOAuthServices();
             services.AddDemoServices(app);
 
-            app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
+            IIocBuilder mvcIocBuilder = new MvcAutofacIocBuilder(services);
+            app.UseOsharpMvc(mvcIocBuilder);
             IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);
             app.UseOsharpWebApi(apiAutofacIocBuilder);
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
