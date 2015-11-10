@@ -194,7 +194,7 @@ namespace OSharp.Core.Data
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         OperationResult Update<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
+            Action<TEditDto, TEntity> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
             where TEditDto : IInputDto<TKey>;
 
@@ -410,7 +410,7 @@ namespace OSharp.Core.Data
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
+            Action<TEditDto, TEntity> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
             where TEditDto : IInputDto<TKey>;
 

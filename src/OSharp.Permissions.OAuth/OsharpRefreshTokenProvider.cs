@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Owin.Security.Infrastructure;
 
+using OSharp.Core.Data;
+
 
 namespace OSharp.Core.Security
 {
@@ -25,33 +27,64 @@ namespace OSharp.Core.Security
     /// </summary>
     public class OsharpRefreshTokenProvider : AuthenticationTokenProvider, IRefreshTokenProvider
     {
-        private readonly ConcurrentDictionary<string, string> _refreshTokens = new ConcurrentDictionary<string, string>();
+        private readonly IClientRefreshTokenStore _clientRefreshTokenStore;
 
         /// <summary>
-        /// 创建RefreshToken
+        /// 初始化一个<see cref="OsharpRefreshTokenProvider"/>类型的新实例
         /// </summary>
-        /// <param name="context"></param>
-        public override void Create(AuthenticationTokenCreateContext context)
+        public OsharpRefreshTokenProvider(IClientRefreshTokenStore clientRefreshTokenStore)
         {
-            string token = Guid.NewGuid().ToString("N");
-            DateTime now = DateTime.UtcNow;
-            context.Ticket.Properties.IssuedUtc = now;
-            context.Ticket.Properties.ExpiresUtc = now.AddDays(60);
-            _refreshTokens[token] = context.SerializeTicket();
-            context.SetToken(token);
+            _clientRefreshTokenStore = clientRefreshTokenStore;
         }
 
         /// <summary>
-        /// 
+        /// 创建RefreshToken，在客户端请求AccessToken的时候自动调用
         /// </summary>
         /// <param name="context"></param>
-        public override void Receive(AuthenticationTokenReceiveContext context)
+        public async override Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            string token;
-            if (_refreshTokens.TryRemove(context.Token, out token))
+            string clientId = context.Ticket.Properties.Dictionary["as:client_id"];
+            if (string.IsNullOrEmpty(clientId))
             {
-                context.DeserializeTicket(token);
+                return;
             }
+            
+            DateTime now = DateTime.UtcNow;
+            string userName = context.Ticket.Identity.Name;
+            if (clientId == userName)
+            {
+                return;
+            }
+            RefreshTokenInfo tokenInfo = new RefreshTokenInfo()
+            {
+                Value = Guid.NewGuid().ToString("N"),
+                IssuedUtc = now,
+                ExpiresUtc = now.AddDays(30),
+                UserName = userName,
+                ClientId = clientId
+            };
+            context.Ticket.Properties.IssuedUtc = tokenInfo.IssuedUtc;
+            context.Ticket.Properties.ExpiresUtc = tokenInfo.ExpiresUtc;
+            tokenInfo.ProtectedTicket = context.SerializeTicket();
+            if (await _clientRefreshTokenStore.SaveToken(tokenInfo))
+            {
+                context.SetToken(tokenInfo.Value);
+            }
+        }
+
+        /// <summary>
+        /// 移除RefreshToken，在客户端使用RefreshToken请求新的AccessToken的时候自动调用
+        /// </summary>
+        /// <param name="context"></param>
+        public async override Task ReceiveAsync(AuthenticationTokenReceiveContext context)
+        {
+            RefreshTokenInfo token = await _clientRefreshTokenStore.GetTokenInfo(context.Token);
+            if (token == null)
+            {
+                return;
+            }
+            context.DeserializeTicket(token.ProtectedTicket);
+            await _clientRefreshTokenStore.Remove(context.Token);
         }
     }
 }

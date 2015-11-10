@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -106,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OSharp.Permissions.nuspec" />
-    <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 
 using OSharp.Core.Dependency;
+using OSharp.Core.Security;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
 using OSharp.Demo.OAuth;
@@ -33,6 +34,7 @@ namespace OSharp.Demo.Services
 
             //OAuth
             services.AddScoped<ClientStore>();
+            services.AddScoped<IClientRefreshTokenStore, ClientRefreshTokenStore>();
         }
     }
 }

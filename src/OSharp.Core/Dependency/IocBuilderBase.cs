@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-12 15:33</last-date>
+//  <last-date>2015-11-09 3:05</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -22,8 +22,7 @@ namespace OSharp.Core.Dependency
     {
         private readonly IServiceCollection _services;
         private bool _isBuilded;
-        private IServiceProvider _provider;
-        
+
         /// <summary>
         /// 初始化一个<see cref="IocBuilderBase"/>类型的新实例
         /// </summary>
@@ -32,6 +31,7 @@ namespace OSharp.Core.Dependency
         {
             AssemblyFinder = new DirectoryAssemblyFinder();
             _services = services.Clone();
+            _isBuilded = false;
         }
 
         /// <summary>
@@ -42,19 +42,7 @@ namespace OSharp.Core.Dependency
         /// <summary>
         /// 获取 服务提供者
         /// </summary>
-        public IServiceProvider ServiceProvider
-        {
-            get
-            {
-                if (_isBuilded)
-                {
-                    return _provider;
-                }
-                _provider = Build();
-                _isBuilded = true;
-                return _provider;
-            }
-        }
+        public IServiceProvider ServiceProvider { get; private set; }
 
         /// <summary>
         /// 开始构建依赖注入映射
@@ -64,7 +52,7 @@ namespace OSharp.Core.Dependency
         {
             if (_isBuilded)
             {
-                return _provider;
+                return ServiceProvider;
             }
 
             //设置各个框架的DependencyResolver
@@ -72,9 +60,9 @@ namespace OSharp.Core.Dependency
 
             AddCustomTypes(_services);
 
-            _provider = BuildAndSetResolver(_services, assemblies);
+            ServiceProvider = BuildAndSetResolver(_services, assemblies);
             _isBuilded = true;
-            return _provider;
+            return ServiceProvider;
         }
 
         /// <summary>

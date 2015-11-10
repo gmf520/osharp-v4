@@ -14,3 +14,4 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions\OSharp.Permissions.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj" -Properties Configuration=Debug -IncludeReferencedProjects

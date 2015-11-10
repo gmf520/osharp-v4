@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 .DS_Store
 /.vs/config/applicationhost.config
 *.nupkg
+*.mdf
+*.ldf
