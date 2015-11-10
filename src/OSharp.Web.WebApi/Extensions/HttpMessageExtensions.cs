@@ -31,6 +31,7 @@ namespace OSharp.Web.Http.Extensions
     public static class HttpMessageExtensions
     {
         private const string HttpContext = "MS_HttpContext";
+        private const string OwinContext = "MS_OwinContext";
         private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "area";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -98,7 +99,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "controller";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -117,7 +118,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "action";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -150,6 +151,14 @@ namespace OSharp.Web.Http.Extensions
                 if (remoteEndpoint != null)
                 {
                     return remoteEndpoint.Address;
+                }
+            }
+            if (request.Properties.ContainsKey(OwinContext))
+            {
+                dynamic remoteIpAddress = request.Properties[OwinContext];
+                if (remoteIpAddress != null)
+                {
+                    return remoteIpAddress.Request.RemoteIpAddress;
                 }
             }
 
