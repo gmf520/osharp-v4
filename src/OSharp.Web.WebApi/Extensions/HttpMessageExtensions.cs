@@ -30,7 +30,9 @@ namespace OSharp.Web.Http.Extensions
     /// </summary>
     public static class HttpMessageExtensions
     {
-        private const string HttpContext = "MS_HttpContext";
+        private const string HttpContextKey = "MS_HttpContext";
+        private const string OwinContextKey = "MS_OwinContext";
+        
         private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "area";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -98,7 +100,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "controller";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -117,7 +119,7 @@ namespace OSharp.Web.Http.Extensions
             const string key = "action";
             object value;
             IHttpRouteData data = request.GetRouteData();
-            if (data.Route.DataTokens == null)
+            if (data.Route.DataTokens == null || data.Route.DataTokens.Count == 0)
             {
                 if (data.Values.TryGetValue(key, out value))
                 {
@@ -135,15 +137,22 @@ namespace OSharp.Web.Http.Extensions
         /// <returns></returns>
         public static string GetClientIpAddress(this HttpRequestMessage request)
         {
-            if (request.Properties.ContainsKey(HttpContext))
+            if (request.Properties.ContainsKey(HttpContextKey))
             {
-                dynamic ctx = request.Properties[HttpContext];
+                dynamic ctx = request.Properties[HttpContextKey];
                 if (ctx != null)
                 {
                     return ctx.Request.UserHostAddress;
                 }
             }
-
+            if (request.Properties.ContainsKey(OwinContextKey))
+            {
+                dynamic ctx = request.Properties[OwinContextKey];
+                if (ctx != null)
+                {
+                    return ctx.Request.RemoteIpAddress;
+                }
+            }
             if (request.Properties.ContainsKey(RemoteEndpointMessage))
             {
                 dynamic remoteEndpoint = request.Properties[RemoteEndpointMessage];
