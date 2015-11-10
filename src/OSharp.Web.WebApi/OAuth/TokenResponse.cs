@@ -7,10 +7,15 @@
 //  <last-date>2015-11-06 8:07</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Newtonsoft.Json.Linq;
 
 
-namespace OSharp.Web.Http.OAuth
+namespace OSharp.Web.OAuth
 {
     /// <summary>
     /// OAuth2Token
