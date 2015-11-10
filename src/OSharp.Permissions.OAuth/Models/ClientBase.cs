@@ -67,7 +67,7 @@ namespace OSharp.Core.Security.Models
         /// </summary>
         [Required]
         public string RedirectUrl { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 需要授权
         /// </summary>

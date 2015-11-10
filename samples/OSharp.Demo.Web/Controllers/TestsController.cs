@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-using OSharp.Core;
+using Microsoft.AspNet.Identity;
+
 using OSharp.Core.Caching;
-using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Extensions;
-using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Core.Security.Models;
 using OSharp.Demo.Contracts;
@@ -80,7 +78,9 @@ namespace OSharp.Demo.Web.Controllers
                 format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
                 format.FormatWith("DefaultDbContext", ServiceProvider.GetService<DefaultDbContext>().GetHashCode()),
                 format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
-                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode())
+                format.FormatWith("IRepository<User,int>", ServiceProvider.GetService<IRepository<User,int>>().GetHashCode()),
+                format.FormatWith("UserManager", ServiceProvider.GetService<UserManager<User,int>>().GetHashCode()),
+                format.FormatWith("UserManager", ServiceProvider.GetService<UserManager>().GetHashCode()),
             };
             return Content(lines.ExpandAndToString("<br>"));
         }
@@ -88,23 +88,31 @@ namespace OSharp.Demo.Web.Controllers
         public async Task<ActionResult> Test1()
         {
             ClientStore clientStore = ServiceProvider.GetService<ClientStore>();
+            OperationResult result = null;
             //ClientInputDto clientDto = new ClientInputDto()
             //{
             //    Name = "测试客户端01",
             //    ClientType = ClientType.Application,
             //    Url = "http://localhost:10240",
-            //    LogoUrl= "http://localhost:10240",
+            //    LogoUrl = "http://localhost:10240",
             //    RedirectUrl = "http://localhost:10240"
             //};
-            //OperationResult result = clientStore.AddClient(clientDto).Result;
+            //result = await clientStore.AddClient(clientDto);
             ClientSecretInputDto secretDto = new ClientSecretInputDto()
             {
                 Type = "Test Type",
                 Remark = "Remark",
-                ClientId = 1
+                ClientId = 2
             };
-            OperationResult result = await clientStore.AddClientSecret(secretDto);
+            result = await clientStore.AddClientSecret(secretDto);
             return Content(result.Message);
+        }
+
+        public async Task<ActionResult> Test2()
+        {
+            UserManager manager = ServiceProvider.GetService<UserManager>();
+            IdentityResult result = await manager.AddPasswordAsync(1, "gmf31529019");
+            return Content(result.ToJsonString());
         }
     }
 }

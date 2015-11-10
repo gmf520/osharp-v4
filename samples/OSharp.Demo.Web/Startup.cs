@@ -51,12 +51,13 @@ namespace OSharp.Demo.Web
             services.AddOAuthServices();
             services.AddDemoServices(app);
 
-            app.UseOsharpMvc(new MvcAutofacIocBuilder(services));
-            IIocBuilder apiAutofacIocBuilder = new WebApiAutofacIocBuilder(services);
-            app.UseOsharpWebApi(apiAutofacIocBuilder);
+            IIocBuilder mvcIocBuilder = new MvcAutofacIocBuilder(services);
+            app.UseOsharpMvc(mvcIocBuilder);
+            IIocBuilder apiIocBuilder = new WebApiAutofacIocBuilder(services);
+            app.UseOsharpWebApi(apiIocBuilder);
             //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
             
-            app.ConfigureOAuth(apiAutofacIocBuilder.ServiceProvider);
+            app.ConfigureOAuth(apiIocBuilder.ServiceProvider);
             app.ConfigureWebApi();
             //app.ConfigureSignalR();
         }

@@ -7,15 +7,10 @@
 //  <last-date>2015-11-06 8:07</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Newtonsoft.Json.Linq;
 
 
-namespace OSharp.Web.OAuth
+namespace OSharp.Web.Http.OAuth
 {
     /// <summary>
     /// OAuth2Token
@@ -34,22 +29,13 @@ namespace OSharp.Web.OAuth
         public OAuth2Token(JObject obj)
         {
             JToken value;
-            if (obj.TryGetValue("token_type", out value))
-            {
-                TokenType = (string)value;
-            }
-            if (obj.TryGetValue("access_token", out value))
-            {
-                AccessToken = (string)value;
-            }
-            if (obj.TryGetValue("refresh_token", out value))
-            {
-                RefreshToken = (string)value;
-            }
-            if (obj.TryGetValue("expires_in", out value))
-            {
-                ExpiresIn = (int)value;
-            }
+            TokenType = obj.TryGetValue("token_type", out value) ? (string)value : null;
+            AccessToken = obj.TryGetValue("access_token", out value) ? (string)value : null;
+            RefreshToken = obj.TryGetValue("refresh_token", out value) ? (string)value : null;
+            ExpiresIn = obj.TryGetValue("expires_in", out value) ? (int)value : 0;
+            Error = obj.TryGetValue("error", out value) ? (string)value : null;
+            ErrorDescription = obj.TryGetValue("error_description", out value) ? (string)value : null;
+            HasError = Error != null;
         }
 
         /// <summary>
@@ -71,5 +57,20 @@ namespace OSharp.Web.OAuth
         /// 获取或设置 访问Token过期剩余秒数
         /// </summary>
         public int ExpiresIn { get; set; }
+
+        /// <summary>
+        /// 获取或设置 错误标题
+        /// </summary>
+        public string Error { get; set; }
+
+        /// <summary>
+        /// 获取或设置 错误描述
+        /// </summary>
+        public string ErrorDescription { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否有错
+        /// </summary>
+        public bool HasError { get; set; }
     }
 }

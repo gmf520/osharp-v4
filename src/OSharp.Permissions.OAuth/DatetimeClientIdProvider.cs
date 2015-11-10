@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ClientIdProvider.cs" company="OSharp开源团队">
+//  <copyright file="DatetimeClientIdProvider.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-11-05 14:56</last-date>
+//  <last-date>2015-11-08 17:24</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,7 +16,7 @@ using OSharp.Utility.Extensions;
 namespace OSharp.Core.Security
 {
     /// <summary>
-    /// 使用时间的客户端编号生成器，由于添加客户端是低频业务，不考虑毫秒级的重复
+    /// 使用时间的客户端编号生成器，精度取到毫秒
     /// </summary>
     public class DatetimeClientIdProvider : IClientIdProvider
     {

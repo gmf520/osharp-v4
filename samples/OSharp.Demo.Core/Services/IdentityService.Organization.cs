@@ -94,7 +94,7 @@ namespace OSharp.Demo.Services
             inputDtos.CheckNotNull("dtos");
             List<Organization> organizations = new List<Organization>();
             OperationResult result = OrganizationRepository.Update(inputDtos,
-                dto =>
+                (dto, entity) =>
                 {
                     if (OrganizationRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
                     {

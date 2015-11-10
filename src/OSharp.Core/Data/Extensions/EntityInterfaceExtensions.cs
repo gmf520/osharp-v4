@@ -23,7 +23,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="ICreatedTime"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
         {
             if (!(entity is ICreatedTime))
             {
@@ -38,7 +38,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="ICreatedAudited"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
         {
             if (!(entity is ICreatedAudited))
             {
@@ -58,7 +58,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="IUpdateAudited"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
         {
             if (!(entity is IUpdateAudited))
             {

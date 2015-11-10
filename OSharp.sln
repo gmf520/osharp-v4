@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8E61-477C-9361-AD569DCE74BA}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Function_EntityInfo-CodeMap.dgml = docs\Function_EntityInfo-CodeMap.dgml
+		docs\OSharp.Keys.snk = docs\OSharp.Keys.snk
 		docs\OSharp开发框架架构示图.png = docs\OSharp开发框架架构示图.png
 		docs\OSharp开发框架架构示图.vsd = docs\OSharp开发框架架构示图.vsd
 		docs\OSharp日志模块示图.png = docs\OSharp日志模块示图.png
@@ -87,6 +88,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth", "src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj", "{85C8D5B7-1692-434C-AFCD-01940930F6C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth.Client", "src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj", "{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,6 +181,10 @@ Global
 		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -209,5 +216,6 @@ Global
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{85C8D5B7-1692-434C-AFCD-01940930F6C5} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal

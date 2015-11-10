@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -84,7 +84,7 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppBuilderExtensions.cs" />
-    <Compile Include="ClientIdProvider.cs" />
+    <Compile Include="DatetimeClientIdProvider.cs" />
     <Compile Include="ClientStoreBase.cs" />
     <Compile Include="Dtos\ClientBaseInputDto.cs" />
     <Compile Include="Dtos\ClientSecretBaseInputDto.cs" />
@@ -95,13 +95,16 @@
     <Compile Include="IClientStore.cs" />
     <Compile Include="IClientValidator.cs" />
     <Compile Include="IRefreshTokenProvider.cs" />
+    <Compile Include="IClientRefreshTokenStore.cs" />
     <Compile Include="Models\ClientBase.cs" />
     <Compile Include="Models\ClientClaimBase.cs" />
+    <Compile Include="Models\ClientRefreshTokenBase.cs" />
     <Compile Include="Models\ClientScopeBase.cs" />
     <Compile Include="Models\ClientSecretBase.cs" />
     <Compile Include="Models\ClientType.cs" />
     <Compile Include="Models\IClient.cs" />
     <Compile Include="Models\IClientClaim.cs" />
+    <Compile Include="Models\IClientRefreshToken.cs" />
     <Compile Include="Models\IClientScope.cs" />
     <Compile Include="Models\IClientSecret.cs" />
     <Compile Include="OsharpAuthorizationCodeProvider.cs" />
@@ -113,10 +116,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RefreshTokenInfo.cs" />
+    <Compile Include="ClientRefreshTokenStoreBase.cs" />
     <Compile Include="ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OSharp.Keys.snk" />
     <None Include="OSharp.Permissions.OAuth.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
