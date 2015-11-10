@@ -16,8 +16,6 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json.Linq;
 
-using OSharp.Web.OAuth;
-
 
 namespace OSharp.Web.Http.OAuth
 {
