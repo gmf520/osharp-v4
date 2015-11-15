@@ -24,7 +24,7 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 实体类——客户端刷新Token信息，用于刷新AccessToken
     /// </summary>
-    public class ClientRefreshTokenBase<TKey, TClient, TClientKey, TUser, TUserKey> : EntityBase<TKey>, IClientRefreshToken<TKey>
+    public abstract class ClientRefreshTokenBase<TKey, TClient, TClientKey, TUser, TUserKey> : EntityBase<TKey>, IClientRefreshToken<TKey>
         where TClient : IClient<TClientKey>
         where TUser : IUser<TUserKey>
     {

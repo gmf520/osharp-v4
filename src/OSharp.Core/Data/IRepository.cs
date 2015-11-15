@@ -284,7 +284,7 @@ namespace OSharp.Core.Data
         /// <returns>业务操作结果</returns>
         Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
             Action<TInputDto> checkAction = null,
-            Func<TInputDto, TEntity, TEntity> updateFunc = null)
+            Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null)
             where TInputDto : IInputDto<TKey>;
 
         /// <summary>
@@ -378,7 +378,7 @@ namespace OSharp.Core.Data
         /// <param name="checkAction">删除前置检查委托</param>
         /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteAsync(ICollection<TKey> ids, Action<TEntity> checkAction = null, Func<TEntity, TEntity> deleteFunc = null);
+        Task<OperationResult> DeleteAsync(ICollection<TKey> ids, Action<TEntity> checkAction = null, Func<TEntity, Task<TEntity>> deleteFunc = null);
 
         /// <summary>
         /// 直接删除指定编号的实体，此方法不支持事务
@@ -411,7 +411,7 @@ namespace OSharp.Core.Data
         /// <returns>业务操作结果</returns>
         Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
             Action<TEditDto, TEntity> checkAction = null,
-            Func<TEditDto, TEntity, TEntity> updateFunc = null)
+            Func<TEditDto, TEntity, Task<TEntity>> updateFunc = null)
             where TEditDto : IInputDto<TKey>;
 
         /// <summary>
