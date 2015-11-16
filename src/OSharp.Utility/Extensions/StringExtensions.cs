@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -88,7 +89,7 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIpAddress(this string value)
         {
-            const string pattern = @"^(\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d\.){3}\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d$";
+            const string pattern = @"^(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5]).(d{1,2}|1dd|2[0-4]d|25[0-5])$";
             return value.IsMatch(pattern);
         }
 
@@ -149,6 +150,7 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 指示指定的字符串是 null 还是 System.String.Empty 字符串
         /// </summary>
+        [DebuggerStepThrough]
         public static bool IsNullOrEmpty(this string value)
         {
             return string.IsNullOrEmpty(value);
@@ -157,7 +159,17 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 指示指定的字符串是 null、空还是仅由空白字符组成。
         /// </summary>
+        [DebuggerStepThrough]
         public static bool IsNullOrWhiteSpace(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>
+        /// 指示指定的字符串是 null、空还是仅由空白字符组成。
+        /// </summary>
+        [DebuggerStepThrough]
+        public static bool IsMissing(this string value)
         {
             return string.IsNullOrWhiteSpace(value);
         }
@@ -168,6 +180,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="format">字符串格式，占位符以{n}表示</param>
         /// <param name="args">用于填充占位符的参数</param>
         /// <returns>格式化后的字符串</returns>
+        [DebuggerStepThrough]
         public static string FormatWith(this string format, params object[] args)
         {
             format.CheckNotNull("format");
@@ -265,6 +278,46 @@ namespace OSharp.Utility.Extensions
         {
             json.CheckNotNull("json");
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        /// <summary>
+        /// 给URL添加查询参数
+        /// </summary>
+        /// <param name="url">URL字符串</param>
+        /// <param name="queries">要添加的参数，形如："id=1,cid=2"</param>
+        /// <returns></returns>
+        public static string AddQueryString(this string url, params string[] queries)
+        {
+            foreach (string query in queries)
+            {
+                if (!url.Contains("?"))
+                {
+                    url += "?";
+                }
+                else if (!url.EndsWith("&"))
+                {
+                    url += "&";
+                }
+
+                url = url + query; 
+            }
+            return url;
+        }
+
+        /// <summary>
+        /// 给URL添加 # 参数
+        /// </summary>
+        /// <param name="url">URL字符串</param>
+        /// <param name="query">要添加的参数</param>
+        /// <returns></returns>
+        public static string AddHashFragment(this string url, string query)
+        {
+            if (!url.Contains("#"))
+            {
+                url += "#";
+            }
+
+            return url + query;
         }
 
         /// <summary>

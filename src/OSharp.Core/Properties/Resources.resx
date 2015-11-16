@@ -129,17 +129,14 @@
   <data name="DbContextInitializerConfig_InitializerNotExists" xml:space="preserve">
     <value>上下文初始化类型“{0}”不存在</value>
   </data>
-  <data name="FrameworkInitializerBase_DatabaseInitializeIsNull" xml:space="preserve">
-    <value>数据库初始化器不能为空，请为框架初始化类的DatabaseInitializer属性赋值</value>
+  <data name="FrameworkInitializer_DatabaseInitializeIsNull" xml:space="preserve">
+    <value>数据库初始化器不能为空，请确定IoC组件已加载了IDatabaseInitializer的实现类</value>
   </data>
-  <data name="FrameworkInitializerBase_EntityInfoHandlerIsNull" xml:space="preserve">
-    <value>数据处理初始化器不能为空，请为框架初始化类的EntityInfoHandler属性赋值</value>
+  <data name="FrameworkInitializer_EntityInfoHandlerIsNull" xml:space="preserve">
+    <value>数据处理初始化器不能为空，请确定IoC组件已加载了IEntityInfoHandler的实现类</value>
   </data>
-  <data name="FrameworkInitializerBase_FunctionHandlerIsNull" xml:space="preserve">
-    <value>数据处理初始化器不能为空，请为框架初始化类的FunctionHandler属性赋值</value>
-  </data>
-  <data name="FrameworkInitializerBase_IocInitializeIsNull" xml:space="preserve">
-    <value>依赖注入初始化器不能为空，请为框架初始化类的IocInitializer属性赋值</value>
+  <data name="FrameworkInitializer_FunctionHandlerIsNull" xml:space="preserve">
+    <value>数据处理初始化器不能为空，请确定IoC组件已加载了IFunctionHandler的实现类</value>
   </data>
   <data name="IocInitializerBase_TypeNotIRepositoryType" xml:space="preserve">
     <value>类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。</value>
@@ -162,6 +159,9 @@
   </data>
   <data name="Ioc_TryAddIndistinguishableTypeToEnumerable" xml:space="preserve">
     <value>实现类型不能为“{0}”，因为该类型与注册为“{1}”的其他类型无法区分</value>
+  </data>
+  <data name="Map_MapperIsNull" xml:space="preserve">
+    <value>MapperExtensions.Mapper不能为空，请先设置值</value>
   </data>
   <data name="QueryCacheExtensions_TypeNotEntityType" xml:space="preserve">
     <value>类型“{0}”不是实体类型</value>

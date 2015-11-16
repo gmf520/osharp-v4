@@ -62,6 +62,10 @@ namespace OSharp.Utility.Extensions
         /// <returns> 转化后的指定类型的对象，转化失败引发异常。 </returns>
         public static T CastTo<T>(this object value)
         {
+            if (value.GetType() == typeof(T))
+            {
+                return (T)value;
+            }
             object result = CastTo(value, typeof(T));
             return (T)result;
         }

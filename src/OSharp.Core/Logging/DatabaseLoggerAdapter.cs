@@ -7,6 +7,8 @@
 //  <last-date>2015-09-23 9:08</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Dependency;
 using OSharp.Utility.Logging;
 
@@ -19,9 +21,9 @@ namespace OSharp.Core.Logging
     public class DatabaseLoggerAdapter : LoggerAdapterBase, IScopeDependency
     {
         /// <summary>
-        /// 获取或设置 依赖注入解析器
+        /// 获取或设置 服务提供者
         /// </summary>
-        public IIocResolver IocResolver { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 获取指定名称的Logger实例
@@ -43,7 +45,7 @@ namespace OSharp.Core.Logging
         /// <returns></returns>
         protected override ILog CreateLogger(string name)
         {
-            return IocResolver.Resolve<DatabaseLog>();
+            return ServiceProvider.GetService<DatabaseLog>();
         }
     }
 }

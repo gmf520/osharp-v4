@@ -7,16 +7,17 @@
 //  <last-date>2015-09-29 23:04</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Formatting;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
+
+using Microsoft.Owin.Security.OAuth;
 
 using OSharp.Core;
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Utility;
+using OSharp.Web.Http.Filters;
+using OSharp.Web.Http.Selectors;
 
 using Owin;
 
@@ -31,12 +32,34 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 初始化WebApi框架
         /// </summary>
-        public static IAppBuilder UseOsharpWebApi(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
+        public static IAppBuilder UseOsharpWebApi(this IAppBuilder app, IIocBuilder iocBuilder)
         {
-            services.CheckNotNull("services" );
             iocBuilder.CheckNotNull("iocBuilder");
             IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(services, iocBuilder);
+            initializer.Initialize(iocBuilder);
+            return app;
+        }
+
+        /// <summary>
+        /// 初始化WebApi
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IAppBuilder ConfigureWebApi(this IAppBuilder app)
+        {
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+
+            config.Services.Replace(typeof(IHttpControllerSelector), new AreaHttpControllerSelector(config));
+            config.Routes.MapHttpRoute("ActionApi", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+
+            config.Filters.Add(new ExceptionHandlingAttribute());
+            config.Formatters.Clear();
+            config.Formatters.Add(new JsonMediaTypeFormatter());
+
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.EnsureInitialized();
             return app;
         }
     }

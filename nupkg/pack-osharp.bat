@@ -1,7 +1,7 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Utility\OSharp.Utility.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core\OSharp.Core.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
-"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
-"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.Client\OSharp.Web.Client.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.Mvc\OSharp.Web.Mvc.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.WebApi\OSharp.Web.WebApi.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
@@ -10,5 +10,8 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.App.Local\OSharp.App.Local.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
-"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions\OSharp.Permissions.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj" -Properties Configuration=Debug -IncludeReferencedProjects

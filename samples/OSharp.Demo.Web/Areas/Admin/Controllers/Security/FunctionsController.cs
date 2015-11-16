@@ -111,7 +111,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-新增")]
-        public ActionResult Add(FunctionDto[] dtos)
+        public ActionResult Add(FunctionInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
             OperationResult result = SecurityContract.AddFunctions(dtos);
@@ -121,7 +121,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-编辑")]
-        public ActionResult Edit(FunctionDto[] dtos)
+        public ActionResult Edit(FunctionInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
             OperationResult result = SecurityContract.EditFunctions(dtos);

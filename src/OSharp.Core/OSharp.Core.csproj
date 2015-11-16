@@ -45,7 +45,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Caching\CacheBase.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />
@@ -94,7 +97,7 @@
     <Compile Include="Configs\OSharpConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
-    <Compile Include="Data\DataPage.cs" />
+    <Compile Include="Data\ExpirableBase.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
       <SubType>Code</SubType>
@@ -105,7 +108,9 @@
     <Compile Include="Data\Infrastructure\IAudited.cs" />
     <Compile Include="Data\Infrastructure\ICreatedAudited.cs" />
     <Compile Include="Data\Infrastructure\ICreatedTime.cs" />
-    <Compile Include="Data\Infrastructure\IRecycle.cs" />
+    <Compile Include="Data\Infrastructure\IExpirable.cs" />
+    <Compile Include="Data\Infrastructure\ILockable.cs" />
+    <Compile Include="Data\Infrastructure\IRecyclable.cs" />
     <Compile Include="Data\Infrastructure\ITimestamp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,8 +138,8 @@
     <Compile Include="Dependency\IServicesBuilder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
-    <Compile Include="Exceptions\CacheExtensions.cs" />
-    <Compile Include="Exceptions\ClaimsIdentityExtensions.cs" />
+    <Compile Include="Extensions\CacheExtensions.cs" />
+    <Compile Include="Extensions\ClaimsIdentityExtensions.cs" />
     <Compile Include="Dependency\IDependency.cs" />
     <Compile Include="Configs\ConfigFile\Data\CreateDatabaseInitializerElement.cs" />
     <Compile Include="Configs\ConfigFile\Data\DataElement.cs" />
@@ -151,11 +156,26 @@
     <Compile Include="Initialize\IDatabaseInitializer.cs" />
     <Compile Include="Initialize\IFrameworkInitializer.cs" />
     <Compile Include="Dependency\LifetimeStyle.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\IMappersBuilder.cs" />
+    <Compile Include="Mapping\IMapSourceTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTargetTypeFinder.cs" />
+    <Compile Include="Mapping\IMapTuple.cs" />
+    <Compile Include="Mapping\InputDtoTypeFinder.cs" />
+    <Compile Include="Mapping\MappersBuilder.cs" />
+    <Compile Include="Mapping\MapperExtensions.cs" />
+    <Compile Include="Mapping\MapTupleBase.cs" />
+    <Compile Include="Mapping\OutputDtoTypeFinder.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\IAllAssemblyFinder.cs" />
-    <Compile Include="Reflection\NullMethodInfoFinder.cs" />
-    <Compile Include="Reflection\NullTypeFinder.cs" />
+    <Compile Include="Security\EntityInfoBaseInputDto.cs" />
+    <Compile Include="Security\FunctionBaseInputDto.cs" />
+    <Compile Include="Security\IEntityTypeFinder.cs" />
+    <Compile Include="Security\IFunctionMethodFinder.cs" />
+    <Compile Include="Security\IFunctionTypeFinder.cs" />
     <Compile Include="Security\NullFunctionHandler.cs" />
+    <Compile Include="Security\NullFunctionMethodInfoFinder.cs" />
+    <Compile Include="Security\NullFunctionTypeFinder.cs" />
     <Compile Include="Security\PlatformToken.cs" />
     <Compile Include="Logging\DatabaseLog.cs" />
     <Compile Include="Logging\DatabaseLoggerAdapter.cs" />
@@ -207,7 +227,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="OSharp.Core.nuspec" />
-    <None Include="OSharp.Keys.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">
@@ -222,6 +241,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

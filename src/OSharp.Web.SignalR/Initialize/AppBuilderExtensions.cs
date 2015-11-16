@@ -31,12 +31,22 @@ namespace OSharp.Web.SignalR.Initialize
         /// <summary>
         /// 初始化SignalR框架
         /// </summary>
-        public static IAppBuilder UseOsharpSignalR(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
+        public static IAppBuilder UseOsharpSignalR(this IAppBuilder app, IIocBuilder iocBuilder)
         {
-            services.CheckNotNull("services");
             iocBuilder.CheckNotNull("iocBuilder");
             IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(services, iocBuilder);
+            initializer.Initialize(iocBuilder);
+            return app;
+        }
+
+        /// <summary>
+        /// 初始化SignalR
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IAppBuilder ConfigureSignalR(this IAppBuilder app)
+        {
+            app.MapSignalR();
             return app;
         }
     }

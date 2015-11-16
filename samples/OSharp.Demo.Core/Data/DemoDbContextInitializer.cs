@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 
 
 namespace OSharp.Demo.Data

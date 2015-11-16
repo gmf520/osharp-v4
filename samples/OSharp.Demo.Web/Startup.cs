@@ -15,9 +15,13 @@ using Microsoft.Owin;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.Autofac.SignalR;
-using OSharp.Core;
+using OSharp.AutoMapper;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
+using OSharp.Core.Security;
+using OSharp.Data.Entity;
+using OSharp.Demo.Identity;
+using OSharp.Demo.Services;
 using OSharp.Demo.Web;
 using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
@@ -36,21 +40,26 @@ namespace OSharp.Demo.Web
         public void Configuration(IAppBuilder app)
         {
             // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
-
             ICacheProvider provider = new RuntimeMemoryCacheProvider();
             CacheManager.SetProvider(provider, CacheLevel.First);
 
-            IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+            IServicesBuilder builder = new ServicesBuilder();
             IServiceCollection services = builder.Build();
             services.AddLog4NetServices();
             services.AddDataServices();
-            
-            app.UseOsharpMvc(services, new MvcAutofacIocBuilder());
-            app.UseOsharpWebApi(services, new WebApiAutofacIocBuilder());
-            app.UseOsharpSignalR(services, new SignalRAutofacIocBuilder());
+            services.AddAutoMapperServices();
+            services.AddOAuthServices();
+            services.AddDemoServices(app);
 
-            ConfigurationWebApi(app);
-            ConfigureSignalR(app);
+            IIocBuilder mvcIocBuilder = new MvcAutofacIocBuilder(services);
+            app.UseOsharpMvc(mvcIocBuilder);
+            IIocBuilder apiIocBuilder = new WebApiAutofacIocBuilder(services);
+            app.UseOsharpWebApi(apiIocBuilder);
+            //app.UseOsharpSignalR(new SignalRAutofacIocBuilder(services));
+            
+            app.ConfigureOAuth(apiIocBuilder.ServiceProvider);
+            app.ConfigureWebApi();
+            //app.ConfigureSignalR();
         }
     }
 }

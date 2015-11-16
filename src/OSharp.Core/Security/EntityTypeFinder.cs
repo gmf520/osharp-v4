@@ -8,36 +8,26 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
+using OSharp.Core.Mapping;
 using OSharp.Core.Reflection;
 using OSharp.Utility.Extensions;
 
 
-namespace OSharp.SiteBase.Security
+namespace OSharp.Core.Security
 {
     /// <summary>
     /// 实体类型查找器
     /// </summary>
-    public class EntityTypeFinder : ITypeFinder
+    public class EntityTypeFinder : IEntityTypeFinder, IMapSourceTypeFinder, IMapTargetTypeFinder
     {
-        /// <summary>
-        /// 初始化一个<see cref="EntityTypeFinder"/>类型的新实例
-        /// </summary>
-        public EntityTypeFinder()
-        {
-            AssemblyFinder = new DirectoryAssemblyFinder();
-        }
-
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
         /// 查找指定条件的项

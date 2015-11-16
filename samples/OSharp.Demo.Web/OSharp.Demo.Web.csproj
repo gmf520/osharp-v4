@@ -50,10 +50,6 @@
       <HintPath>..\..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -88,6 +84,10 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -468,7 +468,6 @@
     <Content Include="Areas\Admin\Views\Logging\SystemLogs.cshtml" />
     <Content Include="Areas\Admin\Views\Functions\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EntityInfos\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\web.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -509,8 +508,6 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Compile Include="Startup\Startup.SignalR.cs" />
-    <Compile Include="Startup\Startup.WebApi.cs" />
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Tests\TestClaims.cshtml" />
     <None Include="Web.Debug.config">
@@ -533,7 +530,6 @@
     <Compile Include="Areas\Admin\Controllers\Security\EntityInfosController.cs" />
     <Compile Include="Areas\Admin\Controllers\Security\FunctionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Systems\LoggingController.cs" />
-    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Service\Controllers\TestsController.cs" />
     <Compile Include="Areas\Service\ServiceAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -559,17 +555,25 @@
       <Project>{8A4E190D-7D67-4EA4-92C7-90477608C091}</Project>
       <Name>OSharp.Autofac.WebApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj">
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
+      <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
+      <Name>OSharp.AutoMapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj">
       <Project>{ef0fecd8-4a75-4d0e-8d98-1af4218d2618}</Project>
-      <Name>OSharp.Core.Data.Entity.MySql</Name>
+      <Name>OSharp.Data.Entity.MySql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
-      <Name>OSharp.Core.Data.Entity</Name>
+      <Name>OSharp.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj">
+      <Project>{85C8D5B7-1692-434C-AFCD-01940930F6C5}</Project>
+      <Name>OSharp.Permissions.OAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">
       <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
-      <Name>OSharp.Core.Permissions</Name>
+      <Name>OSharp.Permissions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
@@ -601,9 +605,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Manage\Controllers\" />
-    <Folder Include="Areas\Manage\Models\" />
-    <Folder Include="Areas\Manage\Views\Shared\" />
+    <Folder Include="Content\metronic\" />
+    <Folder Include="Scripts\metronic\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <PropertyGroup>

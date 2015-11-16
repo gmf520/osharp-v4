@@ -25,6 +25,6 @@ namespace OSharp.Demo.Security
     /// 数据（角色、用户）映射存储
     /// </summary>
     public class EntityMapStore
-        : EntityMapStoreBase<EntityRoleMap, int, EntityUserMap, int, EntityRoleMapDto, EntityUserMapDto, EntityInfo, Guid, Role, int, User, int>
+        : EntityMapStoreBase<EntityRoleMap, int, EntityUserMap, int, EntityRoleMapInputDto, EntityUserMapInputDto, EntityInfo, Guid, Role, int, User, int>
     { }
 }

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Filters;
 
 using OSharp.Core.Context;
-using OSharp.Core.Exceptions;
+using OSharp.Core.Extensions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
 using OSharp.Web.Http.Extensions;

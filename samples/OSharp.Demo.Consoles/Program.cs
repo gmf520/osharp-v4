@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +14,11 @@ using Autofac;
 using Newtonsoft.Json;
 
 using OSharp.App.Local.Initialize;
+using OSharp.AutoMapper;
 using OSharp.Core;
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;
@@ -23,7 +26,9 @@ using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Logging.Log4Net;
 using OSharp.SiteBase.Initialize;
+using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Secutiry;
 
 
 namespace OSharp.Demo.Consoles
@@ -47,17 +52,29 @@ namespace OSharp.Demo.Consoles
                 IServiceCollection services = builder.Build();
                 services.AddLog4NetServices();
                 services.AddDataServices();
-                ConsolesAutofacBuilder iocBuilder = new ConsolesAutofacBuilder();
+                services.AddAutoMapperServices();
+                IIocBuilder iocBuilder = new LocalAutofacIocBuilder(services);
                 IFrameworkInitializer initializer = new FrameworkInitializer();
-                initializer.Initialize(services, iocBuilder);
-                
-                _program = iocBuilder.Resolver.Resolve<Program>();
+                initializer.Initialize(iocBuilder);
+
+                _program = iocBuilder.ServiceProvider.GetService<Program>();
                 watch.Stop();
                 Console.WriteLine("程序初始化完毕并启动成功，耗时：{0}", watch.Elapsed);
             }
+            catch (ReflectionTypeLoadException e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine("LoaderExceptions:");
+                Exception[] exs = e.LoaderExceptions;
+                foreach (Exception ex in exs)
+                {
+                    Console.WriteLine(ex);
+                }
+                return;
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.FormatMessage());
+                Console.WriteLine(e);
                 Console.ReadLine();
                 return;
             }
@@ -166,16 +183,27 @@ namespace OSharp.Demo.Consoles
 
         private static void Method03()
         {
+            const string path = @"D:\WorkSpace\github\Repos\osharp";
+            string[] files = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+            Console.WriteLine("cs文件个数：{0}", files.Length);
+            int total = files.Sum(file => File.ReadAllLines(file).Count(m => !m.Trim().IsNullOrEmpty()));
+            Console.WriteLine("代码行数：{0}", total);
         }
 
         private static void Method04()
         {
-            throw new NotImplementedException();
+            string value = Guid.NewGuid().ToString("N");
+            Console.WriteLine(value);
+            value = Convert.ToBase64String(value.ToBytes());
+            Console.WriteLine(value);
         }
 
         private static void Method05()
         {
-            throw new NotImplementedException();
+            RandomNumberGenerator generator = new RNGCryptoServiceProvider();
+            byte[] bytes = new byte[96]; 
+            generator.GetBytes(bytes);
+            Console.WriteLine(Convert.ToBase64String(bytes));
         }
 
         private static void Method06()

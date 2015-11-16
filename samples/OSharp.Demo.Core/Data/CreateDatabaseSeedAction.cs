@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Data.Entity.Migrations;
+using OSharp.Data.Entity.Migrations;
 using OSharp.Demo.Models.Identity;
 
 

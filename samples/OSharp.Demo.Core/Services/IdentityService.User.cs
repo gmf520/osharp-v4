@@ -14,8 +14,9 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Identity;
+using OSharp.Core.Mapping;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
 using OSharp.Demo.Identity;
@@ -42,7 +43,7 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 获取或设置 用户管理器
         /// </summary>
-        public UserManager UserManager { get; set; }
+        public UserManager<User, int> UserManager { get; set; }
 
         /// <summary>
         /// 检查用户信息信息是否存在
@@ -60,11 +61,11 @@ namespace OSharp.Demo.Services
         /// </summary>
         /// <param name="dtos">要添加的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> AddUsers(params UserDto[] dtos)
+        public async Task<OperationResult> AddUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
             UserRepository.UnitOfWork.TransactionEnabled = true;
-            foreach (UserDto dto in dtos)
+            foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
                 User user = dto.MapTo<User>();
@@ -96,11 +97,11 @@ namespace OSharp.Demo.Services
         /// </summary>
         /// <param name="dtos">包含更新信息的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> EditUsers(params UserDto[] dtos)
+        public async Task<OperationResult> EditUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
             UserRepository.UnitOfWork.TransactionEnabled = true;
-            foreach (UserDto dto in dtos)
+            foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
                 User user = UserManager.FindById(dto.Id);
@@ -138,7 +139,7 @@ namespace OSharp.Demo.Services
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> DeleteUsers(params int[] ids)
         {
-            OperationResult result = UserRepository.Delete(ids,null,
+            OperationResult result = UserRepository.Delete(ids, null,
                 entity =>
                 {
                     //先删除所有用户相关信息
@@ -172,7 +173,7 @@ namespace OSharp.Demo.Services
                 {
                     return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
                 }
-                UserRoleMap map = new UserRoleMap(){User = user, Role = role};
+                UserRoleMap map = new UserRoleMap() { User = user, Role = role };
                 await UserRoleMapRepository.InsertAsync(map);
             }
             await UserRoleMapRepository.DeleteAsync(m => m.User.Id == id && removeIds.Contains(m.Role.Id));

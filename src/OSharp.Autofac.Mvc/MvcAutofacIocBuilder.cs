@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-10-10 15:29</last-date>
+//  <last-date>2015-10-12 15:25</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,6 +27,14 @@ namespace OSharp.Autofac.Mvc
     public class MvcAutofacIocBuilder : IocBuilderBase
     {
         /// <summary>
+        /// 初始化一个<see cref="MvcAutofacIocBuilder"/>类型的新实例
+        /// </summary>
+        /// <param name="services">服务信息集合</param>
+        public MvcAutofacIocBuilder(IServiceCollection services)
+            : base(services)
+        { }
+
+        /// <summary>
         /// 添加自定义服务映射
         /// </summary>
         /// <param name="services">服务信息集合</param>
@@ -35,6 +43,8 @@ namespace OSharp.Autofac.Mvc
             services.AddInstance(this);
             services.AddSingleton<IIocResolver, MvcIocResolver>();
             services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
+            services.AddSingleton<IFunctionTypeFinder, MvcControllerTypeFinder>();
+            services.AddSingleton<IFunctionMethodInfoFinder, MvcActionMethodInfoFinder>();
         }
 
         /// <summary>

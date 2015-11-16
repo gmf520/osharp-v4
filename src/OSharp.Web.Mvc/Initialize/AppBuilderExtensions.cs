@@ -30,12 +30,11 @@ namespace OSharp.Web.Mvc.Initialize
         /// <summary>
         /// 初始化Mvc框架
         /// </summary>
-        public static IAppBuilder UseOsharpMvc(this IAppBuilder app, IServiceCollection services, IIocBuilder iocBuilder)
+        public static IAppBuilder UseOsharpMvc(this IAppBuilder app, IIocBuilder iocBuilder)
         {
-            services.CheckNotNull("services");
             iocBuilder.CheckNotNull("iocBuilder");
             IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(services, iocBuilder);
+            initializer.Initialize(iocBuilder);
             return app;
         }
     }

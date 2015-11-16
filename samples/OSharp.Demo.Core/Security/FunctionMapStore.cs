@@ -26,6 +26,6 @@ namespace OSharp.Demo.Security
     /// 功能（角色、用户）映射存储
     /// </summary>
     public class FunctionMapStore
-        : FunctionMapStoreBase<FunctionRoleMap, int, FunctionUserMap, int, FunctionRoleMapDto, FunctionUserMapDto, Function, Guid, Role, int, User, int>
+        : FunctionMapStoreBase<FunctionRoleMap, int, FunctionUserMap, int, FunctionRoleMapInputDto, FunctionUserMapInputDto, Function, Guid, Role, int, User, int>
     { }
 }

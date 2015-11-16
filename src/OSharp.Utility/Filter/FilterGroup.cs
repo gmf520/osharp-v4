@@ -12,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Utility.Exceptions;
 using OSharp.Utility.Properties;
 
 
@@ -75,7 +74,7 @@ namespace OSharp.Utility.Filter
             {
                 if (value != FilterOperate.And && value != FilterOperate.Or)
                 {
-                    throw new OSharpException(Resources.Filter_GroupOperateError);
+                    throw new InvalidOperationException(Resources.Filter_GroupOperateError);
                 }
                 _operate = value;
             }

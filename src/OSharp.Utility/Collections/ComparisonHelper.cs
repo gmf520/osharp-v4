@@ -16,12 +16,12 @@ using System.Threading.Tasks;
 namespace OSharp.Utility.Collections
 {
     /// <summary>
-    /// 比较辅助类，用于快速创建<see cref="IComparer&lt;T&gt;"/>接口的实例
+    /// 比较器辅助类，用于快速创建<see cref="IComparer{T}"/>接口的实例
     /// </summary>
     /// <example>
     /// var comparer1 = Comparison[Person].CreateComparer(p => p.ID); var comparer2 = Comparison[Person].CreateComparer(p => p.Name); var comparer3 = Comparison[Person].CreateComparer(p => p.Birthday.Year)
     /// </example>
-    /// <typeparam name="T"> </typeparam>
+    /// <typeparam name="T">要比较的类型</typeparam>
     public static class ComparisonHelper<T>
     {
         /// <summary>

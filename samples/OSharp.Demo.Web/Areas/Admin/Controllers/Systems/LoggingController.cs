@@ -123,7 +123,6 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         public ActionResult SystemLogs()
         {
             return Content("数据日志");
-            return View();
         }
 
         #endregion
