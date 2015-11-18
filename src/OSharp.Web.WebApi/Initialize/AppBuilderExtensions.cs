@@ -4,12 +4,11 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-29 23:04</last-date>
+//  <last-date>2015-11-18 17:05</last-date>
 // -----------------------------------------------------------------------
 
 using System.Net.Http.Formatting;
 using System.Web.Http;
-using System.Web.Http.Dispatcher;
 
 using Microsoft.Owin.Security.OAuth;
 
@@ -17,7 +16,6 @@ using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Utility;
 using OSharp.Web.Http.Filters;
-using OSharp.Web.Http.Selectors;
 
 using Owin;
 
@@ -48,10 +46,6 @@ namespace OSharp.Web.Http.Initialize
         public static IAppBuilder ConfigureWebApi(this IAppBuilder app)
         {
             HttpConfiguration config = GlobalConfiguration.Configuration;
-
-            config.Services.Replace(typeof(IHttpControllerSelector), new AreaHttpControllerSelector(config));
-            config.Routes.MapHttpRoute("ActionApi", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
-            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
 
             config.Filters.Add(new ExceptionHandlingAttribute());
             config.Formatters.Clear();

@@ -79,6 +79,15 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   查找类似 名称为“{0}”的类型不存在 的本地化字符串。
+        /// </summary>
+        internal static string ConfigFile_NameToTypeIsNull {
+            get {
+                return ResourceManager.GetString("ConfigFile_NameToTypeIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 请先初始化依赖注入服务，再使用OSharpContext.IocRegisterServices属性 的本地化字符串。
         /// </summary>
         internal static string Context_BuildServicesFirst {

@@ -102,6 +102,7 @@
     <Compile Include="Content\CompressHandler.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\ContentNegotiationExtensions.cs" />
+    <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
     <Compile Include="Extensions\HttpMessageExtensions.cs" />
     <Compile Include="Filters\EnableCorsAttribute.cs" />
     <Compile Include="Filters\ExceptionHandlingAttribute.cs" />

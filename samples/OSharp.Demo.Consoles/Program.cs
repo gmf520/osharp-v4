@@ -1,34 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-
-using Newtonsoft.Json;
 
 using OSharp.App.Local.Initialize;
 using OSharp.AutoMapper;
 using OSharp.Core;
-using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
-using OSharp.Core.Initialize;
 using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Logging.Log4Net;
-using OSharp.SiteBase.Initialize;
-using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
-using OSharp.Utility.Secutiry;
 
 
 namespace OSharp.Demo.Consoles

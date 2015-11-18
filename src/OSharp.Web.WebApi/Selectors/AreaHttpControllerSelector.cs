@@ -22,6 +22,7 @@ using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 using OSharp.Utility.Extensions;
+using OSharp.Web.Http.Properties;
 
 
 namespace OSharp.Web.Http.Selectors
@@ -71,6 +72,10 @@ namespace OSharp.Web.Http.Selectors
         {
             string areaName = GetAreaName(request);
             string controllerName = GetControllerName(request);
+            if (controllerName == null)
+            {
+                throw new InvalidOperationException(Resources.ApiControllerNameIsNull);
+            }
             Type type = GetControllerType(areaName, controllerName);
             return new HttpControllerDescriptor(_configuration, controllerName, type);
         }
