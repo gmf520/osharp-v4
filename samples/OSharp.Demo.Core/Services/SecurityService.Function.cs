@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Context;
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security;

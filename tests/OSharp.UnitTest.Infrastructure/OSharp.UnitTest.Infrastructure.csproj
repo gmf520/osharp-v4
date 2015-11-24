@@ -57,7 +57,6 @@
     <Compile Include="EntityTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

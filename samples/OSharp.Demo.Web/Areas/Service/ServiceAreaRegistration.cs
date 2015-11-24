@@ -10,6 +10,8 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
+using OSharp.Web.Mvc.Routing;
+
 
 namespace OSharp.Demo.Web.Areas.Service
 {
@@ -34,7 +36,7 @@ namespace OSharp.Demo.Web.Areas.Service
                 new { area = "Service", id = RouteParameter.Optional }
                 );
 
-            context.MapRoute(
+            context.MapLowerCaseUrlRoute(
                 "Service_default",
                 "api/service/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }

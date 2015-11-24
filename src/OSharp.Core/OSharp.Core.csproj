@@ -45,7 +45,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Caching\CacheBase.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />
@@ -94,7 +97,6 @@
     <Compile Include="Configs\OSharpConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Context\Operator.cs" />
-    <Compile Include="Data\DataPage.cs" />
     <Compile Include="Data\ExpirableBase.cs" />
     <Compile Include="Data\Extensions\EntityInterfaceExtensions.cs" />
     <Compile Include="Data\IEntity.cs">
@@ -225,7 +227,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="OSharp.Core.nuspec" />
-    <None Include="OSharp.Keys.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">

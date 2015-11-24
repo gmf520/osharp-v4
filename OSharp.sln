@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Utility", "src\OShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core", "src\OSharp.Core\OSharp.Core.csproj", "{F7C67C95-FACB-4160-9A88-CB738E65E034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Data.Entity", "src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj", "{D58A373C-1A9C-4BF7-833D-427E4AEF8502}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Data.Entity", "src\OSharp.Data.Entity\OSharp.Data.Entity.csproj", "{D58A373C-1A9C-4BF7-833D-427E4AEF8502}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2DFA1EE8-C9D7-4A06-8490-C49EC170FE9F}"
 EndProject
@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8E61-477C-9361-AD569DCE74BA}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Function_EntityInfo-CodeMap.dgml = docs\Function_EntityInfo-CodeMap.dgml
+		docs\OSharp.Keys.snk = docs\OSharp.Keys.snk
 		docs\OSharp开发框架架构示图.png = docs\OSharp开发框架架构示图.png
 		docs\OSharp开发框架架构示图.vsd = docs\OSharp开发框架架构示图.vsd
 		docs\OSharp日志模块示图.png = docs\OSharp日志模块示图.png
@@ -28,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8
 		docs\OSharp权限系统设计.vsd = docs\OSharp权限系统设计.vsd
 		docs\OSharp框架初始化总体流程图.png = docs\OSharp框架初始化总体流程图.png
 		docs\OSharp框架初始化流程图.vsd = docs\OSharp框架初始化流程图.vsd
+		README.md = README.md
 		docs\操作数据日志.vsd = docs\操作数据日志.vsd
 	EndProjectSection
 EndProject
@@ -40,11 +42,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A8B16B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Permissions", "src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj", "{E34D7585-25DA-4622-9019-89DBC766AD67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions", "src\OSharp.Permissions\OSharp.Permissions.csproj", "{E34D7585-25DA-4622-9019-89DBC766AD67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Core", "samples\OSharp.Demo.Core\OSharp.Demo.Core.csproj", "{4E6DC732-C77F-420C-B162-869496520D99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Core.Data.Entity.MySql", "src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj", "{EF0FECD8-4A75-4D0E-8D98-1AF4218D2618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Data.Entity.MySql", "src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj", "{EF0FECD8-4A75-4D0E-8D98-1AF4218D2618}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "developing", "developing", "{B60BCD28-D10E-4ACF-86A4-CDBB6FE2BA90}"
 EndProject
@@ -84,6 +86,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.App.Local", "src\OSharp.App.Local\OSharp.App.Local.csproj", "{FAB53F03-6932-4E2B-87BE-4B818B5E85AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth", "src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj", "{85C8D5B7-1692-434C-AFCD-01940930F6C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth.Client", "src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj", "{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +177,14 @@ Global
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,5 +215,7 @@ Global
 		{6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{FAB53F03-6932-4E2B-87BE-4B818B5E85AA} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
 		{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
+		{85C8D5B7-1692-434C-AFCD-01940930F6C5} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
+		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal

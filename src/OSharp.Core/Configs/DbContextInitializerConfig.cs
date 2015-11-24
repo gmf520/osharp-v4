@@ -51,9 +51,13 @@ namespace OSharp.Core.Configs
                 .Select(fileName => Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, fileName)).ToArray();
             EntityMapperAssemblies = mapperFiles.Select(Assembly.LoadFrom).ToList();
 
-            if (element.CreateDatabaseInitializer != null && element.CreateDatabaseInitializer.InitializerTypeName != null)
+            if (element.CreateDatabaseInitializer != null && !element.CreateDatabaseInitializer.InitializerTypeName.IsMissing())
             {
                 CreateDatabaseInitializerType = Type.GetType(element.CreateDatabaseInitializer.InitializerTypeName);
+                if (CreateDatabaseInitializerType == null)
+                {
+                    throw new InvalidOperationException(Resources.ConfigFile_NameToTypeIsNull.FormatWith(element.CreateDatabaseInitializer.InitializerTypeName));
+                }
             }
         }
 

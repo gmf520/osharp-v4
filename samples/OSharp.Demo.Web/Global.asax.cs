@@ -9,17 +9,11 @@
 
 using System;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-using OSharp.Autofac.Http;
-using OSharp.Autofac.Mvc;
-using OSharp.Autofac.SignalR;
-using OSharp.Core;
-using OSharp.Core.Caching;
-using OSharp.Core.Dependency;
-using OSharp.Demo.Dtos;
-using OSharp.Logging.Log4Net;
+using OSharp.Web.Http.Extensions;
 using OSharp.Web.Mvc.Routing;
 
 
@@ -31,12 +25,12 @@ namespace OSharp.Demo.Web
         {
             AreaRegistration.RegisterAllAreas();
             RoutesRegister();
-
-            //Initialize();
         }
 
         private static void RoutesRegister()
         {
+            GlobalConfiguration.Configuration.MapDefaultRoutes();
+
             RouteCollection routes = RouteTable.Routes;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapLowerCaseUrlRoute(
@@ -44,22 +38,6 @@ namespace OSharp.Demo.Web
                 "{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new[] { "OSharp.Demo.Web.Controllers" });
-        }
-
-        private static void Initialize()
-        {
-            ICacheProvider provider = new RuntimeMemoryCacheProvider();
-            CacheManager.SetProvider(provider, CacheLevel.First);
-            
-            IServicesBuilder builder = new ServicesBuilder();
-            IServiceCollection services = builder.Build();
-            services.AddLog4NetServices();
-            services.AddDataServices();
-
-            IFrameworkInitializer initializer = new FrameworkInitializer();
-            initializer.Initialize(new MvcAutofacIocBuilder(services));
-            initializer.Initialize(new WebApiAutofacIocBuilder(services));
-            //initializer.Initialize(new SignalRAutofacIocBuilder(services));
         }
     }
 }

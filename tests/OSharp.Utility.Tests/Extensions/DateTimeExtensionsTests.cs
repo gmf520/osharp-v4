@@ -14,12 +14,14 @@ using System.Threading.Tasks;
 
 using OSharp.Utility.Extensions;
 
+using Smocks;
+
 using Xunit;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    
+
     public class DateTimeExtensionsTests
     {
         [Fact()]
@@ -48,6 +50,14 @@ namespace OSharp.Utility.Extensions.Tests
                 dt = new DateTime(2015, 5, 4 + i);
                 Assert.True(dt.IsWeekday());
             }
+        }
+
+        [Fact()]
+        public void ToUniqueStringTest()
+        {
+            DateTime now = new DateTime(2015, 11, 4, 15, 10, 25);
+            Assert.Equal(now.ToUniqueString(), "1530854625");
+            Assert.Equal(now.ToUniqueString(true), "1530854625000");
         }
     }
 }

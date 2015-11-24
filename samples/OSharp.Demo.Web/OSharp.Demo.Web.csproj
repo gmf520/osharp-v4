@@ -86,6 +86,10 @@
       <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -504,8 +508,6 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Compile Include="Startup\Startup.SignalR.cs" />
-    <Compile Include="Startup\Startup.WebApi.cs" />
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Tests\TestClaims.cshtml" />
     <None Include="Web.Debug.config">
@@ -532,6 +534,7 @@
     <Compile Include="Areas\Service\ServiceAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WebApi\ValuesController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -557,17 +560,21 @@
       <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
       <Name>OSharp.AutoMapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity.MySql\OSharp.Core.Data.Entity.MySql.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj">
       <Project>{ef0fecd8-4a75-4d0e-8d98-1af4218d2618}</Project>
-      <Name>OSharp.Core.Data.Entity.MySql</Name>
+      <Name>OSharp.Data.Entity.MySql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Data.Entity\OSharp.Core.Data.Entity.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
-      <Name>OSharp.Core.Data.Entity</Name>
+      <Name>OSharp.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core.Permissions\OSharp.Core.Permissions.csproj">
+    <ProjectReference Include="..\..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj">
+      <Project>{85C8D5B7-1692-434C-AFCD-01940930F6C5}</Project>
+      <Name>OSharp.Permissions.OAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">
       <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
-      <Name>OSharp.Core.Permissions</Name>
+      <Name>OSharp.Permissions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
       <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
