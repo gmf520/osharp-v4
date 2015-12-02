@@ -130,7 +130,7 @@ namespace OSharp.Core.Data.Extensions
             {
                 throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
             }
-
+            
             total = source.Count(predicate);
             source = source.Where(predicate);
             if (sortConditions == null || sortConditions.Length == 0)
