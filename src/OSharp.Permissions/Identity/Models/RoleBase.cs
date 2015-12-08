@@ -27,7 +27,7 @@ namespace OSharp.Core.Identity.Models
     public abstract class RoleBase<TKey> : EntityBase<TKey>, IRole<TKey>, ICreatedTime, ILockable
     {
         /// <summary>
-        /// 获取或设置 用户名
+        /// 获取或设置 角色名
         /// </summary>
         [Required, StringLength(50)]
         public string Name { get; set; }
