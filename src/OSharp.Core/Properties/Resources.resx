@@ -123,6 +123,9 @@
   <data name="ConfigFile_ItemKeyDefineRepeated" xml:space="preserve">
     <value>标识为“{0}”的项重复定义</value>
   </data>
+  <data name="ConfigFile_NameToTypeIsNull" xml:space="preserve">
+    <value>名称为“{0}”的类型不存在</value>
+  </data>
   <data name="Context_BuildServicesFirst" xml:space="preserve">
     <value>请先初始化依赖注入服务，再使用OSharpContext.IocRegisterServices属性</value>
   </data>

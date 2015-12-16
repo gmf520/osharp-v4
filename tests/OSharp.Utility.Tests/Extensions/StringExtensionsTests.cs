@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OSharp.Utility.Extensions;
+﻿using System.Linq;
+
 using Xunit;
 
 namespace OSharp.Utility.Extensions.Tests
@@ -61,6 +57,8 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(value.IsEmail());
             value = "abc@yeah.net";
             Assert.True(value.IsEmail());
+            value = "abc.a@yeah.net";
+            Assert.True(value.IsEmail());
         }
 
         [Fact()]
@@ -76,6 +74,26 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.False(value.IsIpAddress());
             value = "255.255.255.255";
             Assert.True(value.IsIpAddress());
+        }
+
+        [Fact()]
+        public void AddQueryStringTest()
+        {
+            const string url = "http://localhost:801";
+            string excepted = url + "?id=1";
+            Assert.Equal(url.AddQueryString("id=1"), excepted);
+            excepted = url + "?name=abc";
+            Assert.Equal(url.AddQueryString("name=abc"), excepted);
+            excepted = url + "?id=1&name=abc";
+            Assert.Equal(url.AddQueryString("id=1", "name=abc"), excepted);
+        }
+
+        [Fact()]
+        public void AddHashFragmentTest()
+        {
+            const string url = "http://localhost:801";
+            string excepted = url + "#title";
+            Assert.Equal(url.AddHashFragment("title"), excepted);
         }
     }
 }

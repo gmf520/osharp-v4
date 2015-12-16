@@ -120,6 +120,9 @@
   <data name="ActionMethodInfoFinder_TypeNotApiControllerType" xml:space="preserve">
     <value>类型“{0}”不是API控制器类型</value>
   </data>
+  <data name="ApiControllerNameIsNull" xml:space="preserve">
+    <value>获取的Api控制器名称为空</value>
+  </data>
   <data name="FunctionHandler_DefindActionTypeIsNull" xml:space="preserve">
     <value>声明功能“{0}”的类型为空</value>
   </data>

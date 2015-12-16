@@ -90,9 +90,9 @@ namespace OSharp.Demo.Services
         public OperationResult EditRoles(params RoleInputDto[] inputDtos)
         {
             return RoleRepository.Update(inputDtos,
-                dto =>
+                (dto, entity) =>
                 {
-                    if (dto.IsSystem)
+                    if (entity.IsSystem)
                     {
                         throw new Exception("角色“{0}”为系统角色，不能编辑".FormatWith(dto.Name));
                     }

@@ -393,7 +393,7 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public OperationResult Update<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
+            Action<TEditDto, TEntity> checkAction = null,
             Func<TEditDto, TEntity, TEntity> updateFunc = null)
             where TEditDto : IInputDto<TKey>
         {
@@ -403,14 +403,14 @@ namespace OSharp.Data.Entity
             {
                 try
                 {
-                    if (checkAction != null)
-                    {
-                        checkAction(dto);
-                    }
                     TEntity entity = _dbSet.Find(dto.Id);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
+                    }
+                    if (checkAction != null)
+                    {
+                        checkAction(dto, entity);
                     }
                     entity = dto.MapTo(entity);
                     if (updateFunc != null)
@@ -551,9 +551,7 @@ namespace OSharp.Data.Entity
                 ? _dbSet.SqlQuery(sql, parameters)
                 : _dbSet.SqlQuery(sql, parameters).AsNoTracking();
         }
-
-#if NET45
-
+        
         /// <summary>
         /// 异步插入实体
         /// </summary>
@@ -582,7 +580,7 @@ namespace OSharp.Data.Entity
             _dbSet.AddRange(entities);
             return await SaveChangesAsync();
         }
-
+        
         /// <summary>
         /// 异步以DTO为载体批量插入实体
         /// </summary>
@@ -592,8 +590,8 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
-            Action<TInputDto> checkAction = null,
-            Func<TInputDto, TEntity, TEntity> updateFunc = null)
+            Func<TInputDto, Task> checkAction = null,
+            Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null)
             where TInputDto : IInputDto<TKey>
         {
             dtos.CheckNotNull("dtos");
@@ -604,12 +602,12 @@ namespace OSharp.Data.Entity
                 {
                     if (checkAction != null)
                     {
-                        checkAction(dto);
+                        await checkAction(dto);
                     }
                     TEntity entity = dto.MapTo<TEntity>();
                     if (updateFunc != null)
                     {
-                        entity = updateFunc(dto, entity);
+                        entity = await updateFunc(dto, entity);
                     }
                     entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
                     _dbSet.Add(entity);
@@ -789,7 +787,7 @@ namespace OSharp.Data.Entity
             _dbSet.RemoveRange(entities);
             return await SaveChangesAsync();
         }
-
+        
         /// <summary>
         /// 异步以标识集合批量删除实体
         /// </summary>
@@ -798,8 +796,8 @@ namespace OSharp.Data.Entity
         /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> DeleteAsync(ICollection<TKey> ids,
-            Action<TEntity> checkAction = null,
-            Func<TEntity, TEntity> deleteFunc = null)
+            Func<TEntity, Task> checkAction = null,
+            Func<TEntity, Task<TEntity>> deleteFunc = null)
         {
             ids.CheckNotNull("ids");
             List<string> names = new List<string>();
@@ -810,11 +808,11 @@ namespace OSharp.Data.Entity
                 {
                     if (checkAction != null)
                     {
-                        checkAction(entity);
+                        await checkAction(entity);
                     }
                     if (deleteFunc != null)
                     {
-                        entity = deleteFunc(entity);
+                        entity = await deleteFunc(entity);
                     }
                     entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
                     _dbSet.Remove(entity);
@@ -879,7 +877,7 @@ namespace OSharp.Data.Entity
             ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             return await SaveChangesAsync();
         }
-
+        
         /// <summary>
         /// 异步以DTO为载体批量更新实体
         /// </summary>
@@ -889,8 +887,8 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto> checkAction = null,
-            Func<TEditDto, TEntity, TEntity> updateFunc = null)
+            Func<TEditDto, TEntity, Task> checkAction = null,
+            Func<TEditDto, TEntity, Task<TEntity>> updateFunc = null)
             where TEditDto : IInputDto<TKey>
         {
             dtos.CheckNotNull("dtos");
@@ -899,19 +897,19 @@ namespace OSharp.Data.Entity
             {
                 try
                 {
-                    if (checkAction != null)
-                    {
-                        checkAction(dto);
-                    }
                     TEntity entity = await _dbSet.FindAsync(dto.Id);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
                     }
+                    if (checkAction != null)
+                    {
+                        await checkAction(dto, entity);
+                    }
                     entity = dto.MapTo(entity);
                     if (updateFunc != null)
                     {
-                        entity = updateFunc(dto, entity);
+                        entity = await updateFunc(dto, entity);
                     }
                     ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
                 }
@@ -965,7 +963,7 @@ namespace OSharp.Data.Entity
             }
             predicate.CheckNotNull("predicate");
             updatExpression.CheckNotNull("updatExpression");
-            return await _dbSet.Where(predicate).DeleteAsync();
+            return await _dbSet.Where(predicate).UpdateAsync(updatExpression);
         }
 
         /// <summary>
@@ -1006,24 +1004,18 @@ namespace OSharp.Data.Entity
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-#endif
-
         #region 私有方法
 
         private int SaveChanges()
         {
             return UnitOfWork.TransactionEnabled ? 0 : UnitOfWork.SaveChanges();
         }
-
-#if NET45
-
+        
         private async Task<int> SaveChangesAsync()
         {
             return UnitOfWork.TransactionEnabled ? 0 : await UnitOfWork.SaveChangesAsync();
         }
-
-#endif
-
+        
         private static void CheckEntityKey(object key, string keyName)
         {
             key.CheckNotNull("key");

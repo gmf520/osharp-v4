@@ -20,7 +20,7 @@ using OSharp.Utility.Filter;
 namespace OSharp.Core.Security.Dtos
 {
     /// <summary>
-    /// 实体角色映射基类DTO
+    /// 实体角色映射输入DTO基类
     /// </summary>
     public abstract class EntityRoleMapBaseInputDto<TKey, TEntityInfoKey, TRoleKey> : IInputDto<TKey>
     {

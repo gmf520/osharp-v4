@@ -26,5 +26,12 @@
             ]
         ];
         multiSort = true;
+        //启用数据查询
+        enableFilterData = true;
+        filterData = [
+            { field: "Name", type: "text", op: ["equal", "notequal", "contains", "beginwith", "endwith"] },
+            { field: "ClassName", type: "text", op: ["equal", "notequal", "contains", "beginwith", "endwith"] },
+            { field: "DataLogEnabled", type: "combobox", op: ["equal", "notequal"], options: { valueField: "id", data: $.osharp.data.bool } }
+        ];
     </script>
 }

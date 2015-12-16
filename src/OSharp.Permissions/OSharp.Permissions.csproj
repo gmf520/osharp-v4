@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -53,10 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>Properties\VersionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Identity\Dtos\RoleBaseInputDto.cs" />
     <Compile Include="Identity\Dtos\UserBaseInputDto.cs" />
     <Compile Include="Identity\Dtos\UserRoleMapBaseInputDto.cs" />
+    <Compile Include="Identity\IPasswordValidator.cs" />
     <Compile Include="Identity\IUserRoleMapStore.cs" />
     <Compile Include="Identity\Models\IUserClaim.cs" />
     <Compile Include="Identity\Models\IUserLogin.cs" />
@@ -69,6 +73,7 @@
     <Compile Include="Identity\RoleStoreBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Identity\UserManagerBase.cs" />
     <Compile Include="Identity\UserRoleMapStoreBase.cs" />
     <Compile Include="Identity\UserStoreBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OSharp.Permissions.nuspec" />
-    <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

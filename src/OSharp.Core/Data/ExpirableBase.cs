@@ -20,9 +20,9 @@ namespace OSharp.Core.Data
     /// 可过期实体基类
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class ExpirableBase<TKey> : EntityBase<TKey>, IExpirable
+    public abstract class ExpirableBase<TKey> : EntityBase<TKey>, IExpirable 
     {
-        private DateTime _beginTime;
+        private DateTime? _beginTime;
         private DateTime? _endTime;
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace OSharp.Core.Data
         /// <summary>
         /// 获取或设置 生效时间
         /// </summary>
-        public DateTime BeginTime
+        public DateTime? BeginTime
         {
             get { return _beginTime; }
             set
             {
-                if (EndTime != null && value > EndTime.Value)
+                if (value != null && EndTime != null && value > EndTime.Value)
                 {
                     throw new InvalidOperationException("生效时间不能大于过期时间");
                 }
@@ -57,7 +57,7 @@ namespace OSharp.Core.Data
             get { return _endTime; }
             set
             {
-                if (value != null && value < BeginTime)
+                if (value != null && BeginTime != null && value < BeginTime)
                 {
                     throw new InvalidOperationException("过期时间不能小于生效时间");
                 }

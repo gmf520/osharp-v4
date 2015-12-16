@@ -22,6 +22,7 @@ using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 using OSharp.Utility.Extensions;
+using OSharp.Web.Http.Properties;
 
 
 namespace OSharp.Web.Http.Selectors
@@ -36,6 +37,9 @@ namespace OSharp.Web.Http.Selectors
         private readonly HttpConfiguration _configuration;
         private readonly Lazy<ConcurrentDictionary<string, Type>> _apiControllerTypes;
 
+        /// <summary>
+        /// 初始化一个<see cref="AreaHttpControllerSelector"/>类型的新实例
+        /// </summary>
         public AreaHttpControllerSelector(HttpConfiguration configuration)
             : base(configuration)
         {
@@ -43,6 +47,11 @@ namespace OSharp.Web.Http.Selectors
             _apiControllerTypes = new Lazy<ConcurrentDictionary<string, Type>>(GetControllerTypes);
         }
 
+        /// <summary>
+        /// 由Http请求获取控制台描述信息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             return GetApiController(request);
@@ -63,6 +72,10 @@ namespace OSharp.Web.Http.Selectors
         {
             string areaName = GetAreaName(request);
             string controllerName = GetControllerName(request);
+            if (controllerName == null)
+            {
+                throw new InvalidOperationException(Resources.ApiControllerNameIsNull);
+            }
             Type type = GetControllerType(areaName, controllerName);
             return new HttpControllerDescriptor(_configuration, controllerName, type);
         }
@@ -71,7 +84,7 @@ namespace OSharp.Web.Http.Selectors
         {
             IHttpRouteData data = request.GetRouteData();
             object areaName;
-            if (data.Route.DataTokens == null)
+            if (data.Route == null || data.Route.DataTokens == null)
             {
                 if (data.Values.TryGetValue(AreaRouteVariableName, out areaName))
                 {
@@ -85,14 +98,7 @@ namespace OSharp.Web.Http.Selectors
         private Type GetControllerType(string areaName, string controllerName)
         {
             IEnumerable<KeyValuePair<string, Type>> query = _apiControllerTypes.Value.AsEnumerable();
-            if (string.IsNullOrEmpty(areaName))
-            {
-                query = query.WithoutAreaName();
-            }
-            else
-            {
-                query = query.ByAreaName(areaName);
-            }
+            query = string.IsNullOrEmpty(areaName) ? query.WithoutAreaName() : query.ByAreaName(areaName);
             Type type = query.ByControllerName(controllerName).Select(m => m.Value).SingleOrDefault();
             if (type == null)
             {

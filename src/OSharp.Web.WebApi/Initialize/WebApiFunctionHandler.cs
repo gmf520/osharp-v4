@@ -48,7 +48,7 @@ namespace OSharp.Web.Http.Initialize
             {
                 Name = type.ToDescription(),
                 Area = GetArea(type),
-                Controller = type.Name.Replace("ApiController", string.Empty),
+                Controller = type.Name.Replace("ApiController", string.Empty).Replace("Controller", string.Empty),
                 IsController = true,
                 FunctionType = FunctionType.Anonymouse,
                 PlatformToken = PlatformToken
@@ -90,7 +90,7 @@ namespace OSharp.Web.Http.Initialize
             {
                 Name = method.ToDescription(),
                 Area = GetArea(type),
-                Controller = type.Name.Replace("ApiController", string.Empty),
+                Controller = type.Name.Replace("ApiController", string.Empty).Replace("Controller", string.Empty),
                 Action = method.Name,
                 FunctionType = functionType,
                 PlatformToken = PlatformToken,

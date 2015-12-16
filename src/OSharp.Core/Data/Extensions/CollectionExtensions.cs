@@ -130,7 +130,7 @@ namespace OSharp.Core.Data.Extensions
             {
                 throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
             }
-
+            
             total = source.Count(predicate);
             source = source.Where(predicate);
             if (sortConditions == null || sortConditions.Length == 0)
@@ -162,7 +162,8 @@ namespace OSharp.Core.Data.Extensions
             where TEntity : IExpirable
         {
             DateTime now = DateTime.Now;
-            Expression<Func<TEntity, bool>> predicate = m => m.BeginTime <= now && (m.EndTime != null && m.EndTime.Value >= now);
+            Expression<Func<TEntity, bool>> predicate =
+                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
             return source.Where(predicate);
         }
 
@@ -183,6 +184,5 @@ namespace OSharp.Core.Data.Extensions
         {
             return source.Where(m => !m.IsLocked);
         }
-
     }
 }

@@ -35,7 +35,7 @@ namespace OSharp.Core.Identity
         /// <summary>
         /// 获取或设置 角色仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
 
         #region Implementation of IDisposable
 
