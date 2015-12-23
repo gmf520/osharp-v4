@@ -9,17 +9,11 @@
 
 using System;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-using OSharp.Autofac.Http;
-using OSharp.Autofac.Mvc;
-using OSharp.Autofac.SignalR;
-using OSharp.Core;
-using OSharp.Core.Caching;
-using OSharp.Core.Dependency;
-using OSharp.Demo.Dtos;
-using OSharp.Logging.Log4Net;
+using OSharp.Web.Http.Extensions;
 using OSharp.Web.Mvc.Routing;
 
 
@@ -35,6 +29,8 @@ namespace OSharp.Demo.Web
 
         private static void RoutesRegister()
         {
+            GlobalConfiguration.Configuration.MapDefaultRoutes();
+
             RouteCollection routes = RouteTable.Routes;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapLowerCaseUrlRoute(

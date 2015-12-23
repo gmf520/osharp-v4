@@ -13,7 +13,6 @@ using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Extensions;
 using OSharp.Core.Security;
-using OSharp.Core.Security.Models;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.OAuth;
 using OSharp.Demo.Identity;

@@ -70,6 +70,15 @@ namespace OSharp.Web.Http.Properties {
         }
         
         /// <summary>
+        ///   查找类似 获取的Api控制器名称为空 的本地化字符串。
+        /// </summary>
+        internal static string ApiControllerNameIsNull {
+            get {
+                return ResourceManager.GetString("ApiControllerNameIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 声明功能“{0}”的类型为空 的本地化字符串。
         /// </summary>
         internal static string FunctionHandler_DefindActionTypeIsNull {

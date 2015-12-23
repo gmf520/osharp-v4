@@ -24,7 +24,7 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TKey">主键类型</typeparam>
     /// <typeparam name="TClient">客户端信息类型</typeparam>
     /// <typeparam name="TClientKey">客户端主键类型</typeparam>
-    public class ClientScopeBase<TKey, TClient, TClientKey> : EntityBase<TKey>, IClientScope<TKey>
+    public abstract class ClientScopeBase<TKey, TClient, TClientKey> : EntityBase<TKey>, IClientScope<TKey>
         where TClient : IClient<TClientKey>
     {
         /// <summary>

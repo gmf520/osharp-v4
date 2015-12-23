@@ -64,7 +64,7 @@ namespace OSharp.Core.Security
                 (_, entity) =>
                 {
                     entity.ClientId = ClientIdProvider.CreateClientId(_.ClientType);
-                    return entity;
+                    return Task.FromResult(entity);
                 });
         }
 
@@ -94,7 +94,7 @@ namespace OSharp.Core.Security
                     {
                         ClientSecretRepository.Delete(secret);
                     }
-                    return entity;
+                    return Task.FromResult(entity);
                 });
         }
         
@@ -142,12 +142,11 @@ namespace OSharp.Core.Security
             dto.CheckNotNull("dto");
             return ClientSecretRepository.InsertAsync(new[] { dto },
                 null,
-                (_, entity) =>
+                async (_, entity) =>
                 {
                     //生成密钥
                     entity.Value = ClientSecretProvider.CreateSecret();
-
-                    TClient client = ClientRepository.GetByKey(dto.ClientId);
+                    TClient client = await ClientRepository.GetByKeyAsync(dto.ClientId);
                     if (client == null)
                     {
                         throw new Exception("指定编号的客户端信息不存在");
