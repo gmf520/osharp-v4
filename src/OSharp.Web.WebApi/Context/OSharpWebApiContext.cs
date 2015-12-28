@@ -7,11 +7,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using OSharp.Core.Security;
-using OSharp.Utility;
-using OSharp.Core.Dependency;
 using System.Web.Http.Dependencies;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
@@ -22,13 +17,10 @@ namespace OSharp.Web.Http.Context
     /// OSharp框架Webapi上下文，用于获取当前HttpRequestMessage
     /// </summary>
     [Serializable]
-    public class OSharpWebApiContext : Dictionary<string, object>
-    {
-        private const string ScopeKey = "__OSharp_WebApi_Context_DependencyScope";
-        private static readonly Lazy<OSharpWebApiContext> ContextLazy = new Lazy<OSharpWebApiContext>(() => new OSharpWebApiContext());
-        
+    public class OSharpWebApiContext
+    {        
         /// <summary>
-        /// 获取 当前上下文
+        /// 获取 当前请求上下文
         /// </summary>
         public static OSharpWebApiContext Current
         {
@@ -43,30 +35,19 @@ namespace OSharp.Web.Http.Context
             }
         }
 
+        private IDependencyScope _dependencyScope;
         /// <summary>
-        /// 获取 当前操作者
+        /// 获取 设置当前请求的依赖注入容器
         /// </summary>
         public IDependencyScope DependencyScope
         {
             get
             {
-                if (!ContainsKey(ScopeKey)) return null;
-                return this[ScopeKey] as IDependencyScope;
+                return _dependencyScope;
             }
-            private set
+            set
             {
-                this[ScopeKey] = value;
-            }
-        }
-
-        /// <summary>
-        /// 设置当前请求依赖注入容器
-        /// </summary>
-        public void SetDependencyScope(IDependencyScope scope)
-        {
-            if (!ContainsKey(ScopeKey))
-            {
-                this[ScopeKey] = scope;
+                _dependencyScope = value;
             }
         }
     }

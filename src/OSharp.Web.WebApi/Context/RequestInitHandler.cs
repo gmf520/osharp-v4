@@ -30,7 +30,7 @@ namespace OSharp.Web.Http.Context
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             OSharpWebApiContext.Current = new OSharpWebApiContext();
-            OSharpWebApiContext.Current.SetDependencyScope(request.GetDependencyScope());
+            OSharpWebApiContext.Current.DependencyScope = request.GetDependencyScope();
             return base.SendAsync(request, cancellationToken);
         }
     }
