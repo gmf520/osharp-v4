@@ -196,7 +196,7 @@
       <Name>OSharp.Data.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj">
-      <Project>{85C8D5B7-1692-434C-AFCD-01940930F6C5}</Project>
+      <Project>{85c8d5b7-1692-434c-afcd-01940930f6c5}</Project>
       <Name>OSharp.Permissions.OAuth</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">

@@ -100,6 +100,8 @@
     <Compile Include="Caching\TimedEntityTagHeaderValue.cs" />
     <Compile Include="Content\CompressedContent.cs" />
     <Compile Include="Content\CompressHandler.cs" />
+    <Compile Include="Context\OSharpWebApiContext.cs" />
+    <Compile Include="Context\RequestInitHandler.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\ContentNegotiationExtensions.cs" />
     <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
