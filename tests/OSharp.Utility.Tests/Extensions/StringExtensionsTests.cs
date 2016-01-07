@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+
+using OSharp.Utility.Extensions;
+using System.Linq;
 
 using Xunit;
 
@@ -66,6 +69,8 @@ namespace OSharp.Utility.Extensions.Tests
         {
             string value = null;
             Assert.False(value.IsIpAddress());
+            value = "321.ad.54.22";
+            Assert.False(value.IsIpAddress());
             value = "0.0.0.0";
             Assert.True(value.IsIpAddress());
             value = "1.1.1.1";
@@ -94,6 +99,72 @@ namespace OSharp.Utility.Extensions.Tests
             const string url = "http://localhost:801";
             string excepted = url + "#title";
             Assert.Equal(url.AddHashFragment("title"), excepted);
+        }
+
+        [Fact()]
+        public void MatchFirstNumberTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchFirstNumber(), "13800138000");
+        }
+
+        [Fact()]
+        public void MatchLastNumberTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchLastNumber(), "123202901");
+        }
+
+        [Fact()]
+        public void MatchNumbersTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchNumbers(), new[] { "13800138000", "123456789", "123202901" });
+        }
+
+        [Fact()]
+        public void IsMatchNumberTest()
+        {
+            string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.True(source.IsMatchNumber());
+            source = "你以为你委膙啊";
+            Assert.False(source.IsMatchNumber());
+        }
+
+        [Fact()]
+        public void IsMatchNumberTest1()
+        {
+            string source = "123456789";
+            Assert.True(source.IsMatchNumber(9));
+            source = "123456789s";
+            Assert.False(source.IsMatchNumber(9));
+        }
+
+        [Fact()]
+        public void SubstringTest()
+        {
+            const string source = "IP地址是四段点分十进制的字符串表示的";
+            Assert.Equal(source.Substring("四段", "的字符串"), "点分十进制");
+        }
+
+        [Fact()]
+        public void IsUnicodeTest()
+        {
+            string source = "今天天气不错";
+            Assert.True(source.IsUnicode());
+            source = "abc123";
+            Assert.False(source.IsUnicode());
+        }
+
+        [Fact()]
+        public void IsIdentityCardTest()
+        {
+            string value = "321081199801018994";
+            Assert.True(value.IsIdentityCard());
+            value = "371328198104016829";
+            Assert.True(value.IsIdentityCard());
+            value = "37132819810401652x";
+            Assert.True(value.IsIdentityCard());
         }
     }
 }

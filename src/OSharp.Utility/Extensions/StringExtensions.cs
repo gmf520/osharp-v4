@@ -34,14 +34,17 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         /// <param name="value">要搜索匹配项的字符串</param>
         /// <param name="pattern">要匹配的正则表达式模式</param>
+        /// <param name="isContains">是否包含，否则全匹配</param>
         /// <returns>如果正则表达式找到匹配项，则为 true；否则，为 false</returns>
-        public static bool IsMatch(this string value, string pattern)
+        public static bool IsMatch(this string value, string pattern, bool isContains = true)
         {
             if (value == null)
             {
                 return false;
             }
-            return Regex.IsMatch(value, pattern);
+            return isContains
+                ? Regex.IsMatch(value, pattern)
+                : Regex.Match(value, pattern).Success;
         }
 
         /// <summary>
@@ -76,6 +79,70 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 在指定的输入字符串中匹配第一个数字字符串
+        /// </summary>
+        public static string MatchFirstNumber(this string value)
+        {
+            MatchCollection matches = Regex.Matches(value, @"\d+");
+            if (matches.Count == 0)
+            {
+                return string.Empty;
+            }
+            return matches[0].Value;
+        }
+
+        /// <summary>
+        /// 在指定字符串中匹配最后一个数字字符串
+        /// </summary>
+        public static string MatchLastNumber(this string value)
+        {
+            MatchCollection matches = Regex.Matches(value, @"\d+");
+            if (matches.Count == 0)
+            {
+                return string.Empty;
+            }
+            return matches[matches.Count - 1].Value;
+        }
+
+        /// <summary>
+        /// 在指定字符串中匹配所有数字字符串
+        /// </summary>
+        public static IEnumerable<string> MatchNumbers(this string value)
+        {
+            return Matches(value, @"\d+");
+        }
+
+        /// <summary>
+        /// 检测指定字符串中是否包含数字
+        /// </summary>
+        public static bool IsMatchNumber(this string value)
+        {
+            return IsMatch(value, @"\d");
+        }
+
+        /// <summary>
+        /// 检测指定字符串是否全部为数字并且长度等于指定长度
+        /// </summary>
+        public static bool IsMatchNumber(this string value, int length)
+        {
+            Regex regex = new Regex(@"^\d{" + length + "}$");
+            return regex.IsMatch(value);
+        }
+
+        /// <summary>
+        /// 截取指定字符串之间的字符串
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startString">起始字符串</param>
+        /// <param name="endString">结束字符串</param>
+        /// <returns>返回的中间字符串</returns>
+        public static string Substring(this string value, string startString, string endString)
+        {
+            Regex rg = new Regex("(?<=(" + startString + "))[.\\s\\S]*?(?=(" + endString + "))", RegexOptions.Multiline | RegexOptions.Singleline);
+            return rg.Match(value).Value;
+        }
+
+        /// <summary>
         /// 是否电子邮件
         /// </summary>
         public static bool IsEmail(this string value)
@@ -89,7 +156,7 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIpAddress(this string value)
         {
-            const string pattern = @"^(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))$";
+            const string pattern = @"^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$";
             return value.IsMatch(pattern);
         }
 
@@ -128,8 +195,46 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIdentityCard(this string value)
         {
-            const string pattern = @"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$";
-            return value.IsMatch(pattern);
+            if (value.Length != 15 && value.Length != 18)
+            {
+                return false;
+            }
+            Regex regex;
+            string[] array;
+            DateTime time;
+            if (value.Length == 15)
+            {
+                regex = new Regex(@"^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})_");
+                if (!regex.Match(value).Success)
+                {
+                    return false;
+                }
+                array = regex.Split(value);
+                return DateTime.TryParse(string.Format("{0}-{1}-{2}", "19" + array[2], array[3], array[4]), out time);
+            }
+            regex = new Regex(@"^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9Xx])$");
+            if (!regex.Match(value).Success)
+            {
+                return false;
+            }
+            array = regex.Split(value);
+            if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", array[2], array[3], array[4]), out time))
+            {
+                return false;
+            }
+            //校验最后一位
+            string[] chars = value.ToCharArray().Select(m => m.ToString()).ToArray();
+            int[] weights = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+            int sum = 0;
+            for (int i = 0; i < 17; i++)
+            {
+                int num = int.Parse(chars[i]);
+                sum = sum + num * weights[i];
+            }
+            int mod = sum % 11;
+            string vCode = "10X98765432";//检验码字符串
+            string last = vCode.ToCharArray().ElementAt(mod).ToString();
+            return chars.Last().ToUpper() == last;
         }
 
         /// <summary>
@@ -299,7 +404,7 @@ namespace OSharp.Utility.Extensions
                     url += "&";
                 }
 
-                url = url + query; 
+                url = url + query;
             }
             return url;
         }

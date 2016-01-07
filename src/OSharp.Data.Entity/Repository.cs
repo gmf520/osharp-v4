@@ -590,7 +590,7 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
-            Action<TInputDto> checkAction = null,
+            Func<TInputDto, Task> checkAction = null,
             Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null)
             where TInputDto : IInputDto<TKey>
         {
@@ -602,7 +602,7 @@ namespace OSharp.Data.Entity
                 {
                     if (checkAction != null)
                     {
-                        checkAction(dto);
+                        await checkAction(dto);
                     }
                     TEntity entity = dto.MapTo<TEntity>();
                     if (updateFunc != null)
@@ -796,7 +796,7 @@ namespace OSharp.Data.Entity
         /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> DeleteAsync(ICollection<TKey> ids,
-            Action<TEntity> checkAction = null,
+            Func<TEntity, Task> checkAction = null,
             Func<TEntity, Task<TEntity>> deleteFunc = null)
         {
             ids.CheckNotNull("ids");
@@ -808,7 +808,7 @@ namespace OSharp.Data.Entity
                 {
                     if (checkAction != null)
                     {
-                        checkAction(entity);
+                        await checkAction(entity);
                     }
                     if (deleteFunc != null)
                     {
@@ -887,7 +887,7 @@ namespace OSharp.Data.Entity
         /// <param name="updateFunc">由DTO到实体的转换委托</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
-            Action<TEditDto, TEntity> checkAction = null,
+            Func<TEditDto, TEntity, Task> checkAction = null,
             Func<TEditDto, TEntity, Task<TEntity>> updateFunc = null)
             where TEditDto : IInputDto<TKey>
         {
@@ -904,7 +904,7 @@ namespace OSharp.Data.Entity
                     }
                     if (checkAction != null)
                     {
-                        checkAction(dto, entity);
+                        await checkAction(dto, entity);
                     }
                     entity = dto.MapTo(entity);
                     if (updateFunc != null)
