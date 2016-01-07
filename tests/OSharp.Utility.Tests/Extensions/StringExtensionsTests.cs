@@ -67,11 +67,11 @@ namespace OSharp.Utility.Extensions.Tests
             string value = null;
             Assert.False(value.IsIpAddress());
             value = "0.0.0.0";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "1.1.1.1";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "192.168.0.1";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "255.255.255.255";
             Assert.True(value.IsIpAddress());
         }

@@ -22,7 +22,7 @@ namespace OSharp.Utility.Net
     {
         private readonly byte[] _data;
         private readonly long _firstStartIpOffset;
-        private readonly Regex _regex = new Regex(@"(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))");
+        private readonly Regex _regex = new Regex(@"^(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))$");
 
         /// <summary>
         /// 初始化一个IP位置查找操作类的实例
