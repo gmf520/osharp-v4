@@ -25,7 +25,7 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TKey">编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public interface IUserClaim<TKey, TUser, TUserKey> : IEntity<TKey>
+    public interface IUserClaim<out TKey, TUser, TUserKey> : IEntity<TKey>
         where TUser : IUser<TUserKey>
     {
         /// <summary>

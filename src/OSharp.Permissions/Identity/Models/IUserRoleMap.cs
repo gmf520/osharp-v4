@@ -28,7 +28,7 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public interface IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey> : IEntity<TKey>, IExpirable
+    public interface IUserRoleMap<out TKey, TUser, TUserKey, TRole, TRoleKey> : IEntity<TKey>, IExpirable
         where TUser : IUser<TUserKey>
         where TRole : IRole<TRoleKey>
     {
