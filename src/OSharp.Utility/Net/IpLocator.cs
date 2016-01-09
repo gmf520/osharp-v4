@@ -58,7 +58,7 @@ namespace OSharp.Utility.Net
         /// </summary>
         /// <param name="ip"></param>
         /// <returns></returns>
-        private static long IpToInt(string ip)
+        public static int IpToInt(string ip)
         {
             char[] separator = new[] { '.' };
             if (ip.Split(separator).Length == 3)
@@ -70,7 +70,7 @@ namespace OSharp.Utility.Net
             long num2 = (long.Parse(nums[1]) * 0x100L) * 0x100L;
             long num3 = long.Parse(nums[2]) * 0x100L;
             long num4 = long.Parse(nums[3]);
-            return (((num1 + num2) + num3) + num4);
+            return (int)(((num1 + num2) + num3) + num4);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace OSharp.Utility.Net
         /// </summary>
         /// <param name="ipInt"></param>
         /// <returns></returns>
-        private static string IntToIp(long ipInt)
+        public static string IntToIp(int ipInt)
         {
             long num1 = (ipInt & 0xff000000L) >> 0x18;
             if (num1 < 0L)
