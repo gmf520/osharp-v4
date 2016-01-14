@@ -18,7 +18,7 @@ using OSharp.Utility;
 using OSharp.Web.Http.Filters;
 
 using Owin;
-
+using OSharp.Web.Http.Context;
 
 namespace OSharp.Web.Http.Initialize
 {
@@ -46,6 +46,8 @@ namespace OSharp.Web.Http.Initialize
         public static IAppBuilder ConfigureWebApi(this IAppBuilder app)
         {
             HttpConfiguration config = GlobalConfiguration.Configuration;
+
+            config.MessageHandlers.Add(new RequestInitHandler());
 
             config.Filters.Add(new ExceptionHandlingAttribute());
             config.Formatters.Clear();

@@ -15,7 +15,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using OSharp.Core.Dependency;
-
+using System.Web.Http.Dependencies;
+using OSharp.Web.Http.Context;
 
 namespace OSharp.Web.Http.Initialize
 {
@@ -41,7 +42,11 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return GlobalConfiguration.Configuration.DependencyResolver.GetService(type);
+            IDependencyScope scope = OSharpWebApiContext.Current != null
+                ? OSharpWebApiContext.Current.DependencyScope
+                : GlobalConfiguration.Configuration.DependencyResolver;
+
+            return scope.GetService(type);
         }
 
         /// <summary>
@@ -61,7 +66,11 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public IEnumerable<object> Resolves(Type type)
         {
-            return GlobalConfiguration.Configuration.DependencyResolver.GetServices(type);
+            IDependencyScope scope = OSharpWebApiContext.Current != null
+                ? OSharpWebApiContext.Current.DependencyScope
+                : GlobalConfiguration.Configuration.DependencyResolver;
+
+            return scope.GetServices(type);
         }
     }
 }
