@@ -26,6 +26,12 @@ namespace OSharp.Core.Dependency
         private readonly List<ServiceDescriptor> _descriptors = new List<ServiceDescriptor>();
 
         /// <summary>
+        /// 初始化一个<see cref="ServiceCollection"/>类型的新实例
+        /// </summary>
+        internal ServiceCollection()
+        { }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>

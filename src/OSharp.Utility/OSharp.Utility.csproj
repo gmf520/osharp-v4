@@ -90,6 +90,7 @@
     <Compile Include="Data\OperationResultType.cs" />
     <Compile Include="Data\OSharpResult.cs" />
     <Compile Include="Data\PageCondition.cs" />
+    <Compile Include="Data\RegexPatterns.cs" />
     <Compile Include="Data\SerializeHelper.cs" />
     <Compile Include="Data\Singleton.cs" />
     <Compile Include="Data\SingletonDictionary.cs" />
