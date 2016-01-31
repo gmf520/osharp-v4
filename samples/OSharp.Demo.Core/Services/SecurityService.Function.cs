@@ -10,12 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
-using OSharp.Core.Context;
-using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security;

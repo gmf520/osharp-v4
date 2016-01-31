@@ -6,13 +6,6 @@
 //  <last-date>2014-07-18 18:52</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Utility.Windows
 {
     /// <summary>

@@ -17,7 +17,6 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 
 using OSharp.Core;
-using OSharp.Core.Context;
 using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Utility.Extensions;

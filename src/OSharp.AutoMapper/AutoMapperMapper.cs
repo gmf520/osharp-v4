@@ -7,12 +7,6 @@
 //  <last-date>2015-10-14 2:40</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using AutoMapper;
 
 using OSharp.Core.Mapping;

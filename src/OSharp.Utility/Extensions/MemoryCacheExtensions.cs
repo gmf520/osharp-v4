@@ -6,11 +6,7 @@
 //  <last-date>2014-08-29 15:51</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
 
 
 namespace OSharp.Utility.Extensions

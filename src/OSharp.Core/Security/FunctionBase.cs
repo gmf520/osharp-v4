@@ -9,7 +9,6 @@
 using System.ComponentModel.DataAnnotations;
 
 using OSharp.Core.Data;
-using OSharp.Core.Initialize;
 
 
 namespace OSharp.Core.Security

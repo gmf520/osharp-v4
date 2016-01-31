@@ -1,7 +1,4 @@
-﻿using System;
-
-using OSharp.Utility.Extensions;
-using System.Linq;
+﻿using System.Linq;
 
 using Xunit;
 

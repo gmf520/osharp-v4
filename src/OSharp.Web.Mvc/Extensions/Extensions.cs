@@ -12,8 +12,6 @@ using System.Collections;
 using System.Web.Mvc;
 
 using OSharp.Core;
-using OSharp.Core.Context;
-using OSharp.Core.Data;
 using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Utility.Filter;

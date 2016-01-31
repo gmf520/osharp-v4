@@ -8,13 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Security.Dtos;
-using OSharp.Core.Security.Models;
 
 
 namespace OSharp.Demo.Dtos.Security

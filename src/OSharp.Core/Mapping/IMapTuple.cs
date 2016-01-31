@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core.Dependency;
-
-
-namespace OSharp.Core.Mapping
+﻿namespace OSharp.Core.Mapping
 {
     /// <summary>
     /// 定义对象映射源与目标配对

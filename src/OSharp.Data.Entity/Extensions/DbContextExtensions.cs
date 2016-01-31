@@ -15,10 +15,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Context;
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
 using OSharp.Core.Logging;

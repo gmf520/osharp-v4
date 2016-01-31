@@ -7,10 +7,6 @@
 //  <last-date>2015-08-03 19:06</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Microsoft.AspNet.Identity;
-
 using OSharp.Core.Data;
 using OSharp.Core.Identity.Models;
 

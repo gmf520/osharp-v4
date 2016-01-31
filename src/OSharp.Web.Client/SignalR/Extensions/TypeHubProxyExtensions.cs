@@ -10,14 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using Microsoft.AspNet.SignalR.Client;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using OSharp.Utility;
 using OSharp.Utility.Reflection;
 
 

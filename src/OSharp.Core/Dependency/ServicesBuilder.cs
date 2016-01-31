@@ -8,19 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core.Configs;
-using OSharp.Core.Context;
-using OSharp.Core.Data;
-using OSharp.Core.Initialize;
-using OSharp.Core.Properties;
-using OSharp.Core.Reflection;
-using OSharp.Core.Security;
-using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Dependency

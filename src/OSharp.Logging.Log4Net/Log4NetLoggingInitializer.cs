@@ -7,15 +7,8 @@
 //  <last-date>2015-07-29 13:51</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Core.Configs;
 using OSharp.Core.Initialize;
-using OSharp.Logging.Log4Net;
 using OSharp.Utility.Logging;
 
 

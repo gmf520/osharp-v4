@@ -7,12 +7,6 @@
 //  <last-date>2015-11-05 15:55</last-date>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Core.Security
 {
     /// <summary>

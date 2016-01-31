@@ -7,12 +7,6 @@
 //  <last-date>2015-10-12 21:29</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
 

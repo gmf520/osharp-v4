@@ -6,7 +6,6 @@
 //  <last-date>2015-07-11 1:18</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;

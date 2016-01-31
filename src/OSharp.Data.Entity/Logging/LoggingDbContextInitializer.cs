@@ -7,13 +7,6 @@
 //  <last-date>2015-09-21 0:26</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Data.Entity.Logging
 {
     /// <summary>

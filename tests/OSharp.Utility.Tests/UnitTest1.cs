@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Reflection;
 
 using Xunit;
-
-using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Utility.Tests

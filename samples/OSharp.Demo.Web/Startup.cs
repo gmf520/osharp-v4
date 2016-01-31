@@ -7,26 +7,20 @@
 //  <last-date>2015-09-29 23:12</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
-
 using Microsoft.Owin;
 
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
-using OSharp.Autofac.SignalR;
 using OSharp.AutoMapper;
 using OSharp.Core.Caching;
 using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Data.Entity;
-using OSharp.Demo.Identity;
 using OSharp.Demo.Services;
 using OSharp.Demo.Web;
 using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
-using OSharp.Web.SignalR.Initialize;
 
 using Owin;
 

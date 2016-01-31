@@ -7,12 +7,7 @@
 //  <last-date>2015-08-07 2:16</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 using OSharp.Core.Identity.Models;

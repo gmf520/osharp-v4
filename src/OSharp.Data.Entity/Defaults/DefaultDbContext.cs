@@ -6,14 +6,6 @@
 //  <last-date>2015-06-28 3:34</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Data.Entity
 {
     /// <summary>
