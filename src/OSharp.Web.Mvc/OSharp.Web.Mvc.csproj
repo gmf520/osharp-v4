@@ -120,6 +120,7 @@
     <Compile Include="Routing\RewriteUrlRouteExtensions.cs" />
     <Compile Include="Routing\RouteHelper.cs" />
     <Compile Include="Security\AjaxOnlyAttribute.cs" />
+    <Compile Include="Security\SecurityHelper.cs" />
     <Compile Include="UI\AjaxResult.cs" />
     <Compile Include="UI\AjaxResultType.cs" />
     <Compile Include="UI\Extensions.cs" />

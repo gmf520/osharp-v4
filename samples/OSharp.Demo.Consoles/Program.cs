@@ -165,7 +165,7 @@ namespace OSharp.Demo.Consoles
             provider.GetServices<IUnitOfWork>().ToList().ForEach(Console.WriteLine);
             provider.GetServices<IFinder<Assembly>>().ToList().ForEach(Console.WriteLine);
             Console.WriteLine(provider.GetService<IServiceCollection>());
-
+            
         }
 
         private static void Method03()
@@ -195,7 +195,9 @@ namespace OSharp.Demo.Consoles
 
         private static void Method06()
         {
-            throw new NotImplementedException();
+            var assembly = typeof(IServiceCollection).Assembly;
+            Console.WriteLine(assembly.FullName);
+            Console.WriteLine(assembly.Location);
         }
 
         private static void Method07()

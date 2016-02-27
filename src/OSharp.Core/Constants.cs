@@ -15,5 +15,6 @@ namespace OSharp.Core
     {
         public const string CurrentMvcFunctionKey = "OSHARP_MVC_FUNCTION_CURRENT";
         public const string CurrentWebApiFunctionKey = "OSHARP_WEBAPI_FUNCTION_CURRENT";
+        public const string VerifyCodeSession = "OSHARP_VERIFY_CODE_SESSION";
     }
 }
