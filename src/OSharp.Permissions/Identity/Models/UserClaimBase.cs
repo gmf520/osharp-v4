@@ -20,7 +20,7 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class UserClaimBase<TKey, TUser, TUserKey> : EntityBase<TKey>, IUserClaim<TKey, TUser, TUserKey>
-        where TUser : IUser<TUserKey>
+        where TUser : IUser<TUserKey>, IEntity<TUserKey>
     {
         /// <summary>
         /// 获取或设置 摘要类型
