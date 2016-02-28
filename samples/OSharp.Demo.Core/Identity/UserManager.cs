@@ -61,6 +61,7 @@ namespace OSharp.Demo.Identity
             IDataProtector dataProtector = dataProtectionProvider.Create("ASP.NET Identity");
             UserTokenProvider = new DataProtectorTokenProvider<User, int>(dataProtector);
         }
+        
     }
 
 

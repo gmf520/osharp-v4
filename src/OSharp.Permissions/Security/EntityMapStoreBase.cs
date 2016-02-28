@@ -7,6 +7,7 @@
 //  <last-date>2015-08-07 3:20</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,13 +31,18 @@ namespace OSharp.Core.Security
         TEntityRoleMapDto, TEntityUserMapDto, TEntityInfo, TEntityInfoKey, TRole, TRoleKey, TUser, TUserKey>
         : IEntityRoleStore<TEntityRoleMapDto, TEntityRoleMapKey, TEntityInfoKey, TRoleKey>,
           IEntityUserStore<TEntityUserMapDto, TEntityUserMapKey, TEntityInfoKey, TUserKey>
-        where TEntityRoleMap : IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
-        where TEntityUserMap : IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
+        where TEntityRoleMap : EntityRoleMapBase<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
+        where TEntityUserMap : EntityUserMapBase<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
         where TEntityRoleMapDto : EntityRoleMapBaseInputDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
         where TEntityUserMapDto : EntityUserMapBaseInputDto<TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>
+        where TEntityRoleMapKey : IEquatable<TEntityRoleMapKey>
+        where TEntityUserMapKey : IEquatable<TEntityUserMapKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 数据实体仓储对象
@@ -106,7 +112,7 @@ namespace OSharp.Core.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> EditEntityRoleMapAsync(TEntityRoleMapDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             TEntityRoleMap map = await EntityRoleMapRepository.GetByKeyAsync(dto.Id);
             if (map == null)
             {

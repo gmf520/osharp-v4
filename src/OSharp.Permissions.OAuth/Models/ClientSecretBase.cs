@@ -17,7 +17,8 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 客户端密钥信息基类
     /// </summary>
-    public abstract class ClientSecretBase<TKey, TClient> : ExpirableBase<TKey>, IClientSecret<TKey>
+    public abstract class ClientSecretBase<TKey, TClient, TClientKey> : ExpirableBase<TKey>, IClientSecret<TKey>
+        where TClient : IClient<TClientKey>
     {
         /// <summary>
         /// 获取或设置 密钥值

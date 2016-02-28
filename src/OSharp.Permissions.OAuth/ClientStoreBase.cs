@@ -26,7 +26,7 @@ namespace OSharp.Core.Security
     public abstract class ClientStoreBase<TClient, TClientKey, TClientSecret, TClientSecretKey, TClientInputDto, TClientSecretInputDto>
         : IClientStore<TClientInputDto, TClientKey, TClientSecretInputDto, TClientSecretKey>
         where TClient : ClientBase<TClientKey, TClientSecret, TClientSecretKey>
-        where TClientSecret : ClientSecretBase<TClientSecretKey, TClient>
+        where TClientSecret : ClientSecretBase<TClientSecretKey, TClient, TClientKey>
         where TClientInputDto : ClientBaseInputDto<TClientKey>
         where TClientSecretInputDto : ClientSecretBaseInputDto<TClientSecretKey, TClientKey>
     {
@@ -95,7 +95,7 @@ namespace OSharp.Core.Security
                     return Task.FromResult(entity);
                 });
         }
-        
+
         /// <summary>
         /// 验证客户端编号与客户端密钥有效性
         /// </summary>
@@ -123,7 +123,7 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         public Task<string> GetRedirectUrl(string clientId)
         {
-            clientId.CheckNotNull("clientId" );
+            clientId.CheckNotNull("clientId");
             return Task.Run(() =>
             {
                 return ClientRepository.Entities.Where(m => m.ClientId == clientId).Select(m => m.RedirectUrl).SingleOrDefault();

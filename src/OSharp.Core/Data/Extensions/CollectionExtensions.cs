@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -128,7 +129,7 @@ namespace OSharp.Core.Data.Extensions
             {
                 throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
             }
-            
+
             total = source.Count(predicate);
             source = source.Where(predicate);
             if (sortConditions == null || sortConditions.Length == 0)
@@ -154,10 +155,10 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="ExpirableBase{TKey}"/>基类的数据集
         /// </summary>
-        public static IQueryable<TEntity> Unexpired<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IExpirable
+        public static IQueryable<TEntity> Unexpired<TEntity, TEntityKey>(this IQueryable<TEntity> source)
+            where TEntity : ExpirableBase<TEntityKey>
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate =
@@ -166,18 +167,30 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>数据集中查询未逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
+        /// 从指定<see cref="IEnumerable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
         /// </summary>
-        public static IQueryable<TEntity> Unrecycled<TEntity>(this IQueryable<TEntity> source)
+        public static IEnumerable<TEntity> Unexpired<TEntity>(this IEnumerable<TEntity> source)
+            where TEntity : IExpirable
+        {
+            DateTime now = DateTime.Now;
+            Func<TEntity, bool> predicate =
+                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
+            return source.Where(predicate);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IEnumerable{T}"/>数据集中查询未逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
+        /// </summary>
+        public static IEnumerable<TEntity> Unrecycled<TEntity>(this IEnumerable<TEntity> source)
             where TEntity : IRecyclable
         {
             return source.Where(m => !m.IsDeleted);
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>数据集中查询未锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
+        /// 从指定<see cref="IEnumerable{T}"/>数据集中查询未锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
         /// </summary>
-        public static IQueryable<TEntity> Unlocked<TEntity>(this IQueryable<TEntity> source)
+        public static IEnumerable<TEntity> Unlocked<TEntity>(this IEnumerable<TEntity> source)
             where TEntity : ILockable
         {
             return source.Where(m => !m.IsLocked);

@@ -30,15 +30,12 @@ namespace OSharp.Core.Identity
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    /// <typeparam name="TUserRoleMap">用户角色映射类型</typeparam>
-    /// <typeparam name="TUserRoleMapKey">用户角色映射编号类型</typeparam>
     /// <typeparam name="TUserLogin">用户第三方登录类型</typeparam>
     /// <typeparam name="TUserLoginKey">用户第三方登录编号类型</typeparam>
     /// <typeparam name="TUserClaim">用户摘要标识类型</typeparam>
     /// <typeparam name="TUserClaimKey">用户摘要标识编号类型</typeparam>
-    public abstract class UserStoreBase<TUser, TUserKey, TRole, TRoleKey, TUserRoleMap, TUserRoleMapKey, TUserLogin, TUserLoginKey, TUserClaim, TUserClaimKey> :
+    public abstract class UserStoreBase<TUser, TUserKey, TRole, TRoleKey, TUserLogin, TUserLoginKey, TUserClaim, TUserClaimKey> :
         IQueryableUserStore<TUser, TUserKey>,
-        //IUserRoleStore<TUser, TUserKey>,
         IUserLoginStore<TUser, TUserKey>,
         IUserClaimStore<TUser, TUserKey>,
         IUserPasswordStore<TUser, TUserKey>,
@@ -50,9 +47,12 @@ namespace OSharp.Core.Identity
         IScopeDependency
         where TUser : UserBase<TUserKey>
         where TRole : RoleBase<TRoleKey>
-        where TUserRoleMap : IUserRoleMap<TUserRoleMapKey, TUser, TUserKey, TRole, TRoleKey>, new()
-        where TUserLogin : IUserLogin<TUserLoginKey, TUser, TUserKey>, new()
-        where TUserClaim : IUserClaim<TUserClaimKey, TUser, TUserKey>, new()
+        where TUserLogin : UserLoginBase<TUserLoginKey, TUser, TUserKey>, new()
+        where TUserClaim : UserClaimBase<TUserClaimKey, TUser, TUserKey>, new()
+        where TUserKey : IEquatable<TUserKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserLoginKey : IEquatable<TUserLoginKey>
+        where TUserClaimKey : IEquatable<TUserClaimKey>
     {
         private bool _disposed;
 
@@ -67,12 +67,7 @@ namespace OSharp.Core.Identity
         /// 获取或设置 角色仓储对象
         /// </summary>
         public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
-
-        /// <summary>
-        /// 获取或设置 用户角色映射仓储对象
-        /// </summary>
-        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { private get; set; }
-
+        
         /// <summary>
         /// 获取或设置 用户第三方登录仓储对象
         /// </summary>
@@ -173,78 +168,6 @@ namespace OSharp.Core.Identity
 
         #endregion
 
-        #region Implementation of IUserRoleStore<TUser,in TUserKey>
-
-        /// <summary>
-        /// Adds a user to a role
-        /// </summary>
-        /// <param name="user"/><param name="roleName"/>
-        /// <returns/>
-        public virtual async Task AddToRoleAsync(TUser user, string roleName)
-        {
-            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
-            user.CheckNotNull("user");
-            roleName.CheckNotNull("roleName");
-            bool exists = UserRoleMapRepository.Entities.Any(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName));
-            if (exists)
-            {
-                return;
-            }
-            TRole role = (await RoleRepository.GetByPredicateAsync(m => m.Name.Equals(roleName))).FirstOrDefault();
-            if (role == null)
-            {
-                throw new InvalidOperationException("指定名称的角色信息不存在");
-            }
-            TUserRoleMap map = new TUserRoleMap() { User = user, Role = role };
-            await UserRoleMapRepository.InsertAsync(map);
-        }
-
-        /// <summary>
-        /// Removes the role for the user
-        /// </summary>
-        /// <param name="user"/><param name="roleName"/>
-        /// <returns/>
-        public virtual async Task RemoveFromRoleAsync(TUser user, string roleName)
-        {
-            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
-            user.CheckNotNull("user");
-            roleName.CheckNotNull("roleName");
-            TUserRoleMap map = (await UserRoleMapRepository.GetByPredicateAsync(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName)))
-                .FirstOrDefault();
-            if (map == null)
-            {
-                return;
-            }
-            await UserRoleMapRepository.DeleteAsync(map);
-        }
-
-        /// <summary>
-        /// Returns the roles for this user
-        /// </summary>
-        /// <param name="user"/>
-        /// <returns/>
-        public virtual async Task<IList<string>> GetRolesAsync(TUser user)
-        {
-            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
-            user.CheckNotNull("user");
-            return await Task.FromResult(UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(user.Id)).Select(m => m.Role.Name).ToList());
-        }
-
-        /// <summary>
-        /// Returns true if a user is in the role
-        /// </summary>
-        /// <param name="user"/><param name="roleName"/>
-        /// <returns/>
-        public virtual async Task<bool> IsInRoleAsync(TUser user, string roleName)
-        {
-            throw new NotSupportedException("用户存储不支持“用户-角色”指派业务的操作，请使用IUserRoleMapStore进行操作");
-            user.CheckNotNull("user");
-            roleName.CheckNotNull("roleName");
-            return await Task.FromResult(UserRoleMapRepository.Entities.Any(m => m.User.Id.Equals(user.Id) && m.Role.Name.Equals(roleName)));
-        }
-
-        #endregion
-
         #region Implementation of IUserLoginStore<TUser,in TUserKey>
 
         public virtual async Task AddLoginAsync(TUser user, UserLoginInfo login)
@@ -292,7 +215,8 @@ namespace OSharp.Core.Identity
         public virtual async Task<IList<Claim>> GetClaimsAsync(TUser user)
         {
             user.CheckNotNull("user");
-            IQueryable<Claim> claims = UserClaimRepository.Entities.Where(m => m.User.Id.Equals(user.Id))
+            var claims = UserClaimRepository.Entities.Where(m => m.User.Id.Equals(user.Id))
+                .Select(m => new { m.ClaimType, m.ClaimValue }).ToList()
                 .Select(m => new Claim(m.ClaimType, m.ClaimValue));
             return await Task.FromResult(claims.ToList());
         }
@@ -320,14 +244,14 @@ namespace OSharp.Core.Identity
 
         public Task SetPasswordHashAsync(TUser user, string passwordHash)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.PasswordHash = passwordHash;
             return Task.FromResult(0);
         }
 
         public Task<string> GetPasswordHashAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.PasswordHash);
         }
 
@@ -342,14 +266,14 @@ namespace OSharp.Core.Identity
 
         public Task SetSecurityStampAsync(TUser user, string stamp)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.SecurityStmp = stamp;
             return Task.FromResult(0);
         }
 
         public Task<string> GetSecurityStampAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.SecurityStmp);
         }
 
@@ -359,33 +283,33 @@ namespace OSharp.Core.Identity
 
         public Task SetEmailAsync(TUser user, string email)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.Email = email;
             return Task.FromResult(0);
         }
 
         public Task<string> GetEmailAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.Email);
         }
 
         public Task<bool> GetEmailConfirmedAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.EmailConfirmed);
         }
 
         public Task SetEmailConfirmedAsync(TUser user, bool confirmed)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.EmailConfirmed = confirmed;
             return Task.FromResult(0);
         }
 
         public async Task<TUser> FindByEmailAsync(string email)
         {
-            email.CheckNotNull("email" );
+            email.CheckNotNull("email");
             return (await UserRepository.GetByPredicateAsync(m => m.Email.Equals(email))).FirstOrDefault();
         }
 
@@ -395,26 +319,26 @@ namespace OSharp.Core.Identity
 
         public Task SetPhoneNumberAsync(TUser user, string phoneNumber)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.PhoneNumber = phoneNumber;
             return Task.FromResult(0);
         }
 
         public Task<string> GetPhoneNumberAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.PhoneNumber);
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.PhoneNumberConfirmed);
         }
 
         public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.PhoneNumberConfirmed = confirmed;
             return Task.FromResult(0);
         }
@@ -425,14 +349,14 @@ namespace OSharp.Core.Identity
 
         public Task SetTwoFactorEnabledAsync(TUser user, bool enabled)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.TwoFactorEnabled = enabled;
             return Task.FromResult(0);
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.TwoFactorEnabled);
         }
 
@@ -442,7 +366,7 @@ namespace OSharp.Core.Identity
 
         public Task<DateTimeOffset> GetLockoutEndDateAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.LockoutEndDateUtc.HasValue
                 ? new DateTimeOffset(DateTime.SpecifyKind(user.LockoutEndDateUtc.Value, DateTimeKind.Utc))
                 : new DateTimeOffset());
@@ -450,40 +374,40 @@ namespace OSharp.Core.Identity
 
         public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset lockoutEnd)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.LockoutEndDateUtc = lockoutEnd == DateTimeOffset.MinValue ? (DateTime?)null : lockoutEnd.UtcDateTime;
             return Task.FromResult(0);
         }
 
         public Task<int> IncrementAccessFailedCountAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.AccessFailedCount++;
             return Task.FromResult(0);
         }
 
         public Task ResetAccessFailedCountAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.AccessFailedCount = 0;
             return Task.FromResult(0);
         }
 
         public Task<int> GetAccessFailedCountAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.AccessFailedCount);
         }
 
         public Task<bool> GetLockoutEnabledAsync(TUser user)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             return Task.FromResult(user.LockoutEnabled);
         }
 
         public Task SetLockoutEnabledAsync(TUser user, bool enabled)
         {
-            user.CheckNotNull("user" );
+            user.CheckNotNull("user");
             user.LockoutEnabled = enabled;
             return Task.FromResult(0);
         }

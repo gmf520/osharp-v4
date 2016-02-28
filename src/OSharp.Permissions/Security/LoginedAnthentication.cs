@@ -7,6 +7,7 @@
 //  <last-date>2015-08-03 20:08</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Security.Claims;
 
 using OSharp.Utility.Extensions;
@@ -21,6 +22,7 @@ namespace OSharp.Core.Security
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
     public class LoginedAnthentication<TFunction, TFunctionKey> : ILoginedAnthentication<TFunction, TFunctionKey>
         where TFunction : FunctionBase<TFunctionKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 执行功能权限验证

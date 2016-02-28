@@ -43,13 +43,18 @@ namespace OSharp.Core.Security
         TFunctionRoleMapDto, TFunctionUserMapDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         : IFunctionRoleStore<TFunctionRoleMapDto, TFunctionRoleMapKey, TFunctionKey, TRoleKey>,
           IFunctionUserStore<TFunctionUserMapDto, TFunctionUserMapKey, TFunctionKey, TUserKey>
-        where TFunctionRoleMap : IFunctionRoleMap<TFunctionRoleMapKey, TFunction, TFunctionKey, TRole, TRoleKey>
-        where TFunctionUserMap : IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
+        where TFunctionRoleMap : FunctionRoleMapBase<TFunctionRoleMapKey, TFunction, TFunctionKey, TRole, TRoleKey>
+        where TFunctionUserMap : FunctionUserMapBase<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
         where TFunctionRoleMapDto : FunctionRoleMapBaseInputDto<TFunctionRoleMapKey, TFunctionKey, TRoleKey>
         where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TFunction : FunctionBase<TFunctionKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>
+        where TFunctionRoleMapKey : IEquatable<TFunctionRoleMapKey>
+        where TFunctionUserMapKey : IEquatable<TFunctionUserMapKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 功能仓储对象
@@ -169,7 +174,7 @@ namespace OSharp.Core.Security
         /// <returns>角色及其限制类型的集合</returns>
         public virtual Task<IEnumerable<Tuple<string, FilterType>>> GetRolesAsync(TFunctionKey functionId)
         {
-            var result = FunctionRoleMapRepository.Entities.Unlocked().Where(m => m.Function.Id.Equals(functionId))
+            var result = FunctionRoleMapRepository.Entities.Where(m => m.Function.Id.Equals(functionId) && !m.IsLocked)
                 .Select(m => new Tuple<string, FilterType>(m.Role.Name, m.FilterType));
             return Task.FromResult(result.AsEnumerable());
         }
@@ -292,7 +297,7 @@ namespace OSharp.Core.Security
         /// <returns>用户及其限制类型的集合</returns>
         public virtual Task<IEnumerable<Tuple<string, FilterType>>> GetUsersAsync(TFunctionKey functionId)
         {
-            var result = FunctionUserMapRepository.Entities.Unlocked().Where(m => m.Function.Id.Equals(functionId))
+            var result = FunctionUserMapRepository.Entities.Where(m => m.Function.Id.Equals(functionId) && !m.IsLocked)
                 .Select(m => new Tuple<string, FilterType>(m.User.UserName, m.FilterType));
             return Task.FromResult(result.AsEnumerable());
         }

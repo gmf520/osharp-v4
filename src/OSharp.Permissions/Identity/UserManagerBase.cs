@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
@@ -35,6 +36,42 @@ namespace OSharp.Core.Identity
         {
             TUser user = await base.FindAsync(userName, password);
             return user != null;
+        }
+
+        [Obsolete("当前框架中UserManager不支持AddToRole操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<IdentityResult> AddToRoleAsync(TUserKey userId, string role)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持AddToRole操作，请使用IUserRoleMapStore接口进行相关操作");
+        }
+
+        [Obsolete("当前框架中UserManager不支持AddToRoles操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<IdentityResult> AddToRolesAsync(TUserKey userId, params string[] roles)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持AddToRoles操作，请使用IUserRoleMapStore接口进行相关操作");
+        }
+
+        [Obsolete("当前框架中UserManager不支持RemoveFromRole操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<IdentityResult> RemoveFromRoleAsync(TUserKey userId, string role)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持RemoveFromRole操作，请使用IUserRoleMapStore接口进行相关操作");
+        }
+
+        [Obsolete("当前框架中UserManager不支持RemoveFromRoles操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<IdentityResult> RemoveFromRolesAsync(TUserKey userId, params string[] roles)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持RemoveFromRoles操作，请使用IUserRoleMapStore接口进行相关操作");
+        }
+
+        [Obsolete("当前框架中UserManager不支持IsInRole操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<bool> IsInRoleAsync(TUserKey userId, string role)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持IsInRole操作，请使用IUserRoleMapStore接口进行相关操作");
+        }
+
+        [Obsolete("当前框架中UserManager不支持GetRoles操作，请使用IUserRoleMapStore接口进行相关操作")]
+        public override Task<IList<string>> GetRolesAsync(TUserKey userId)
+        {
+            throw new NotSupportedException("当前框架中UserManager不支持GetRoles操作，请使用IUserRoleMapStore接口进行相关操作");
         }
 
     }

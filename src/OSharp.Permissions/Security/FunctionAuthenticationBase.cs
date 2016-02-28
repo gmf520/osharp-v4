@@ -7,6 +7,7 @@
 //  <last-date>2015-08-03 20:05</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Security.Claims;
 using System.Threading;
 
@@ -24,6 +25,7 @@ namespace OSharp.Core.Security
     public abstract class FunctionAuthenticationBase<TFunction, TFunctionKey>
         : IFunctionAuthentication<TFunction>
         where TFunction : FunctionBase<TFunctionKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 获取或设置 登录限制功能权限检查

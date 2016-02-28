@@ -26,8 +26,8 @@ namespace OSharp.Core.Identity.Models
         : ExpirableBase<TKey>,
         IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey>,
         ILockable
-        where TUser : IUser<TUserKey>, IEntity<TUserKey> 
-        where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
+        where TUser : UserBase<TUserKey>
+        where TRole : RoleBase<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 是否锁定

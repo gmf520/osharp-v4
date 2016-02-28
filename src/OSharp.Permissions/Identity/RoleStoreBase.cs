@@ -29,6 +29,7 @@ namespace OSharp.Core.Identity
         IQueryableRoleStore<TRole, TRoleKey>,
         ITransientDependency
         where TRole : RoleBase<TRoleKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         private bool _disposed;
 
