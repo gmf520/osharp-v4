@@ -43,6 +43,11 @@ namespace OSharp.Core.Identity.Dtos
         public string Email { get; set; }
 
         /// <summary>
+        /// 获取或设置 电子邮箱是否验证
+        /// </summary>
+        public bool EmailConfirmed { get; set; }
+
+        /// <summary>
         /// 获取或设置 密码哈希
         /// </summary>
         [StringLength(50)]
@@ -53,5 +58,11 @@ namespace OSharp.Core.Identity.Dtos
         /// </summary>
         [StringLength(50)]
         public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// 获取或设置 手机号码是否验证
+        /// </summary>
+        public bool PhoneNumberConfirmed { get; set; }
+
     }
 }
