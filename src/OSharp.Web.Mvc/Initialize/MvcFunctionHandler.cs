@@ -70,6 +70,10 @@ namespace OSharp.Web.Mvc.Initialize
             }
 
             FunctionType functionType = FunctionType.Anonymouse;
+            if (method.DeclaringType.HasAttribute<AuthorizeAttribute>())
+            {
+                functionType = FunctionType.Logined;
+            }
             if (method.HasAttribute<AllowAnonymousAttribute>(true))
             {
                 functionType = FunctionType.Anonymouse;
