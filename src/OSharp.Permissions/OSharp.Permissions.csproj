@@ -70,6 +70,7 @@
     <Compile Include="Identity\Models\UserClaimBase.cs" />
     <Compile Include="Identity\Models\UserLoginBase.cs" />
     <Compile Include="Identity\Models\UserRoleMapBase.cs" />
+    <Compile Include="Identity\RoleManagerBase.cs" />
     <Compile Include="Identity\RoleStoreBase.cs">
       <SubType>Code</SubType>
     </Compile>
