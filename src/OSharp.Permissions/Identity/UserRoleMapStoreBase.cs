@@ -39,24 +39,24 @@ namespace OSharp.Core.Identity
         /// <summary>
         /// 获取或设置 用户信息仓储对象
         /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { private get; set; }
+        public IRepository<TUser, TUserKey> UserRepository { protected get; set; }
 
         /// <summary>
         /// 获取或设置 角色信息仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { protected get; set; }
 
         /// <summary>
         /// 获取或设置 用户角色映射信息仓储对象
         /// </summary>
-        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { private get; set; }
+        public IRepository<TUserRoleMap, TUserRoleMapKey> UserRoleMapRepository { protected get; set; }
 
         /// <summary>
         /// 添加用户角色映射信息
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> AddUserRoleMapAsync(TUserRoleMapInputDto dto)
+        public virtual async Task<OperationResult> AddUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto");
             bool exists = await UserRoleMapRepository.CheckExistsAsync(m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId));
@@ -86,7 +86,7 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> EditUserRoleMapAsync(TUserRoleMapInputDto dto)
+        public virtual async Task<OperationResult> EditUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto");
             var data = (await UserRoleMapRepository.GetByPredicateAsync(m => m.Id.Equals(dto.Id))).Select(m => new
@@ -131,7 +131,7 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="id">用户角色映射编号</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> DeleteUserRoleMapAsync(TUserRoleMapKey id)
+        public virtual async Task<OperationResult> DeleteUserRoleMapAsync(TUserRoleMapKey id)
         {
             TUserRoleMap map = await UserRoleMapRepository.GetByKeyAsync(id);
             if (map == null)
@@ -147,10 +147,10 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns>有效的角色编号集合</returns>
-        public Task<IList<TRoleKey>> GetRoleIdsAsync(TUserKey userId)
+        public virtual Task<IList<TRoleKey>> GetRoleIdsAsync(TUserKey userId)
         {
-            IList<TRoleKey> ids = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && !m.IsLocked)
-                .Unexpired<TUserRoleMap, TUserRoleMapKey>().Select(m => m.Role.Id).ToList();
+            IList<TRoleKey> ids = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId))
+                .Unlocked().Unexpired().Select(m => m.Role.Id).ToList();
             return Task.FromResult(ids);
         }
 
@@ -159,10 +159,10 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns>有效的角色名称集合</returns>
-        public Task<IList<string>> GetRolesAsync(TUserKey userId)
+        public virtual Task<IList<string>> GetRolesAsync(TUserKey userId)
         {
-            IList<string> names = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && !m.IsLocked)
-                .Unexpired<TUserRoleMap, TUserRoleMapKey>().Select(m => m.Role.Name).ToList();
+            IList<string> names = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId))
+                .Unlocked().Unexpired().Select(m => m.Role.Name).ToList();
             return Task.FromResult(names);
         }
 
@@ -172,10 +172,10 @@ namespace OSharp.Core.Identity
         /// <param name="userId">用户编号</param>
         /// <param name="roleId">要判断的角色名称</param>
         /// <returns>是否拥有</returns>
-        public Task<bool> IsInRoleAsync(TUserKey userId, TRoleKey roleId)
+        public virtual Task<bool> IsInRoleAsync(TUserKey userId, TRoleKey roleId)
         {
-            bool exist = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && m.Role.Id.Equals(roleId) && !m.IsLocked)
-                .Unexpired<TUserRoleMap, TUserRoleMapKey>().Any();
+            bool exist = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && m.Role.Id.Equals(roleId))
+                .Unlocked().Unexpired().Any();
             return Task.FromResult(exist);
         }
 
@@ -185,10 +185,10 @@ namespace OSharp.Core.Identity
         /// <param name="userId">用户编号</param>
         /// <param name="roleName">要判断的角色名称</param>
         /// <returns>是否拥有</returns>
-        public Task<bool> IsInRoleAsync(TUserKey userId, string roleName)
+        public virtual Task<bool> IsInRoleAsync(TUserKey userId, string roleName)
         {
-            bool exist = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && m.Role.Name.Equals(roleName) && !m.IsLocked)
-                .Unexpired<TUserRoleMap, TUserRoleMapKey>().Any();
+            bool exist = UserRoleMapRepository.Entities.Where(m => m.User.Id.Equals(userId) && m.Role.Name.Equals(roleName))
+                .Unlocked().Unexpired().Any();
             return Task.FromResult(exist);
         }
     }
