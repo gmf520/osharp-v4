@@ -56,7 +56,7 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> AddUserRoleMapAsync(TUserRoleMapInputDto dto)
+        public virtual async Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto");
             bool exists = await UserRoleMapRepository.CheckExistsAsync(m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId));
@@ -80,13 +80,13 @@ namespace OSharp.Core.Identity
             await UserRoleMapRepository.InsertAsync(map);
             return OperationResult.Success;
         }
-
+        
         /// <summary>
         /// 编辑用户角色映射信息
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> EditUserRoleMapAsync(TUserRoleMapInputDto dto)
+        public virtual async Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto");
             var data = (await UserRoleMapRepository.GetByPredicateAsync(m => m.Id.Equals(dto.Id))).Select(m => new
@@ -191,5 +191,6 @@ namespace OSharp.Core.Identity
                 .Unlocked().Unexpired().Any();
             return Task.FromResult(exist);
         }
+
     }
 }

@@ -28,14 +28,14 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddUserRoleMapAsync(TUserRoleMapInputDto dto);
+        Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto);
 
         /// <summary>
         /// 编辑用户角色映射信息
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditUserRoleMapAsync(TUserRoleMapInputDto dto);
+        Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto);
 
         /// <summary>
         /// 删除用户角色映射信息
