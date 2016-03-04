@@ -29,14 +29,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddFunctionUserMapAsync(TFunctionUserMapDto dto);
+        Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapDto dto);
 
         /// <summary>
         /// 编辑功能用户映射信息
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditFunctionUserMapAsync(TFunctionUserMapDto dto);
+        Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapDto dto);
 
         /// <summary>
         /// 删除功能用户映射信息

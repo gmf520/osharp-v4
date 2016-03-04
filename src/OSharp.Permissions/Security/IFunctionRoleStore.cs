@@ -29,14 +29,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddFunctionRoleMapAsync(TFunctionRoleMapDto dto);
+        Task<OperationResult> CreateFunctionRoleMapAsync(TFunctionRoleMapDto dto);
 
         /// <summary>
         /// 编辑功能角色映射信息
         /// </summary>
         /// <param name="dto">功能角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditFunctionRoleMapAsync(TFunctionRoleMapDto dto);
+        Task<OperationResult> UpdateFunctionRoleMapAsync(TFunctionRoleMapDto dto);
 
         /// <summary>
         /// 删除功能角色映射信息

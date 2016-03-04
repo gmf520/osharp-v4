@@ -76,12 +76,12 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">数据角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> AddEntityRoleMapAsync(TEntityRoleMapDto dto)
+        public virtual async Task<OperationResult> CreateEntityRoleMapAsync(TEntityRoleMapDto dto)
         {
             dto.CheckNotNull("dto");
             if (await EntityRoleMapRepository.CheckExistsAsync(m => m.EntityInfo.Id.Equals(dto.EntityInfoId) && m.Role.Id.Equals(dto.RoleId)))
             {
-                return new OperationResult(OperationResultType.Error, "指定数据与角色的数据角色映射信息已存在");
+                return OperationResult.Success;
             }
             TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
             if (entityInfo == null)
@@ -100,9 +100,8 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            return await EntityRoleMapRepository.InsertAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功")
-                : OperationResult.NoChanged;
+            await EntityRoleMapRepository.InsertAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功");
         }
 
         /// <summary>
@@ -110,7 +109,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">数据角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> EditEntityRoleMapAsync(TEntityRoleMapDto dto)
+        public virtual async Task<OperationResult> UpdateEntityRoleMapAsync(TEntityRoleMapDto dto)
         {
             dto.CheckNotNull("dto");
             TEntityRoleMap map = await EntityRoleMapRepository.GetByKeyAsync(dto.Id);
@@ -141,9 +140,8 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            return await EntityRoleMapRepository.UpdateAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功")
-                : OperationResult.NoChanged;
+            await EntityRoleMapRepository.UpdateAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功");
         }
 
         /// <summary>
@@ -158,9 +156,8 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            return await EntityRoleMapRepository.DeleteAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功")
-                : OperationResult.NoChanged;
+            await EntityRoleMapRepository.DeleteAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功");
         }
 
         /// <summary>
@@ -189,12 +186,12 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">数据用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> AddEntityUserMapAsync(TEntityUserMapDto dto)
+        public virtual async Task<OperationResult> CreateEntityUserMapAsync(TEntityUserMapDto dto)
         {
             dto.CheckNotNull("dto");
             if (await EntityUserMapRepository.CheckExistsAsync(m => m.EntityInfo.Id.Equals(dto.EntityInfoId) && m.User.Id.Equals(dto.UserId)))
             {
-                return new OperationResult(OperationResultType.Error, "指定数据与角色的数据角色映射信息已存在");
+                return OperationResult.Success;
             }
             TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
             if (entityInfo == null)
@@ -213,9 +210,8 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            return await EntityUserMapRepository.InsertAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功")
-                : OperationResult.NoChanged;
+            await EntityUserMapRepository.InsertAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功");
         }
 
         /// <summary>
@@ -223,7 +219,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">数据用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> EditEntityUserMapAsync(TEntityUserMapDto dto)
+        public virtual async Task<OperationResult> UpdateEntityUserMapAsync(TEntityUserMapDto dto)
         {
             dto.CheckNotNull("dto");
             TEntityUserMap map = await EntityUserMapRepository.GetByKeyAsync(dto.Id);
@@ -254,9 +250,8 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            return await EntityUserMapRepository.UpdateAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功")
-                : OperationResult.NoChanged;
+            await EntityUserMapRepository.UpdateAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功");
         }
 
         /// <summary>
@@ -271,9 +266,8 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            return await EntityUserMapRepository.DeleteAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功")
-                : OperationResult.NoChanged;
+            await EntityUserMapRepository.DeleteAsync(map);
+            return new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功");
         }
 
         /// <summary>

@@ -297,6 +297,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto" );
+            dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
             predicate = predicate.And(GetUserRoleMapUnexpireExpression(dto));
             TUserRoleMap existMap = (await UserRoleMapRepository.GetByPredicateAsync(predicate)).FirstOrDefault();
@@ -332,6 +333,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
             dto.CheckNotNull("dto" );
+            dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
             predicate = predicate.And(GetUserRoleMapUnexpireExpression(dto));
             TUserRoleMap map = (await UserRoleMapRepository.GetByPredicateAsync(predicate)).FirstOrDefault();

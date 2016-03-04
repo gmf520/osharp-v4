@@ -7,7 +7,7 @@
 //  <last-date>2015-08-03 19:33</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNet.Identity;
+using System;
 
 using OSharp.Core.Data;
 using OSharp.Core.Identity.Models;
@@ -47,5 +47,10 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// 获取或设置 信息创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
     }
 }

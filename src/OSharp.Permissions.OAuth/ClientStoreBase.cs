@@ -55,7 +55,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> AddClient(TClientInputDto dto)
+        public virtual Task<OperationResult> CreateClient(TClientInputDto dto)
         {
             dto.CheckNotNull("dto");
             return ClientRepository.InsertAsync(new[] { dto }, null,
@@ -71,7 +71,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> EditClient(TClientInputDto dto)
+        public virtual Task<OperationResult> UpdateClient(TClientInputDto dto)
         {
             dto.CheckNotNull("dto");
             return ClientRepository.UpdateAsync(new[] { dto });
@@ -135,7 +135,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端密钥信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> AddClientSecret(TClientSecretInputDto dto)
+        public virtual Task<OperationResult> CreateClientSecret(TClientSecretInputDto dto)
         {
             dto.CheckNotNull("dto");
             return ClientSecretRepository.InsertAsync(new[] { dto },
@@ -159,7 +159,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端密钥信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> EditClientSecret(TClientSecretInputDto dto)
+        public virtual Task<OperationResult> UpdateClientSecret(TClientSecretInputDto dto)
         {
             dto.CheckNotNull("dto");
             return ClientSecretRepository.UpdateAsync(new[] { dto });

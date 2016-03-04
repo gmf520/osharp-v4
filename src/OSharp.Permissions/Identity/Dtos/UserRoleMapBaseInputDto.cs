@@ -19,17 +19,6 @@ namespace OSharp.Core.Identity.Dtos
     /// </summary>
     public abstract class UserRoleMapBaseInputDto<TKey, TUserKey, TRoleKey> : IInputDto<TKey>
     {
-        private DateTime? _beginTime;
-        private DateTime? _endTime;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected UserRoleMapBaseInputDto()
-        {
-            _beginTime = DateTime.Now;
-        }
-
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
@@ -43,34 +32,12 @@ namespace OSharp.Core.Identity.Dtos
         /// <summary>
         /// 获取或设置 生效时间
         /// </summary>
-        public DateTime? BeginTime
-        {
-            get { return _beginTime; }
-            set
-            {
-                if (EndTime != null && value > EndTime.Value)
-                {
-                    throw new InvalidOperationException("生效时间不能大于过期时间");
-                }
-                _beginTime = value;
-            }
-        }
+        public DateTime? BeginTime { get; set; }
 
         /// <summary>
         /// 获取或设置 过期时间
         /// </summary>
-        public DateTime? EndTime
-        {
-            get { return _endTime; }
-            set
-            {
-                if (value != null && BeginTime != null && value < BeginTime)
-                {
-                    throw new InvalidOperationException("过期时间不能小于生效时间");
-                }
-                _endTime = value;
-            }
-        }
+        public DateTime? EndTime { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
@@ -81,5 +48,17 @@ namespace OSharp.Core.Identity.Dtos
         /// 获取或设置 主键，唯一标识
         /// </summary>
         public TKey Id { get; set; }
+
+        /// <summary>
+        /// 验证时间有效性
+        /// </summary>
+        public void ThrowIfTimeInvalid()
+        {
+            if (!BeginTime.HasValue || !EndTime.HasValue || BeginTime.Value <= EndTime.Value)
+            {
+                return;
+            }
+            throw new IndexOutOfRangeException("生效时间不能大于过期时间");
+        }
     }
 }

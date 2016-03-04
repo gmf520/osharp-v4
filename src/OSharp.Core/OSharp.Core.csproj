@@ -220,7 +220,7 @@
     </Compile>
     <Compile Include="Security\LoginedAttribute.cs" />
     <Compile Include="Security\RoleLimitAttribute.cs" />
-    <Compile Include="Security\VisiteType.cs" />
+    <Compile Include="Security\FilterType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Configs\ConfigFile\osharp.xsd">

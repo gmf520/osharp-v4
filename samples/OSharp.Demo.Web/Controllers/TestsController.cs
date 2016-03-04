@@ -103,7 +103,7 @@ namespace OSharp.Demo.Web.Controllers
                 Remark = "Remark",
                 ClientId = 2
             };
-            result = await clientStore.AddClientSecret(secretDto);
+            result = await clientStore.CreateClientSecret(secretDto);
             return Content(result.Message);
         }
 

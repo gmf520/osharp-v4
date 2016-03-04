@@ -27,14 +27,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddClient(TClientInputDto dto);
+        Task<OperationResult> CreateClient(TClientInputDto dto);
 
         /// <summary>
         /// 编辑客户端信息
         /// </summary>
         /// <param name="dto">客户端信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditClient(TClientInputDto dto);
+        Task<OperationResult> UpdateClient(TClientInputDto dto);
 
         /// <summary>
         /// 删除客户端信息
@@ -48,14 +48,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">客户端密钥信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddClientSecret(TClientSecretInputDto dto);
+        Task<OperationResult> CreateClientSecret(TClientSecretInputDto dto);
 
         /// <summary>
         /// 编辑客户端密钥信息
         /// </summary>
         /// <param name="dto">客户端密钥信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditClientSecret(TClientSecretInputDto dto);
+        Task<OperationResult> UpdateClientSecret(TClientSecretInputDto dto);
 
         /// <summary>
         /// 删除客户端密钥信息

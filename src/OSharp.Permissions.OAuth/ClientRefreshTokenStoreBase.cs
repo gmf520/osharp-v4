@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
+using OSharp.Core.Dependency;
 using OSharp.Core.Identity.Models;
 using OSharp.Core.Security.Models;
 
@@ -22,7 +23,7 @@ namespace OSharp.Core.Security
     /// 刷新Token存储基类
     /// </summary>
     public abstract class ClientRefreshTokenStoreBase<TClientRefreshToken, TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>
-        : IClientRefreshTokenStore
+        : IClientRefreshTokenStore, IScopeDependency
         where TClientRefreshToken : ClientRefreshTokenBase<TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>, new()
         where TClient : IClient<TClientKey>
         where TUser : UserBase<TUserKey>

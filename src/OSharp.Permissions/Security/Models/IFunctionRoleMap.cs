@@ -23,7 +23,7 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public interface IFunctionRoleMap<out TKey, TFunction, TFunctionKey, TRole, TRoleKey> : IEntity<TKey>, ILockable
+    public interface IFunctionRoleMap<out TKey, TFunction, TFunctionKey, TRole, TRoleKey> : IEntity<TKey>, ILockable, ICreatedTime
         where TFunction : FunctionBase<TFunctionKey>
         where TRole : RoleBase<TRoleKey>
     {

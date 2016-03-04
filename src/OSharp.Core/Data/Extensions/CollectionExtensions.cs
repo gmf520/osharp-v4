@@ -153,19 +153,7 @@ namespace OSharp.Core.Data.Extensions
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
         }
-
-        /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="ExpirableBase{TKey}"/>基类的数据集
-        /// </summary>
-        public static IQueryable<TEntity> Unexpired<TEntity, TEntityKey>(this IQueryable<TEntity> source)
-            where TEntity : ExpirableBase<TEntityKey>
-        {
-            DateTime now = DateTime.Now;
-            Expression<Func<TEntity, bool>> predicate =
-                m => (m.BeginTime == null || m.BeginTime.Value <= now) && (m.EndTime == null || m.EndTime.Value >= now);
-            return source.Where(predicate);
-        }
-
+        
         /// <summary>
         /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
         /// </summary>

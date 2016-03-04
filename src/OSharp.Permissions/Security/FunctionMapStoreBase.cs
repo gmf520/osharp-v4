@@ -88,12 +88,12 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> AddFunctionRoleMapAsync(TFunctionRoleMapDto dto)
+        public virtual async Task<OperationResult> CreateFunctionRoleMapAsync(TFunctionRoleMapDto dto)
         {
             dto.CheckNotNull("dto");
             if (await FunctionRoleMapRepository.CheckExistsAsync(m => m.Function.Id.Equals(dto.FunctionId) && m.Role.Id.Equals(dto.RoleId)))
             {
-                return new OperationResult(OperationResultType.Error, "指定功能与角色的功能角色映射信息已存在");
+                return OperationResult.Success;
             }
             TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
             if (function == null)
@@ -108,9 +108,8 @@ namespace OSharp.Core.Security
             TFunctionRoleMap map = dto.MapTo<TFunctionRoleMap>();
             map.Function = function;
             map.Role = role;
-            return await FunctionRoleMapRepository.InsertAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能角色映射信息添加成功")
-                : OperationResult.NoChanged;
+            await FunctionRoleMapRepository.InsertAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能角色映射信息添加成功");
         }
 
         /// <summary>
@@ -118,7 +117,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> EditFunctionRoleMapAsync(TFunctionRoleMapDto dto)
+        public virtual async Task<OperationResult> UpdateFunctionRoleMapAsync(TFunctionRoleMapDto dto)
         {
             dto.CheckNotNull("dto");
             TFunctionRoleMap map = await FunctionRoleMapRepository.GetByKeyAsync(dto.Id);
@@ -145,9 +144,8 @@ namespace OSharp.Core.Security
                 }
                 map.Role = role;
             }
-            return await FunctionRoleMapRepository.UpdateAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能角色映射信息编辑成功")
-                : OperationResult.NoChanged;
+            await FunctionRoleMapRepository.UpdateAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能角色映射信息编辑成功");
         }
 
         /// <summary>
@@ -162,9 +160,8 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            return await FunctionRoleMapRepository.DeleteAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能角色映射信息删除成功")
-                : OperationResult.NoChanged;
+            await FunctionRoleMapRepository.DeleteAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能角色映射信息删除成功");
         }
 
         /// <summary>
@@ -211,12 +208,12 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> AddFunctionUserMapAsync(TFunctionUserMapDto dto)
+        public virtual async Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapDto dto)
         {
             dto.CheckNotNull("dto");
             if (await FunctionUserMapRepository.CheckExistsAsync(m => m.Function.Id.Equals(dto.FunctionId) && m.User.Id.Equals(dto.UserId)))
             {
-                return new OperationResult(OperationResultType.Error, "指定功能与用户的功能用户映射信息已存在");
+                return OperationResult.Success;
             }
             TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
             if (function == null)
@@ -231,9 +228,8 @@ namespace OSharp.Core.Security
             TFunctionUserMap map = dto.MapTo<TFunctionUserMap>();
             map.Function = function;
             map.User = user;
-            return await FunctionUserMapRepository.InsertAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能用户映射信息添加成功")
-                : OperationResult.NoChanged;
+            await FunctionUserMapRepository.InsertAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能用户映射信息添加成功");
         }
 
         /// <summary>
@@ -241,7 +237,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> EditFunctionUserMapAsync(TFunctionUserMapDto dto)
+        public virtual async Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapDto dto)
         {
             dto.CheckNotNull("dto");
             TFunctionUserMap map = await FunctionUserMapRepository.GetByKeyAsync(dto.Id);
@@ -268,9 +264,8 @@ namespace OSharp.Core.Security
                 }
                 map.User = user;
             }
-            return await FunctionUserMapRepository.UpdateAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能用户映射信息编辑成功")
-                : OperationResult.NoChanged;
+            await FunctionUserMapRepository.UpdateAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能用户映射信息编辑成功");
         }
 
         /// <summary>
@@ -285,9 +280,8 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            return await FunctionUserMapRepository.DeleteAsync(map) > 0
-                ? new OperationResult(OperationResultType.Success, "功能用户映射信息删除成功")
-                : OperationResult.NoChanged;
+            await FunctionUserMapRepository.DeleteAsync(map);
+            return new OperationResult(OperationResultType.Success, "功能用户映射信息删除成功");
         }
 
         /// <summary>

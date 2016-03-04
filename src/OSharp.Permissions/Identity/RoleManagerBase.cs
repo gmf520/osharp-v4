@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
+using OSharp.Core.Dependency;
 using OSharp.Core.Identity.Models;
 
 
@@ -22,7 +23,7 @@ namespace OSharp.Core.Identity
     /// </summary>
     /// <typeparam name="TRole"></typeparam>
     /// <typeparam name="TRoleKey"></typeparam>
-    public abstract class RoleManagerBase<TRole, TRoleKey> : RoleManager<TRole, TRoleKey>
+    public abstract class RoleManagerBase<TRole, TRoleKey> : RoleManager<TRole, TRoleKey>, IScopeDependency
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
