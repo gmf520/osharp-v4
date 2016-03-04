@@ -6,11 +6,14 @@
 //  <last-date>2014-07-25 2:39</last-date>
 // -----------------------------------------------------------------------
 
+using System.Web.Mvc;
+
 namespace OSharp.Web.Mvc
 {
-    //[Authorize]
+    /// <summary>
+    /// 管理控制器基类
+    /// </summary>
+    [Authorize]
     public abstract class AdminBaseController : BaseController
-    {
-        
-    }
+    { }
 }

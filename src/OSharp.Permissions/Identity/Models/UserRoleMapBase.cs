@@ -7,7 +7,7 @@
 //  <last-date>2015-09-13 17:25</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNet.Identity;
+using System;
 
 using OSharp.Core.Data;
 
@@ -25,7 +25,8 @@ namespace OSharp.Core.Identity.Models
     public abstract class UserRoleMapBase<TKey, TUser, TUserKey, TRole, TRoleKey>
         : ExpirableBase<TKey>,
         IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey>,
-        ILockable
+        ILockable,
+        ICreatedTime
         where TUser : UserBase<TUserKey>
         where TRole : RoleBase<TRoleKey>
     {
@@ -33,6 +34,11 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// 获取或设置 信息创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 获取或设置 用户信息
@@ -43,5 +49,6 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 角色信息
         /// </summary>
         public virtual TRole Role { get; set; }
+        
     }
 }

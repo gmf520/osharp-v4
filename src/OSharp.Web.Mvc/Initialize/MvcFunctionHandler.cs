@@ -69,8 +69,13 @@ namespace OSharp.Web.Mvc.Initialize
                 throw new InvalidOperationException(Resources.FunctionHandler_MethodNotMvcAction.FormatWith(method.Name));
             }
 
+            Type type = method.DeclaringType;
+            if (type == null)
+            {
+                throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
+            }
             FunctionType functionType = FunctionType.Anonymouse;
-            if (method.DeclaringType.HasAttribute<AuthorizeAttribute>())
+            if (type.HasAttribute<AuthorizeAttribute>(true))
             {
                 functionType = FunctionType.Logined;
             }
@@ -85,11 +90,6 @@ namespace OSharp.Web.Mvc.Initialize
             else if (method.HasAttribute<RoleLimitAttribute>(true))
             {
                 functionType = FunctionType.RoleLimit;
-            }
-            Type type = method.DeclaringType;
-            if (type == null)
-            {
-                throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
             }
             Function function = new Function()
             {
