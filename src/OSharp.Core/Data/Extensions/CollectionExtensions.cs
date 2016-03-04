@@ -162,7 +162,7 @@ namespace OSharp.Core.Data.Extensions
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate =
-                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
+                m => (m.BeginTime == null || m.BeginTime.Value <= now) && (m.EndTime == null || m.EndTime.Value >= now);
             return source.Where(predicate);
         }
 
@@ -174,7 +174,7 @@ namespace OSharp.Core.Data.Extensions
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate =
-                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
+                m => (m.BeginTime == null || m.BeginTime.Value <= now) && (m.EndTime == null || m.EndTime.Value >= now);
             return source.Where(predicate);
         }
 
@@ -186,7 +186,7 @@ namespace OSharp.Core.Data.Extensions
         {
             DateTime now = DateTime.Now;
             Func<TEntity, bool> predicate =
-                m => (m.BeginTime != null && m.BeginTime <= now) && (m.EndTime != null && m.EndTime.Value >= now);
+                m => (m.BeginTime == null || m.BeginTime.Value <= now) && (m.EndTime == null || m.EndTime.Value >= now);
             return source.Where(predicate);
         }
 

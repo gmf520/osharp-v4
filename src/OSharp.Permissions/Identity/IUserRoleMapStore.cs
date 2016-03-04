@@ -65,13 +65,5 @@ namespace OSharp.Core.Identity
         /// <param name="roleId">要判断的角色名称</param>
         /// <returns>是否拥有</returns>
         Task<bool> IsInRoleAsync(TUserKey userId, TRoleKey roleId);
-
-        /// <summary>
-        /// 返回用户是有拥有指定角色
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <param name="roleName">要判断的角色名称</param>
-        /// <returns>是否拥有</returns>
-        Task<bool> IsInRoleAsync(TUserKey userId, string roleName);
     }
 }

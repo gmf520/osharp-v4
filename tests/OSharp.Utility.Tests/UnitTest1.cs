@@ -50,5 +50,16 @@ namespace OSharp.Utility.Tests
             Assert.False(t1 == info2);
             Assert.True(t1 == definition2);
         }
+
+        [Fact]
+        public void Test02()
+        {
+            int? num = null;
+            Assert.True(num.HasValue == false);
+            Assert.True(num == null);
+            num = 1;
+            Assert.True(num.HasValue);
+            Assert.True(num != null);
+        }
     }
 }

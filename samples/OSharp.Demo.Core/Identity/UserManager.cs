@@ -16,14 +16,14 @@ using Microsoft.Owin.Security.DataProtection;
 
 using OSharp.Core.Identity;
 using OSharp.Demo.Models.Identity;
-
+using OSharp.Demo.Dtos.Identity;
 
 namespace OSharp.Demo.Identity
 {
     /// <summary>
     /// 用户管理器
     /// </summary>
-    public class UserManager : UserManagerBase<User, int>
+    public class UserManager : UserManagerBase<User, int, Role, int, UserRoleMap, UserRoleMapInputDto, int>
     {
         /// <summary>
         /// 初始化一个<see cref="UserManager"/>类型的新实例
@@ -61,7 +61,7 @@ namespace OSharp.Demo.Identity
             IDataProtector dataProtector = dataProtectionProvider.Create("ASP.NET Identity");
             UserTokenProvider = new DataProtectorTokenProvider<User, int>(dataProtector);
         }
-        
+
     }
 
 

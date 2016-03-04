@@ -27,7 +27,7 @@ namespace OSharp.Core.Identity
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     public abstract class RoleStoreBase<TRole, TRoleKey> :
         IQueryableRoleStore<TRole, TRoleKey>,
-        ITransientDependency
+        IScopeDependency
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {

@@ -20,15 +20,7 @@ namespace OSharp.Core.Data
     {
         private DateTime? _beginTime;
         private DateTime? _endTime;
-
-        /// <summary>
-        /// 初始化一个<see cref="ExpirableBase{TKey}"/>类型的新实例
-        /// </summary>
-        protected ExpirableBase()
-        {
-            _beginTime = DateTime.Now;
-        }
-
+        
         /// <summary>
         /// 获取或设置 生效时间
         /// </summary>
@@ -37,7 +29,7 @@ namespace OSharp.Core.Data
             get { return _beginTime; }
             set
             {
-                if (value != null && EndTime != null && value > EndTime.Value)
+                if (value.HasValue && EndTime.HasValue && value > EndTime.Value)
                 {
                     throw new InvalidOperationException("生效时间不能大于过期时间");
                 }
@@ -53,7 +45,7 @@ namespace OSharp.Core.Data
             get { return _endTime; }
             set
             {
-                if (value != null && BeginTime != null && value < BeginTime)
+                if (value.HasValue && BeginTime.HasValue && value < BeginTime)
                 {
                     throw new InvalidOperationException("过期时间不能小于生效时间");
                 }
