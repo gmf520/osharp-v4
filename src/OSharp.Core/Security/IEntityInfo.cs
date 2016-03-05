@@ -8,13 +8,15 @@
 
 using System.Collections.Generic;
 
+using OSharp.Core.Data;
+
 
 namespace OSharp.Core.Security
 {
     /// <summary>
     /// 实体数据接口
     /// </summary>
-    public interface IEntityInfo
+    public interface IEntityInfo: IRecyclable
     {
         /// <summary>
         /// 获取 实体数据类型名称

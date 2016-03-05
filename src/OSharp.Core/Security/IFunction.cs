@@ -14,7 +14,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 功能接口，最小功能信息
     /// </summary>
-    public interface IFunction : ILockable
+    public interface IFunction : ILockable, IRecyclable
     {
         /// <summary>
         /// 获取或设置 功能名称

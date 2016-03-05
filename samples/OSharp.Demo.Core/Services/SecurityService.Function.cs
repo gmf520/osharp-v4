@@ -157,9 +157,9 @@ namespace OSharp.Demo.Services
                 {
                     return new OperationResult(OperationResultType.QueryNull);
                 }
-                if (!entity.IsCustom)
+                if (!entity.IsCustom && !entity.IsDeleted)
                 {
-                    return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，不能删除".FormatWith(entity.Name));
+                    return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，并且未被回收，不能删除".FormatWith(entity.Name));
                 }
                 FunctionRepository.Delete(entity);
                 names.Add(entity.Name);

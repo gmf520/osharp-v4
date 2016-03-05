@@ -6,6 +6,7 @@
 //  <last-date>2015-07-11 1:18</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -59,5 +60,10 @@ namespace OSharp.Core.Security
                 return PropertyNamesJson.FromJsonString<Dictionary<string, string>>();
             }
         }
+
+        /// <summary>
+        /// 获取或设置 是否已逻辑删除
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }
