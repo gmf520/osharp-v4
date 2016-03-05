@@ -135,16 +135,11 @@ namespace OSharp.Core.Security
                 foreach (MethodInfo method in methods)
                 {
                     TFunction action = GetFunction(method);
-                    TFunction existAction = GetFunction(functions, action.Action, action.Controller, action.Area, action.Name);
-                    //忽略指定条件的已存在的功能信息
-                    if (existAction != null && IsIgnoreMethod(method))
+                    if (IsIgnoreMethod(action, method, functions))
                     {
                         continue;
                     }
-                    if (existAction == null)
-                    {
-                        functions.Add(action);
-                    }
+                    functions.Add(action);
                 }
             }
             return functions.ToArray();
@@ -190,15 +185,18 @@ namespace OSharp.Core.Security
             return functions.FirstOrDefault(m => m.Action == action && m.Controller == controller
                 && m.Area == area && m.Name == name && m.PlatformToken == PlatformToken);
         }
-
+        
         /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>
-        /// <param name="method">方法信息</param>
+        /// <param name="action">要判断的功能信息</param>
+        /// <param name="method">功能相关的方法信息</param>
+        /// <param name="functions">已存在的功能信息集合</param>
         /// <returns></returns>
-        protected virtual bool IsIgnoreMethod(MethodInfo method)
+        protected virtual bool IsIgnoreMethod(TFunction action, MethodInfo method, IEnumerable<TFunction> functions)
         {
-            return false;
+            TFunction exist = GetFunction(functions, action.Action, action.Controller, action.Area, action.Name);
+            return exist != null;
         }
 
         /// <summary>
@@ -208,14 +206,27 @@ namespace OSharp.Core.Security
         protected virtual void UpdateToRepository(TFunction[] functions)
         {
             IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
-            // DependencyResolver.Current.GetService<IRepository<TFunction, TKey>>();
             TFunction[] items = repository.GetByPredicate(m => m.PlatformToken == PlatformToken).ToArray();
 
             //删除的功能（排除自定义功能信息）
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
             int removeCount = removeItems.Length;
-            if (repository.Delete(removeItems) > 0)
+            int tmpCount = 0;
+            foreach (TFunction removeItem in removeItems)
+            {
+                try
+                {
+                    tmpCount += repository.Delete(removeItem);
+                }
+                catch (Exception)
+                {
+                    //无法物理删除，可能是外键约束，改为逻辑删除
+                    removeItem.IsDeleted = true;
+                    tmpCount += repository.Update(removeItem);
+                }
+            }
+            if (tmpCount > 0)
             {
                 items = repository.GetByPredicate(m => true).ToArray();
             }

@@ -16,7 +16,7 @@ using OSharp.Core.Security;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Http.Properties;
-
+using System.Collections.Generic;
 
 namespace OSharp.Web.Http.Initialize
 {
@@ -121,11 +121,14 @@ namespace OSharp.Web.Http.Initialize
         /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>
-        /// <param name="method">方法信息</param>
+        /// <param name="action">要判断的功能信息</param>
+        /// <param name="method">功能相关的方法信息</param>
+        /// <param name="functions">已存在的功能信息集合</param>
         /// <returns></returns>
-        protected override bool IsIgnoreMethod(MethodInfo method)
+        protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
-            return method.HasAttribute<HttpPostAttribute>();
+            bool flag = base.IsIgnoreMethod(action, method, functions);
+            return flag && method.HasAttribute<HttpPostAttribute>();
         }
     }
 }

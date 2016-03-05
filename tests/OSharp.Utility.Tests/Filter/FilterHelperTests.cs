@@ -18,7 +18,6 @@ using Xunit;
 
 namespace OSharp.Utility.Filter.Tests
 {
-
     public class FilterHelperTests : EntityTestBase
     {
         [Fact()]
@@ -27,13 +26,13 @@ namespace OSharp.Utility.Filter.Tests
             IQueryable<TestEntity> source = Entities.AsQueryable();
 
             //空条件
-            Expression<Func<TestEntity, bool>> predicate = FilterHelper.GetExpression<TestEntity>();
+            FilterRule rule = null;
+            Expression<Func<TestEntity, bool>> predicate = FilterHelper.GetExpression<TestEntity>(rule);
             Assert.True(source.Where(predicate).SequenceEqual(source));
 
             //单条件，属性不存在
-            FilterRule rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
-            FilterRule rule1 = rule;
-            Assert.Throws<InvalidOperationException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
+            rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
+            Assert.Throws<InvalidOperationException>(() => FilterHelper.GetExpression<TestEntity>(rule));
 
             //单条件
             rule = new FilterRule("Name", "5", FilterOperate.EndsWith);
