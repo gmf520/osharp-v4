@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="QueryExtensions.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  <copyright file="CacheExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2016 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-08-05 1:10</last-date>
+//  <last-date>2016-03-06 12:25</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,9 +13,9 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using OSharp.Core.Data.Extensions;
-using OSharp.Core.Extensions;
 using OSharp.Core.Properties;
 using OSharp.Core.Security;
+using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 using OSharp.Utility.Filter;
@@ -24,10 +24,73 @@ using OSharp.Utility.Filter;
 namespace OSharp.Core.Caching
 {
     /// <summary>
-    /// 查询缓存扩展辅助操作
+    /// 缓存扩展辅助操作类
     /// </summary>
-    public static class QueryCacheExtensions
+    public static class CacheExtensions
     {
+        /// <summary>
+        /// 根据功能配置添加缓存数据
+        /// </summary>
+        public static void Set(this ICache cache, string key, object value, IFunction function)
+        {
+            key.CheckNotNull("key");
+            value.CheckNotNull("value");
+            if (function == null || function.CacheExpirationSeconds <= 0)
+            {
+                return;
+            }
+            if (function.IsCacheSliding)
+            {
+                cache.Set(key, value, TimeSpan.FromSeconds(function.CacheExpirationSeconds));
+            }
+            else
+            {
+                cache.Set(key, value, DateTime.Now.AddSeconds(function.CacheExpirationSeconds));
+            }
+        }
+
+        /// <summary>
+        /// 从缓存中获取数据，如不存在则从指定委托中获取，并回存到缓存中再返回
+        /// </summary>
+        /// <typeparam name="TResult">返回结果类型</typeparam>
+        /// <param name="cache">缓存对象</param>
+        /// <param name="key">缓存键</param>
+        /// <param name="getFunc">外部获取数据委托</param>
+        /// <param name="cacheSeconds">缓存时间，秒</param>
+        /// <returns>结果数据</returns>
+        public static TResult Get<TResult>(this ICache cache, string key, Func<TResult> getFunc, int cacheSeconds)
+        {
+            TResult result = cache.Get<TResult>(key);
+            if (result != null)
+            {
+                return result;
+            }
+            result = getFunc();
+            cache.Set(key, result, DateTime.Now.AddSeconds(cacheSeconds));
+            return result;
+        }
+
+        /// <summary>
+        /// 从缓存中获取数据，如不存在则从指定委托中获取，并回存到缓存中再返回
+        /// </summary>
+        /// <typeparam name="TResult">返回结果类型</typeparam>
+        /// <param name="cache">缓存对象</param>
+        /// <param name="key">缓存键</param>
+        /// <param name="getFunc">外部获取数据委托</param>
+        /// <param name="function">缓存策略相关功能</param>
+        /// <returns>结果数据</returns>
+        public static TResult Get<TResult>(this ICache cache, string key, Func<TResult> getFunc, IFunction function)
+        {
+            TResult result = cache.Get<TResult>(key);
+            if (result != null)
+            {
+                return result;
+            }
+            result = getFunc();
+            cache.Set(key, result, function);
+            return result;
+        }
+
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
         /// </summary>
@@ -47,14 +110,7 @@ namespace OSharp.Core.Caching
         {
             ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
             string key = GetKey(source, predicate, pageCondition, selector);
-            PageResult<TResult> result = cache.Get<PageResult<TResult>>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToPage(predicate, pageCondition, selector);
-            cache.Set(key, result, DateTime.Now.AddSeconds(cacheSeconds));
-            return result;
+            return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), cacheSeconds);
         }
 
         /// <summary>
@@ -76,14 +132,7 @@ namespace OSharp.Core.Caching
         {
             ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
             string key = GetKey(source, predicate, pageCondition, selector);
-            PageResult<TResult> result = cache.Get<PageResult<TResult>>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToPage(predicate, pageCondition, selector);
-            cache.Set(key, result, function);
-            return result;
+            return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), function);
         }
 
         /// <summary>
@@ -97,14 +146,7 @@ namespace OSharp.Core.Caching
         {
             ICache cache = CacheManager.GetCacher<TSource>();
             string key = GetKey(source.Expression);
-            List<TSource> result = cache.Get<List<TSource>>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToList();
-            cache.Set(key, result, DateTime.Now.AddSeconds(cacheSeconds));
-            return result;
+            return cache.Get(key, source.ToList, cacheSeconds);
         }
 
         /// <summary>
@@ -118,14 +160,7 @@ namespace OSharp.Core.Caching
         {
             ICache cache = CacheManager.GetCacher<TSource>();
             string key = GetKey(source.Expression);
-            TSource[] result = cache.Get<TSource[]>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToArray();
-            cache.Set(key, result, DateTime.Now.AddSeconds(cacheSeconds));
-            return result;
+            return cache.Get(key, source.ToArray, cacheSeconds);
         }
 
         /// <summary>
@@ -143,14 +178,7 @@ namespace OSharp.Core.Caching
             }
             ICache cache = CacheManager.GetCacher<TSource>();
             string key = GetKey(source.Expression);
-            List<TSource> result = cache.Get<List<TSource>>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToList();
-            cache.Set(key, result, function);
-            return result;
+            return cache.Get(key, source.ToList, function);
         }
 
         /// <summary>
@@ -168,14 +196,7 @@ namespace OSharp.Core.Caching
             }
             ICache cache = CacheManager.GetCacher<TSource>();
             string key = GetKey(source.Expression);
-            TSource[] result = cache.Get<TSource[]>(key);
-            if (result != null)
-            {
-                return result;
-            }
-            result = source.ToArray();
-            cache.Set(key, result, function);
-            return result;
+            return cache.Get(key, source.ToArray, function);
         }
 
         private static string GetKey<TEntity, TResult>(IQueryable<TEntity> source,

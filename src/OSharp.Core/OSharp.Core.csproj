@@ -67,12 +67,12 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Caching\CacheBase.cs" />
+    <Compile Include="Caching\CacheExtensions.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />
     <Compile Include="Caching\InternalCacher.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
-    <Compile Include="Caching\QueryCacheExtensions.cs" />
     <Compile Include="Caching\RuntimeMemoryCache.cs" />
     <Compile Include="Caching\RuntimeMemoryCacheProvider.cs" />
     <Compile Include="Configs\BasicLoggingConfig.cs" />
@@ -138,7 +138,6 @@
     <Compile Include="Dependency\IServicesBuilder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
-    <Compile Include="Extensions\CacheExtensions.cs" />
     <Compile Include="Extensions\ClaimsIdentityExtensions.cs" />
     <Compile Include="Dependency\IDependency.cs" />
     <Compile Include="Configs\ConfigFile\Data\CreateDatabaseInitializerElement.cs" />
