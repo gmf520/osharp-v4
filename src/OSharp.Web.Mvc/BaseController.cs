@@ -28,6 +28,11 @@ namespace OSharp.Web.Mvc
         }
 
         /// <summary>
+        /// 获取或设置 依赖注入服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
         /// Called when an unhandled exception occurs in the action.
         /// </summary>
         /// <param name="filterContext">Information about the current request and action.</param>
@@ -37,7 +42,7 @@ namespace OSharp.Web.Mvc
             Logger.Error(exception.Message, exception);
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                var message = "Ajax访问时引发异常：";
+                var message = "Ajax请求异常：";
                 if (exception is HttpAntiForgeryException)
                 {
                     message += "安全性验证失败。<br>请刷新页面重试，详情请查看系统日志。";

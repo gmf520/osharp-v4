@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 
 
 namespace OSharp.Web.Http
@@ -9,5 +10,9 @@ namespace OSharp.Web.Http
     //[CustomAuthorize]
     public abstract class BaseApiController : ApiController
     {
+        /// <summary>
+        /// 获取或设置 依赖注入服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
     }
 }
