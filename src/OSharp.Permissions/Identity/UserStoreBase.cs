@@ -273,30 +273,7 @@ namespace OSharp.Core.Identity
         #endregion
 
         #region Implementation of IUserRoleMapStore<in TUserRoleMapInputDto,in TUserRoleMapKey,in TUserKey,TRoleKey>
-
-        private static Expression<Func<TUserRoleMap, bool>> GetUserRoleMapUnexpireExpression(TUserRoleMapInputDto dto)
-        {
-            Expression<Func<TUserRoleMap, bool>> predicate = m => true;
-            if (dto.BeginTime.HasValue)
-            {
-                predicate = predicate.And(m => m.BeginTime != null && m.BeginTime.Value < dto.BeginTime.Value);
-            }
-            if (dto.EndTime.HasValue)
-            {
-                predicate = predicate.And(m => m.EndTime != null && m.EndTime.Value > dto.EndTime.Value);
-            }
-            return predicate;
-        }
-
-        private static string GetTimeString(DateTime? time)
-        {
-            if (time == null)
-            {
-                return "不限";
-            }
-            return time.Value.ToString("yy-MM-dd HH:mm:ss");
-        }
-
+        
         /// <summary>
         /// 添加用户角色映射信息
         /// </summary>
@@ -307,16 +284,14 @@ namespace OSharp.Core.Identity
             dto.CheckNotNull("dto" );
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            predicate = predicate.And(GetUserRoleMapUnexpireExpression(dto));
-            TUserRoleMap existMap = (await UserRoleMapRepository.GetByPredicateAsync(predicate)).FirstOrDefault();
-            if (existMap != null)
+            TUserRoleMap map = (await UserRoleMapRepository.GetByPredicateAsync(predicate)).FirstOrDefault();
+            if (map != null)
             {
                 return new OperationResult(OperationResultType.Error,
-                    "“{0}{1}”存在的时间区间[{2}→{3}]包含当前时间段，不能重复添加"
-                        .FormatWith(existMap.User.NickName, existMap.Role.Name, GetTimeString(existMap.BeginTime), GetTimeString(existMap.EndTime)));
+                    "“{0}-{1}”的指派信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
             }
-
-            TUserRoleMap map = dto.MapTo<TUserRoleMap>();
+            
+            map = dto.MapTo<TUserRoleMap>();
             TUser user = UserRepository.GetByKey(dto.UserId);
             if (user == null)
             {
@@ -343,13 +318,11 @@ namespace OSharp.Core.Identity
             dto.CheckNotNull("dto" );
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            predicate = predicate.And(GetUserRoleMapUnexpireExpression(dto));
             TUserRoleMap map = (await UserRoleMapRepository.GetByPredicateAsync(predicate)).FirstOrDefault();
             if (map != null && !map.Id.Equals(dto.Id))
             {
                 return new OperationResult(OperationResultType.Error,
-                    "“{0}{1}”存在的时间区间[{2}→{3}]包含当前时间段，不能重复添加"
-                        .FormatWith(map.User.NickName, map.Role.Name, GetTimeString(map.BeginTime), GetTimeString(map.EndTime)));
+                    "“{0}-{1}”的指派信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
             }
             if (map == null || !map.Id.Equals(dto.Id))
             {
