@@ -144,6 +144,10 @@ namespace OSharp.Core.Identity
         public virtual async Task CreateAsync(TUser user)
         {
             user.CheckNotNull("user");
+            if (user.NickName.IsMissing())
+            {
+                user.NickName = user.UserName;
+            }
             await UserRepository.InsertAsync(user);
         }
 
@@ -155,6 +159,10 @@ namespace OSharp.Core.Identity
         public virtual async Task UpdateAsync(TUser user)
         {
             user.CheckNotNull("user");
+            if (user.NickName.IsMissing())
+            {
+                user.NickName = user.UserName;
+            }
             await UserRepository.UpdateAsync(user);
         }
 
@@ -782,7 +790,7 @@ namespace OSharp.Core.Identity
         {
             user.CheckNotNull("user");
             user.AccessFailedCount++;
-            return Task.FromResult(0);
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         /// <summary>

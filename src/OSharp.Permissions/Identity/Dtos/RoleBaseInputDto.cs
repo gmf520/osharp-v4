@@ -42,6 +42,11 @@ namespace OSharp.Core.Identity.Dtos
         public bool IsAdmin { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否默认角色，用户注册后拥有此角色
+        /// </summary>
+        public bool IsDefault { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否系统角色
         /// </summary>
         public bool IsSystem { get; set; }

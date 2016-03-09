@@ -155,7 +155,7 @@ namespace OSharp.Web.Mvc.Extensions
             return recordWriter;
         }
 
-        #region 私有方法
+#region 私有方法
 
         private static void SetRecordWriter(this HtmlHelper html, RecordWriter writer)
         {
@@ -177,6 +177,6 @@ namespace OSharp.Web.Mvc.Extensions
             return writer;
         }
 
-        #endregion
+#endregion
     }
 }

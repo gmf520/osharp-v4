@@ -20,7 +20,7 @@ namespace OSharp.Core.Identity.Models
     /// 用户信息基类
     /// </summary>
     /// <typeparam name="TKey">用户编号类型</typeparam>
-    public abstract class UserBase<TKey> : EntityBase<TKey>, IUser<TKey>, ICreatedTime
+    public abstract class UserBase<TKey> : EntityBase<TKey>, IUser<TKey>, ICreatedTime, ILockable
     {
         /// <summary>
         /// Unique username
@@ -79,7 +79,7 @@ namespace OSharp.Core.Identity.Models
         public DateTime? LockoutEndDateUtc { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否允许锁定用户
+        /// 获取或设置 是否允许登录锁定
         /// </summary>
         public bool LockoutEnabled { get; set; }
 
@@ -89,8 +89,13 @@ namespace OSharp.Core.Identity.Models
         public int AccessFailedCount { get; set; }
 
         /// <summary>
-        /// 获取设置 信息创建时间
+        /// 获取或设置 信息创建时间
         /// </summary>
         public DateTime CreatedTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定，用于冻结
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }
