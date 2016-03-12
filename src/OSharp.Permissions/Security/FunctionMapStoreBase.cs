@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="FunctionMapStoreBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//      Copyright (c) 2014-2016 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-08-04 14:22</last-date>
+//  <last-date>2016-03-13 0:41</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,11 +27,8 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 功能（角色、用户）映射存储基类
     /// </summary>
-    /// <typeparam name="TFunctionRoleMap">功能角色映射类型</typeparam>
-    /// <typeparam name="TFunctionRoleMapKey">功能角色映射编号类型</typeparam>
     /// <typeparam name="TFunctionUserMap">功能用户映射类型</typeparam>
     /// <typeparam name="TFunctionUserMapKey">功能用户映射编号类型</typeparam>
-    /// <typeparam name="TFunctionRoleMapDto">功能角色映射DTO类型</typeparam>
     /// <typeparam name="TFunctionUserMapDto">功能用户映射DTO类型</typeparam>
     /// <typeparam name="TFunction">功能类型</typeparam>
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
@@ -39,18 +36,14 @@ namespace OSharp.Core.Security
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public abstract class FunctionMapStoreBase<TFunctionRoleMap, TFunctionRoleMapKey, TFunctionUserMap, TFunctionUserMapKey,
-        TFunctionRoleMapDto, TFunctionUserMapDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
-        : IFunctionRoleStore<TFunctionRoleMapDto, TFunctionRoleMapKey, TFunctionKey, TRoleKey>,
-          IFunctionUserStore<TFunctionUserMapDto, TFunctionUserMapKey, TFunctionKey, TUserKey>
-        where TFunctionRoleMap : FunctionRoleMapBase<TFunctionRoleMapKey, TFunction, TFunctionKey, TRole, TRoleKey>
+    public abstract class FunctionMapStoreBase<TFunctionUserMap, TFunctionUserMapKey,
+        TFunctionUserMapDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+        : IFunctionUserStore<TFunctionUserMapDto, TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TFunctionUserMap : FunctionUserMapBase<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
-        where TFunctionRoleMapDto : FunctionRoleMapBaseInputDto<TFunctionRoleMapKey, TFunctionKey, TRoleKey>
         where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TFunction : FunctionBase<TFunctionKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>
-        where TFunctionRoleMapKey : IEquatable<TFunctionRoleMapKey>
         where TFunctionUserMapKey : IEquatable<TFunctionUserMapKey>
         where TFunctionKey : IEquatable<TFunctionKey>
         where TRoleKey : IEquatable<TRoleKey>
@@ -59,147 +52,22 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 功能仓储对象
         /// </summary>
-        public IRepository<TFunction, TFunctionKey> FunctionRepository { private get; set; }
+        public IRepository<TFunction, TFunctionKey> FunctionRepository { protected get; set; }
 
         /// <summary>
         /// 获取或设置 角色仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
-
-        /// <summary>
-        /// 获取或设置 功能角色映射仓储对象
-        /// </summary>
-        public IRepository<TFunctionRoleMap, TFunctionRoleMapKey> FunctionRoleMapRepository { private get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { protected get; set; }
 
         /// <summary>
         /// 获取或设置 用户仓储对象
         /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { private get; set; }
+        public IRepository<TUser, TUserKey> UserRepository { protected get; set; }
 
         /// <summary>
         /// 获取或设置 功能用户映射仓储对象
         /// </summary>
-        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { private get; set; }
-
-        #region Implementation of IFunctionRoleStore<in TFunctionRoleMapDto,in TFunctionRoleMapKey,in TFunctionKey,TRoleKey>
-
-        /// <summary>
-        /// 增加功能角色映射信息
-        /// </summary>
-        /// <param name="dto">功能角色映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> CreateFunctionRoleMapAsync(TFunctionRoleMapDto dto)
-        {
-            dto.CheckNotNull("dto");
-            if (await FunctionRoleMapRepository.CheckExistsAsync(m => m.Function.Id.Equals(dto.FunctionId) && m.Role.Id.Equals(dto.RoleId)))
-            {
-                return OperationResult.Success;
-            }
-            TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-            if (function == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "指定编号的功能信息不存在");
-            }
-            TRole role = await RoleRepository.GetByKeyAsync(dto.RoleId);
-            if (role == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
-            }
-            TFunctionRoleMap map = dto.MapTo<TFunctionRoleMap>();
-            map.Function = function;
-            map.Role = role;
-            await FunctionRoleMapRepository.InsertAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能角色映射信息添加成功");
-        }
-
-        /// <summary>
-        /// 编辑功能角色映射信息
-        /// </summary>
-        /// <param name="dto">功能角色映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> UpdateFunctionRoleMapAsync(TFunctionRoleMapDto dto)
-        {
-            dto.CheckNotNull("dto");
-            TFunctionRoleMap map = await FunctionRoleMapRepository.GetByKeyAsync(dto.Id);
-            if (map == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "指定编号的功能角色映射信息不存在");
-            }
-            map = dto.MapTo(map);
-            if (!map.Function.Id.Equals(dto.FunctionId))
-            {
-                TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-                if (function == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "指定编号的功能信息不存在");
-                }
-                map.Function = function;
-            }
-            if (!map.Role.Id.Equals(dto.RoleId))
-            {
-                TRole role = await RoleRepository.GetByKeyAsync(dto.RoleId);
-                if (role == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
-                }
-                map.Role = role;
-            }
-            await FunctionRoleMapRepository.UpdateAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能角色映射信息编辑成功");
-        }
-
-        /// <summary>
-        /// 删除功能角色映射信息
-        /// </summary>
-        /// <param name="id">功能角色映射编号</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> DeleteFunctionRoleMapAsync(TFunctionRoleMapKey id)
-        {
-            TFunctionRoleMap map = await FunctionRoleMapRepository.GetByKeyAsync(id);
-            if (map == null)
-            {
-                return OperationResult.NoChanged;
-            }
-            await FunctionRoleMapRepository.DeleteAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能角色映射信息删除成功");
-        }
-
-        /// <summary>
-        /// 获取功能的角色及其限制类型
-        /// </summary>
-        /// <param name="functionId">功能编号</param>
-        /// <returns>角色及其限制类型的集合</returns>
-        public virtual Task<IEnumerable<Tuple<string, FilterType>>> GetRolesAsync(TFunctionKey functionId)
-        {
-            var result = FunctionRoleMapRepository.Entities.Where(m => m.Function.Id.Equals(functionId))
-                .Unlocked().Select(m => new Tuple<string, FilterType>(m.Role.Name, m.FilterType));
-            return Task.FromResult(result.AsEnumerable());
-        }
-
-        /// <summary>
-        /// 验证功能是否允许访问
-        /// </summary>
-        /// <param name="functionId">功能编号</param>
-        /// <param name="roleNames">要验证的角色名</param>
-        /// <returns>是否允许访问</returns>
-        public virtual async Task<bool> IsRolesVisiteEnabledAsync(TFunctionKey functionId, params string[] roleNames)
-        {
-            Tuple<string, FilterType>[] tuples = (await GetRolesAsync(functionId)).ToArray();
-            foreach (string roleName in roleNames)
-            {
-                if (tuples.Any(m => m.Item1 == roleName && m.Item2 == FilterType.Refused))
-                {
-                    return false;
-                }
-                if (tuples.Any(m => m.Item1 == roleName && m.Item2 == FilterType.Allowed))
-                {
-                    return true;
-                }
-            }
-            return true;
-        }
-
-        #endregion
+        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { protected get; set; }
 
         #region Implementation of IFunctionUserStore<in TFunctionUserMapDto,in TFunctionUserMapKey,in TFunctionKey,TUserKey>
 

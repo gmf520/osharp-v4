@@ -29,7 +29,7 @@ namespace OSharp.Demo.Services
             services.AddScoped<IDataProtectionProvider>(_ => app.GetDataProtectionProvider());
 
             //Security
-            services.AddScoped<FunctionMapStore>();
+            //services.AddScoped<FunctionMapStore>();
             services.AddScoped<EntityMapStore>();
 
             //OAuth
