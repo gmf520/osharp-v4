@@ -7,6 +7,8 @@
 //  <last-date>2015-08-07 2:08</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.AspNet.Identity;
+
 using OSharp.Core.Data;
 using OSharp.Core.Identity.Models;
 using OSharp.Utility.Filter;
@@ -17,9 +19,9 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 定义实体角色映射信息
     /// </summary>
-    public interface IEntityRoleMap<TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey> : IEntity<TKey>, ILockable, ICreatedTime
-        where TEntityInfo : EntityInfoBase<TEntityInfoKey>
-        where TRole : RoleBase<TRoleKey>
+    public interface IEntityRoleMap<out TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey> : IEntity<TKey>, ILockable, ICreatedTime
+        where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
+        where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

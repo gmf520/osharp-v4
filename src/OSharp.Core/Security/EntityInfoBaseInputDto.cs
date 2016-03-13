@@ -15,8 +15,8 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体信息输入DTO基类
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    public class EntityInfoBaseInputDto<TKey> : IInputDto<TKey>
+    /// <typeparam name="TKey">实体数据编号类型</typeparam>
+    public abstract class EntityInfoBaseInputDto<TKey> : IInputDto<TKey>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识

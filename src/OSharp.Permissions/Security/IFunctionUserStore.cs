@@ -21,22 +21,22 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义功能用户映射存储
     /// </summary>
-    public interface IFunctionUserStore<in TFunctionUserMapDto, in TKey, in TFunctionKey, TUserKey> : IScopeDependency
-        where TFunctionUserMapDto : FunctionUserMapBaseInputDto<TKey, TFunctionKey, TUserKey>
+    public interface IFunctionUserStore<in TFunctionUserMapInputDto, in TKey, in TFunctionKey, TUserKey> : IScopeDependency
+        where TFunctionUserMapInputDto : FunctionUserMapBaseInputDto<TKey, TFunctionKey, TUserKey>
     {
         /// <summary>
         /// 增加功能用户映射信息
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapDto dto);
+        Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapInputDto dto);
 
         /// <summary>
         /// 编辑功能用户映射信息
         /// </summary>
         /// <param name="dto">功能用户映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapDto dto);
+        Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapInputDto dto);
 
         /// <summary>
         /// 删除功能用户映射信息
@@ -44,20 +44,6 @@ namespace OSharp.Core.Security
         /// <param name="id">功能用户映射编号</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> DeleteFunctionUserMapAsync(TKey id);
-
-        /// <summary>
-        /// 获取功能的用户及其限制类型
-        /// </summary>
-        /// <param name="functionId">功能编号</param>
-        /// <returns>用户及其限制类型的集合</returns>
-        Task<IEnumerable<Tuple<string, FilterType>>> GetUsersAsync(TFunctionKey functionId);
-
-        /// <summary>
-        /// 验证功能是否允许访问
-        /// </summary>
-        /// <param name="functionId">功能编号</param>
-        /// <param name="userNames">要验证的用户名</param>
-        /// <returns>是否允许访问</returns>
-        Task<bool> IsUsersVisiteEnabledAsync(TFunctionKey functionId, params string[] userNames);
+        
     }
 }

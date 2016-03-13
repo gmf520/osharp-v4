@@ -76,7 +76,7 @@ namespace OSharp.Core.Security
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块信息编号</param>
         /// <returns>模块信息是否存在</returns>
-        public Task<bool> CheckTModuleExists(Expression<Func<TModule, bool>> predicate, TModuleKey id = default(TModuleKey))
+        public Task<bool> CheckModuleExists(Expression<Func<TModule, bool>> predicate, TModuleKey id = default(TModuleKey))
         {
             predicate.CheckNotNull("predicate");
             return ModuleRepository.CheckExistsAsync(predicate, id);

@@ -7,8 +7,9 @@
 //  <last-date>2015-08-07 2:16</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.AspNet.Identity;
+
 using OSharp.Core.Data;
-using OSharp.Core.Identity.Models;
 using OSharp.Utility.Filter;
 
 
@@ -17,9 +18,9 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 定义实体用户映射信息
     /// </summary>
-    public interface IEntityUserMap<TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey> : IEntity<TKey>, ILockable, ICreatedTime
-        where TEntityInfo : EntityInfoBase<TEntityInfoKey>
-        where TUser : UserBase<TUserKey>
+    public interface IEntityUserMap<out TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey> : IEntity<TKey>, ILockable, ICreatedTime
+        where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
+        where TUser : IUser<TUserKey>, IEntity<TUserKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

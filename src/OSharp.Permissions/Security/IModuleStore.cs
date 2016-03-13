@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -42,12 +43,17 @@ namespace OSharp.Core.Security
         where TModuleKey : struct
     {
         /// <summary>
+        /// 获取 模块信息查询数据集
+        /// </summary>
+        IQueryable<TModule> Modules { get; }
+
+        /// <summary>
         /// 检查模块信息信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块信息编号</param>
         /// <returns>模块信息是否存在</returns>
-        Task<bool> CheckTModuleExists(Expression<Func<TModule, bool>> predicate, TModuleKey id = default(TModuleKey));
+        Task<bool> CheckModuleExists(Expression<Func<TModule, bool>> predicate, TModuleKey id = default(TModuleKey));
 
         /// <summary>
         /// 添加模块信息信息

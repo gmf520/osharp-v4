@@ -42,6 +42,11 @@ namespace OSharp.Core.Security
         FunctionType FunctionType { get; set; }
 
         /// <summary>
+        /// 获取或设置 功能类型是否更改过，如为true，刷新功能时将忽略功能类型
+        /// </summary>
+        bool IsTypeChanged { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否启用操作日志
         /// </summary>
         bool OperateLogEnabled { get; set; }
@@ -60,6 +65,11 @@ namespace OSharp.Core.Security
         /// 获取或设置 是否相对过期时间，否则为绝对过期
         /// </summary>
         bool IsCacheSliding { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否自定义功能
+        /// </summary>
+        bool IsCustom { get; set; }
 
         /// <summary>
         /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
