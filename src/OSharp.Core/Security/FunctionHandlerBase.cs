@@ -212,20 +212,21 @@ namespace OSharp.Core.Security
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
             int removeCount = removeItems.Length;
-            int tmpCount = 0;
+            repository.UnitOfWork.TransactionEnabled = true;
             foreach (TFunction removeItem in removeItems)
             {
                 try
                 {
-                    tmpCount += repository.Delete(removeItem);
+                    removeItem.IsDeleted = true;
+                    repository.Delete(removeItem);
                 }
                 catch (Exception)
                 {
                     //无法物理删除，可能是外键约束，改为逻辑删除
-                    removeItem.IsDeleted = true;
-                    tmpCount += repository.Update(removeItem);
+                    repository.Recycle(removeItem);
                 }
             }
+            int tmpCount = repository.UnitOfWork.SaveChanges();
             if (tmpCount > 0)
             {
                 items = repository.GetByPredicate(m => true).ToArray();

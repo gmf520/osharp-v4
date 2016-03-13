@@ -104,10 +104,12 @@
     <Compile Include="Dtos\Security\EntityUserMapInputDto.cs" />
     <Compile Include="Dtos\Security\FunctionInputDto.cs" />
     <Compile Include="Dtos\Security\FunctionUserMapInputDto.cs" />
+    <Compile Include="Dtos\Security\ModuleInputDto.cs" />
     <Compile Include="Identity\RoleManager.cs" />
     <Compile Include="Identity\RoleStore.cs" />
     <Compile Include="ModelConfigurations\OAuth\ClientRefreshTokenConfiguration.cs" />
     <Compile Include="Models\OAuth\ClientRefreshToken.cs" />
+    <Compile Include="Models\Security\Module.cs" />
     <Compile Include="OAuth\ClientRefreshTokenStore.cs" />
     <Compile Include="Services\ServiceCollectionExtensions.cs" />
     <Compile Include="Identity\SignInManager.cs" />

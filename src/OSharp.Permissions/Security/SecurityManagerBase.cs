@@ -9,11 +9,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
+using OSharp.Core.Security.Dtos;
 using OSharp.Core.Security.Models;
 using OSharp.Utility.Data;
 
@@ -31,12 +33,15 @@ namespace OSharp.Core.Security
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
     /// <typeparam name="TModule">模块类型</typeparam>
     /// <typeparam name="TModuleKey">模块编号类型</typeparam>
-    public abstract class SecurityManagerBase<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModule, TModuleKey>
-        : ISecurityManager<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModuleKey>
+    /// <typeparam name="TModuleInputDto">模块输入DTO类型</typeparam>
+    public abstract class SecurityManagerBase<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModule, TModuleKey, TModuleInputDto>
+        : ISecurityManager<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModuleKey>,
+        IModuleStore<TModule, TModuleKey, TModuleInputDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TModule : IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+        where TModuleInputDto : ModuleBaseInputDto<TModuleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
         where TRoleKey : IEquatable<TRoleKey>
         where TUserKey : IEquatable<TUserKey>
@@ -97,6 +102,51 @@ namespace OSharp.Core.Security
         /// <param name="functions">要添加的功能编号及控制类型集合</param>
         /// <returns></returns>
         public virtual Task<OperationResult> SetUserFunctions(TUser user, params Tuple<TFunctionKey, FilterType>[] functions)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Implementation of IModuleStore<TModule,in TModuleKey,in TModuleInputDto,TFunction,TFunctionKey,TRole,TRoleKey,TUser,TUserKey>
+
+        /// <summary>
+        /// 检查模块信息信息是否存在
+        /// </summary>
+        /// <param name="predicate">检查谓语表达式</param>
+        /// <param name="id">更新的模块信息编号</param>
+        /// <returns>模块信息是否存在</returns>
+        public Task<bool> CheckTModuleExists(Expression<Func<TModule, bool>> predicate, TModuleKey id = default(TModuleKey))
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 添加模块信息信息
+        /// </summary>
+        /// <param name="dto">要添加的模块信息DTO信息</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> CreateTModule(TModuleInputDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 更新模块信息信息
+        /// </summary>
+        /// <param name="dto">包含更新信息的模块信息DTO信息</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> UpdateTModule(TModuleInputDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 删除模块信息信息
+        /// </summary>
+        /// <param name="id">要删除的模块信息编号</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> DeleteTModule(TModuleKey id)
         {
             throw new NotImplementedException();
         }

@@ -134,7 +134,22 @@ namespace OSharp.Core.Security
             TEntityInfo[] removeItems = items.Except(entityInfos,
                 EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassName)).ToArray();
             int removeCount = removeItems.Length;
-            if (repository.Delete(removeItems) > 0)
+            repository.UnitOfWork.TransactionEnabled = true;
+            foreach (TEntityInfo removeItem in removeItems)
+            {
+                try
+                {
+                    removeItem.IsDeleted = true;
+                    repository.Delete(removeItem);
+                }
+                catch (Exception)
+                {
+                    //无法物理删除，可能是外键约束，改为逻辑删除
+                    repository.Recycle(removeItem);
+                }
+            }
+            int tmpCount = repository.UnitOfWork.SaveChanges();
+            if (tmpCount > 0)
             {
                 items = repository.GetByPredicate(m => true).ToArray();
             }
