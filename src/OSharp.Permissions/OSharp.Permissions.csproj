@@ -85,9 +85,7 @@
     <Compile Include="Security\Dtos\EntityUserMapBaseInputDto.cs" />
     <Compile Include="Security\Dtos\FunctionUserMapBaseInputDto.cs" />
     <Compile Include="Security\Dtos\ModuleBaseInputDto.cs" />
-    <Compile Include="Security\EntityMapStoreBase.cs" />
     <Compile Include="Security\FunctionAuthenticationBase.cs" />
-    <Compile Include="Security\FunctionMapStoreBase.cs" />
     <Compile Include="Security\IEntityInfoStore.cs" />
     <Compile Include="Security\IEntityRoleStore.cs" />
     <Compile Include="Security\IEntityUserStore.cs" />
@@ -106,7 +104,6 @@
     <Compile Include="Security\Models\IFunctionUserMap.cs" />
     <Compile Include="Security\Models\IModule.cs" />
     <Compile Include="Security\Models\ModuleBase.cs" />
-    <Compile Include="Security\ModuleStoreBase.cs" />
     <Compile Include="Security\SecurityManagerBase.cs" />
   </ItemGroup>
   <ItemGroup>

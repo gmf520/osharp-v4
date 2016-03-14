@@ -10,7 +10,6 @@ using OSharp.Core.Security;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
 using OSharp.Demo.OAuth;
-using OSharp.Demo.Security;
 
 using Owin;
 
@@ -30,7 +29,7 @@ namespace OSharp.Demo.Services
 
             //Security
             //services.AddScoped<FunctionMapStore>();
-            services.AddScoped<EntityMapStore>();
+            //services.AddScoped<EntityMapStore>();
 
             //OAuth
             services.AddScoped<ClientStore>();

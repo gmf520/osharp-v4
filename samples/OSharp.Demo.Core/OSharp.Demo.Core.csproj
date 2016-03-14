@@ -171,7 +171,6 @@
     <Compile Include="Models\Security\FunctionUserMap.cs" />
     <Compile Include="OAuth\ClientStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\EntityMapStore.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\IdentityService.Organization.cs" />
     <Compile Include="Services\IdentityService.Role.cs" />
@@ -187,7 +186,9 @@
     <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Security\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>

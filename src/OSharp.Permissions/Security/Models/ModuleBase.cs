@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection.Emit;
 
 using Microsoft.AspNet.Identity;
 
@@ -46,17 +47,11 @@ namespace OSharp.Core.Security.Models
         /// </summary>
         protected ModuleBase()
         {
-            TreePathIds = new TKey[0];
             SubModules = new List<TModule>();
             Functions = new List<TFunction>();
             Roles = new List<TRole>();
             Users = new List<TUser>();
         }
-
-        /// <summary>
-        /// 获取或设置 树形路径，树链的Id以逗号分隔构成的字符串，编辑时更新
-        /// </summary>
-        public string TreePath { get; set; }
 
         /// <summary>
         /// 获取或设置 模块名称
@@ -75,21 +70,25 @@ namespace OSharp.Core.Security.Models
         public int OrderCode { get; set; }
 
         /// <summary>
-        /// 获取 树形路径编号数组，由<see cref="TreePath"/>属性转换
+        /// 获取 树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
         /// </summary>
         [NotMapped]
         public TKey[] TreePathIds
         {
             get
             {
-                return TreePath == null
+                return TreePathString == null
                     ? new TKey[0]
-                    : TreePath.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(m => m.CastTo<TKey>()).ToArray();
+                    : TreePathString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(m => m.Trim('$').CastTo<TKey>()).ToArray();
             }
-            set { TreePath = value.ExpandAndToString(); }
         }
 
+        /// <summary>
+        /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
+        /// </summary>
+        public string TreePathString { get; set; }
+        
         /// <summary>
         /// 获取或设置 父模块信息
         /// </summary>
@@ -114,5 +113,25 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 拥有此模块的用户信息集合
         /// </summary>
         public ICollection<TUser> Users { get; set; }
+
+        /// <summary>
+        /// 获取实体的TreePath，即由父级树链的Id构成的字符串
+        /// </summary>
+        public virtual string GetTreePath()
+        {
+            if (Parent == null)
+            {
+                return null;
+            }
+            const string itemFormat = "${0}$";
+            List<string>keys = new List<string>();
+            TModule parent = Parent;
+            while (parent != null)
+            {
+                keys.Add(itemFormat.FormatWith(parent.Id));
+                parent = parent.Parent;
+            }
+            return keys.ExpandAndToString();
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="role">角色信息</param>
         /// <returns>允许的功能集合</returns>
-        Task<IEnumerable<TFunction>> GetRoleAllowedFunctions(TRole role);
+        IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role);
 
         /// <summary>
         /// 给角色添加模块权限

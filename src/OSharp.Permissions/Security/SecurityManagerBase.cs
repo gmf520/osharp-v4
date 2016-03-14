@@ -134,9 +134,11 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="role">角色信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual Task<IEnumerable<TFunction>> GetRoleAllowedFunctions(TRole role)
+        public virtual IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role)
         {
-            throw new NotImplementedException();
+            role.CheckNotNull("role" );
+            List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
+            return moduleIds.SelectMany(GetModuleAllowedFunctions);
         }
 
         /// <summary>
@@ -147,6 +149,14 @@ namespace OSharp.Core.Security
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
         {
+            role.CheckNotNull("role" );
+            moduleIds.CheckNotNullOrEmpty("moduleIds" );
+            moduleIds = moduleIds.OrderByDescending(m => m.ToString().Length).ToArray();
+            List<TModuleKey> existModuleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
+            
+
+
+
             throw new NotImplementedException();
         }
 
@@ -235,7 +245,7 @@ namespace OSharp.Core.Security
             {
                 module.Parent = default(TModule);
             }
-            module.TreePathIds = GetModuleTreePathIds(module);
+            module.TreePathString = module.GetTreePath();
             await ModuleRepository.InsertAsync(module);
             return OperationResult.Success;
         }
@@ -274,7 +284,7 @@ namespace OSharp.Core.Security
             {
                 module.Parent = default(TModule);
             }
-            module.TreePathIds = GetModuleTreePathIds(module);
+            module.TreePathString = module.GetTreePath();
             await ModuleRepository.UpdateAsync(module);
             return OperationResult.Success;
         }
@@ -300,19 +310,20 @@ namespace OSharp.Core.Security
             return OperationResult.Success;
         }
 
-        private static TModuleKey[] GetModuleTreePathIds(TModule module)
+        /// <summary>
+        /// 获取指定模块及其子模块的所有可用功能集合
+        /// </summary>
+        /// <param name="id">要查询的顶模块信息</param>
+        /// <returns>允许的功能集合</returns>
+        public virtual IEnumerable<TFunction> GetModuleAllowedFunctions(TModuleKey id)
         {
-            List<TModuleKey> keys = new List<TModuleKey>();
-            TModule parent = module.Parent;
-            while (!parent.Equals(default(TModule)))
-            {
-                keys.Add(parent.Id);
-                parent = parent.Parent;
-            }
-            keys.Reverse();
-            return keys.ToArray();
+            string idstr = id.ToString();
+            idstr = "$" + idstr + "$";
+            IQueryable<TModuleKey> subIds =
+                ModuleRepository.Entities.Where(m => m.TreePathString != null && m.TreePathString.Contains(idstr)).Select(m => m.Id);
+            return ModuleRepository.Entities.Where(m => subIds.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
         }
-
+        
         #endregion
 
         #region Implementation of IFunctionStore<TFunction,in TFunctionKey,in TFunctionInputDto>

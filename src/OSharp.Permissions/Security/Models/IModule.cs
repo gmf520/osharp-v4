@@ -50,9 +50,14 @@ namespace OSharp.Core.Security.Models
         int OrderCode { get; set; }
 
         /// <summary>
-        /// 获取或设置 树形路径编号数组
+        /// 获取 树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
         /// </summary>
-        TKey[] TreePathIds { get; set; }
+        TKey[] TreePathIds { get;}
+
+        /// <summary>
+        /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
+        /// </summary>
+        string TreePathString { get; set; }
 
         /// <summary>
         /// 获取或设置 父模块信息
@@ -78,5 +83,11 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 拥有此模块的用户信息集合
         /// </summary>
         ICollection<TUser> Users { get; set; }
+
+        /// <summary>
+        /// 获取实体的TreePath，即由父级树链的Id构成的字符串
+        /// </summary>
+        /// <returns></returns>
+        string GetTreePath();
     }
 }
