@@ -15,6 +15,6 @@ namespace OSharp.Demo.Models.OAuth
     /// <summary>
     /// 实体类——OAuth客户端信息
     /// </summary>
-    public class Client : ClientBase<int, ClientSecret, int>
+    public class OAuthClient : OAuthClientBase<int, OAuthClientSecret, int>
     { }
 }

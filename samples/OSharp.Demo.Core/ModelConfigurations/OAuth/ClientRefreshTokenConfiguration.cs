@@ -15,6 +15,6 @@ using OSharp.Demo.Models.OAuth;
 
 namespace OSharp.Demo.ModelConfigurations.OAuth
 {
-    public class ClientRefreshTokenConfiguration : EntityConfigurationBase<ClientRefreshToken, Guid>
+    public class ClientRefreshTokenConfiguration : EntityConfigurationBase<OAuthClientRefreshToken, Guid>
     { }
 }

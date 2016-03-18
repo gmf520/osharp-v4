@@ -18,9 +18,9 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义客户端信息存储
     /// </summary>
-    public interface IClientStore<in TClientInputDto, in TKey, in TClientSecretInputDto, in TClientSecretKey> : IClientValidator
-        where TClientInputDto : ClientBaseInputDto<TKey>
-        where TClientSecretInputDto : ClientSecretBaseInputDto<TClientSecretKey, TKey>
+    public interface IOAuthClientStore<in TClientInputDto, in TKey, in TClientSecretInputDto, in TClientSecretKey> : IOAuthClientValidator
+        where TClientInputDto : OAuthClientBaseInputDto<TKey>
+        where TClientSecretInputDto : OAuthClientSecretBaseInputDto<TClientSecretKey, TKey>
     {
         /// <summary>
         /// 新增客户端信息

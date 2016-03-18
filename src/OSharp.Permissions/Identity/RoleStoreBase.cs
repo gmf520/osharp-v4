@@ -104,7 +104,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<TRole> FindByNameAsync(string roleName)
         {
             roleName.CheckNotNull("roleName");
-            return (await RoleRepository.GetByPredicateAsync(m => m.Name.Equals(roleName))).FirstOrDefault();
+            return await Task.Run(() => RoleRepository.TrackEntities.Where(m => m.Name.Equals(roleName)).FirstOrDefault());
         }
 
         #endregion

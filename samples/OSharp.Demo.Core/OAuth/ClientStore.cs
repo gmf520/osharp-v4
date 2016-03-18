@@ -17,6 +17,6 @@ namespace OSharp.Demo.OAuth
     /// <summary>
     /// 客户端存储实现
     /// </summary>
-    public class ClientStore : ClientStoreBase<Client, int, ClientSecret, int, ClientInputDto, ClientSecretInputDto>
+    public class OAuthClientStore : OAuthClientStoreBase<OAuthClient, int, OAuthClientSecret, int, OAuthClientInputDto, OAuthClientSecretInputDto>
     { }
 }

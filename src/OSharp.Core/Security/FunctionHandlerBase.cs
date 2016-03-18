@@ -206,7 +206,7 @@ namespace OSharp.Core.Security
         protected virtual void UpdateToRepository(TFunction[] functions)
         {
             IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
-            TFunction[] items = repository.GetByPredicate(m => m.PlatformToken == PlatformToken).ToArray();
+            TFunction[] items = repository.TrackEntities.Where(m => m.PlatformToken == PlatformToken).ToArray();
 
             //删除的功能（排除自定义功能信息）
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,
@@ -229,7 +229,7 @@ namespace OSharp.Core.Security
             int tmpCount = repository.UnitOfWork.SaveChanges();
             if (tmpCount > 0)
             {
-                items = repository.GetByPredicate(m => true).ToArray();
+                items = repository.TrackEntities.ToArray();
             }
 
             repository.UnitOfWork.TransactionEnabled = true;

@@ -15,7 +15,7 @@ namespace OSharp.Core.Security.Dtos
     /// <summary>
     /// 客户端密钥输入DTO基类
     /// </summary>
-    public class ClientSecretBaseInputDto<TKey, TClientKey> : IInputDto<TKey>
+    public class OAuthClientSecretBaseInputDto<TKey, TClientKey> : IInputDto<TKey>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识

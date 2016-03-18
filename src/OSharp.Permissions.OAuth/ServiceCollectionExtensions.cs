@@ -30,8 +30,8 @@ namespace OSharp.Core.Security
             services.AddSingleton<IAuthorizationCodeProvider, OsharpAuthorizationCodeProvider>();
             services.AddSingleton<IRefreshTokenProvider, OsharpRefreshTokenProvider>();
 
-            services.AddSingleton<IClientIdProvider, DatetimeClientIdProvider>();
-            services.AddSingleton<IClientSecretProvider, GuidClientSecretProvider>();
+            services.AddSingleton<IOAuthClientIdProvider, DatetimeOAuthClientIdProvider>();
+            services.AddSingleton<IOAuthClientSecretProvider, GuidOAuthClientSecretProvider>();
         }
     }
 }

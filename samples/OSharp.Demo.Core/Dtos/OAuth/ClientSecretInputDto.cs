@@ -15,6 +15,6 @@ namespace OSharp.Demo.Dtos.OAuth
     /// <summary>
     /// 输入DTO——OAuth客户端密钥
     /// </summary>
-    public class ClientSecretInputDto : ClientSecretBaseInputDto<int, int>
+    public class OAuthClientSecretInputDto : OAuthClientSecretBaseInputDto<int, int>
     { }
 }

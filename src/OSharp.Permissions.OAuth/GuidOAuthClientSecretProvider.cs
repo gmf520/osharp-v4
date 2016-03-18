@@ -17,7 +17,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 采用Guid的客户端字符串生成器
     /// </summary>
-    public class GuidClientSecretProvider : IClientSecretProvider
+    public class GuidOAuthClientSecretProvider : IOAuthClientSecretProvider
     {
         #region Implementation of IClientSecretProvider
 

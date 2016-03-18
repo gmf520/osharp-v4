@@ -34,9 +34,14 @@ namespace OSharp.Core.Data
         IUnitOfWork UnitOfWork { get; }
 
         /// <summary>
-        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询
+        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询，当数据用于展现时，推荐使用此数据集，如果用于新增，更新，删除时，请使用<see cref="TrackEntities"/>数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
+
+        /// <summary>
+        /// 获取 当前实体类型的查询数据集，当数据用于新增，更新，删除时，使用此数据集，如果数据用于展现，推荐使用<see cref="Entities"/>数据集
+        /// </summary>
+        IQueryable<TEntity> TrackEntities { get; }
 
         #endregion
 
@@ -232,6 +237,7 @@ namespace OSharp.Core.Data
         /// </summary>
         /// <param name="predicate">查询表达式</param>
         /// <returns>符合条件的实体集合</returns>
+        [Obsolete("此API即将移除，请使用 TrackEntities 查询数据集 替换此方法的查询")]
         IEnumerable<TEntity> GetByPredicate(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
@@ -448,6 +454,7 @@ namespace OSharp.Core.Data
         /// </summary>
         /// <param name="predicate">查询表达式</param>
         /// <returns>符合条件的实体集合</returns>
+        [Obsolete("此API即将移除，请使用 TrackEntities 查询数据集 替换此方法的查询")]
         Task<IEnumerable<TEntity>> GetByPredicateAsync(Expression<Func<TEntity, bool>> predicate);
 
 #endif

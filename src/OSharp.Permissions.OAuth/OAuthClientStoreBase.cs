@@ -23,12 +23,12 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 客户端信息存储基类
     /// </summary>
-    public abstract class ClientStoreBase<TClient, TClientKey, TClientSecret, TClientSecretKey, TClientInputDto, TClientSecretInputDto>
-        : IClientStore<TClientInputDto, TClientKey, TClientSecretInputDto, TClientSecretKey>
-        where TClient : ClientBase<TClientKey, TClientSecret, TClientSecretKey>
-        where TClientSecret : ClientSecretBase<TClientSecretKey, TClient, TClientKey>
-        where TClientInputDto : ClientBaseInputDto<TClientKey>
-        where TClientSecretInputDto : ClientSecretBaseInputDto<TClientSecretKey, TClientKey>
+    public abstract class OAuthClientStoreBase<TClient, TClientKey, TClientSecret, TClientSecretKey, TClientInputDto, TClientSecretInputDto>
+        : IOAuthClientStore<TClientInputDto, TClientKey, TClientSecretInputDto, TClientSecretKey>
+        where TClient : OAuthClientBase<TClientKey, TClientSecret, TClientSecretKey>
+        where TClientSecret : OAuthClientSecretBase<TClientSecretKey, TClient, TClientKey>
+        where TClientInputDto : OAuthClientBaseInputDto<TClientKey>
+        where TClientSecretInputDto : OAuthClientSecretBaseInputDto<TClientSecretKey, TClientKey>
     {
         /// <summary>
         /// 获取或设置 客户端仓储对象
@@ -43,12 +43,12 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 客户端编号生成器
         /// </summary>
-        public IClientIdProvider ClientIdProvider { get; set; }
+        public IOAuthClientIdProvider IoAuthClientIdProvider { get; set; }
 
         /// <summary>
         /// 获取或设置 客户端密钥生成器
         /// </summary>
-        public IClientSecretProvider ClientSecretProvider { get; set; }
+        public IOAuthClientSecretProvider IoAuthClientSecretProvider { get; set; }
 
         /// <summary>
         /// 新增客户端信息
@@ -61,7 +61,7 @@ namespace OSharp.Core.Security
             return ClientRepository.InsertAsync(new[] { dto }, null,
                 (_, entity) =>
                 {
-                    entity.ClientId = ClientIdProvider.CreateClientId(_.ClientType);
+                    entity.ClientId = IoAuthClientIdProvider.CreateClientId(_.OAuthClientType);
                     return Task.FromResult(entity);
                 });
         }
@@ -143,7 +143,7 @@ namespace OSharp.Core.Security
                 async (_, entity) =>
                 {
                     //生成密钥
-                    entity.Value = ClientSecretProvider.CreateSecret();
+                    entity.Value = IoAuthClientSecretProvider.CreateSecret();
                     TClient client = await ClientRepository.GetByKeyAsync(dto.ClientId);
                     if (client == null)
                     {

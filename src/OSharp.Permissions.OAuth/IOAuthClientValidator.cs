@@ -17,7 +17,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义客户端密钥验证器
     /// </summary>
-    public interface IClientValidator : IScopeDependency
+    public interface IOAuthClientValidator : IScopeDependency
     {
         /// <summary>
         /// 验证客户端编号与客户端密钥有效性

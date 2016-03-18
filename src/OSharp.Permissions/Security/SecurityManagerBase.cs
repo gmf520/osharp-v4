@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
-using OSharp.Core.Identity.Models;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security.Dtos;
 using OSharp.Core.Security.Models;
@@ -136,7 +135,7 @@ namespace OSharp.Core.Security
         /// <returns>允许的功能集合</returns>
         public virtual IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role)
         {
-            role.CheckNotNull("role" );
+            role.CheckNotNull("role");
             List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
             return moduleIds.SelectMany(GetModuleAllowedFunctions);
         }
@@ -149,10 +148,14 @@ namespace OSharp.Core.Security
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
         {
-            role.CheckNotNull("role" );
-            moduleIds.CheckNotNullOrEmpty("moduleIds" );
-            moduleIds = moduleIds.OrderByDescending(m => m.ToString().Length).ToArray();
-            List<TModuleKey> existModuleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
+            role.CheckNotNull("role");
+            moduleIds.CheckNotNullOrEmpty("moduleIds");
+            moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id))
+                .Select(m => m.Id).Concat(moduleIds).Distinct().ToArray();
+            var moduleSource = ModuleRepository.Entities.Where(m => moduleIds.Contains(m.Id)).Select(m => new { m.Id, m.TreePathString }).ToArray();
+            string[] treePathSource = moduleSource.Select(m => m.TreePathString).Distinct().OrderByDescending(m => m.Length).ToArray();
+            List<string> treePaths = new List<string>();
+            
             
 
 
@@ -224,7 +227,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">要添加的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> CreateTModule(TModuleInputDto dto)
+        public virtual async Task<OperationResult> CreateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
             if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name))
@@ -255,7 +258,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">包含更新信息的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> UpdateTModule(TModuleInputDto dto)
+        public virtual async Task<OperationResult> UpdateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
             if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name, dto.Id))
@@ -294,7 +297,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="id">要删除的模块信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> DeleteTModule(TModuleKey id)
+        public virtual async Task<OperationResult> DeleteModule(TModuleKey id)
         {
             TModule module = await ModuleRepository.GetByKeyAsync(id);
             if (module == null)
@@ -323,7 +326,7 @@ namespace OSharp.Core.Security
                 ModuleRepository.Entities.Where(m => m.TreePathString != null && m.TreePathString.Contains(idstr)).Select(m => m.Id);
             return ModuleRepository.Entities.Where(m => subIds.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
         }
-        
+
         #endregion
 
         #region Implementation of IFunctionStore<TFunction,in TFunctionKey,in TFunctionInputDto>
@@ -352,13 +355,13 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">要添加的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> CreateTFunction(TFunctionInputDto dto)
+        public virtual async Task<OperationResult> CreateFunction(TFunctionInputDto dto)
         {
             if (dto.Url.IsMissing())
             {
                 return new OperationResult(OperationResultType.Error, "自定义功能的URL不能为空");
             }
-            if (await FunctionRepository.CheckExistsAsync(m=>m.Name == dto.Name))
+            if (await FunctionRepository.CheckExistsAsync(m => m.Name == dto.Name))
             {
                 return new OperationResult(OperationResultType.Error, "名称为“{0}”的功能信息已存在".FormatWith(dto.Name));
             }
@@ -382,7 +385,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> UpdateTFunction(TFunctionInputDto dto)
+        public virtual async Task<OperationResult> UpdateFunction(TFunctionInputDto dto)
         {
             if (await FunctionRepository.CheckExistsAsync(m => m.Name == dto.Name, dto.Id))
             {
@@ -420,7 +423,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="id">要删除的功能信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> DeleteTFunction(TFunctionKey id)
+        public virtual async Task<OperationResult> DeleteFunction(TFunctionKey id)
         {
             TFunction entity = await FunctionRepository.GetByKeyAsync(id);
             if (entity == null)
@@ -457,7 +460,7 @@ namespace OSharp.Core.Security
         {
             return EntityInfoRepository.CheckExistsAsync(predicate, id);
         }
-        
+
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
@@ -474,7 +477,7 @@ namespace OSharp.Core.Security
             await EntityInfoRepository.UpdateAsync(entity);
             return OperationResult.Success;
         }
-        
+
         #endregion
 
         #region Implementation of IFunctionUserStore<in TFunctionUserMapInputDto,in TFunctionUserMapKey,in TFunctionKey,TUserKey>

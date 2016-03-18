@@ -52,11 +52,19 @@ namespace OSharp.Data.Entity
         public IUnitOfWork UnitOfWork { get; private set; }
 
         /// <summary>
-        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询
+        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询，当数据用于展现时，推荐使用此数据集，如果用于新增，更新，删除时，请使用<see cref="TrackEntities"/>数据集
         /// </summary>
         public IQueryable<TEntity> Entities
         {
             get { return _dbSet.AsNoTracking(); }
+        }
+
+        /// <summary>
+        /// 获取 当前实体类型的查询数据集，当数据用于新增，更新，删除时，使用此数据集，如果数据用于展现，推荐使用<see cref="Entities"/>数据集
+        /// </summary>
+        public IQueryable<TEntity> TrackEntities
+        {
+            get { return _dbSet; }
         }
 
         /// <summary>
@@ -479,6 +487,7 @@ namespace OSharp.Data.Entity
         /// <returns>是否存在</returns>
         public bool CheckExists(Expression<Func<TEntity, bool>> predicate, TKey id = default(TKey))
         {
+            predicate.CheckNotNull("predicate");
             TKey defaultId = default(TKey);
             var entity = _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefault();
             bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
@@ -503,6 +512,7 @@ namespace OSharp.Data.Entity
         /// </summary>
         /// <param name="predicate">查询表达式</param>
         /// <returns>符合条件的实体集合</returns>
+        [Obsolete("此API即将移除，请使用 TrackEntities 查询数据集 替换此方法的查询")]
         public IEnumerable<TEntity> GetByPredicate(Expression<Func<TEntity, bool>> predicate)
         {
             predicate.CheckNotNull("predicate");
@@ -550,7 +560,7 @@ namespace OSharp.Data.Entity
                 ? _dbSet.SqlQuery(sql, parameters)
                 : _dbSet.SqlQuery(sql, parameters).AsNoTracking();
         }
-        
+
         /// <summary>
         /// 异步插入实体
         /// </summary>
@@ -579,7 +589,7 @@ namespace OSharp.Data.Entity
             _dbSet.AddRange(entities);
             return await SaveChangesAsync();
         }
-        
+
         /// <summary>
         /// 异步以DTO为载体批量插入实体
         /// </summary>
@@ -786,7 +796,7 @@ namespace OSharp.Data.Entity
             _dbSet.RemoveRange(entities);
             return await SaveChangesAsync();
         }
-        
+
         /// <summary>
         /// 异步以标识集合批量删除实体
         /// </summary>
@@ -876,7 +886,7 @@ namespace OSharp.Data.Entity
             ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             return await SaveChangesAsync();
         }
-        
+
         /// <summary>
         /// 异步以DTO为载体批量更新实体
         /// </summary>
@@ -973,7 +983,8 @@ namespace OSharp.Data.Entity
         /// <returns>是否存在</returns>
         public async Task<bool> CheckExistsAsync(Expression<Func<TEntity, bool>> predicate, TKey id = default(TKey))
         {
-            TKey defaultId = default(TKey);
+            predicate.CheckNotNull("predicate");
+            TKey defaultId = default(TKey); 
             var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
             bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
                 ? entity != null
@@ -997,6 +1008,7 @@ namespace OSharp.Data.Entity
         /// </summary>
         /// <param name="predicate">查询表达式</param>
         /// <returns>符合条件的实体集合</returns>
+        [Obsolete("此API即将移除，请使用 TrackEntities 查询数据集 替换此方法的查询")]
         public async Task<IEnumerable<TEntity>> GetByPredicateAsync(Expression<Func<TEntity, bool>> predicate)
         {
             predicate.CheckNotNull("predicate");
@@ -1009,12 +1021,12 @@ namespace OSharp.Data.Entity
         {
             return UnitOfWork.TransactionEnabled ? 0 : UnitOfWork.SaveChanges();
         }
-        
+
         private async Task<int> SaveChangesAsync()
         {
             return UnitOfWork.TransactionEnabled ? 0 : await UnitOfWork.SaveChangesAsync();
         }
-        
+
         private static void CheckEntityKey(object key, string keyName)
         {
             key.CheckNotNull("key");
@@ -1047,7 +1059,7 @@ namespace OSharp.Data.Entity
                 return null;
             }
         }
-        
+
         #endregion
     }
 }

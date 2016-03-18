@@ -19,6 +19,6 @@ namespace OSharp.Demo.OAuth
     /// <summary>
     /// 客户端刷新Token存储
     /// </summary>
-    public class ClientRefreshTokenStore : ClientRefreshTokenStoreBase<ClientRefreshToken, Guid, Client, int, User, int>
+    public class OAuthClientRefreshTokenStore : OAuthClientRefreshTokenStoreBase<OAuthClientRefreshToken, Guid, OAuthClient, int, User, int>
     { }
 }

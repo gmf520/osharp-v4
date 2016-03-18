@@ -22,10 +22,10 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 刷新Token存储基类
     /// </summary>
-    public abstract class ClientRefreshTokenStoreBase<TClientRefreshToken, TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>
-        : IClientRefreshTokenStore, IScopeDependency
-        where TClientRefreshToken : ClientRefreshTokenBase<TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>, new()
-        where TClient : IClient<TClientKey>
+    public abstract class OAuthClientRefreshTokenStoreBase<TClientRefreshToken, TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>
+        : IOAuthClientRefreshTokenStore, IScopeDependency
+        where TClientRefreshToken : OAuthClientRefreshTokenBase<TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>, new()
+        where TClient : IOAuthClient<TClientKey>
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
@@ -79,13 +79,13 @@ namespace OSharp.Core.Security
                 IssuedUtc = tokenInfo.IssuedUtc,
                 ExpiresUtc = tokenInfo.ExpiresUtc
             };
-            TClient client = (await ClientRepository.GetByPredicateAsync(m => m.ClientId == tokenInfo.ClientId)).FirstOrDefault();
+            TClient client = ClientRepository.TrackEntities.Where(m => m.ClientId == tokenInfo.ClientId).FirstOrDefault();
             if (client == null)
             {
                 return false;
             }
             token.Client = client;
-            TUser user = (await UserRepository.GetByPredicateAsync(m => m.UserName == tokenInfo.UserName)).FirstOrDefault();
+            TUser user = UserRepository.TrackEntities.Where(m => m.UserName == tokenInfo.UserName).FirstOrDefault();
             if (user == null)
             {
                 return false;

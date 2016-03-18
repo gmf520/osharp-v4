@@ -15,13 +15,13 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义客户端编号生成器
     /// </summary>
-    public interface IClientIdProvider
+    public interface IOAuthClientIdProvider
     {
         /// <summary>
         /// 生成类型类型的客户端编号
         /// </summary>
         /// <param name="type">客户端类型</param>
         /// <returns></returns>
-        string CreateClientId(ClientType type);
+        string CreateClientId(OAuthClientType type);
     }
 }

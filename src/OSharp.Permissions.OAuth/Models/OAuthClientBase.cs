@@ -18,14 +18,14 @@ namespace OSharp.Core.Security.Models
     /// <summary>
     /// 客户端信息基类
     /// </summary>
-    public abstract class ClientBase<TKey, TClientSecret, TClientSecretKey> 
-        : EntityBase<TKey>, IClient<TKey>, ILockable, ICreatedTime
-        where TClientSecret : IClientSecret<TClientSecretKey>
+    public abstract class OAuthClientBase<TKey, TClientSecret, TClientSecretKey> 
+        : EntityBase<TKey>, IOAuthClient<TKey>, ILockable, ICreatedTime
+        where TClientSecret : IOAuthClientSecret<TClientSecretKey>
     {
         /// <summary>
-        /// 初始化一个<see cref="ClientBase{TKey, TClientSecret, TClientSecretKey}"/>类型的新实例
+        /// 初始化一个<see cref="OAuthClientBase{TKey,TClientSecret,TClientSecretKey}"/>类型的新实例
         /// </summary>
-        protected ClientBase()
+        protected OAuthClientBase()
         {
             ClientSecrets = new List<TClientSecret>();
         }
@@ -39,7 +39,7 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 客户端类型
         /// </summary>
-        public ClientType ClientType { get; set; }
+        public OAuthClientType OAuthClientType { get; set; }
 
         /// <summary>
         /// 获取或设置 客户端编号

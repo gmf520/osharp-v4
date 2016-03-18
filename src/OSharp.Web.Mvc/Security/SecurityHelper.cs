@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Drawing;
 using System.Web;
 
 using OSharp.Core;
@@ -37,6 +38,16 @@ namespace OSharp.Web.Mvc.Security
                 HttpContext.Current.Session.Remove(sessionName);
             }
             return fited;
+        }
+
+        /// <summary>
+        /// 设置验证码到SESSION中
+        /// </summary>
+        /// <param name="code">要设置的验证码</param>
+        public static void SetVerify(string code)
+        {
+            const string sessionName = Constants.VerifyCodeSession;
+            HttpContext.Current.Session[sessionName] = code.ToUpper();
         }
     }
 }

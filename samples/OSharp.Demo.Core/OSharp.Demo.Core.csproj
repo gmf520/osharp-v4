@@ -110,7 +110,7 @@
     <Compile Include="ModelConfigurations\OAuth\ClientRefreshTokenConfiguration.cs" />
     <Compile Include="Models\OAuth\ClientRefreshToken.cs" />
     <Compile Include="Models\Security\Module.cs" />
-    <Compile Include="OAuth\ClientRefreshTokenStore.cs" />
+    <Compile Include="OAuth\OAuthClientRefreshTokenStore.cs" />
     <Compile Include="Services\ServiceCollectionExtensions.cs" />
     <Compile Include="Identity\SignInManager.cs" />
     <Compile Include="Identity\UserManager.cs" />
@@ -164,7 +164,7 @@
     <Compile Include="Models\Identity\UserLogin.cs" />
     <Compile Include="Models\Identity\UserRoleMap.cs" />
     <Compile Include="Models\Infos\Atricle.cs" />
-    <Compile Include="Models\OAuth\Client.cs" />
+    <Compile Include="Models\OAuth\OAuthClient.cs" />
     <Compile Include="Models\OAuth\ClientSecret.cs" />
     <Compile Include="Models\Security\EntityRoleMap.cs" />
     <Compile Include="Models\Security\EntityUserMap.cs" />

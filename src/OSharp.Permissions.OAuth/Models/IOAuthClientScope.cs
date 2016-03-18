@@ -1,23 +1,26 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IClientSecretProvider.cs" company="OSharp开源团队">
+//  <copyright file="IClientScope.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-11-05 15:55</last-date>
+//  <last-date>2015-10-31 17:04</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Security
+using OSharp.Core.Data;
+
+
+namespace OSharp.Core.Security.Models
 {
     /// <summary>
-    /// 定义客户端密钥生成器
+    /// 定义客户端作用域信息
     /// </summary>
-    public interface IClientSecretProvider
+    /// <typeparam name="TKey">主键类型</typeparam>
+    public interface IOAuthClientScope<out TKey> : IEntity<TKey>
     {
         /// <summary>
-        /// 创建客户端密钥字符串
+        /// 获取或设置 作用域
         /// </summary>
-        /// <returns></returns>
-        string CreateSecret();
+        string Scope { get; set; }
     }
 }

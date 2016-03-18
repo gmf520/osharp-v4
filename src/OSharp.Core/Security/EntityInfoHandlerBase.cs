@@ -128,7 +128,7 @@ namespace OSharp.Core.Security
         protected virtual void UpdateToRepository(TEntityInfo[] entityInfos)
         {
             IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
-            TEntityInfo[] items = repository.GetByPredicate(m => true).ToArray();
+            TEntityInfo[] items = repository.TrackEntities.ToArray();
 
             //删除的实体信息
             TEntityInfo[] removeItems = items.Except(entityInfos,
@@ -151,7 +151,7 @@ namespace OSharp.Core.Security
             int tmpCount = repository.UnitOfWork.SaveChanges();
             if (tmpCount > 0)
             {
-                items = repository.GetByPredicate(m => true).ToArray();
+                items = repository.TrackEntities.ToArray();
             }
 
             repository.UnitOfWork.TransactionEnabled = true;

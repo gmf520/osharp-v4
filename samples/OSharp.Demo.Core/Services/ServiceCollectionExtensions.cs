@@ -32,8 +32,8 @@ namespace OSharp.Demo.Services
             //services.AddScoped<EntityMapStore>();
 
             //OAuth
-            services.AddScoped<ClientStore>();
-            services.AddScoped<IClientRefreshTokenStore, ClientRefreshTokenStore>();
+            services.AddScoped<OAuthClientStore>();
+            services.AddScoped<IOAuthClientRefreshTokenStore, OAuthClientRefreshTokenStore>();
         }
     }
 }

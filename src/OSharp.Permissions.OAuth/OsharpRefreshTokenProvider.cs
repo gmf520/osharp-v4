@@ -20,12 +20,12 @@ namespace OSharp.Core.Security
     /// </summary>
     public class OsharpRefreshTokenProvider : AuthenticationTokenProvider, IRefreshTokenProvider
     {
-        private readonly IClientRefreshTokenStore _clientRefreshTokenStore;
+        private readonly IOAuthClientRefreshTokenStore _clientRefreshTokenStore;
 
         /// <summary>
         /// 初始化一个<see cref="OsharpRefreshTokenProvider"/>类型的新实例
         /// </summary>
-        public OsharpRefreshTokenProvider(IClientRefreshTokenStore clientRefreshTokenStore)
+        public OsharpRefreshTokenProvider(IOAuthClientRefreshTokenStore clientRefreshTokenStore)
         {
             _clientRefreshTokenStore = clientRefreshTokenStore;
         }

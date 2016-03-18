@@ -12,6 +12,9 @@ using Microsoft.Owin.Security.Infrastructure;
 
 namespace OSharp.Core.Security
 {
+    /// <summary>
+    /// 定义刷新客户端标识提供者
+    /// </summary>
     public interface IRefreshTokenProvider : IAuthenticationTokenProvider
     { }
 }
