@@ -46,20 +46,20 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">要添加的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateTFunction(TFunctionInputDto dto);
+        Task<OperationResult> CreateFunction(TFunctionInputDto dto);
 
         /// <summary>
         /// 更新功能信息信息
         /// </summary>
         /// <param name="dto">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> UpdateTFunction(TFunctionInputDto dto);
+        Task<OperationResult> UpdateFunction(TFunctionInputDto dto);
 
         /// <summary>
         /// 删除功能信息信息
         /// </summary>
         /// <param name="id">要删除的功能信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteTFunction(TFunctionKey id);
+        Task<OperationResult> DeleteFunction(TFunctionKey id);
     }
 }

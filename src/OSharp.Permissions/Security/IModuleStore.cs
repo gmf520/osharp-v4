@@ -61,21 +61,21 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">要添加的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateTModule(TModuleInputDto dto);
+        Task<OperationResult> CreateModule(TModuleInputDto dto);
 
         /// <summary>
         /// 更新模块信息信息
         /// </summary>
         /// <param name="dto">包含更新信息的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> UpdateTModule(TModuleInputDto dto);
+        Task<OperationResult> UpdateModule(TModuleInputDto dto);
 
         /// <summary>
         /// 删除模块信息信息
         /// </summary>
         /// <param name="id">要删除的模块信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteTModule(TModuleKey id);
+        Task<OperationResult> DeleteModule(TModuleKey id);
 
         /// <summary>
         /// 获取指定模块及其子模块的所有可用功能集合
