@@ -20,7 +20,7 @@ namespace OSharp.Web.Mvc
     /// </summary>
     public abstract class BaseController : Controller
     {
-        private readonly ILogger Logger;
+        protected readonly ILogger Logger;
 
         protected BaseController()
         {
