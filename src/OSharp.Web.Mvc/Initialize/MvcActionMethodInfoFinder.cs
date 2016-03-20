@@ -48,8 +48,11 @@ namespace OSharp.Web.Mvc.Initialize
                 throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotMvcControllerType.FormatWith(type.FullName));
             }
             MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => typeof(ActionResult).IsAssignableFrom(m.ReturnType) || m.ReturnType == typeof(Task<ActionResult>))
-                .ToArray();
+                .Where(m => typeof(ActionResult).IsAssignableFrom(m.ReturnType)
+                    || m.ReturnType.IsGenericType
+                        && m.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)
+                        && typeof(ActionResult).IsAssignableFrom(m.ReturnType.GetGenericArguments()[0]))
+                    .ToArray();
             return methods;
         }
     }
