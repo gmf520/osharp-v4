@@ -46,7 +46,8 @@ namespace OSharp.Web.SignalR.Initialize
             {
                 throw new InvalidOperationException(Resources.HubMethodInfoFinder_TypeNotHubType.FormatWith(type.FullName));
             }
-            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public).ToArray();
+            MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(m => m.DeclaringType == type && !m.IsSpecialName).ToArray();
             return methods;
         }
     }

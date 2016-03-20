@@ -85,6 +85,7 @@
     <Compile Include="SignalRAutofacIocBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="OSharp.Autofac.SignalR.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

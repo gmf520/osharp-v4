@@ -56,7 +56,7 @@ namespace OSharp.Autofac.SignalR
         protected override IServiceProvider BuildAndSetResolver(IServiceCollection services, Assembly[] assemblies)
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterHubs().AsSelf().PropertiesAutowired();
+            builder.RegisterHubs(assemblies).AsSelf().PropertiesAutowired();
             builder.Populate(services);
             IContainer container = builder.Build();
             IDependencyResolver resolver = new AutofacDependencyResolver(container);

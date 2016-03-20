@@ -6,6 +6,7 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.Mvc\OSharp.Web.Mvc.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.WebApi\OSharp.Web.WebApi.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.SignalR\OSharp.Web.SignalR.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Web.SignalR.Client\OSharp.Web.SignalR.Client.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.Mvc\OSharp.Autofac.Mvc.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
