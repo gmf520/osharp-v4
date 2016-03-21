@@ -41,24 +41,21 @@ namespace OSharp.Core
             iocBuilder.CheckNotNull("iocBuilder");
 
             OSharpConfig config = OSharpConfig.Instance;
-            
+
             //依赖注入初始化
             IServiceProvider provider = iocBuilder.Build();
 
             //对象映射功能初始化
             IMappersBuilder mappersBuilder = provider.GetService<IMappersBuilder>();
             IMapper mapper = provider.GetService<IMapper>();
-            if (!_mapperInitialized)
+            if (!_mapperInitialized && mapper != null)
             {
                 if (mappersBuilder != null)
                 {
                     IEnumerable<IMapTuple> mapTuples = provider.GetServices<IMapTuple>();
                     mappersBuilder.Build(mapTuples);
                 }
-                if (mapper != null)
-                {
-                    MapperExtensions.SetMaper(mapper);
-                }
+                MapperExtensions.SetMaper(mapper);
                 _mapperInitialized = true;
             }
 
@@ -72,34 +69,25 @@ namespace OSharp.Core
 
             //数据库初始化
             IDatabaseInitializer databaseInitializer = provider.GetService<IDatabaseInitializer>();
-            if (!_databaseInitialized)
+            if (!_databaseInitialized && databaseInitializer != null)
             {
-                if (databaseInitializer == null)
-                {
-                    throw new InvalidOperationException(Resources.FrameworkInitializer_DatabaseInitializeIsNull);
-                }
                 databaseInitializer.Initialize(config.DataConfig);
                 _databaseInitialized = true;
             }
 
             //实体信息初始化
-            if (!_entityInfoInitialized)
-            {
                 IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
-                if (entityInfoHandler == null)
-                {
-                    throw new InvalidOperationException(Resources.FrameworkInitializer_EntityInfoHandlerIsNull);
-                }
+            if (!_entityInfoInitialized && entityInfoHandler != null)
+            {
                 entityInfoHandler.Initialize();
                 _entityInfoInitialized = true;
             }
             //功能信息初始化
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
-            if (functionHandler == null)
+            if (functionHandler != null)
             {
-                throw new InvalidOperationException(Resources.FrameworkInitializer_FunctionHandlerIsNull);
+                functionHandler.Initialize(); 
             }
-            functionHandler.Initialize();
         }
     }
 }

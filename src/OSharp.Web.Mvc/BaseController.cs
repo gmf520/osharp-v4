@@ -10,6 +10,7 @@ using System;
 using System.Web.Mvc;
 
 using OSharp.Utility.Logging;
+using OSharp.Web.Mvc.Logging;
 using OSharp.Web.Mvc.UI;
 
 
@@ -18,6 +19,7 @@ namespace OSharp.Web.Mvc
     /// <summary>
     /// 控制器基类
     /// </summary>
+    [OperateLogFilter]
     public abstract class BaseController : Controller
     {
         protected readonly ILogger Logger;
