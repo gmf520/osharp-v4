@@ -127,6 +127,10 @@ namespace OSharp.Core.Security
             foreach (Type controllerType in types.OrderBy(m => m.FullName))
             {
                 TFunction controller = GetFunction(controllerType);
+                if (controller == null)
+                {
+                    continue;
+                }
                 if (!ExistsFunction(functions, controller))
                 {
                     functions.Add(controller);
@@ -135,6 +139,10 @@ namespace OSharp.Core.Security
                 foreach (MethodInfo method in methods)
                 {
                     TFunction action = GetFunction(method);
+                    if (action == null)
+                    {
+                        continue;
+                    }
                     if (IsIgnoreMethod(action, method, functions))
                     {
                         continue;
@@ -205,7 +213,15 @@ namespace OSharp.Core.Security
         /// <param name="functions">功能信息集合</param>
         protected virtual void UpdateToRepository(TFunction[] functions)
         {
+            if (functions.Length == 0)
+            {
+                return;
+            }
             IRepository<TFunction, TKey> repository = ServiceProvider.GetService<IRepository<TFunction, TKey>>();
+            if (repository == null)
+            {
+                return;
+            }
             TFunction[] items = repository.TrackEntities.Where(m => m.PlatformToken == PlatformToken).ToArray();
 
             //删除的功能（排除自定义功能信息）

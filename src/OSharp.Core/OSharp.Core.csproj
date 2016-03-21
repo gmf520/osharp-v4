@@ -172,6 +172,7 @@
     <Compile Include="Security\IEntityTypeFinder.cs" />
     <Compile Include="Security\IFunctionMethodFinder.cs" />
     <Compile Include="Security\IFunctionTypeFinder.cs" />
+    <Compile Include="Security\NullEntityInfoHandler.cs" />
     <Compile Include="Security\NullFunctionHandler.cs" />
     <Compile Include="Security\NullFunctionMethodInfoFinder.cs" />
     <Compile Include="Security\NullFunctionTypeFinder.cs" />

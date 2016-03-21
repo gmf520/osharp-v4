@@ -14,7 +14,6 @@ using OSharp.Core.Configs;
 using OSharp.Core.Dependency;
 using OSharp.Core.Initialize;
 using OSharp.Core.Mapping;
-using OSharp.Core.Properties;
 using OSharp.Core.Security;
 using OSharp.Utility;
 
@@ -76,7 +75,7 @@ namespace OSharp.Core
             }
 
             //实体信息初始化
-                IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
+            IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
             if (!_entityInfoInitialized && entityInfoHandler != null)
             {
                 entityInfoHandler.Initialize();
@@ -86,7 +85,7 @@ namespace OSharp.Core
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler != null)
             {
-                functionHandler.Initialize(); 
+                functionHandler.Initialize();
             }
         }
     }
