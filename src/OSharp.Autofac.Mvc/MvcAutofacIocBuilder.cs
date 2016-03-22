@@ -60,8 +60,9 @@ namespace OSharp.Autofac.Mvc
             builder.RegisterFilterProvider();
             builder.Populate(services);
             IContainer container = builder.Build();
-            IDependencyResolver resolver = new AutofacDependencyResolver(container);
+            AutofacDependencyResolver resolver = new AutofacDependencyResolver(container);
             DependencyResolver.SetResolver(resolver);
+            MvcIocResolver.GlobalResolveFunc = t => resolver.ApplicationContainer.Resolve(t);
             return resolver.GetService<IServiceProvider>();
         }
     }
