@@ -111,6 +111,7 @@ namespace OSharp.Data.Entity
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -137,7 +138,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -314,6 +315,7 @@ namespace OSharp.Data.Entity
         {
             ids.CheckNotNull("ids");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TKey id in ids)
             {
                 TEntity entity = _dbSet.Find(id);
@@ -340,7 +342,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -406,6 +408,7 @@ namespace OSharp.Data.Entity
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TEditDto dto in dtos)
             {
                 try
@@ -436,7 +439,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -605,6 +608,7 @@ namespace OSharp.Data.Entity
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -631,7 +635,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -810,6 +814,7 @@ namespace OSharp.Data.Entity
         {
             ids.CheckNotNull("ids");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TKey id in ids)
             {
                 TEntity entity = await _dbSet.FindAsync(id);
@@ -836,7 +841,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -902,6 +907,7 @@ namespace OSharp.Data.Entity
         {
             dtos.CheckNotNull("dtos");
             List<string> names = new List<string>();
+            UnitOfWork.TransactionEnabled = true;
             foreach (TEditDto dto in dtos)
             {
                 try
@@ -932,7 +938,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -984,7 +990,7 @@ namespace OSharp.Data.Entity
         public async Task<bool> CheckExistsAsync(Expression<Func<TEntity, bool>> predicate, TKey id = default(TKey))
         {
             predicate.CheckNotNull("predicate");
-            TKey defaultId = default(TKey); 
+            TKey defaultId = default(TKey);
             var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
             bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
                 ? entity != null
