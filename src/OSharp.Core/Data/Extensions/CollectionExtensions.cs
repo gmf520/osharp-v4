@@ -158,7 +158,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unexpired<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IExpirable
+            where TEntity : class, IExpirable
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate =
@@ -182,7 +182,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>集合中查询已过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Expired<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IExpirable
+            where TEntity : class, IExpirable
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate = m => m.EndTime != null && m.EndTime.Value < now;
@@ -204,7 +204,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询未逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unrecycled<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IRecyclable
+            where TEntity : class, IRecyclable
         {
             return source.Where(m => !m.IsDeleted);
         }
@@ -222,7 +222,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询已逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Recycled<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IRecyclable
+            where TEntity : class, IRecyclable
         {
             return source.Where(m => m.IsDeleted);
         }
@@ -240,7 +240,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询未锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unlocked<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : ILockable
+            where TEntity : class, ILockable
         {
             return source.Where(m => !m.IsLocked);
         }
@@ -258,7 +258,7 @@ namespace OSharp.Core.Data.Extensions
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询已锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Locked<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : ILockable
+            where TEntity : class, ILockable
         {
             return source.Where(m => m.IsLocked);
         }
