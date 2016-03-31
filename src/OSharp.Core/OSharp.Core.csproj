@@ -170,6 +170,7 @@
     <Compile Include="Security\EntityInfoBaseInputDto.cs" />
     <Compile Include="Security\FunctionBaseInputDto.cs" />
     <Compile Include="Security\IEntityTypeFinder.cs" />
+    <Compile Include="Security\IFunctionAuthentication.cs" />
     <Compile Include="Security\IFunctionMethodFinder.cs" />
     <Compile Include="Security\IFunctionTypeFinder.cs" />
     <Compile Include="Security\NullEntityInfoHandler.cs" />
@@ -221,6 +222,8 @@
     <Compile Include="Security\LoginedAttribute.cs" />
     <Compile Include="Security\RoleLimitAttribute.cs" />
     <Compile Include="Security\FilterType.cs" />
+    <Compile Include="Threading\AsyncLock.cs" />
+    <Compile Include="Threading\AsyncSemaphore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Configs\ConfigFile\osharp.xsd">

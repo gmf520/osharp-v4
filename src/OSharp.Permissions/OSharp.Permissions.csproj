@@ -89,7 +89,6 @@
     <Compile Include="Security\IEntityInfoStore.cs" />
     <Compile Include="Security\IEntityRoleStore.cs" />
     <Compile Include="Security\IEntityUserStore.cs" />
-    <Compile Include="Security\IFunctionAuthentication.cs" />
     <Compile Include="Security\IFunctionStore.cs" />
     <Compile Include="Security\IFunctionUserStore.cs" />
     <Compile Include="Security\IModuleStore.cs" />
