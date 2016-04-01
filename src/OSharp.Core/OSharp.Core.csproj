@@ -167,6 +167,8 @@
     <Compile Include="Mapping\OutputDtoTypeFinder.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\IAllAssemblyFinder.cs" />
+    <Compile Include="Security\AuthenticationResult.cs" />
+    <Compile Include="Security\AuthenticationResultType.cs" />
     <Compile Include="Security\EntityInfoBaseInputDto.cs" />
     <Compile Include="Security\FunctionBaseInputDto.cs" />
     <Compile Include="Security\IEntityTypeFinder.cs" />
@@ -222,8 +224,13 @@
     <Compile Include="Security\LoginedAttribute.cs" />
     <Compile Include="Security\RoleLimitAttribute.cs" />
     <Compile Include="Security\FilterType.cs" />
-    <Compile Include="Threading\AsyncLock.cs" />
-    <Compile Include="Threading\AsyncSemaphore.cs" />
+    <Compile Include="Threading\Tasks\AsyncAutoResetEvent.cs" />
+    <Compile Include="Threading\Tasks\AsyncBarrier.cs" />
+    <Compile Include="Threading\Tasks\AsyncCountdownEvent.cs" />
+    <Compile Include="Threading\Tasks\AsyncLock.cs" />
+    <Compile Include="Threading\Tasks\AsyncReaderWriterLock.cs" />
+    <Compile Include="Threading\Tasks\AsyncSemaphore.cs" />
+    <Compile Include="Threading\Tasks\AsyncManualResetEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Configs\ConfigFile\osharp.xsd">

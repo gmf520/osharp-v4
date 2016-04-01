@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace OSharp.Core.Threading
+namespace OSharp.Core.Threading.Tasks
 {
     /// <summary>
     /// 异步锁

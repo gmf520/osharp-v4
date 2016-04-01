@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using OSharp.Utility;
 
 
-namespace OSharp.Core.Threading
+namespace OSharp.Core.Threading.Tasks
 {
     /// <summary>
     /// 异步信号量

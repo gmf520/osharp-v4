@@ -79,8 +79,6 @@
     <Compile Include="Identity\UserStoreBase.cs" />
     <Compile Include="Identity\UserValidatorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AuthenticationResult.cs" />
-    <Compile Include="Security\AuthenticationResultType.cs" />
     <Compile Include="Security\Dtos\EntityRoleMapBaseInputDto.cs" />
     <Compile Include="Security\Dtos\EntityUserMapBaseInputDto.cs" />
     <Compile Include="Security\Dtos\FunctionUserMapBaseInputDto.cs" />
