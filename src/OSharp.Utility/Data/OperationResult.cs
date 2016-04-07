@@ -7,6 +7,9 @@
 //  <last-date>2015-08-03 18:31</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Utility.Extensions;
+
+
 namespace OSharp.Utility.Data
 {
     /// <summary>
@@ -93,6 +96,15 @@ namespace OSharp.Utility.Data
         public OperationResult(OperationResultType resultType, string message, TData data)
             : base(resultType, message, data)
         { }
+
+        /// <summary>
+        /// 获取或设置 返回消息
+        /// </summary>
+        public override string Message
+        {
+            get { return _message ?? ResultType.ToDescription(); }
+            set { _message = value; }
+        }
 
         /// <summary>
         /// 获取 是否成功
