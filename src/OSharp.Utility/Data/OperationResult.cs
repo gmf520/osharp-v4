@@ -27,7 +27,7 @@ namespace OSharp.Utility.Data
         /// 初始化一个<see cref="OperationResult"/>类型的新实例
         /// </summary>
         public OperationResult()
-            : this(OperationResultType.Success)
+            : this(OperationResultType.NoChanged)
         { }
 
         /// <summary>
@@ -52,14 +52,14 @@ namespace OSharp.Utility.Data
         { }
 
         /// <summary>
-        /// 获取或设置 成功的操作结果
+        /// 获取 成功的操作结果
         /// </summary>
-        public static OperationResult Success { get; set; }
+        public static OperationResult Success { get; }
 
         /// <summary>
-        /// 获取或设置 未变更的操作结果
+        /// 获取 未变更的操作结果
         /// </summary>
-        public static OperationResult NoChanged { get; set; }
+        public new static OperationResult NoChanged { get; }
     }
 
 
@@ -69,11 +69,16 @@ namespace OSharp.Utility.Data
     /// <typeparam name="TData">返回数据的类型</typeparam>
     public class OperationResult<TData> : OSharpResult<OperationResultType, TData>
     {
+        static OperationResult()
+        {
+            NoChanged = new OperationResult<TData>(OperationResultType.NoChanged);
+        }
+
         /// <summary>
         /// 初始化一个<see cref="OperationResult"/>类型的新实例
         /// </summary>
         public OperationResult()
-            : this(OperationResultType.Success)
+            : this(OperationResultType.NoChanged)
         { }
 
         /// <summary>
@@ -105,6 +110,11 @@ namespace OSharp.Utility.Data
             get { return _message ?? ResultType.ToDescription(); }
             set { _message = value; }
         }
+
+        /// <summary>
+        /// 获取 未变更的操作结果
+        /// </summary>
+        public static OperationResult<TData> NoChanged { get; }
 
         /// <summary>
         /// 获取 是否成功
