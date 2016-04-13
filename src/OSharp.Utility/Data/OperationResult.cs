@@ -54,12 +54,12 @@ namespace OSharp.Utility.Data
         /// <summary>
         /// 获取 成功的操作结果
         /// </summary>
-        public static OperationResult Success { get; }
+        public static OperationResult Success { get; private set; }
 
         /// <summary>
         /// 获取 未变更的操作结果
         /// </summary>
-        public new static OperationResult NoChanged { get; }
+        public new static OperationResult NoChanged { get; private set; }
     }
 
 
@@ -114,7 +114,7 @@ namespace OSharp.Utility.Data
         /// <summary>
         /// 获取 未变更的操作结果
         /// </summary>
-        public static OperationResult<TData> NoChanged { get; }
+        public static OperationResult<TData> NoChanged { get; private set; }
 
         /// <summary>
         /// 获取 是否成功
