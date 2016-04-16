@@ -105,7 +105,6 @@
     <Compile Include="OAuth2Token.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Permissions.OAuth.Client.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
