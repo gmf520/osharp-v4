@@ -58,8 +58,7 @@ namespace OSharp.Autofac.SignalR
             }
         }
     }
-
-
+    
     /// <summary>
     /// 带生命周期作用域的Hub基类
     /// </summary>

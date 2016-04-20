@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -391,7 +392,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="url">URL字符串</param>
         /// <param name="queries">要添加的参数，形如："id=1,cid=2"</param>
         /// <returns></returns>
-        public static string AddQueryString(this string url, params string[] queries)
+        public static string AddUrlQuery(this string url, params string[] queries)
         {
             foreach (string query in queries)
             {
@@ -410,6 +411,29 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 获取URL中指定参数的值，不存在返回空字符串
+        /// </summary>
+        public static string GetUrlQuery(this string url, string key)
+        {
+            Uri uri = new Uri(url);
+            string query = uri.Query;
+            if (query.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            query = query.TrimStart('?');
+            var dict = (from m in query.Split("&", true)
+                        let strs = m.Split("=")
+                        select new KeyValuePair<string, string>(strs[0], strs[1]))
+                .ToDictionary(m => m.Key, m => m.Value);
+            if (dict.ContainsKey(key))
+            {
+                return dict[key];
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// 给URL添加 # 参数
         /// </summary>
         /// <param name="url">URL字符串</param>
@@ -423,6 +447,15 @@ namespace OSharp.Utility.Extensions
             }
 
             return url + query;
+        }
+
+        /// <summary>
+        /// 从字符串中查找形如“key=value”的value值，=可替换
+        /// </summary>
+        public static void Method()
+        {
+            
+
         }
 
         /// <summary>
@@ -447,6 +480,57 @@ namespace OSharp.Utility.Extensions
                 encoding = Encoding.UTF8;
             }
             return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 获取中文字符串的首字母
+        /// </summary>
+        public static string GetChineseSpell(this string cnString)
+        {
+            cnString.CheckNotNull("cnString" );
+            if (!cnString.IsMatch(@"[\u4E00-\u9FA5]"))
+            {
+                throw new ArgumentException("参数不是中文字符串", "cnString");
+            }
+            int length = cnString.Length;
+            string result = null;
+            for (int i = 0; i < length; i++)
+            {
+                result += GetChineseSpell(cnString[i]);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取单个中文字符的拼音首字母
+        /// </summary>
+        /// <param name="cnChar"></param>
+        /// <returns></returns>
+        public static string GetChineseSpell(this char cnChar)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(cnChar.ToString());
+            if (bytes.Length > 1)
+            {
+                int area = (short)bytes[0];
+                int pos = (short)bytes[1];
+                int code = (area << 8) + pos;
+                int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
+
+                for (int i = 0; i < 26; i++)
+                {
+                    int max = 55290;
+                    if (i != 25)
+                    {
+                        max = areacode[i + 1];
+                    }
+                    if (areacode[i] <= code && code < max)
+                    {
+                        return Encoding.Default.GetString(new byte[] { (byte)(97 + i) }).ToUpper();
+                    }
+                }
+                return "*";
+            }
+            return cnChar.ToString();
         }
 
         #endregion
