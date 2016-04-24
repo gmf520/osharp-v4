@@ -32,7 +32,7 @@ namespace OSharp.Demo.Consoles
         {
             try
             {
-                Console.WriteLine("正在初始化，请稍候……");
+                Console.WriteLine("正在初始化程序，请稍候……");
                 Stopwatch watch = Stopwatch.StartNew();
 
                 IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
