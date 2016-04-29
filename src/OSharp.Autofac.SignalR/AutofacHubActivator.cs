@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="AutofacHubActivator.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2016 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2016-04-29 13:02</last-date>
+// -----------------------------------------------------------------------
 
 using Autofac;
 
@@ -16,9 +19,8 @@ namespace OSharp.Autofac.SignalR
     /// </summary>
     internal class AutofacHubActivator : IHubActivator
     {
-        private readonly ILifetimeScope _lifetimeScope;
-
         private readonly LifetimeHubManager _lifetimeHubManager;
+        private readonly ILifetimeScope _lifetimeScope;
 
         public AutofacHubActivator(LifetimeHubManager lifetimeHubManager, ILifetimeScope lifetimeScope)
         {

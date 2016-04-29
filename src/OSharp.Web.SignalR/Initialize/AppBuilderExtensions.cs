@@ -7,6 +7,8 @@
 //  <last-date>2015-09-29 23:06</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.AspNet.SignalR;
+
 using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Utility;
@@ -39,7 +41,10 @@ namespace OSharp.Web.SignalR.Initialize
         /// <returns></returns>
         public static IAppBuilder ConfigureSignalR(this IAppBuilder app)
         {
-            app.MapSignalR();
+            app.MapSignalR(new HubConfiguration()
+            {
+                EnableDetailedErrors = true
+            });
             return app;
         }
     }
