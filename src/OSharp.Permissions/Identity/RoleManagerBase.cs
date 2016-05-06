@@ -34,6 +34,11 @@ namespace OSharp.Core.Identity
             : base(store)
         { }
 
+        /// <summary>
+        /// 更新角色信息
+        /// </summary>
+        /// <param name="role">角色信息</param>
+        /// <returns></returns>
         public override async Task<IdentityResult> UpdateAsync(TRole role)
         {
             if (role.IsSystem)
@@ -43,6 +48,11 @@ namespace OSharp.Core.Identity
             return await base.UpdateAsync(role);
         }
 
+        /// <summary>
+        /// 删除角色信息
+        /// </summary>
+        /// <param name="role">角色信息</param>
+        /// <returns></returns>
         public override async Task<IdentityResult> DeleteAsync(TRole role)
         {
             if (role.IsSystem)

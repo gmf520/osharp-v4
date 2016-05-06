@@ -108,9 +108,11 @@
     <Compile Include="Identity\RoleManager.cs" />
     <Compile Include="Identity\RoleStore.cs" />
     <Compile Include="ModelConfigurations\OAuth\ClientRefreshTokenConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Security\ModuleConfiguration.cs" />
     <Compile Include="Models\OAuth\ClientRefreshToken.cs" />
     <Compile Include="Models\Security\Module.cs" />
     <Compile Include="OAuth\OAuthClientRefreshTokenStore.cs" />
+    <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Services\ServiceCollectionExtensions.cs" />
     <Compile Include="Identity\SignInManager.cs" />
     <Compile Include="Identity\UserManager.cs" />
@@ -186,9 +188,7 @@
     <None Include="OSharp.Keys.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Security\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>

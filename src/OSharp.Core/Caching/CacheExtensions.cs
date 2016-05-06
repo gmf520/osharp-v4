@@ -101,15 +101,16 @@ namespace OSharp.Core.Caching
         /// <param name="pageCondition">分页查询条件</param>
         /// <param name="selector">数据筛选表达式</param>
         /// <param name="cacheSeconds">缓存的秒数</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
         public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector,
-            int cacheSeconds = 60)
+            int cacheSeconds = 60, params object[] keyParams)
         {
             ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
-            string key = GetKey(source, predicate, pageCondition, selector);
+            string key = GetKey(source, predicate, pageCondition, selector, keyParams);
             return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), cacheSeconds);
         }
 
@@ -123,15 +124,16 @@ namespace OSharp.Core.Caching
         /// <param name="pageCondition">分页查询条件</param>
         /// <param name="selector">数据筛选表达式</param>
         /// <param name="function">缓存策略相关功能</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
         public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector,
-            IFunction function)
+            IFunction function, params object[] keyParams)
         {
             ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
-            string key = GetKey(source, predicate, pageCondition, selector);
+            string key = GetKey(source, predicate, pageCondition, selector, keyParams);
             return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), function);
         }
 
@@ -141,11 +143,12 @@ namespace OSharp.Core.Caching
         /// <typeparam name="TSource">源数据类型</typeparam>
         /// <param name="source">查询数据源</param>
         /// <param name="cacheSeconds">缓存的秒数</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60)
+        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
             ICache cache = CacheManager.GetCacher<TSource>();
-            string key = GetKey(source.Expression);
+            string key = GetKey(source.Expression, keyParams);
             return cache.Get(key, source.ToList, cacheSeconds);
         }
 
@@ -155,11 +158,12 @@ namespace OSharp.Core.Caching
         /// <typeparam name="TSource">源数据类型</typeparam>
         /// <param name="source">查询数据源</param>
         /// <param name="cacheSeconds">缓存的秒数</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60)
+        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
             ICache cache = CacheManager.GetCacher<TSource>();
-            string key = GetKey(source.Expression);
+            string key = GetKey(source.Expression, keyParams);
             return cache.Get(key, source.ToArray, cacheSeconds);
         }
 
@@ -169,15 +173,16 @@ namespace OSharp.Core.Caching
         /// <typeparam name="TSource">源数据类型</typeparam>
         /// <param name="source">查询数据源</param>
         /// <param name="function">缓存策略相关功能</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, IFunction function)
+        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
             {
                 return source.ToList();
             }
             ICache cache = CacheManager.GetCacher<TSource>();
-            string key = GetKey(source.Expression);
+            string key = GetKey(source.Expression, keyParams);
             return cache.Get(key, source.ToList, function);
         }
 
@@ -187,22 +192,23 @@ namespace OSharp.Core.Caching
         /// <typeparam name="TSource">源数据类型</typeparam>
         /// <param name="source">查询数据源</param>
         /// <param name="function">缓存策略相关功能</param>
+        /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, IFunction function)
+        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
             {
                 return source.ToArray();
             }
             ICache cache = CacheManager.GetCacher<TSource>();
-            string key = GetKey(source.Expression);
+            string key = GetKey(source.Expression, keyParams);
             return cache.Get(key, source.ToArray, function);
         }
 
         private static string GetKey<TEntity, TResult>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
-            Expression<Func<TEntity, TResult>> selector)
+            Expression<Func<TEntity, TResult>> selector, params object[] keyParams)
         {
             if (!typeof(TEntity).IsEntityType())
             {
@@ -233,12 +239,13 @@ namespace OSharp.Core.Caching
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
             IQueryable<TResult> query = source.Select(selector);
-            return GetKey(query.Expression);
+            return GetKey(query.Expression, keyParams);
         }
 
-        private static string GetKey(Expression expression)
+        private static string GetKey(Expression expression, params object[] keyParams)
         {
-            return expression.ToString().ToMd5Hash();
+            string paramStr = keyParams.ExpandAndToString();
+            return (expression + paramStr).ToMd5Hash();
         }
     }
 }

@@ -9,6 +9,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using OSharp.Core.Dependency;
 using OSharp.Core.Security;
@@ -50,7 +51,7 @@ namespace OSharp.Demo.Contracts
         /// </summary>
         /// <param name="inputDtos">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditFunctions(params FunctionInputDto[] inputDtos);
+        Task<OperationResult> EditFunctions(params FunctionInputDto[] inputDtos);
 
         /// <summary>
         /// 删除功能信息信息

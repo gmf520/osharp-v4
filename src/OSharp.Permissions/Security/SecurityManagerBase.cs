@@ -53,8 +53,8 @@ namespace OSharp.Core.Security
     /// <typeparam name="TEntityUserMapInputDto">数据用户映射输入DTO类型</typeparam>
     /// <typeparam name="TEntityUserMapKey">数据用户映射编号类型</typeparam>
     public abstract class SecurityManagerBase<TRole, TRoleKey, TUser, TUserKey, TModule, TModuleInputDto, TModuleKey, TFunction, TFunctionInputDto, TFunctionKey,
-        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TFunctionUserMap, TFunctionUserMapInputDto, TFunctionUserMapKey, TEntityRoleMap, TEntityRoleMapInputDto, TEntityRoleMapKey,
-        TEntityUserMap, TEntityUserMapInputDto, TEntityUserMapKey>
+        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TFunctionUserMap, TFunctionUserMapInputDto, TFunctionUserMapKey, TEntityRoleMap, TEntityRoleMapInputDto,
+        TEntityRoleMapKey, TEntityUserMap, TEntityUserMapInputDto, TEntityUserMapKey>
         : ISecurityManager<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModuleKey>,
         IModuleStore<TModule, TModuleKey, TModuleInputDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>,
         IFunctionStore<TFunction, TFunctionKey, TFunctionInputDto>,
@@ -64,23 +64,23 @@ namespace OSharp.Core.Security
         IEntityUserStore<TEntityUserMapInputDto, TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TRole : EntityBase<TRoleKey>, IRole<TRoleKey>
         where TUser : EntityBase<TUserKey>, IUser<TUserKey>
-        where TModule : IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+        where TModule : class, IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TModuleInputDto : ModuleBaseInputDto<TModuleKey>
-        where TFunction : IFunction, IEntity<TFunctionKey>
+        where TFunction : class, IFunction, IEntity<TFunctionKey>
         where TFunctionInputDto : FunctionBaseInputDto<TFunctionKey>
-        where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
+        where TEntityInfo : class, IEntityInfo, IEntity<TEntityInfoKey>
         where TEntityInfoInputDto : EntityInfoBaseInputDto<TEntityInfoKey>
-        where TFunctionUserMap : IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
+        where TFunctionUserMap : class, IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
         where TFunctionUserMapInputDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
-        where TEntityRoleMap : IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
+        where TEntityRoleMap : class, IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
         where TEntityRoleMapInputDto : EntityRoleMapBaseInputDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
-        where TEntityUserMap : IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
+        where TEntityUserMap : class, IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
         where TEntityUserMapInputDto : EntityUserMapBaseInputDto<TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
-        where TRoleKey : IEquatable<TRoleKey>
-        where TUserKey : IEquatable<TUserKey>
-        where TFunctionKey : IEquatable<TFunctionKey>
-        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TRoleKey : struct, IEquatable<TRoleKey>
+        where TUserKey : struct, IEquatable<TUserKey>
+        where TFunctionKey : struct, IEquatable<TFunctionKey>
+        where TEntityInfoKey : struct, IEquatable<TEntityInfoKey>
     {
         #region 仓储对象属性
 
@@ -155,8 +155,8 @@ namespace OSharp.Core.Security
             var moduleSource = ModuleRepository.Entities.Where(m => moduleIds.Contains(m.Id)).Select(m => new { m.Id, m.TreePathString }).ToArray();
             string[] treePathSource = moduleSource.Select(m => m.TreePathString).Distinct().OrderByDescending(m => m.Length).ToArray();
             List<string> treePaths = new List<string>();
-            
-            
+
+
 
 
 
