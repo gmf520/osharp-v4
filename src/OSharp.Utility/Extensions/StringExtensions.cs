@@ -133,14 +133,37 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 截取指定字符串之间的字符串
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="source"></param>
         /// <param name="startString">起始字符串</param>
         /// <param name="endString">结束字符串</param>
         /// <returns>返回的中间字符串</returns>
-        public static string Substring(this string value, string startString, string endString)
+        public static string Substring(this string source, string startString, string endString)
         {
-            Regex rg = new Regex("(?<=(" + startString + "))[.\\s\\S]*?(?=(" + endString + "))", RegexOptions.Multiline | RegexOptions.Singleline);
-            return rg.Match(value).Value;
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            int startIndex = 0;
+            if (!string.IsNullOrEmpty(startString))
+            {
+                startIndex = source.IndexOf(startString, StringComparison.Ordinal);
+                if (startIndex < 0)
+                {
+                    throw new InvalidOperationException($"在源字符串中无法找到“{startString}”的子串位置");
+                }
+                startIndex = startIndex + startString.Length;
+            }
+            int endIndex = source.Length;
+            if (!string.IsNullOrEmpty(endString))
+            {
+                endIndex = source.IndexOf(endString, StringComparison.Ordinal);
+                if (endIndex < 0 || endIndex < startIndex)
+                {
+                    throw new InvalidOperationException($"在源字符串中无法找到“{endString}”的子串位置");
+                }
+            }
+            int length = endIndex - startIndex;
+            return source.Substring(startIndex, length);
         }
 
         /// <summary>
