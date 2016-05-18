@@ -184,7 +184,15 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.Equal(@char.GetChineseSpell(), "G");
 
             string str = "郭明锋";
-            Assert.Equal(str.GetChineseSpell(),"GMF");
+            Assert.Equal(str.GetChineseSpell(), "GMF");
+        }
+
+        [Fact()]
+        public void ToUnicodeStringTest()
+        {
+            string unicode = "编码".ToUnicodeString();
+            Assert.Equal(@"\u7f16\u7801", unicode);
+            Assert.Equal("编码", unicode.FromUnicodeString());
         }
     }
 }

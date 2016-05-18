@@ -563,16 +563,8 @@ namespace OSharp.Utility.Extensions
         /// <param name="source">要进行编号的字符串</param>
         public static string ToUnicodeString(this string source)
         {
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(source))
-            {
-                foreach (char @char in source)
-                {
-                    sb.Append("\\u");
-                    sb.Append(((int)@char).ToString("x"));
-                }
-            }
-            return sb.ToString();
+            Regex regex = new Regex(@"[^\u0000-\u00ff]");
+            return regex.Replace(source, m => string.Format(@"\u{0:x4}", (short)m.Value[0]));
         }
 
         /// <summary>
@@ -580,24 +572,17 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static string FromUnicodeString(this string source)
         {
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(source))
-            {
-                string[] list = source.Replace("\\", "").Split('u');
-                try
+            Regex regex = new Regex(@"\\u([0-9a-fA-F]{4})", RegexOptions.Compiled);
+            return regex.Replace(source,
+                m =>
                 {
-                    foreach (string str in list)
+                    short s;
+                    if (short.TryParse(m.Groups[1].Value, NumberStyles.HexNumber,CultureInfo.InstalledUICulture,out s))
                     {
-                        int code = Convert.ToInt32(str, 16);
-                        sb.Append((char)code);
+                        return "" + (char)s;
                     }
-                }
-                catch (FormatException)
-                {
-                    return Regex.Unescape(source);
-                }
-            }
-            return sb.ToString();
+                    return m.Value;
+                });
         }
         
         #endregion
