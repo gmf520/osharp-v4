@@ -157,6 +157,7 @@ namespace OSharp.Utility.Extensions
             if (!string.IsNullOrEmpty(endString))
             {
                 endIndex = source.IndexOf(endString, StringComparison.Ordinal);
+                endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
                 if (endIndex < 0 || endIndex < startIndex)
                 {
                     throw new InvalidOperationException($"在源字符串中无法找到“{endString}”的子串位置");
@@ -556,6 +557,49 @@ namespace OSharp.Utility.Extensions
             return cnChar.ToString();
         }
 
+        /// <summary>
+        /// 将字符串进行Unicode编码，变成形如“\u7f16\u7801”的形式
+        /// </summary>
+        /// <param name="source">要进行编号的字符串</param>
+        public static string ToUnicodeString(this string source)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(source))
+            {
+                foreach (char @char in source)
+                {
+                    sb.Append("\\u");
+                    sb.Append(((int)@char).ToString("x"));
+                }
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 将形如“\u7f16\u7801”的Unicode字符串解码
+        /// </summary>
+        public static string FromUnicodeString(this string source)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(source))
+            {
+                string[] list = source.Replace("\\", "").Split('u');
+                try
+                {
+                    foreach (string str in list)
+                    {
+                        int code = Convert.ToInt32(str, 16);
+                        sb.Append((char)code);
+                    }
+                }
+                catch (FormatException)
+                {
+                    return Regex.Unescape(source);
+                }
+            }
+            return sb.ToString();
+        }
+        
         #endregion
     }
 }
