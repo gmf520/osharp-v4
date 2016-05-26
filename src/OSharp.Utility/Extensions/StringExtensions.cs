@@ -472,16 +472,7 @@ namespace OSharp.Utility.Extensions
 
             return url + query;
         }
-
-        /// <summary>
-        /// 从字符串中查找形如“key=value”的value值，=可替换
-        /// </summary>
-        public static void Method()
-        {
-            
-
-        }
-
+        
         /// <summary>
         /// 将字符串转换为<see cref="byte"/>[]数组，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
