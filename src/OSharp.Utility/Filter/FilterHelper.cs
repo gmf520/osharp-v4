@@ -243,9 +243,10 @@ namespace OSharp.Utility.Filter
             //}
 
             Type elementType = conversionType.GetUnNullableType();
-            object value = rule.Value is string
-                ? rule.Value.ToString().CastTo(conversionType)
-                : Convert.ChangeType(rule.Value, elementType);
+            object value = rule.Value.CastTo(conversionType);
+            //object value = rule.Value is string
+            //    ? rule.Value.ToString().CastTo(conversionType)
+            //    : Convert.ChangeType(rule.Value, elementType);
             return Expression.Constant(value, conversionType);
         }
 
