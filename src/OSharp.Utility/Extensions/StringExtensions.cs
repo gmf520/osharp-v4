@@ -149,7 +149,7 @@ namespace OSharp.Utility.Extensions
                 startIndex = source.IndexOf(startString, StringComparison.Ordinal);
                 if (startIndex < 0)
                 {
-                    throw new InvalidOperationException($"在源字符串中无法找到“{startString}”的子串位置");
+                    throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", startString));
                 }
                 startIndex = startIndex + startString.Length;
             }
@@ -160,7 +160,7 @@ namespace OSharp.Utility.Extensions
                 endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
                 if (endIndex < 0 || endIndex < startIndex)
                 {
-                    throw new InvalidOperationException($"在源字符串中无法找到“{endString}”的子串位置");
+                    throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endString));
                 }
             }
             int length = endIndex - startIndex;
