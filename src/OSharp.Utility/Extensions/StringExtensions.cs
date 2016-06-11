@@ -156,7 +156,6 @@ namespace OSharp.Utility.Extensions
             int endIndex = source.Length;
             if (!string.IsNullOrEmpty(endString))
             {
-                endIndex = source.IndexOf(endString, StringComparison.Ordinal);
                 endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
                 if (endIndex < 0 || endIndex < startIndex)
                 {
