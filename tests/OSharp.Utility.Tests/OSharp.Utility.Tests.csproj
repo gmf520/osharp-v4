@@ -123,6 +123,7 @@
     <Compile Include="Filter\FilterGroupTests.cs" />
     <Compile Include="Filter\FilterHelperTests.cs" />
     <Compile Include="IO\DirectoryHelperTests.cs" />
+    <Compile Include="Net\NetHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secutiry\DesHelperTests.cs" />
     <Compile Include="Secutiry\HashHelperTests.cs" />
