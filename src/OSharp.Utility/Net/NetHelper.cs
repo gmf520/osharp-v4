@@ -24,13 +24,20 @@ namespace OSharp.Utility.Net
         /// </summary>
         public static bool Ping(string ip)
         {
-            Ping ping = new Ping();
-            PingOptions options = new PingOptions { DontFragment = true };
-            string data = "Test Data";
-            byte[] buffer = Encoding.ASCII.GetBytes(data);
-            int timeout = 1000;
-            PingReply reply = ping.Send(ip, timeout, buffer, options);
-            return reply != null && reply.Status == IPStatus.Success;
+            try
+            {
+                Ping ping = new Ping();
+                PingOptions options = new PingOptions { DontFragment = true };
+                string data = "Test Data";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+                int timeout = 1000;
+                PingReply reply = ping.Send(ip, timeout, buffer, options);
+                return reply != null && reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
