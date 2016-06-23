@@ -86,6 +86,7 @@
     <Compile Include="Data\DateTimeRange.cs" />
     <Compile Include="Data\IOSharpResult.cs" />
     <Compile Include="Data\JsonHelper.cs" />
+    <Compile Include="Data\MathExpression.cs" />
     <Compile Include="Data\MathHelper.cs" />
     <Compile Include="Data\OperationResult.cs" />
     <Compile Include="Data\OperationResultType.cs" />

@@ -101,6 +101,7 @@
     <Compile Include="Data\CompressionTests.cs" />
     <Compile Include="Data\DateTimeRangeTests.cs" />
     <Compile Include="Data\JsonHelperTests.cs" />
+    <Compile Include="Data\MathHelperTests.cs" />
     <Compile Include="Develop\T4\T4ModelInfoTests.cs" />
     <Compile Include="Drawing\ValidateCoderTests.cs" />
     <Compile Include="Extensions\AssemblyExtensionsTests.cs" />
