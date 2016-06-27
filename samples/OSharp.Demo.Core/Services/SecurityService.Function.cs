@@ -96,7 +96,7 @@ namespace OSharp.Demo.Services
         public async Task<OperationResult> EditFunctions(params FunctionInputDto[] inputDtos)
         {
             inputDtos.CheckNotNull("dtos");
-            FunctionRepository.UnitOfWork.TransactionEnabled = true;
+            FunctionRepository.UnitOfWork.BeginTransaction();
             List<string> names = new List<string>();
             foreach (FunctionInputDto dto in inputDtos)
             {
@@ -117,7 +117,7 @@ namespace OSharp.Demo.Services
             return OperationResult.NoChanged;
 
             //List<string> names = new List<string>();
-            //FunctionRepository.UnitOfWork.TransactionEnabled = true;
+            //FunctionRepository.UnitOfWork.BeginTransaction();
             //foreach (FunctionInputDto dto in inputDtos)
             //{
             //    if (FunctionRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
@@ -170,8 +170,9 @@ namespace OSharp.Demo.Services
         public OperationResult DeleteFunctions(params Guid[] ids)
         {
             ids.CheckNotNull("ids");
-            List<string>names = new List<string>();
-            FunctionRepository.UnitOfWork.TransactionEnabled = true;
+            List<string> names = new List<string>();
+            FunctionRepository.UnitOfWork.BeginTransaction();
+            int count = 0;
             foreach (Guid id in ids)
             {
                 Function entity = FunctionRepository.GetByKey(id);
@@ -183,10 +184,10 @@ namespace OSharp.Demo.Services
                 {
                     return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，并且未被回收，不能删除".FormatWith(entity.Name));
                 }
-                FunctionRepository.Delete(entity);
+                count += FunctionRepository.Delete(entity);
                 names.Add(entity.Name);
             }
-            int count = FunctionRepository.UnitOfWork.SaveChanges();
+            FunctionRepository.UnitOfWork.Commit();
             OperationResult result = count > 0
                 ? new OperationResult(OperationResultType.Success, "功能“{0}”删除成功".FormatWith(names.ExpandAndToString()))
                 : new OperationResult(OperationResultType.NoChanged);

@@ -168,14 +168,14 @@ namespace OSharp.Core.Data
         OperationResult Delete(ICollection<TKey> ids, Action<TEntity> checkAction = null, Func<TEntity, TEntity> deleteFunc = null);
 
         /// <summary>
-        /// 直接删除指定编号的实体，此方法不支持事务
+        /// 直接删除指定编号的实体
         /// </summary>
         /// <param name="key">实体主键</param>
         /// <returns></returns>
         int DeleteDirect(TKey key);
 
         /// <summary>
-        /// 直接删除所有符合特定条件的实体，此方法不支持事务
+        /// 直接删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
@@ -202,7 +202,7 @@ namespace OSharp.Core.Data
             where TEditDto : IInputDto<TKey>;
 
         /// <summary>
-        /// 直接更新指定编号的数据，此方法不支持事务
+        /// 直接更新指定编号的数据
         /// </summary>
         /// <param name="key">实体编号</param>
         /// <param name="updatExpression">更新属性表达式</param>
@@ -210,7 +210,7 @@ namespace OSharp.Core.Data
         int UpdateDirect(TKey key, Expression<Func<TEntity, TEntity>> updatExpression);
 
         /// <summary>
-        /// 直接更新指定条件的数据，此方法不支持事务
+        /// 直接更新指定条件的数据
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updatExpression">更新属性表达式</param>
@@ -385,14 +385,14 @@ namespace OSharp.Core.Data
         Task<OperationResult> DeleteAsync(ICollection<TKey> ids, Func<TEntity, Task> checkAction = null, Func<TEntity, Task<TEntity>> deleteFunc = null);
 
         /// <summary>
-        /// 直接删除指定编号的实体，此方法不支持事务
+        /// 直接删除指定编号的实体
         /// </summary>
         /// <param name="key">实体主键</param>
         /// <returns></returns>
         Task<int> DeleteDirectAsync(TKey key);
 
         /// <summary>
-        /// 直接删除所有符合特定条件的实体，此方法不支持事务
+        /// 直接删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
@@ -419,7 +419,7 @@ namespace OSharp.Core.Data
             where TEditDto : IInputDto<TKey>;
 
         /// <summary>
-        /// 直接更新指定编号的数据，此方法不支持事务
+        /// 直接更新指定编号的数据
         /// </summary>
         /// <param name="key">实体编号</param>
         /// <param name="updatExpression">更新属性表达式</param>
@@ -427,7 +427,7 @@ namespace OSharp.Core.Data
         Task<int> UpdateDirectAsync(TKey key, Expression<Func<TEntity, TEntity>> updatExpression);
 
         /// <summary>
-        /// 直接更新指定条件的数据，此方法不支持事务
+        /// 直接更新指定条件的数据
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updatExpression">更新属性表达式</param>

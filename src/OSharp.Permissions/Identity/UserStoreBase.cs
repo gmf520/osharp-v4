@@ -195,7 +195,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<TUser> FindByNameAsync(string userName)
         {
             userName.CheckNotNull("userName");
-            return await Task.Run(() => UserRepository.TrackEntities.Where(m => m.UserName.ToUpper() == userName.ToUpper()).FirstOrDefault());
+            return await Task.Run(() => UserRepository.TrackEntities.FirstOrDefault(m => m.UserName.ToUpper() == userName.ToUpper()));
         }
 
         #endregion
@@ -217,7 +217,7 @@ namespace OSharp.Core.Identity
             {
                 return;
             }
-            TRole role = await Task.Run(() => RoleRepository.TrackEntities.Where(m => m.Name == roleName).FirstOrDefault());
+            TRole role = await Task.Run(() => RoleRepository.TrackEntities.FirstOrDefault(m => m.Name == roleName));
             if (role == null)
             {
                 throw new InvalidOperationException("名称为“{0}”的角色信息不存在".FormatWith(roleName));
@@ -236,8 +236,8 @@ namespace OSharp.Core.Identity
         {
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(m => m.User.Id.Equals(user.Id)
-                  && m.Role.Name == roleName).FirstOrDefault());
+            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.FirstOrDefault(m => m.User.Id.Equals(user.Id)
+                  && m.Role.Name == roleName));
             if (map == null)
             {
                 return;

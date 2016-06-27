@@ -151,6 +151,10 @@ namespace OSharp.Data.Entity
             }
         }
 
+        /// <summary>
+        /// 在完成对派生上下文的模型的初始化后，并在该模型已锁定并用于初始化上下文之前，将调用此方法。虽然此方法的默认实现不执行任何操作，但可在派生类中重写此方法，这样便能在锁定模型之前对其进行进一步的配置。
+        /// </summary>
+        /// <param name="modelBuilder">定义要创建的上下文的模型的生成器。</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //移除一对多的级联删除
@@ -167,9 +171,47 @@ namespace OSharp.Data.Entity
         #region Implementation of IUnitOfWork
 
         /// <summary>
-        /// 获取或设置 是否开启事务提交
+        /// 获取 是否开启事务提交
         /// </summary>
-        public bool TransactionEnabled { get; set; }
+        public bool TransactionEnabled
+        {
+            get { return Database.CurrentTransaction != null; }
+        }
+
+        /// <summary>
+        /// 显式开启数据上下文事务
+        /// </summary>
+        /// <param name="isolationLevel">指定连接的事务锁定行为</param>
+        public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified)
+        {
+            if (Database.CurrentTransaction == null)
+            {
+                Database.BeginTransaction(isolationLevel);
+            }
+        }
+
+        /// <summary>
+        /// 提交事务的更改
+        /// </summary>
+        public void Commit()
+        {
+            DbContextTransaction transaction = Database.CurrentTransaction;
+            if (transaction != null)
+            {
+                transaction.Commit();
+            }
+        }
+
+        /// <summary>
+        /// 显式回滚事务，仅在显式开启事务后有用
+        /// </summary>
+        public void Rollback()
+        {
+            if (Database.CurrentTransaction != null)
+            {
+                Database.CurrentTransaction.Rollback();
+            }
+        }
 
         /// <summary>
         /// 对数据库执行给定的 DDL/DML 命令。 
@@ -245,7 +287,7 @@ namespace OSharp.Data.Entity
                 {
                     logs = this.GetEntityDataLogs(ServiceProvider).ToList();
                 }
-                int count = 0;
+                int count;
                 try
                 {
                     count = base.SaveChanges();
@@ -253,9 +295,9 @@ namespace OSharp.Data.Entity
                 catch (DbEntityValidationException ex)
                 {
                     IEnumerable<DbEntityValidationResult> errorResults = ex.EntityValidationErrors;
-                    List<string>ls = (from result in errorResults
-                                      let lines = result.ValidationErrors.Select(error => "{0}: {1}".FormatWith(error.PropertyName, error.ErrorMessage)).ToArray()
-                                      select "{0}({1})".FormatWith(result.Entry.Entity.GetType().FullName, lines.ExpandAndToString(", "))).ToList();
+                    List<string> ls = (from result in errorResults
+                                       let lines = result.ValidationErrors.Select(error => "{0}: {1}".FormatWith(error.PropertyName, error.ErrorMessage)).ToArray()
+                                       select "{0}({1})".FormatWith(result.Entry.Entity.GetType().FullName, lines.ExpandAndToString(", "))).ToList();
                     string message = "数据验证引发异常——" + ls.ExpandAndToString(" | ");
                     throw new DataException(message, ex);
                 }
@@ -267,7 +309,7 @@ namespace OSharp.Data.Entity
                     }
                     //Logger.Info(logs, true);
                 }
-                TransactionEnabled = false;
+                //TransactionEnabled = false;
                 return count;
             }
             catch (DbUpdateException e)
@@ -288,7 +330,7 @@ namespace OSharp.Data.Entity
                 }
             }
         }
-        
+
         /// <summary>
         /// 对数据库执行给定的 DDL/DML 命令。 
         /// 与接受 SQL 的任何 API 一样，对任何用户输入进行参数化以便避免 SQL 注入攻击是十分重要的。 您可以在 SQL 查询字符串中包含参数占位符，然后将参数值作为附加参数提供。 
@@ -355,7 +397,7 @@ namespace OSharp.Data.Entity
                     }
                     //Logger.Info(logs, true);
                 }
-                TransactionEnabled = false;
+                //TransactionEnabled = false;
                 return count;
             }
             catch (DbUpdateException e)
