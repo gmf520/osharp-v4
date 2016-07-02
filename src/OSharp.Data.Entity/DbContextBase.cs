@@ -198,7 +198,15 @@ namespace OSharp.Data.Entity
             DbContextTransaction transaction = Database.CurrentTransaction;
             if (transaction != null)
             {
-                transaction.Commit();
+                try
+                {
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
 
