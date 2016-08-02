@@ -154,7 +154,7 @@ namespace OSharp.Utility.Extensions.Tests
         public void SubstringTest()
         {
             const string source = "IP地址是四段点分十进制的字符串表示的";
-            Assert.Equal(source.Substring("四段", "的字符串"), "点分十进制");
+            Assert.Equal(source.Substring("四段", "的字符串","好"), "点分十进制");
         }
 
         [Fact()]
