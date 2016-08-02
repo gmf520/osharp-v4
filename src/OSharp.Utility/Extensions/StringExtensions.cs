@@ -135,9 +135,9 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         /// <param name="source"></param>
         /// <param name="startString">起始字符串</param>
-        /// <param name="endString">结束字符串</param>
+        /// <param name="endStrings">结束字符串，可多个</param>
         /// <returns>返回的中间字符串</returns>
-        public static string Substring(this string source, string startString, string endString)
+        public static string Substring(this string source, string startString, params string[] endStrings)
         {
             if (source.IsMissing())
             {
@@ -154,13 +154,22 @@ namespace OSharp.Utility.Extensions
                 startIndex = startIndex + startString.Length;
             }
             int endIndex = source.Length;
-            if (!string.IsNullOrEmpty(endString))
+            foreach (string endString in endStrings)
             {
+                if (string.IsNullOrEmpty(endString))
+                {
+                    break;
+                }
                 endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
                 if (endIndex < 0 || endIndex < startIndex)
                 {
-                    throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endString));
+                    continue;
                 }
+                break;
+            }
+            if (endIndex < 0 || endIndex < startIndex)
+            {
+                throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endStrings.ExpandAndToString()));
             }
             int length = endIndex - startIndex;
             return source.Substring(startIndex, length);
