@@ -153,8 +153,10 @@ namespace OSharp.Utility.Extensions.Tests
         [Fact()]
         public void SubstringTest()
         {
-            const string source = "IP地址是四段点分十进制的字符串表示的";
-            Assert.Equal(source.Substring("四段", "的字符串"), "点分十进制");
+            const string source = "http://vote3.52meirongwang.com/members/vote_detail.aspx?id=484&pid=37857&from=groupmessage&isappinstalled=0";
+            Assert.Equal(source.Substring("?id=", "&"), "484");
+            Assert.Equal(source.Substring("&pid=", "&"), "37857");
+            Assert.Equal(source.Substring("&isappinstalled=", "&", ""), "0");
         }
 
         [Fact()]

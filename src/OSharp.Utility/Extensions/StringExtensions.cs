@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -154,10 +155,12 @@ namespace OSharp.Utility.Extensions
                 startIndex = startIndex + startString.Length;
             }
             int endIndex = source.Length;
+            endStrings = endStrings.OrderByDescending(m => m.Length).ToArray();
             foreach (string endString in endStrings)
             {
                 if (string.IsNullOrEmpty(endString))
                 {
+                    endIndex = source.Length;
                     break;
                 }
                 endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
