@@ -177,6 +177,18 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 用正则表达式截取字符串
+        /// </summary>
+        public static string Substring2(this string source, string startString, string endString)
+        {
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            return source.Match($"(?<={startString})(.+?)(?={endString})");
+        }
+
+        /// <summary>
         /// 是否电子邮件
         /// </summary>
         public static bool IsEmail(this string value)
