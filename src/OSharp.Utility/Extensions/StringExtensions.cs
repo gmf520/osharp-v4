@@ -187,7 +187,8 @@ namespace OSharp.Utility.Extensions
             {
                 return string.Empty;
             }
-            return source.Match(string.Format("(?<={0})(.+?)(?={1})", startString, endString));
+            string result =  source.Match(string.Format("(?<={0})(.+?)(?={1})", startString, endString));
+            return result.IsMissing() ? null : result;
         }
 
         /// <summary>
