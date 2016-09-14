@@ -82,6 +82,7 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
+    <Compile Include="Extensions\SignalRExtensions.cs" />
     <Compile Include="Initialize\SignalRFunctionHandler.cs" />
     <Compile Include="Initialize\SignalRHubMethodInfoFinder.cs" />
     <Compile Include="Initialize\SignalRHubTypeFinder.cs" />
