@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using OSharp.Core.Data;
+using OSharp.Core.Data.Extensions;
 using OSharp.Core.Dependency;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
@@ -44,9 +45,10 @@ namespace OSharp.Data.Entity
             dbContext.CheckNotNull("dbContext");
             entities.CheckNotNull("entities");
 
+            DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
             foreach (TEntity entity in entities)
             {
-                DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
+                entity.CheckIUpdateAudited<TEntity, TKey>();
                 try
                 {
                     DbEntityEntry<TEntity> entry = dbContext.Entry(entity);

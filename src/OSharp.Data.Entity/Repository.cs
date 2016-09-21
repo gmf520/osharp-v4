@@ -460,6 +460,7 @@ namespace OSharp.Data.Entity
         {
             predicate.CheckNotNull("predicate");
             updatExpression.CheckNotNull("updatExpression");
+            
             return _dbSet.Where(predicate).Update(updatExpression);
         }
 
@@ -984,7 +985,7 @@ namespace OSharp.Data.Entity
         }
 
         #region 私有方法
-        
+
         private static void CheckEntityKey(object key, string keyName)
         {
             key.CheckNotNull("key");

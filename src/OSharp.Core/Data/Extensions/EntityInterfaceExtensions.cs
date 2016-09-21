@@ -50,7 +50,7 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
-        /// 检测并执行<see cref="IUpdateAudited"/>接口的逻辑
+        /// 检测并执行<see cref="IUpdateAudited"/>接口的逻辑，此功能应按需调用
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
         public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
