@@ -40,7 +40,6 @@ namespace OSharp.Core.Security.Models
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
-        where TKey : struct
     {
         /// <summary>
         /// 初始化一个<see cref="ModuleBase"/>类型的新实例
@@ -88,7 +87,7 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
         /// </summary>
         public string TreePathString { get; set; }
-        
+
         /// <summary>
         /// 获取或设置 父模块信息
         /// </summary>
@@ -124,7 +123,7 @@ namespace OSharp.Core.Security.Models
                 return null;
             }
             const string itemFormat = "${0}$";
-            List<string>keys = new List<string>();
+            List<string> keys = new List<string>();
             TModule parent = Parent;
             while (parent != null)
             {

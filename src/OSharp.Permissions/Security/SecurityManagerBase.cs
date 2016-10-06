@@ -43,9 +43,6 @@ namespace OSharp.Core.Security
     /// <typeparam name="TEntityInfo">实体数据信息类型</typeparam>
     /// <typeparam name="TEntityInfoKey">实体数据信息编号类型</typeparam>
     /// <typeparam name="TEntityInfoInputDto">实体数据输入DTO类型</typeparam>
-    /// <typeparam name="TFunctionUserMap">功能用户映射类型</typeparam>
-    /// <typeparam name="TFunctionUserMapInputDto">功能用户映射输入DTO类型</typeparam>
-    /// <typeparam name="TFunctionUserMapKey">功能用户映射编号类型</typeparam>
     /// <typeparam name="TEntityRoleMap">数据角色映射类型</typeparam>
     /// <typeparam name="TEntityRoleMapInputDto">数据角色映射输入DTO类型</typeparam>
     /// <typeparam name="TEntityRoleMapKey">数据角色映射编号类型</typeparam>
@@ -53,13 +50,12 @@ namespace OSharp.Core.Security
     /// <typeparam name="TEntityUserMapInputDto">数据用户映射输入DTO类型</typeparam>
     /// <typeparam name="TEntityUserMapKey">数据用户映射编号类型</typeparam>
     public abstract class SecurityManagerBase<TRole, TRoleKey, TUser, TUserKey, TModule, TModuleInputDto, TModuleKey, TFunction, TFunctionInputDto, TFunctionKey,
-        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TFunctionUserMap, TFunctionUserMapInputDto, TFunctionUserMapKey, TEntityRoleMap, TEntityRoleMapInputDto,
+        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TEntityRoleMap, TEntityRoleMapInputDto,
         TEntityRoleMapKey, TEntityUserMap, TEntityUserMapInputDto, TEntityUserMapKey>
         : ISecurityManager<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModuleKey>,
         IModuleStore<TModule, TModuleKey, TModuleInputDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>,
         IFunctionStore<TFunction, TFunctionKey, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoKey, TEntityInfoInputDto>,
-        IFunctionUserStore<TFunctionUserMapInputDto, TFunctionUserMapKey, TFunctionKey, TUserKey>,
         IEntityRoleStore<TEntityRoleMapInputDto, TEntityRoleMapKey, TEntityInfoKey, TRoleKey>,
         IEntityUserStore<TEntityUserMapInputDto, TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TRole : EntityBase<TRoleKey>, IRole<TRoleKey>
@@ -70,8 +66,6 @@ namespace OSharp.Core.Security
         where TFunctionInputDto : FunctionBaseInputDto<TFunctionKey>
         where TEntityInfo : class, IEntityInfo, IEntity<TEntityInfoKey>
         where TEntityInfoInputDto : EntityInfoBaseInputDto<TEntityInfoKey>
-        where TFunctionUserMap : class, IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
-        where TFunctionUserMapInputDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
         where TEntityRoleMap : class, IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
         where TEntityRoleMapInputDto : EntityRoleMapBaseInputDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
         where TEntityUserMap : class, IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
@@ -108,12 +102,7 @@ namespace OSharp.Core.Security
         /// 获取或设置 模块仓储对象
         /// </summary>
         public IRepository<TModule, TModuleKey> ModuleRepository { protected get; set; }
-
-        /// <summary>
-        /// 获取或设置 功能用户映射仓储对象
-        /// </summary>
-        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { protected get; set; }
-
+        
         /// <summary>
         /// 获取或设置 数据角色映射仓储对象
         /// </summary>
@@ -133,11 +122,11 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="role">角色信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role)
+        public virtual IEnumerable<TFunction> GetRoleAllFunctions(TRole role)
         {
             role.CheckNotNull("role");
             List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
-            return moduleIds.SelectMany(GetModuleAllowedFunctions);
+            return moduleIds.SelectMany(GetAllFunctions);
         }
 
         /// <summary>
@@ -172,7 +161,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual Task<IEnumerable<TFunction>> GetUserAllowedFunctions(TUser user)
+        public virtual Task<IEnumerable<TFunction>> GetUserAllFunctions(TUser user)
         {
             throw new NotImplementedException();
         }
@@ -187,18 +176,7 @@ namespace OSharp.Core.Security
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// 给用户添加特殊功能限制
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <param name="functions">要添加的功能编号及控制类型集合</param>
-        /// <returns></returns>
-        public virtual Task<OperationResult> SetUserFunctions(TUser user, params Tuple<TFunctionKey, FilterType>[] functions)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         #endregion
 
         #region Implementation of IModuleStore<TModule,in TModuleKey,in TModuleInputDto,TFunction,TFunctionKey,TRole,TRoleKey,TUser,TUserKey>
@@ -318,7 +296,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="id">要查询的顶模块信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual IEnumerable<TFunction> GetModuleAllowedFunctions(TModuleKey id)
+        public virtual IEnumerable<TFunction> GetAllFunctions(TModuleKey id)
         {
             string idstr = id.ToString();
             idstr = "$" + idstr + "$";
@@ -479,92 +457,7 @@ namespace OSharp.Core.Security
         }
 
         #endregion
-
-        #region Implementation of IFunctionUserStore<in TFunctionUserMapInputDto,in TFunctionUserMapKey,in TFunctionKey,TUserKey>
-
-        /// <summary>
-        /// 增加功能用户映射信息
-        /// </summary>
-        /// <param name="dto">功能用户映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapInputDto dto)
-        {
-            dto.CheckNotNull("dto");
-            if (await FunctionUserMapRepository.CheckExistsAsync(m => m.Function.Id.Equals(dto.FunctionId) && m.User.Id.Equals(dto.UserId)))
-            {
-                return OperationResult.Success;
-            }
-            TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-            if (function == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的功能信息不存在".FormatWith(dto.FunctionId));
-            }
-            TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
-            if (user == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的用户信息不存在".FormatWith(dto.UserId));
-            }
-            TFunctionUserMap map = dto.MapTo<TFunctionUserMap>();
-            map.Function = function;
-            map.User = user;
-            await FunctionUserMapRepository.InsertAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息添加成功");
-        }
-
-        /// <summary>
-        /// 编辑功能用户映射信息
-        /// </summary>
-        /// <param name="dto">功能用户映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapInputDto dto)
-        {
-            dto.CheckNotNull("dto");
-            TFunctionUserMap map = await FunctionUserMapRepository.GetByKeyAsync(dto.Id);
-            if (map == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的功能用户映射信息不存在".FormatWith(dto.Id));
-            }
-            map = dto.MapTo(map);
-            if (!map.Function.Id.Equals(dto.FunctionId))
-            {
-                TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-                if (function == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”指定编号的功能信息不存在".FormatWith(dto.FunctionId));
-                }
-                map.Function = function;
-            }
-            if (!map.User.Id.Equals(dto.UserId))
-            {
-                TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
-                if (user == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”指定编号的用户信息不存在".FormatWith(dto.UserId));
-                }
-                map.User = user;
-            }
-            await FunctionUserMapRepository.UpdateAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息编辑成功");
-        }
-
-        /// <summary>
-        /// 删除功能用户映射信息
-        /// </summary>
-        /// <param name="id">功能用户映射编号</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> DeleteFunctionUserMapAsync(TFunctionUserMapKey id)
-        {
-            TFunctionUserMap map = await FunctionUserMapRepository.GetByKeyAsync(id);
-            if (map == null)
-            {
-                return OperationResult.NoChanged;
-            }
-            await FunctionUserMapRepository.DeleteAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息删除成功");
-        }
-
-        #endregion
-
+        
         #region Implementation of IEntityRoleStore<in TEntityRoleMapInputDto,in TEntityRoleMapKey,in TEntityInfoKey,in TRoleKey>
 
         /// <summary>

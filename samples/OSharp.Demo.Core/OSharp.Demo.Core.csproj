@@ -103,7 +103,6 @@
     <Compile Include="Dtos\Security\EntityRoleMapInputDto.cs" />
     <Compile Include="Dtos\Security\EntityUserMapInputDto.cs" />
     <Compile Include="Dtos\Security\FunctionInputDto.cs" />
-    <Compile Include="Dtos\Security\FunctionUserMapInputDto.cs" />
     <Compile Include="Dtos\Security\ModuleInputDto.cs" />
     <Compile Include="Identity\RoleManager.cs" />
     <Compile Include="Identity\RoleStore.cs" />
@@ -157,7 +156,6 @@
     <Compile Include="ModelConfigurations\Security\EntityRoleMapConfiguration.cs" />
     <Compile Include="ModelConfigurations\Security\EntityUserMapConfiguration.cs" />
     <Compile Include="ModelConfigurations\Security\FunctionConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Security\FunctionUserMapConfiguration.cs" />
     <Compile Include="Models\Identity\Organization.cs" />
     <Compile Include="Models\Identity\Role.cs" />
     <Compile Include="Models\Identity\User.cs" />
@@ -170,7 +168,6 @@
     <Compile Include="Models\OAuth\ClientSecret.cs" />
     <Compile Include="Models\Security\EntityRoleMap.cs" />
     <Compile Include="Models\Security\EntityUserMap.cs" />
-    <Compile Include="Models\Security\FunctionUserMap.cs" />
     <Compile Include="OAuth\ClientStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IdentityService.cs" />

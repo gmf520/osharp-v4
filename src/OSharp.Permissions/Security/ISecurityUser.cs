@@ -38,7 +38,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        Task<IEnumerable<TFunction>> GetUserAllowedFunctions(TUser user);
+        Task<IEnumerable<TFunction>> GetUserAllFunctions(TUser user);
 
         /// <summary>
         /// 给用户添加模块权限
@@ -47,13 +47,5 @@ namespace OSharp.Core.Security
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds);
-
-        /// <summary>
-        /// 给用户添加特殊功能限制
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <param name="functions">要添加的功能编号及控制类型集合</param>
-        /// <returns></returns>
-        Task<OperationResult> SetUserFunctions(TUser user, params Tuple<TFunctionKey, FilterType>[] functions);
     }
 }

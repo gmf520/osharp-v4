@@ -32,7 +32,6 @@ namespace OSharp.Core.Security.Models
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
-        where TKey : struct
     {
         /// <summary>
         /// 获取或设置 模块名称

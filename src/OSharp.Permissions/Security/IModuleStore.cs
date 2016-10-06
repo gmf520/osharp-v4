@@ -78,10 +78,10 @@ namespace OSharp.Core.Security
         Task<OperationResult> DeleteModule(TModuleKey id);
 
         /// <summary>
-        /// 获取指定模块及其子模块的所有可用功能集合
+        /// 获取指定模块及其父模块的所有可用功能集合
         /// </summary>
         /// <param name="id">要查询的顶模块信息</param>
         /// <returns>允许的功能集合</returns>
-        IEnumerable<TFunction> GetModuleAllowedFunctions(TModuleKey id);
+        IEnumerable<TFunction> GetAllFunctions(TModuleKey id);
     }
 }
