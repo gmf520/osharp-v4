@@ -18,7 +18,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="ICreatedTime"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
+        public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
         {
             if (!(entity is ICreatedTime))
             {
@@ -33,7 +33,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="ICreatedAudited"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
+        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
         {
             if (!(entity is ICreatedAudited))
             {
@@ -43,7 +43,11 @@ namespace OSharp.Core.Data.Extensions
             ClaimsIdentity identity = Thread.CurrentPrincipal.Identity as ClaimsIdentity;
             if (identity != null && identity.IsAuthenticated)
             {
-                entity1.CreatorUserId = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                string id = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                if (!string.IsNullOrEmpty(id))
+                {
+                    entity1.CreatorUserId = id;
+                }
             }
             entity1.CreatedTime = DateTime.Now;
             return (TEntity)entity1;
@@ -53,7 +57,7 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="IUpdateAudited"/>接口的逻辑，此功能应按需调用
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey> 
+        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
         {
             if (!(entity is IUpdateAudited))
             {
@@ -63,7 +67,11 @@ namespace OSharp.Core.Data.Extensions
             ClaimsIdentity identity = Thread.CurrentPrincipal.Identity as ClaimsIdentity;
             if (identity != null && identity.IsAuthenticated)
             {
-                entity1.LastUpdatorUserId = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                string id = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                if (!string.IsNullOrEmpty(id))
+                {
+                    entity1.LastUpdatorUserId = id;
+                }
             }
             entity1.LastUpdatedTime = DateTime.Now;
             return (TEntity)entity1;

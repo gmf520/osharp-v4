@@ -27,7 +27,7 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUser">用户信息类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public interface IModule<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey> : IEntity<TKey>
+    public interface IModule<out TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey> : IEntity<TKey>
         where TModule : IModule<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
