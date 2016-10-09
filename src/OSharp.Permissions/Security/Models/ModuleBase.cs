@@ -69,7 +69,7 @@ namespace OSharp.Core.Security.Models
         public int OrderCode { get; set; }
 
         /// <summary>
-        /// 获取 树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
+        /// 获取 从根结点到当前结点的树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
         /// </summary>
         [NotMapped]
         public TKey[] TreePathIds
@@ -114,23 +114,21 @@ namespace OSharp.Core.Security.Models
         public ICollection<TUser> Users { get; set; }
 
         /// <summary>
-        /// 获取实体的TreePath，即由父级树链的Id构成的字符串
+        /// 获取实体的TreePath，即由根结点Id到当前结点Id构成的字符串
         /// </summary>
         public virtual string GetTreePath()
         {
-            if (Parent == null)
-            {
-                return null;
-            }
             const string itemFormat = "${0}$";
-            List<string> keys = new List<string>();
+            List<string> keys = new List<string> { itemFormat.FormatWith(Id) };
             TModule parent = Parent;
             while (parent != null)
             {
                 keys.Add(itemFormat.FormatWith(parent.Id));
                 parent = parent.Parent;
             }
-            return keys.ExpandAndToString();
+            string[] ids = keys.ToArray();
+            Array.Reverse(ids); //将收集的Id倒序排序，根结点在前
+            return ids.ExpandAndToString();
         }
     }
 }

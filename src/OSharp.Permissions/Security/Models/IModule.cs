@@ -49,12 +49,12 @@ namespace OSharp.Core.Security.Models
         int OrderCode { get; set; }
 
         /// <summary>
-        /// 获取 树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
+        /// 获取 从根结点到当前结点的树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
         /// </summary>
         TKey[] TreePathIds { get;}
 
         /// <summary>
-        /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
+        /// 获取或设置 父节点树形路径，从根结点Id到当前结点Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
         /// </summary>
         string TreePathString { get; set; }
 

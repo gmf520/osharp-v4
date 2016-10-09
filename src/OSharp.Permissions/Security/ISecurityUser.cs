@@ -34,11 +34,11 @@ namespace OSharp.Core.Security
         where TModuleKey : struct
     {
         /// <summary>
-        /// 获取指定用户的允许功能集合
+        /// 获取赋予给用户的功能集合，不包含用户拥有的角色赋予的功能集合
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        Task<IEnumerable<TFunction>> GetUserAllFunctions(TUser user);
+        IEnumerable<TFunction> GetUserAllFunctions(TUser user);
 
         /// <summary>
         /// 给用户添加模块权限

@@ -102,7 +102,7 @@ namespace OSharp.Core.Security
         /// 获取或设置 模块仓储对象
         /// </summary>
         public IRepository<TModule, TModuleKey> ModuleRepository { protected get; set; }
-        
+
         /// <summary>
         /// 获取或设置 数据角色映射仓储对象
         /// </summary>
@@ -126,7 +126,7 @@ namespace OSharp.Core.Security
         {
             role.CheckNotNull("role");
             List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
-            return moduleIds.SelectMany(GetAllFunctions);
+            return moduleIds.SelectMany(GetAllFunctions).DistinctBy(m => m.Id);
         }
 
         /// <summary>
@@ -135,21 +135,42 @@ namespace OSharp.Core.Security
         /// <param name="role">角色信息</param>
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
+        public virtual async Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
         {
             role.CheckNotNull("role");
-            moduleIds.CheckNotNullOrEmpty("moduleIds");
-            moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id))
-                .Select(m => m.Id).Concat(moduleIds).Distinct().ToArray();
-            var moduleSource = ModuleRepository.Entities.Where(m => moduleIds.Contains(m.Id)).Select(m => new { m.Id, m.TreePathString }).ToArray();
-            string[] treePathSource = moduleSource.Select(m => m.TreePathString).Distinct().OrderByDescending(m => m.Length).ToArray();
-            List<string> treePaths = new List<string>();
+            moduleIds.CheckNotNull("moduleIds");
 
+            TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToArray();
+            TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
+            TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
+            List<string> addNames = new List<string>(), removeNames = new List<string>();
 
+            ModuleRepository.UnitOfWork.BeginTransaction();
+            foreach (TModuleKey moduleId in addModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Roles.Add(role);
+                addNames.Add(module.Name);
+            }
+            foreach (TModuleKey moduleId in removeModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Roles.Remove(role);
+                removeNames.Add(module.Name);
+            }
 
-
-
-            throw new NotImplementedException();
+            return await ModuleRepository.UnitOfWork.SaveChangesAsync() > 0
+                ? new OperationResult(OperationResultType.Success,
+                    "角色“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(role.Name, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
+                : OperationResult.NoChanged;
         }
 
         #endregion
@@ -157,13 +178,15 @@ namespace OSharp.Core.Security
         #region Implementation of ISecurityUser<in TUser,TUserKey,TFunction,TFunctionKey,in TModuleKey>
 
         /// <summary>
-        /// 获取指定用户的允许功能集合
+        /// 获取赋予给用户的功能集合，不包含用户拥有的角色赋予的功能集合
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual Task<IEnumerable<TFunction>> GetUserAllFunctions(TUser user)
+        public virtual IEnumerable<TFunction> GetUserAllFunctions(TUser user)
         {
-            throw new NotImplementedException();
+            user.CheckNotNull("user");
+            List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Users.Select(n => n.Id).Contains(user.Id)).Select(m => m.Id).ToList();
+            return moduleIds.SelectMany(GetAllFunctions).DistinctBy(m => m.Id);
         }
 
         /// <summary>
@@ -172,11 +195,46 @@ namespace OSharp.Core.Security
         /// <param name="user">用户信息</param>
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds)
+        public virtual async Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds)
         {
-            throw new NotImplementedException();
+            user.CheckNotNull("user");
+            moduleIds.CheckNotNullOrEmpty("moduleIds");
+
+            TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Users.Select(n => n.Id).Contains(user.Id)).Select(m => m.Id).ToArray();
+            TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
+            TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
+            List<string> addNames = new List<string>(), removeNames = new List<string>();
+
+            ModuleRepository.UnitOfWork.BeginTransaction();
+            foreach (TModuleKey moduleId in addModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Users.Add(user);
+                await ModuleRepository.UpdateAsync(module);
+                addNames.Add(module.Name);
+            }
+            foreach (TModuleKey moduleId in removeModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Users.Remove(user);
+                await ModuleRepository.UpdateAsync(module);
+                removeNames.Add(module.Name);
+            }
+
+            return await ModuleRepository.UnitOfWork.SaveChangesAsync() > 0
+                ? new OperationResult(OperationResultType.Success,
+                    "用户“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(user.UserName, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
+                : OperationResult.NoChanged;
         }
-        
+
         #endregion
 
         #region Implementation of IModuleStore<TModule,in TModuleKey,in TModuleInputDto,TFunction,TFunctionKey,TRole,TRoleKey,TUser,TUserKey>
@@ -292,17 +350,15 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
-        /// 获取指定模块及其子模块的所有可用功能集合
+        /// 获取指定模块及其父模块的所有可用功能集合
         /// </summary>
         /// <param name="id">要查询的顶模块信息</param>
         /// <returns>允许的功能集合</returns>
         public virtual IEnumerable<TFunction> GetAllFunctions(TModuleKey id)
         {
-            string idstr = id.ToString();
-            idstr = "$" + idstr + "$";
-            IQueryable<TModuleKey> subIds =
-                ModuleRepository.Entities.Where(m => m.TreePathString != null && m.TreePathString.Contains(idstr)).Select(m => m.Id);
-            return ModuleRepository.Entities.Where(m => subIds.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
+            TModule module = ModuleRepository.GetByKey(id);
+            TModuleKey[] keys = module.TreePathIds;
+            return ModuleRepository.Entities.Where(m => keys.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
         }
 
         #endregion
@@ -457,7 +513,7 @@ namespace OSharp.Core.Security
         }
 
         #endregion
-        
+
         #region Implementation of IEntityRoleStore<in TEntityRoleMapInputDto,in TEntityRoleMapKey,in TEntityInfoKey,in TRoleKey>
 
         /// <summary>
