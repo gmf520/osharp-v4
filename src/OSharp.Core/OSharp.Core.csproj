@@ -71,11 +71,16 @@
     <Compile Include="Caching\CacheExtensions.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\Evaluator.cs" />
+    <Compile Include="Caching\ExpressionCacheKeyGenerator.cs" />
+    <Compile Include="Caching\ICacheKeyGenerator.cs" />
     <Compile Include="Caching\InternalCacher.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
+    <Compile Include="Caching\LocalCollectionExpressionVisitor.cs" />
     <Compile Include="Caching\RuntimeMemoryCache.cs" />
     <Compile Include="Caching\RuntimeMemoryCacheProvider.cs" />
+    <Compile Include="Caching\StringCacheKeyGenerator.cs" />
     <Compile Include="Configs\BasicLoggingConfig.cs" />
     <Compile Include="Configs\ConfigFile\Data\ContextCollection.cs">
       <SubType>Code</SubType>

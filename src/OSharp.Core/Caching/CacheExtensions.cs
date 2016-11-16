@@ -244,8 +244,8 @@ namespace OSharp.Core.Caching
 
         private static string GetKey(Expression expression, params object[] keyParams)
         {
-            string paramStr = keyParams.ExpandAndToString();
-            return (expression + paramStr).ToMd5Hash();
+            string key = new ExpressionCacheKeyGenerator(expression).GetKey(keyParams);
+            return key.ToMd5Hash();
         }
     }
 }
