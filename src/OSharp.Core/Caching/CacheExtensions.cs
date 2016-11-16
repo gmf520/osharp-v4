@@ -109,7 +109,7 @@ namespace OSharp.Core.Caching
             Expression<Func<TEntity, TResult>> selector,
             int cacheSeconds = 60, params object[] keyParams)
         {
-            ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
+            ICache cache = CacheManager.GetCacher<TEntity>();
             string key = GetKey(source, predicate, pageCondition, selector, keyParams);
             return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), cacheSeconds);
         }
@@ -132,7 +132,7 @@ namespace OSharp.Core.Caching
             Expression<Func<TEntity, TResult>> selector,
             IFunction function, params object[] keyParams)
         {
-            ICache cache = CacheManager.GetCacher(typeof(PageResult<TResult>));
+            ICache cache = CacheManager.GetCacher<TEntity>();
             string key = GetKey(source, predicate, pageCondition, selector, keyParams);
             return cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), function);
         }
