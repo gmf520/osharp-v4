@@ -8,12 +8,14 @@ using System.Security.Cryptography;
 using OSharp.App.Local.Initialize;
 using OSharp.AutoMapper;
 using OSharp.Core;
+using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
+using OSharp.Demo.Models.Identity;
 using OSharp.Logging.Log4Net;
 using OSharp.Utility.Extensions;
 
@@ -165,7 +167,7 @@ namespace OSharp.Demo.Consoles
             provider.GetServices<IUnitOfWork>().ToList().ForEach(Console.WriteLine);
             provider.GetServices<IFinder<Assembly>>().ToList().ForEach(Console.WriteLine);
             Console.WriteLine(provider.GetService<IServiceCollection>());
-            
+
         }
 
         private static void Method03()
@@ -188,7 +190,7 @@ namespace OSharp.Demo.Consoles
         private static void Method05()
         {
             RandomNumberGenerator generator = new RNGCryptoServiceProvider();
-            byte[] bytes = new byte[96]; 
+            byte[] bytes = new byte[96];
             generator.GetBytes(bytes);
             Console.WriteLine(Convert.ToBase64String(bytes));
         }
@@ -202,7 +204,16 @@ namespace OSharp.Demo.Consoles
 
         private static void Method07()
         {
-            throw new NotImplementedException();
+            string name = Console.ReadLine();
+            var users = _program.IdentityContract.Users.OrderBy(m => m.NickName).Where(m => !m.IsLocked
+                  && (m.NickName == name || m.UserName.StartsWith(name)));
+
+            Console.WriteLine(users.Expression);
+            Console.WriteLine();
+            string key = new ExpressionCacheKeyGenerator(users.Expression).GetKey();
+            Console.WriteLine(key);
+            Console.WriteLine();
+            Console.WriteLine(key.ToMd5Hash());
         }
 
         private static void Method08()

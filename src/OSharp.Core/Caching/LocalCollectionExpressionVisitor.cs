@@ -55,7 +55,14 @@ namespace OSharp.Core.Caching
             {
                 List<Expression> args =
                     map.Select(m => (from c in replacements where m.Arg == c.Arg select c.Replacement).SingleOrDefault() ?? m.Arg).ToList();
-                node = node.Update(args.First(), args.Skip(1));
+                try
+                {
+                    node = node.Update(args.First(), args.Skip(1));
+                }
+                catch (ArgumentException)
+                {
+                    return node;
+                }
             }
 
             return base.VisitMethodCall(node);
