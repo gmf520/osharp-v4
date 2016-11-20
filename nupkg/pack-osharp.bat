@@ -10,6 +10,7 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.Mvc\OSharp.Autofac.Mvc.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.WebApi\OSharp.Autofac.WebApi.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.SignalR\OSharp.Autofac.SignalR.csproj" -Properties Configuration=Release -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Autofac.Hangfire\OSharp.Autofac.Hangfire.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.App.Local\OSharp.App.Local.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj" -Properties Configuration=Release -IncludeReferencedProjects

@@ -4,14 +4,14 @@
     <id>OSharp.Core</id>
     <version>$version$</version>
     <title>OSharp.Core</title>
-    <authors>OSharp开源团队</authors>
+    <authors>柳柳软件</authors>
     <owners>http://www.osharp.org</owners>
     <projectUrl>https://github.com/i66soft/osharp</projectUrl>
     <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;s=80</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OSharp核心组件，封装着框架核心及数据存储，缓存等功能</description>
     <summary>OSharp核心组件</summary>
-    <copyright>Copyright © OSharp 2014</copyright>
+    <copyright>Copyright © 66SOFT 2014</copyright>
     <language>zh-CN</language>
     <tags>OSharp</tags>
   </metadata>

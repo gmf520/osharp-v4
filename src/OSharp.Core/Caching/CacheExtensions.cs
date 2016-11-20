@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 using OSharp.Core.Data.Extensions;
 using OSharp.Core.Properties;
@@ -244,7 +245,15 @@ namespace OSharp.Core.Caching
 
         private static string GetKey(Expression expression, params object[] keyParams)
         {
-            string key = new ExpressionCacheKeyGenerator(expression).GetKey(keyParams);
+            string key;
+            try
+            {
+                key = new ExpressionCacheKeyGenerator(expression).GetKey(keyParams);
+            }
+            catch (TargetInvocationException)
+            {
+                key = new StringCacheKeyGenerator().GetKey(keyParams);
+            }
             return key.ToMd5Hash();
         }
     }
