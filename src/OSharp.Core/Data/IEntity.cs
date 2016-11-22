@@ -6,6 +6,9 @@
 //  <last-date>2015-06-25 13:31</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+
 namespace OSharp.Core.Data
 {
     /// <summary>

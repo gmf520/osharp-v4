@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 
+using Autofac;
+
 using OSharp.App.Local.Initialize;
 using OSharp.AutoMapper;
 using OSharp.Core;
@@ -218,7 +220,22 @@ namespace OSharp.Demo.Consoles
 
         private static void Method08()
         {
-            throw new NotImplementedException();
+            string tag = "test";
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<Program>().AsSelf().InstancePerLifetimeScope();//.InstancePerMatchingLifetimeScope(tag);
+            IContainer container = builder.Build();
+            ILifetimeScope scope1 = container.BeginLifetimeScope(tag);
+            Console.WriteLine(scope1.GetHashCode());
+            Program p1 = scope1.Resolve<Program>();
+            Console.WriteLine(p1.GetHashCode());
+            p1 = scope1.Resolve<Program>();
+            Console.WriteLine(p1.GetHashCode());
+            ILifetimeScope scope2 = container.BeginLifetimeScope(tag);
+            Console.WriteLine(scope2.GetHashCode());
+            Program p2 = scope2.Resolve<Program>();
+            Console.WriteLine(p2.GetHashCode());
+            p2 = scope2.Resolve<Program>();
+            Console.WriteLine(p2.GetHashCode());
         }
 
         private static void Method09()

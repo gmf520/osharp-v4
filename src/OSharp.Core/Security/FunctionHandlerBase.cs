@@ -71,6 +71,10 @@ namespace OSharp.Core.Security
         {
             Type[] types = TypeFinder.FindAll();
             TFunction[] functions = GetFunctions(types);
+            if (functions.Length == 0)
+            {
+                return;
+            }
             UpdateToRepository(functions);
             RefreshCache();
         }

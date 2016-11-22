@@ -69,8 +69,7 @@ namespace OSharp.Core.Dependency
         /// 添加自定义服务映射
         /// </summary>
         /// <param name="services">服务信息集合</param>
-        protected virtual void AddCustomTypes(IServiceCollection services)
-        { }
+        protected abstract void AddCustomTypes(IServiceCollection services);
 
         /// <summary>
         /// 重写以实现构建服务并设置各个平台的Resolver
