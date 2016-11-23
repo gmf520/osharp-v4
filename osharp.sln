@@ -98,6 +98,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapper", "Mapper", "{4B0FD2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Autofac.Hangfire", "src\OSharp.Autofac.Hangfire\OSharp.Autofac.Hangfire.csproj", "{8BFBF42C-D5FD-46F4-8A32-DABC19455077}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Caching.Redis", "src\OSharp.Caching.Redis\OSharp.Caching.Redis.csproj", "{9C2217D9-6890-49EF-9593-C1D20BBC204D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -200,6 +202,10 @@ Global
 		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -235,5 +241,6 @@ Global
 		{42DC902E-89CE-4CC3-BFF2-017F6B804D2D} = {83C2F482-D836-49EE-A54D-B8686574B297}
 		{4B0FD294-8EB3-43B6-B09C-BF45C00D8A3E} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{8BFBF42C-D5FD-46F4-8A32-DABC19455077} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal
