@@ -61,9 +61,9 @@ namespace OSharp.Web.Mvc.Logging
                 ClaimsIdentity identity = filterContext.HttpContext.User.Identity as ClaimsIdentity;
                 if (identity != null)
                 {
-                    @operator.UserId = identity.GetClaimValue(ClaimTypes.NameIdentifier);
-                    @operator.Name = identity.GetClaimValue(ClaimTypes.Name);
-                    @operator.NickName = identity.GetClaimValue(ClaimTypes.GivenName);
+                    @operator.UserId = identity.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
+                    @operator.Name = identity.GetClaimValueFirstOrDefault(ClaimTypes.Name);
+                    @operator.NickName = identity.GetClaimValueFirstOrDefault(ClaimTypes.GivenName);
                 }
             }
 

@@ -60,12 +60,20 @@ namespace OSharp.Redis
 
         private static string ConvertJson<T>(T value)
         {
+            if (value == null)
+            {
+                return null;
+            }
             string result = value is string ? value.ToString() : JsonConvert.SerializeObject(value);
             return result;
         }
 
         private static T ConvertObj<T>(RedisValue value)
         {
+            if (value == RedisValue.Null)
+            {
+                return default(T);
+            }
             return JsonConvert.DeserializeObject<T>(value);
         }
 

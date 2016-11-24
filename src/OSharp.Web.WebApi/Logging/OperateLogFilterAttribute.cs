@@ -63,9 +63,9 @@ namespace OSharp.Web.Http.Logging
                 ClaimsIdentity user = identity as ClaimsIdentity;
                 if (user != null)
                 {
-                    @operator.UserId = user.GetClaimValue(ClaimTypes.NameIdentifier);
-                    @operator.Name = user.GetClaimValue(ClaimTypes.Name);
-                    @operator.NickName = user.GetClaimValue(ClaimTypes.GivenName);
+                    @operator.UserId = user.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
+                    @operator.Name = user.GetClaimValueFirstOrDefault(ClaimTypes.Name);
+                    @operator.NickName = user.GetClaimValueFirstOrDefault(ClaimTypes.GivenName);
                 }
             }
             OperateLog operateLog = new OperateLog()

@@ -43,7 +43,7 @@ namespace OSharp.Core.Data.Extensions
             ClaimsIdentity identity = Thread.CurrentPrincipal.Identity as ClaimsIdentity;
             if (identity != null && identity.IsAuthenticated)
             {
-                string id = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                string id = identity.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
                 if (!string.IsNullOrEmpty(id))
                 {
                     entity1.CreatorUserId = id;
@@ -67,7 +67,7 @@ namespace OSharp.Core.Data.Extensions
             ClaimsIdentity identity = Thread.CurrentPrincipal.Identity as ClaimsIdentity;
             if (identity != null && identity.IsAuthenticated)
             {
-                string id = identity.GetClaimValue(ClaimTypes.NameIdentifier);
+                string id = identity.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
                 if (!string.IsNullOrEmpty(id))
                 {
                     entity1.LastUpdatorUserId = id;
