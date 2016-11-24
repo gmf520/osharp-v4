@@ -19,6 +19,7 @@ using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Models.Identity;
 using OSharp.Logging.Log4Net;
+using OSharp.Redis;
 using OSharp.Utility.Extensions;
 
 
@@ -245,7 +246,13 @@ namespace OSharp.Demo.Consoles
 
         private static void Method10()
         {
-            throw new NotImplementedException();
+            RedisClient redis = new RedisClient();
+            const string key = "key001";
+            Console.WriteLine(redis.StringGet(key));
+            Console.WriteLine(redis.StringSet(key, "Hello World."));
+            Console.WriteLine(redis.StringGet(key));
+            Console.WriteLine(redis.StringIncrement(key));
+            Console.WriteLine(redis.StringDecrement(key));
         }
 
         private static void Method11()

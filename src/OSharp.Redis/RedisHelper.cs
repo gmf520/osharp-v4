@@ -58,29 +58,23 @@ namespace OSharp.Redis
             return func(database);
         }
 
-        private string ConvertJson<T>(T value)
+        private static string ConvertJson<T>(T value)
         {
             string result = value is string ? value.ToString() : JsonConvert.SerializeObject(value);
             return result;
         }
 
-        private T ConvertObj<T>(RedisValue value)
+        private static T ConvertObj<T>(RedisValue value)
         {
             return JsonConvert.DeserializeObject<T>(value);
         }
 
-        private List<T> ConvetList<T>(RedisValue[] values)
+        private static List<T> ConvetList<T>(IEnumerable<RedisValue> values)
         {
-            List<T> result = new List<T>();
-            foreach (var item in values)
-            {
-                var model = ConvertObj<T>(item);
-                result.Add(model);
-            }
-            return result;
+            return values.Select(ConvertObj<T>).ToList();
         }
 
-        private RedisKey[] ConvertRedisKeys(List<string> redisKeys)
+        private static RedisKey[] ConvertRedisKeys(IEnumerable<string> redisKeys)
         {
             return redisKeys.Select(redisKey => (RedisKey)redisKey).ToArray();
         }
@@ -732,7 +726,7 @@ namespace OSharp.Redis
         public bool SortedSetAdd<T>(string key, T value, double score)
         {
             key = AddSysCustomKey(key);
-            return Do(redis => redis.SortedSetAdd(key, ConvertJson<T>(value), score));
+            return Do(redis => redis.SortedSetAdd(key, ConvertJson(value), score));
         }
 
         /// <summary>
@@ -785,7 +779,7 @@ namespace OSharp.Redis
         public async Task<bool> SortedSetAddAsync<T>(string key, T value, double score)
         {
             key = AddSysCustomKey(key);
-            return await Do(redis => redis.SortedSetAddAsync(key, ConvertJson<T>(value), score));
+            return await Do(redis => redis.SortedSetAddAsync(key, ConvertJson(value), score));
         }
 
         /// <summary>

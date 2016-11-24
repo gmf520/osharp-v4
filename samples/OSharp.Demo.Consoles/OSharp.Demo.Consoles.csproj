@@ -95,9 +95,14 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StackExchange.Redis.StrongName, Version=1.1.608.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StackExchange.Redis.StrongName.1.1.608\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -124,6 +129,10 @@
       <Project>{D4AB25FE-EAC2-469F-8CEA-79C5894E7FF0}</Project>
       <Name>OSharp.AutoMapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
+      <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
+      <Name>OSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj">
       <Project>{d58a373c-1a9c-4bf7-833d-427e4aef8502}</Project>
       <Name>OSharp.Data.Entity</Name>
@@ -132,13 +141,13 @@
       <Project>{e34d7585-25da-4622-9019-89dbc766ad67}</Project>
       <Name>OSharp.Permissions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OSharp.Core\OSharp.Core.csproj">
-      <Project>{f7c67c95-facb-4160-9a88-cb738e65e034}</Project>
-      <Name>OSharp.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Logging.Log4Net\OSharp.Logging.Log4Net.csproj">
       <Project>{6312040f-2467-4479-a764-46f687dba66b}</Project>
       <Name>OSharp.Logging.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Redis\OSharp.Redis.csproj">
+      <Project>{9c2217d9-6890-49ef-9593-c1d20bbc204d}</Project>
+      <Name>OSharp.Redis</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946e0a0a-8280-46b3-893e-1b00a554ccab}</Project>
