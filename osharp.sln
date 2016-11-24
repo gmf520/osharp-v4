@@ -98,7 +98,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapper", "Mapper", "{4B0FD2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Autofac.Hangfire", "src\OSharp.Autofac.Hangfire\OSharp.Autofac.Hangfire.csproj", "{8BFBF42C-D5FD-46F4-8A32-DABC19455077}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Caching.Redis", "src\OSharp.Caching.Redis\OSharp.Caching.Redis.csproj", "{9C2217D9-6890-49EF-9593-C1D20BBC204D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{9C2217D9-6890-49EF-9593-C1D20BBC204D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

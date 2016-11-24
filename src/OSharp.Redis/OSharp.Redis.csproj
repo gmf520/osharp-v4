@@ -7,8 +7,8 @@
     <ProjectGuid>{9C2217D9-6890-49EF-9593-C1D20BBC204D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OSharp.Caching.Redis</RootNamespace>
-    <AssemblyName>OSharp.Caching.Redis</AssemblyName>
+    <RootNamespace>OSharp.Redis</RootNamespace>
+    <AssemblyName>OSharp.Redis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -36,11 +36,16 @@
     <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.1.608.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
       <HintPath>..\..\packages\StackExchange.Redis.StrongName.1.1.608\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
@@ -55,8 +60,8 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RedisCache.cs" />
-    <Compile Include="RedisCacheProvider.cs" />
+    <Compile Include="RedisConnectionHelper.cs" />
+    <Compile Include="RedisHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Core\OSharp.Core.csproj">
@@ -65,6 +70,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OSharp.Redis.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

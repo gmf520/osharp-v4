@@ -17,3 +17,4 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions\OSharp.Permissions.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth\OSharp.Permissions.OAuth.csproj" -Properties Configuration=Release -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj" -Properties Configuration=Release -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Redis\OSharp.Redis.csproj" -Properties Configuration=Release -IncludeReferencedProjects
