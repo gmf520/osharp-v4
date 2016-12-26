@@ -21,6 +21,7 @@ namespace OSharp.Core.Security
     /// 实体信息基类
     /// </summary>
     public abstract class EntityInfoBase<TKey> : EntityBase<TKey>, IEntityInfo
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 实体类型全名

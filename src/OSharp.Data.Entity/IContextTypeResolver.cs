@@ -26,7 +26,9 @@ namespace OSharp.Data.Entity
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns></returns>
-        IUnitOfWork Resolve<TEntity, TKey>() where TEntity : IEntity<TKey>;
+        IUnitOfWork Resolve<TEntity, TKey>()
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>;
 
         /// <summary>
         /// 由实体类型获取关联的上下文类型

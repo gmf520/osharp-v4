@@ -30,6 +30,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
     {
         protected virtual IQueryable<TEntity> GetQueryData<TEntity, TKey>(IQueryable<TEntity> source, out int total, GridRequest request = null)
             where TEntity : EntityBase<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (request == null)
             {

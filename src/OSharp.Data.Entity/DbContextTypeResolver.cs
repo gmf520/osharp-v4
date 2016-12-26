@@ -32,14 +32,16 @@ namespace OSharp.Data.Entity
         {
             _resolver = resolver;
         }
-        
+
         /// <summary>
         /// 由实体类型获取关联的上下文类型
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns></returns>
-        public IUnitOfWork Resolve<TEntity, TKey>() where TEntity : IEntity<TKey>
+        public IUnitOfWork Resolve<TEntity, TKey>()
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
         {
             return Resolve(typeof(TEntity));
         }
@@ -51,7 +53,7 @@ namespace OSharp.Data.Entity
         /// <returns></returns>
         public IUnitOfWork Resolve(Type entityType)
         {
-            entityType.CheckNotNull("entityType" );
+            entityType.CheckNotNull("entityType");
             Type contextType = DbContextManager.Instance.GetDbContexType(entityType);
             IUnitOfWork unitOfWork = (IUnitOfWork)_resolver.Resolve(contextType);
             if (unitOfWork == null)

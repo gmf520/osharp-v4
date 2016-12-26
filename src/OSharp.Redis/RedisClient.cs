@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
+using OSharp.Utility.Extensions;
+
 using StackExchange.Redis;
 
 
@@ -73,6 +75,10 @@ namespace OSharp.Redis
             if (value == RedisValue.Null)
             {
                 return default(T);
+            }
+            if (typeof(T) == typeof(string))
+            {
+                return value.CastTo<T>();
             }
             return JsonConvert.DeserializeObject<T>(value);
         }
@@ -671,7 +677,7 @@ namespace OSharp.Redis
         /// <param name="key"></param>
         /// <param name="dataKey"></param>
         /// <returns></returns>
-        public async Task<T> HashGeAsync<T>(string key, string dataKey)
+        public async Task<T> HashGetAsync<T>(string key, string dataKey)
         {
             key = AddSysCustomKey(key);
             string value = await Do(db => db.HashGetAsync(key, dataKey));

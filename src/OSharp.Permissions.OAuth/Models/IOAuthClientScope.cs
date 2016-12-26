@@ -7,6 +7,8 @@
 //  <last-date>2015-10-31 17:04</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -17,6 +19,7 @@ namespace OSharp.Core.Security.Models
     /// </summary>
     /// <typeparam name="TKey">主键类型</typeparam>
     public interface IOAuthClientScope<out TKey> : IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 作用域

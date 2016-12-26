@@ -8,9 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using OSharp.Core.Caching;
+using OSharp.Core.Data.Extensions;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
@@ -68,6 +71,20 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
                 },
                 request);
             return Json(page.ToGridData(), JsonRequestBehavior.AllowGet);
+        }
+
+        [Description("管理-用户-节点数据")]
+        public ActionResult NoteData()
+        {
+            IFunction function = ControllerContext.GetExecuteFunction(ServiceProvider);
+            var nodes = IdentityContract.Users.Where(m => !m.IsLocked).OrderBy(m => m.NickName)
+                .Select(m => new
+                {
+                    m.Id,
+                    m.UserName,
+                    m.NickName
+                }).ToCacheList(function);
+            return Json(nodes, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

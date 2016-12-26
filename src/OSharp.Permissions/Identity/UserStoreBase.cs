@@ -288,7 +288,7 @@ namespace OSharp.Core.Identity
             if (map != null)
             {
                 return new OperationResult(OperationResultType.Error,
-                    "“{0}-{1}”的指派信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
+                    "“{0}-{1}”的映射信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
             }
             
             map = dto.MapTo<TUserRoleMap>();
@@ -304,8 +304,9 @@ namespace OSharp.Core.Identity
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
             }
             map.Role = role;
-            await UserRoleMapRepository.InsertAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.InsertAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与角色“{1}”的映射信息创建成功".FormatWith(user.UserName, role.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -347,8 +348,9 @@ namespace OSharp.Core.Identity
                 }
                 map.Role = role;
             }
-            await UserRoleMapRepository.UpdateAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.UpdateAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与角色“{1}”的映射信息更新成功".FormatWith(map.User.UserName, map.Role.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -363,8 +365,9 @@ namespace OSharp.Core.Identity
             {
                 return OperationResult.NoChanged;
             }
-            await UserRoleMapRepository.DeleteAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.DeleteAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户角色映射信息删除成功")
+                : OperationResult.NoChanged;
         }
 
         /// <summary>

@@ -7,6 +7,8 @@
 //  <last-date>2015-09-13 17:25</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -25,6 +27,9 @@ namespace OSharp.Core.Identity.Models
     public interface IUserRoleMap<out TKey, TUser, TUserKey, TRole, TRoleKey> : IEntity<TKey>, IExpirable
         where TUser : UserBase<TUserKey>
         where TRole : RoleBase<TRoleKey>
+        where TKey : IEquatable<TKey>
+        where TUserKey : IEquatable<TUserKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 用户信息

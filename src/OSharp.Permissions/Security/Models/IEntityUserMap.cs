@@ -7,6 +7,8 @@
 //  <last-date>2015-08-07 2:16</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -21,6 +23,9 @@ namespace OSharp.Core.Security.Models
     public interface IEntityUserMap<out TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey> : IEntity<TKey>, ILockable, ICreatedTime
         where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

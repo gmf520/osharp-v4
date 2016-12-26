@@ -17,6 +17,7 @@ namespace OSharp.Core.Data
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public abstract class ExpirableBase<TKey> : EntityBase<TKey>, IExpirable 
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 生效时间

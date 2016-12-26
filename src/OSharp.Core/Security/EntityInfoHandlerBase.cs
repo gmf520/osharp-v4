@@ -27,6 +27,7 @@ namespace OSharp.Core.Security
     /// <typeparam name="TKey">主键类型</typeparam>
     public abstract class EntityInfoHandlerBase<TEntityInfo, TKey> : IEntityInfoHandler
         where TEntityInfo : EntityInfoBase<TKey>, IEntity<TKey>, new()
+        where TKey : IEquatable<TKey>
     {
         private ILogger _logger;
 

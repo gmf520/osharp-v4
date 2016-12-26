@@ -7,6 +7,8 @@
 //  <last-date>2016-03-13 1:23</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -30,6 +32,9 @@ namespace OSharp.Core.Security
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
-        where TModuleKey : struct
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
+        where TModuleKey : IEquatable<TModuleKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     { }
 }

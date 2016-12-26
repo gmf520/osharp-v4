@@ -21,6 +21,8 @@ namespace OSharp.Core.Security.Models
     public abstract class OAuthClientBase<TKey, TClientSecret, TClientSecretKey> 
         : EntityBase<TKey>, IOAuthClient<TKey>, ILockable, ICreatedTime
         where TClientSecret : IOAuthClientSecret<TClientSecretKey>
+        where TKey : IEquatable<TKey>
+        where TClientSecretKey : IEquatable<TClientSecretKey>
     {
         /// <summary>
         /// 初始化一个<see cref="OAuthClientBase{TKey,TClientSecret,TClientSecretKey}"/>类型的新实例

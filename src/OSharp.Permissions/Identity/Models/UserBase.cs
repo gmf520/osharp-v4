@@ -21,6 +21,7 @@ namespace OSharp.Core.Identity.Models
     /// </summary>
     /// <typeparam name="TKey">用户编号类型</typeparam>
     public abstract class UserBase<TKey> : EntityBase<TKey>, IUser<TKey>, ICreatedTime, ILockable
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// Unique username

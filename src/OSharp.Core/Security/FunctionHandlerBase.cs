@@ -28,6 +28,7 @@ namespace OSharp.Core.Security
     /// <typeparam name="TKey">功能信息主键类型</typeparam>
     public abstract class FunctionHandlerBase<TFunction, TKey> : IFunctionHandler
         where TFunction : FunctionBase<TKey>, IFunction, new()
+        where TKey : IEquatable<TKey>
     {
         private ILogger _logger;
 

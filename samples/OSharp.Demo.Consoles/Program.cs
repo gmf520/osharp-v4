@@ -22,6 +22,8 @@ using OSharp.Logging.Log4Net;
 using OSharp.Redis;
 using OSharp.Utility.Extensions;
 
+using StackExchange.Redis;
+
 
 namespace OSharp.Demo.Consoles
 {
@@ -257,7 +259,22 @@ namespace OSharp.Demo.Consoles
 
         private static void Method11()
         {
-            throw new NotImplementedException();
+            string key = ".OnlineClient";
+            RedisClient redis = new RedisClient();
+            //var vals = redis.HashKeys<OnlineClientDto>(key);
+            //Console.WriteLine(vals.Count);
+            OnlineClientDto dto = new OnlineClientDto()
+            {
+                Name = Guid.NewGuid().ToString(),
+                ConnectionId = Guid.NewGuid().ToString(),
+                IpAddress = "127.0.5.1",
+                ConnectedTime = DateTime.Now
+            };
+            Console.WriteLine(redis.HashSet(key,"key001", dto));
+            var vals = redis.HashKeys<string>(key);
+            Console.WriteLine(vals.ToJsonString());
+            Console.WriteLine(redis.HashGet<OnlineClientDto>(key, vals[0]).ToJsonString());
+            
         }
 
         private static void Method12()
@@ -294,5 +311,57 @@ namespace OSharp.Demo.Consoles
         {
             throw new NotImplementedException();
         }
+    }
+    public class OnlineClientDto
+    {
+        /// <summary>
+        /// 获取或设置 客户端名，以名为准来寻找客户端
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端连接Id
+        /// </summary>
+        public string ConnectionId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端所在电脑名称
+        /// </summary>
+        public string ClientHostName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端版本
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端IP
+        /// </summary>
+        public string IpAddress { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否正在工作
+        /// </summary>
+        public bool IsWorking { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否自动工作的客户端
+        /// </summary>
+        public bool IsAutoRunWork { get; set; }
+
+        /// <summary>
+        /// 获取或设置 连接时间
+        /// </summary>
+        public DateTime ConnectedTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 最后工作时间
+        /// </summary>
+        public DateTime? LastWorkTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 正在投票的订单编号
+        /// </summary>
+        public int? VotingOrderId { get; set; }
     }
 }

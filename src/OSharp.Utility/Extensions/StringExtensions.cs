@@ -187,7 +187,22 @@ namespace OSharp.Utility.Extensions
             {
                 return string.Empty;
             }
-            string result =  source.Match(string.Format("(?<={0})(.+?)(?={1})", startString, endString));
+
+            string result = source.Match(string.Format("(?<={0})(.+?)(?={1})", startString, endString));
+            return result.IsMissing() ? null : result;
+        }
+
+        /// <summary>
+        /// 用正则表达式截取字符串
+        /// </summary>
+        public static string Substring2(this string source, string startString, string endString, bool containsEmpty)
+        {
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            string inner = containsEmpty ? "\\s\\S" : "\\S";
+            string result = source.Match(string.Format("(?<={0})([{1}]+?)(?={2})", startString, inner, endString));
             return result.IsMissing() ? null : result;
         }
 

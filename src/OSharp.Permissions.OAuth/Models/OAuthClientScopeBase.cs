@@ -7,6 +7,8 @@
 //  <last-date>2015-10-31 17:12</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -20,6 +22,8 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TClientKey">客户端主键类型</typeparam>
     public abstract class OAuthClientScopeBase<TKey, TClient, TClientKey> : EntityBase<TKey>, IOAuthClientScope<TKey>
         where TClient : IOAuthClient<TClientKey>
+        where TKey : IEquatable<TKey>
+        where TClientKey : IEquatable<TClientKey>
     {
         /// <summary>
         /// 获取或设置 作用域

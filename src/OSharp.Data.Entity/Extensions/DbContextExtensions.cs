@@ -41,6 +41,7 @@ namespace OSharp.Data.Entity
         /// <param name="entities">要更新的实体类型</param>
         public static void Update<TEntity, TKey>(this DbContext dbContext, params TEntity[] entities)
             where TEntity : class, IEntity<TKey>
+            where TKey : IEquatable<TKey>
         {
             dbContext.CheckNotNull("dbContext");
             entities.CheckNotNull("entities");

@@ -7,6 +7,8 @@
 //  <last-date>2015-11-01 1:55</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -16,6 +18,7 @@ namespace OSharp.Core.Security.Models
     /// 定义客户端密钥信息
     /// </summary>
     public interface IOAuthClientSecret<out TKey> : IEntity<TKey>, ILockable, IExpirable
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 密钥值

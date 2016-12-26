@@ -34,6 +34,7 @@ namespace OSharp.Data.Entity
     /// <typeparam name="TKey">主键类型</typeparam>
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         private readonly DbSet<TEntity> _dbSet;
 

@@ -6,6 +6,8 @@
 //  <last-date>2015-06-25 14:04</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -21,6 +23,8 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public interface IUserClaim<out TKey, TUser, TUserKey> : IEntity<TKey>
         where TUser : UserBase<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 摘要类型

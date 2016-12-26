@@ -27,6 +27,7 @@ namespace OSharp.Core.Security
     public interface IFunctionStore<TFunction, in TFunctionKey, in TFunctionInputDto>
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TFunctionInputDto : FunctionBaseInputDto<TFunctionKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 获取 功能信息查询数据集

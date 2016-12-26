@@ -25,6 +25,7 @@ namespace OSharp.Core.Data
     /// <typeparam name="TKey">主键类型</typeparam>
     public interface IRepository<TEntity, TKey> : IScopeDependency 
         where TEntity : IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         #region 属性
 

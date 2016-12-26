@@ -7,6 +7,7 @@
 //  <last-date>2016-03-13 0:16</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 using Microsoft.AspNet.Identity;
@@ -32,6 +33,10 @@ namespace OSharp.Core.Security.Models
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 模块名称

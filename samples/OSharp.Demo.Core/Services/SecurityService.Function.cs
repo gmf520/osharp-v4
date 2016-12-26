@@ -107,59 +107,10 @@ namespace OSharp.Demo.Services
                 }
                 names.Add(dto.Name);
             }
-            int count = await FunctionRepository.UnitOfWork.SaveChangesAsync();
-            if (count > 0)
-            {
-                IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
-                handler.RefreshCache();
-                return new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()));
-            }
-            return OperationResult.NoChanged;
-
-            //List<string> names = new List<string>();
-            //FunctionRepository.UnitOfWork.BeginTransaction();
-            //foreach (FunctionInputDto dto in inputDtos)
-            //{
-            //    if (FunctionRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
-            //    {
-            //        return new OperationResult(OperationResultType.Error, "名称为“{0}”的功能信息已存在".FormatWith(dto.Name));
-            //    }
-            //    Function entity = FunctionRepository.GetByKey(dto.Id);
-            //    if (entity == null)
-            //    {
-            //        return new OperationResult(OperationResultType.QueryNull);
-            //    }
-            //    FunctionType oldType = entity.FunctionType;
-            //    if (dto.DataLogEnabled && !dto.OperateLogEnabled && !entity.OperateLogEnabled && !entity.DataLogEnabled)
-            //    {
-            //        dto.OperateLogEnabled = true;
-            //    }
-            //    else if (!dto.OperateLogEnabled && dto.DataLogEnabled && entity.OperateLogEnabled && entity.DataLogEnabled)
-            //    {
-            //        dto.DataLogEnabled = false;
-            //    }
-            //    entity = dto.MapTo(entity);
-            //    if (entity.Url.IsNullOrEmpty())
-            //    {
-            //        entity.Url = null;
-            //    }
-            //    if (oldType != entity.FunctionType)
-            //    {
-            //        entity.IsTypeChanged = true;
-            //    }
-            //    FunctionRepository.Update(entity);
-            //    names.Add(entity.Name);
-            //}
-            //int count = FunctionRepository.UnitOfWork.SaveChanges();
-            //OperationResult result = count > 0
-            //    ? new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()))
-            //    : new OperationResult(OperationResultType.NoChanged);
-            //if (result.ResultType == OperationResultType.Success)
-            //{
-            //    IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
-            //    handler.RefreshCache();
-            //}
-            //return result;
+            FunctionRepository.UnitOfWork.Commit();
+            IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
+            handler.RefreshCache();
+            return new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()));
         }
 
         /// <summary>

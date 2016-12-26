@@ -35,13 +35,16 @@ namespace OSharp.Core.Security
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public interface IModuleStore<TModule, in TModuleKey, in TModuleInputDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+    public interface IModuleStore<TModule, in TModuleKey, in TModuleInputDto, out TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TModule : IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>, IEntity<TModuleKey>
         where TModuleInputDto : ModuleBaseInputDto<TModuleKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
-        where TModuleKey : struct
+        where TModuleKey : IEquatable<TModuleKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取 模块信息查询数据集

@@ -34,12 +34,15 @@ namespace OSharp.Core.Security.Models
     /// <typeparam name="TUser">用户信息类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class ModuleBase<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
-        : EntityBase<TKey>,
-          IModule<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+        : EntityBase<TKey>, IModule<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TModule : IModule<TKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 初始化一个<see cref="ModuleBase"/>类型的新实例

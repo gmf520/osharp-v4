@@ -19,6 +19,7 @@ namespace OSharp.Core.Data.Extensions
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
         public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        where TKey : IEquatable<TKey>
         {
             if (!(entity is ICreatedTime))
             {
@@ -33,7 +34,9 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="ICreatedAudited"/>接口的逻辑
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        public static TEntity CheckICreatedAudited<TEntity, TKey>(this TEntity entity)
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (!(entity is ICreatedAudited))
             {
@@ -57,7 +60,9 @@ namespace OSharp.Core.Data.Extensions
         /// 检测并执行<see cref="IUpdateAudited"/>接口的逻辑，此功能应按需调用
         /// </summary>
         /// <param name="entity">要检测的实体信息</param>
-        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity) where TEntity : IEntity<TKey>
+        public static TEntity CheckIUpdateAudited<TEntity, TKey>(this TEntity entity)
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (!(entity is IUpdateAudited))
             {
@@ -84,6 +89,7 @@ namespace OSharp.Core.Data.Extensions
         /// <param name="operation">回收站操作类型</param>
         public static TEntity CheckIRecycle<TEntity, TKey>(this TEntity entity, RecycleOperation operation)
             where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (!(entity is IRecyclable))
             {
@@ -117,6 +123,17 @@ namespace OSharp.Core.Data.Extensions
         {
             type.CheckNotNull("type");
             return typeof(IEntity<>).IsGenericAssignableFrom(type) && !type.IsAbstract;
+        }
+
+        /// <summary>
+        /// 判断指定实体是否不在有效期
+        /// </summary>
+        public static bool IsExpired(this IExpirable entity)
+        {
+            entity.CheckNotNull("entity");
+            DateTime now = DateTime.Now;
+            return entity.BeginTime != null && entity.BeginTime.Value > now ||
+                entity.EndTime != null && entity.EndTime.Value < now;
         }
     }
 }

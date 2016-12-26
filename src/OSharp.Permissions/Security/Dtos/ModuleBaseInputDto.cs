@@ -7,6 +7,8 @@
 //  <last-date>2016-03-13 0:55</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -17,7 +19,7 @@ namespace OSharp.Core.Security.Dtos
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public abstract class ModuleBaseInputDto<TKey> : IInputDto<TKey>
-        where TKey : struct
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 模块名称
@@ -37,7 +39,7 @@ namespace OSharp.Core.Security.Dtos
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
-        public TKey? ParentId { get; set; }
+        public TKey ParentId { get; set; }
 
         /// <summary>
         /// 获取或设置 主键，唯一标识

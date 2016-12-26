@@ -31,7 +31,9 @@ namespace OSharp.Core.Security
     public interface ISecurityUser<in TUser, TUserKey, TFunction, TFunctionKey, in TModuleKey> : IScopeDependency
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
-        where TModuleKey : struct
+        where TModuleKey : IEquatable<TModuleKey>
+        where TUserKey : IEquatable<TUserKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 获取赋予给用户的功能集合，不包含用户拥有的角色赋予的功能集合
