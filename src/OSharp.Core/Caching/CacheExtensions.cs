@@ -141,6 +141,94 @@ namespace OSharp.Core.Caching
         /// <summary>
         /// 将结果转换为缓存的列表，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
         /// </summary>
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="predicate">数据查询表达式</param>
+        /// <param name="selector">数据筛选表达式</param>
+        /// <param name="cacheSeconds">缓存时间：秒</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> predicate,
+            Expression<Func<TSource, TResult>> selector,
+            int cacheSeconds = 60,
+            params object[] keyParams)
+        {
+            ICache cache = CacheManager.GetCacher<TSource>();
+            string key = GetKey(source, predicate, selector, keyParams);
+            return cache.Get(key, () => source.Where(predicate).Select(selector).ToList(), cacheSeconds);
+        }
+
+        /// <summary>
+        /// 将结果转换为缓存的数组，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
+        /// </summary>
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="predicate">数据查询表达式</param>
+        /// <param name="selector">数据筛选表达式</param>
+        /// <param name="cacheSeconds">缓存时间：秒</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> predicate,
+            Expression<Func<TSource, TResult>> selector,
+            int cacheSeconds = 60,
+            params object[] keyParams)
+        {
+            ICache cache = CacheManager.GetCacher<TSource>();
+            string key = GetKey(source, predicate, selector, keyParams);
+            return cache.Get(key, () => source.Where(predicate).Select(selector).ToArray(), cacheSeconds);
+        }
+
+        /// <summary>
+        /// 将结果转换为缓存的列表，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
+        /// </summary>
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="predicate">数据查询表达式</param>
+        /// <param name="selector">数据筛选表达式</param>
+        /// <param name="function">缓存策略相关功能</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> predicate,
+            Expression<Func<TSource, TResult>> selector,
+            IFunction function,
+            params object[] keyParams)
+        {
+            ICache cache = CacheManager.GetCacher<TSource>();
+            string key = GetKey(source, predicate, selector, keyParams);
+            return cache.Get(key, () => source.Where(predicate).Select(selector).ToList(), function);
+        }
+
+        /// <summary>
+        /// 将结果转换为缓存的数组，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
+        /// </summary>
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="predicate">数据查询表达式</param>
+        /// <param name="selector">数据筛选表达式</param>
+        /// <param name="function">缓存策略相关功能</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> predicate,
+            Expression<Func<TSource, TResult>> selector,
+            IFunction function,
+            params object[] keyParams)
+        {
+            ICache cache = CacheManager.GetCacher<TSource>();
+            string key = GetKey(source, predicate, selector, keyParams);
+            return cache.Get(key, () => source.Where(predicate).Select(selector).ToArray(), function);
+        }
+
+        /// <summary>
+        /// 将结果转换为缓存的列表，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
+        /// </summary>
         /// <typeparam name="TSource">源数据类型</typeparam>
         /// <param name="source">查询数据源</param>
         /// <param name="cacheSeconds">缓存的秒数</param>
@@ -239,6 +327,16 @@ namespace OSharp.Core.Caching
             source = source != null
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
+            IQueryable<TResult> query = source.Select(selector);
+            return GetKey(query.Expression, keyParams);
+        }
+
+        private static string GetKey<TSource, TResult>(IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> predicate,
+            Expression<Func<TSource, TResult>> selector,
+            params object[] keyParams)
+        {
+            source = source.Where(predicate);
             IQueryable<TResult> query = source.Select(selector);
             return GetKey(query.Expression, keyParams);
         }

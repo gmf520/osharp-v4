@@ -77,13 +77,21 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         public ActionResult NoteData()
         {
             IFunction function = ControllerContext.GetExecuteFunction(ServiceProvider);
-            var nodes = IdentityContract.Users.Where(m => !m.IsLocked).OrderBy(m => m.NickName)
-                .Select(m => new
+            //var nodes = IdentityContract.Users.Where(m => !m.IsLocked).OrderBy(m => m.NickName)
+            //    .Select(m => new
+            //    {
+            //        m.Id,
+            //        m.UserName,
+            //        m.NickName
+            //    });
+            var nodes = IdentityContract.Users.ToCacheList(m => !m.IsLocked,
+                m => new
                 {
                     m.Id,
                     m.UserName,
                     m.NickName
-                }).ToCacheList(function);
+                },
+                function);
             return Json(nodes, JsonRequestBehavior.AllowGet);
         }
 
