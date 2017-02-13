@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\OSharp.Permissions.OAuth.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -84,29 +85,29 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppBuilderExtensions.cs" />
-    <Compile Include="DatetimeClientIdProvider.cs" />
-    <Compile Include="ClientStoreBase.cs" />
-    <Compile Include="Dtos\ClientBaseInputDto.cs" />
-    <Compile Include="Dtos\ClientSecretBaseInputDto.cs" />
-    <Compile Include="GuidClientSecretProvider.cs" />
+    <Compile Include="DatetimeOAuthClientIdProvider.cs" />
+    <Compile Include="OAuthClientStoreBase.cs" />
+    <Compile Include="Dtos\OAuthClientBaseInputDto.cs" />
+    <Compile Include="Dtos\OAuthClientSecretBaseInputDto.cs" />
+    <Compile Include="GuidOAuthClientSecretProvider.cs" />
     <Compile Include="IAuthorizationCodeProvider.cs" />
-    <Compile Include="IClientIdProvider.cs" />
-    <Compile Include="IClientSecretProvider.cs" />
-    <Compile Include="IClientStore.cs" />
-    <Compile Include="IClientValidator.cs" />
+    <Compile Include="IOAuthClientIdProvider.cs" />
+    <Compile Include="IOAuthClientSecretProvider.cs" />
+    <Compile Include="IOAuthClientStore.cs" />
+    <Compile Include="IOAuthClientValidator.cs" />
     <Compile Include="IRefreshTokenProvider.cs" />
     <Compile Include="IClientRefreshTokenStore.cs" />
-    <Compile Include="Models\ClientBase.cs" />
-    <Compile Include="Models\ClientClaimBase.cs" />
-    <Compile Include="Models\ClientRefreshTokenBase.cs" />
-    <Compile Include="Models\ClientScopeBase.cs" />
-    <Compile Include="Models\ClientSecretBase.cs" />
-    <Compile Include="Models\ClientType.cs" />
-    <Compile Include="Models\IClient.cs" />
-    <Compile Include="Models\IClientClaim.cs" />
-    <Compile Include="Models\IClientRefreshToken.cs" />
-    <Compile Include="Models\IClientScope.cs" />
-    <Compile Include="Models\IClientSecret.cs" />
+    <Compile Include="Models\OAuthClientBase.cs" />
+    <Compile Include="Models\OAuthClientClaimBase.cs" />
+    <Compile Include="Models\OAuthClientRefreshTokenBase.cs" />
+    <Compile Include="Models\OAuthClientScopeBase.cs" />
+    <Compile Include="Models\OAuthClientSecretBase.cs" />
+    <Compile Include="Models\OAuthClientType.cs" />
+    <Compile Include="Models\IOAuthClient.cs" />
+    <Compile Include="Models\IOAuthClientClaim.cs" />
+    <Compile Include="Models\IOAuthClientRefreshToken.cs" />
+    <Compile Include="Models\IOAuthClientScope.cs" />
+    <Compile Include="Models\IOAuthClientSecret.cs" />
     <Compile Include="OsharpAuthorizationCodeProvider.cs" />
     <Compile Include="OsharpAuthorizationServerProvider.cs" />
     <Compile Include="OsharpRefreshTokenProvider.cs" />
@@ -117,7 +118,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RefreshTokenInfo.cs" />
-    <Compile Include="ClientRefreshTokenStoreBase.cs" />
+    <Compile Include="OAuthClientRefreshTokenStoreBase.cs" />
     <Compile Include="ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

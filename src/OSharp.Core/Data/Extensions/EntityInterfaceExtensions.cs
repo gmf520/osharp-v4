@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-using OSharp.Core.Context;
 using OSharp.Core.Extensions;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
@@ -90,23 +85,15 @@ namespace OSharp.Core.Data.Extensions
             switch (operation)
             {
                 case RecycleOperation.LogicDelete:
-                    if (entity1.IsDeleted)
-                    {
-                        throw new InvalidOperationException("数据已是回收状态，不能逻辑删除");
-                    }
                     entity1.IsDeleted = true;
                     break;
                 case RecycleOperation.Restore:
-                    if (!entity1.IsDeleted)
-                    {
-                        throw new InvalidOperationException("数据不处于回收状态，不能还原");
-                    }
                     entity1.IsDeleted = false;
                     break;
                 case RecycleOperation.PhysicalDelete:
                     if (!entity1.IsDeleted)
                     {
-                        throw new InvalidOperationException("数据不处于回收状态，不能永久删除");
+                        throw new InvalidOperationException("数据不处于回收(IsDeleted=true)状态，不能永久删除");
                     }
                     break;
             }

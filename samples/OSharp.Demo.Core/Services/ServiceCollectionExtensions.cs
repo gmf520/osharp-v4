@@ -10,7 +10,6 @@ using OSharp.Core.Security;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
 using OSharp.Demo.OAuth;
-using OSharp.Demo.Security;
 
 using Owin;
 
@@ -29,12 +28,12 @@ namespace OSharp.Demo.Services
             services.AddScoped<IDataProtectionProvider>(_ => app.GetDataProtectionProvider());
 
             //Security
-            services.AddScoped<FunctionMapStore>();
-            services.AddScoped<EntityMapStore>();
+            //services.AddScoped<FunctionMapStore>();
+            //services.AddScoped<EntityMapStore>();
 
             //OAuth
-            services.AddScoped<ClientStore>();
-            services.AddScoped<IClientRefreshTokenStore, ClientRefreshTokenStore>();
+            services.AddScoped<OAuthClientStore>();
+            services.AddScoped<IOAuthClientRefreshTokenStore, OAuthClientRefreshTokenStore>();
         }
     }
 }

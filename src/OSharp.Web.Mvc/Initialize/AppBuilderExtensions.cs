@@ -7,15 +7,12 @@
 //  <last-date>2015-09-29 23:00</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Mvc;
 
 using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Utility;
+using OSharp.Web.Mvc.Binders;
 
 using Owin;
 
@@ -33,6 +30,9 @@ namespace OSharp.Web.Mvc.Initialize
         public static IAppBuilder UseOsharpMvc(this IAppBuilder app, IIocBuilder iocBuilder)
         {
             iocBuilder.CheckNotNull("iocBuilder");
+
+            ModelBinders.Binders.Add(typeof(string), new StringTrimModelBinder());
+
             IFrameworkInitializer initializer = new FrameworkInitializer();
             initializer.Initialize(iocBuilder);
             return app;

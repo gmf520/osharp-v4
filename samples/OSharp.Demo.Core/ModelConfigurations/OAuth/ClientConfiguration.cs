@@ -7,18 +7,12 @@
 //  <last-date>2015-11-05 19:06</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Data.Entity;
 using OSharp.Demo.Models.OAuth;
 
 
 namespace OSharp.Demo.ModelConfigurations.OAuth
 {
-    public class ClientConfiguration : EntityConfigurationBase<Client, int>
+    public class ClientConfiguration : EntityConfigurationBase<OAuthClient, int>
     { }
 }

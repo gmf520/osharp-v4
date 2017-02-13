@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OSharp.Web.Http.Caching
+﻿namespace OSharp.Web.Http.Caching
 {
     /// <summary>
     /// This is an interface representing an ETag store acting similar to a dictionary. 

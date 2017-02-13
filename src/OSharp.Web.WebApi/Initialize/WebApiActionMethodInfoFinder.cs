@@ -10,7 +10,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -49,8 +48,11 @@ namespace OSharp.Web.Http.Initialize
                 throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
             }
             MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => typeof(IHttpActionResult).IsAssignableFrom(m.ReturnType) || m.ReturnType == typeof(Task<IHttpActionResult>))
-                .ToArray();
+                .Where(m => typeof(IHttpActionResult).IsAssignableFrom(m.ReturnType)
+                    || m.ReturnType.IsGenericType
+                        && m.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)
+                        && typeof(IHttpActionResult).IsAssignableFrom(m.ReturnType.GetGenericArguments()[0]))
+                    .ToArray();
             return methods;
         }
     }

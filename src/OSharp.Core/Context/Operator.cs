@@ -6,12 +6,6 @@
 //  <last-date>2014-08-12 19:24</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 namespace OSharp.Core.Context
 {
     /// <summary>

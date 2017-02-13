@@ -7,11 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
@@ -27,7 +23,7 @@ namespace OSharp.Core.Identity.Models
     public abstract class RoleBase<TKey> : EntityBase<TKey>, IRole<TKey>, ICreatedTime, ILockable
     {
         /// <summary>
-        /// 获取或设置 用户名
+        /// 获取或设置 角色名
         /// </summary>
         [Required, StringLength(50)]
         public string Name { get; set; }
@@ -42,6 +38,11 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 是否管理员角色
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否默认角色，用户注册后拥有此角色
+        /// </summary>
+        public bool IsDefault { get; set; }
 
         /// <summary>
         /// 获取或设置 是否系统角色

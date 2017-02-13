@@ -7,10 +7,7 @@
 //  <last-date>2015-10-21 18:31</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Dependency;
@@ -31,14 +28,14 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddUserRoleMapAsync(TUserRoleMapInputDto dto);
+        Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto);
 
         /// <summary>
         /// 编辑用户角色映射信息
         /// </summary>
         /// <param name="dto">用户角色映射信息输入DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditUserRoleMapAsync(TUserRoleMapInputDto dto);
+        Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto);
 
         /// <summary>
         /// 删除用户角色映射信息
@@ -68,13 +65,5 @@ namespace OSharp.Core.Identity
         /// <param name="roleId">要判断的角色名称</param>
         /// <returns>是否拥有</returns>
         Task<bool> IsInRoleAsync(TUserKey userId, TRoleKey roleId);
-
-        /// <summary>
-        /// 返回用户是有拥有指定角色
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <param name="roleName">要判断的角色名称</param>
-        /// <returns>是否拥有</returns>
-        Task<bool> IsInRoleAsync(TUserKey userId, string roleName);
     }
 }

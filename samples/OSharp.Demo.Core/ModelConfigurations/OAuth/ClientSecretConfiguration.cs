@@ -13,7 +13,7 @@ using OSharp.Demo.Models.OAuth;
 
 namespace OSharp.Demo.ModelConfigurations.OAuth
 {
-    public class ClientSecretConfiguration : EntityConfigurationBase<ClientSecret, int>
+    public class ClientSecretConfiguration : EntityConfigurationBase<OAuthClientSecret, int>
     {
         public ClientSecretConfiguration()
         {

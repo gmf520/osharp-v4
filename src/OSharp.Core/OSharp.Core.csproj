@@ -32,14 +32,15 @@
     <DocumentationFile>bin\Debug\OSharp.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\OSharp.Core.NET45\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\OSharp.Core.NET45\Release\OSharp.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.Core.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -67,12 +68,12 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Caching\CacheBase.cs" />
+    <Compile Include="Caching\CacheExtensions.cs" />
     <Compile Include="Caching\CacheLevel.cs" />
     <Compile Include="Caching\CacheManager.cs" />
     <Compile Include="Caching\InternalCacher.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
-    <Compile Include="Caching\QueryCacheExtensions.cs" />
     <Compile Include="Caching\RuntimeMemoryCache.cs" />
     <Compile Include="Caching\RuntimeMemoryCacheProvider.cs" />
     <Compile Include="Configs\BasicLoggingConfig.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="Dependency\IServicesBuilder.cs" />
     <Compile Include="Dependency\SingtonDependencyTypeFinder.cs" />
     <Compile Include="Dependency\TransientDependencyTypeFinder.cs" />
-    <Compile Include="Extensions\CacheExtensions.cs" />
     <Compile Include="Extensions\ClaimsIdentityExtensions.cs" />
     <Compile Include="Dependency\IDependency.cs" />
     <Compile Include="Configs\ConfigFile\Data\CreateDatabaseInitializerElement.cs" />
@@ -168,11 +168,15 @@
     <Compile Include="Mapping\OutputDtoTypeFinder.cs" />
     <Compile Include="Reflection\DirectoryAssemblyFinder.cs" />
     <Compile Include="Reflection\IAllAssemblyFinder.cs" />
+    <Compile Include="Security\AuthenticationResult.cs" />
+    <Compile Include="Security\AuthenticationResultType.cs" />
     <Compile Include="Security\EntityInfoBaseInputDto.cs" />
     <Compile Include="Security\FunctionBaseInputDto.cs" />
     <Compile Include="Security\IEntityTypeFinder.cs" />
+    <Compile Include="Security\IFunctionAuthentication.cs" />
     <Compile Include="Security\IFunctionMethodFinder.cs" />
     <Compile Include="Security\IFunctionTypeFinder.cs" />
+    <Compile Include="Security\NullEntityInfoHandler.cs" />
     <Compile Include="Security\NullFunctionHandler.cs" />
     <Compile Include="Security\NullFunctionMethodInfoFinder.cs" />
     <Compile Include="Security\NullFunctionTypeFinder.cs" />
@@ -220,7 +224,14 @@
     </Compile>
     <Compile Include="Security\LoginedAttribute.cs" />
     <Compile Include="Security\RoleLimitAttribute.cs" />
-    <Compile Include="Security\VisiteType.cs" />
+    <Compile Include="Security\FilterType.cs" />
+    <Compile Include="Threading\Tasks\AsyncAutoResetEvent.cs" />
+    <Compile Include="Threading\Tasks\AsyncBarrier.cs" />
+    <Compile Include="Threading\Tasks\AsyncCountdownEvent.cs" />
+    <Compile Include="Threading\Tasks\AsyncLock.cs" />
+    <Compile Include="Threading\Tasks\AsyncReaderWriterLock.cs" />
+    <Compile Include="Threading\Tasks\AsyncSemaphore.cs" />
+    <Compile Include="Threading\Tasks\AsyncManualResetEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Configs\ConfigFile\osharp.xsd">

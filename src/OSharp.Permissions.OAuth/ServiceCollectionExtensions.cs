@@ -7,12 +7,6 @@
 //  <last-date>2015-10-31 2:15</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.Owin.Security.OAuth;
 
 using OSharp.Core.Dependency;
@@ -36,8 +30,8 @@ namespace OSharp.Core.Security
             services.AddSingleton<IAuthorizationCodeProvider, OsharpAuthorizationCodeProvider>();
             services.AddSingleton<IRefreshTokenProvider, OsharpRefreshTokenProvider>();
 
-            services.AddSingleton<IClientIdProvider, DatetimeClientIdProvider>();
-            services.AddSingleton<IClientSecretProvider, GuidClientSecretProvider>();
+            services.AddSingleton<IOAuthClientIdProvider, DatetimeOAuthClientIdProvider>();
+            services.AddSingleton<IOAuthClientSecretProvider, GuidOAuthClientSecretProvider>();
         }
     }
 }

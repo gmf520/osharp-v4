@@ -7,15 +7,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using OSharp.Utility.Logging;
-using OSharp.Web.Mvc.UI;
+using OSharp.Web.Mvc.Logging;
 using OSharp.Web.Mvc.UI;
 
 
@@ -24,14 +19,20 @@ namespace OSharp.Web.Mvc
     /// <summary>
     /// 控制器基类
     /// </summary>
+    [OperateLogFilter]
     public abstract class BaseController : Controller
     {
-        private readonly ILogger Logger;
+        protected readonly ILogger Logger;
 
         protected BaseController()
         {
             Logger = LogManager.GetLogger(GetType());
         }
+
+        /// <summary>
+        /// 获取或设置 依赖注入服务提供者
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// Called when an unhandled exception occurs in the action.
@@ -43,7 +44,7 @@ namespace OSharp.Web.Mvc
             Logger.Error(exception.Message, exception);
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                var message = "Ajax访问时引发异常：";
+                var message = "Ajax请求异常：";
                 if (exception is HttpAntiForgeryException)
                 {
                     message += "安全性验证失败。<br>请刷新页面重试，详情请查看系统日志。";

@@ -8,18 +8,15 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.AspNet.SignalR.Hubs;
 
 using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 using OSharp.Web.SignalR.Properties;
-
+using Microsoft.AspNet.SignalR;
+using OSharp.Utility;
 
 namespace OSharp.Web.SignalR.Initialize
 {
@@ -71,13 +68,17 @@ namespace OSharp.Web.SignalR.Initialize
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
             }
-            if (typeof(IHub).IsAssignableFrom(type))
+            if (!typeof(IHub).IsAssignableFrom(type))
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_MethodOwnTypeNotHubType.FormatWith(method.Name, type.FullName));
             }
 
             FunctionType functionType = FunctionType.Anonymouse;
-            if (method.HasAttribute<LoginedAttribute>(true))
+            if (type.HasAttribute<AuthorizeAttribute>(true))
+            {
+                functionType = FunctionType.Logined;
+            }
+            if (method.HasAttribute<LoginedAttribute>(true) || method.HasAttribute<AuthorizeAttribute>(true))
             {
                 functionType = FunctionType.Logined;
             }
@@ -105,7 +106,16 @@ namespace OSharp.Web.SignalR.Initialize
         /// </summary>
         protected override string GetArea(Type type)
         {
-            return "AreaSignalR";
+            type.Required<Type, InvalidOperationException>(m => typeof(IHub).IsAssignableFrom(m) && !m.IsAbstract,
+                Resources.HubMethodInfoFinder_TypeNotHubType.FormatWith(type.FullName));
+            string @namespace = type.Namespace;
+            if (@namespace == null)
+            {
+                return null;
+            }
+            int index = @namespace.IndexOf("Areas", StringComparison.Ordinal) + 6;
+            string area = index > 6 ? @namespace.Substring(index, @namespace.IndexOf(".Hubs", StringComparison.Ordinal) - index) : null;
+            return area;
         }
     }
 }

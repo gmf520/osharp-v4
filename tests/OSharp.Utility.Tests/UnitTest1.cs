@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Reflection;
 
 using Xunit;
-
-using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Utility.Tests
@@ -52,6 +49,17 @@ namespace OSharp.Utility.Tests
             Assert.False(info2 == definition2);
             Assert.False(t1 == info2);
             Assert.True(t1 == definition2);
+        }
+
+        [Fact]
+        public void Test02()
+        {
+            int? num = null;
+            Assert.True(num.HasValue == false);
+            Assert.True(num == null);
+            num = 1;
+            Assert.True(num.HasValue);
+            Assert.True(num != null);
         }
     }
 }

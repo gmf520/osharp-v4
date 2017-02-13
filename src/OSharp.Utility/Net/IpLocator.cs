@@ -22,7 +22,7 @@ namespace OSharp.Utility.Net
     {
         private readonly byte[] _data;
         private readonly long _firstStartIpOffset;
-        private readonly Regex _regex = new Regex(@"(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))");
+        private static readonly Regex Regex = new Regex(@"^(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))$");
 
         /// <summary>
         /// 初始化一个IP位置查找操作类的实例
@@ -58,12 +58,17 @@ namespace OSharp.Utility.Net
         /// </summary>
         /// <param name="ip"></param>
         /// <returns></returns>
-        private static long IpToInt(string ip)
+        public static long IpToInt(string ip)
         {
             char[] separator = new[] { '.' };
             if (ip.Split(separator).Length == 3)
             {
                 ip = ip + ".0";
+            }
+
+            if (!Regex.Match(ip).Success)
+            {
+                throw new ArgumentException("IP格式错误");
             }
             string[] nums = ip.Split(separator);
             long num1 = ((long.Parse(nums[0]) * 0x100L) * 0x100L) * 0x100L;
@@ -78,7 +83,7 @@ namespace OSharp.Utility.Net
         /// </summary>
         /// <param name="ipInt"></param>
         /// <returns></returns>
-        private static string IntToIp(long ipInt)
+        public static string IntToIp(long ipInt)
         {
             long num1 = (ipInt & 0xff000000L) >> 0x18;
             if (num1 < 0L)
@@ -100,7 +105,7 @@ namespace OSharp.Utility.Net
             {
                 num4 += 0x100L;
             }
-            return string.Concat(new[]
+            string ip = string.Concat(new[]
             {
                 num1.ToString(CultureInfo.InvariantCulture),
                 ".",
@@ -110,6 +115,12 @@ namespace OSharp.Utility.Net
                 ".",
                 num4.ToString(CultureInfo.InvariantCulture)
             });
+
+            if (!Regex.Match(ip).Success)
+            {
+                throw new ArgumentException("IP格式错误");
+            }
+            return ip;
         }
 
         /// <summary>
@@ -124,7 +135,7 @@ namespace OSharp.Utility.Net
             {
                 ip = "127.0.0.1";
             }
-            if (!_regex.Match(ip).Success)
+            if (!Regex.Match(ip).Success)
             {
                 throw new ArgumentException("IP格式错误");
             }

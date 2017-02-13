@@ -6,11 +6,9 @@
 //  <last-date>2015-07-13 9:30</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using OSharp.Core.Data;
 
 
 namespace OSharp.Core.Security
@@ -18,7 +16,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体数据接口
     /// </summary>
-    public interface IEntityInfo
+    public interface IEntityInfo: IRecyclable
     {
         /// <summary>
         /// 获取 实体数据类型名称

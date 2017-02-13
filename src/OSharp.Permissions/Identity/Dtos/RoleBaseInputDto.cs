@@ -7,12 +7,7 @@
 //  <last-date>2015-10-20 2:44</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 
@@ -45,6 +40,11 @@ namespace OSharp.Core.Identity.Dtos
         /// 获取或设置 是否是管理员
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否默认角色，用户注册后拥有此角色
+        /// </summary>
+        public bool IsDefault { get; set; }
 
         /// <summary>
         /// 获取或设置 是否系统角色

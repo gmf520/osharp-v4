@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs.ConfigFile;
 using OSharp.Core.Properties;
@@ -46,9 +44,10 @@ namespace OSharp.Core.Configs
             }
             InitializerType = type;
 
+            string binPath = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
             string[] mapperFiles = element.EntityMapperFiles.Split(',')
                 .Select(fileName => fileName.EndsWith(".dll") ? fileName : fileName + ".dll")
-                .Select(fileName => Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, fileName)).ToArray();
+                .Select(fileName => Path.Combine(binPath, fileName)).ToArray();
             EntityMapperAssemblies = mapperFiles.Select(Assembly.LoadFrom).ToList();
 
             if (element.CreateDatabaseInitializer != null && !element.CreateDatabaseInitializer.InitializerTypeName.IsMissing())

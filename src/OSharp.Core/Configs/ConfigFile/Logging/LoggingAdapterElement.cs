@@ -6,12 +6,7 @@
 //  <last-date>2015-06-30 15:15</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Core.Configs.ConfigFile

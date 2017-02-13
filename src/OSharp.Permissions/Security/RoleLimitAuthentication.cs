@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
+using OSharp.Core.Identity.Models;
 using OSharp.Core.Security.Models;
 using OSharp.Utility.Extensions;
 
@@ -37,8 +38,13 @@ namespace OSharp.Core.Security
         where TFunction : FunctionBase<TFunctionKey>
         where TFunctionRoleMap : IFunctionRoleMap<TFunctionRoleMapKey, TFunction, TFunctionKey, TRole, TRoleKey>
         where TFunctionUserMap : IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
-        where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
-        where TUser : IUser<TUserKey>, IEntity<TUserKey>
+        where TRole : RoleBase<TRoleKey>
+        where TUser : UserBase<TUserKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
+        where TFunctionRoleMapKey : IEquatable<TFunctionRoleMapKey>
+        where TFunctionUserMapKey : IEquatable<TFunctionUserMapKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 执行功能权限验证

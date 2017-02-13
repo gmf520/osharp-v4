@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using OSharp.Core.Data;
 using OSharp.Core.Dependency;
-using OSharp.Core.Reflection;
 using OSharp.Utility.Collections;
 using OSharp.Utility.Extensions;
 using OSharp.Utility.Logging;
@@ -129,15 +128,30 @@ namespace OSharp.Core.Security
         protected virtual void UpdateToRepository(TEntityInfo[] entityInfos)
         {
             IRepository<TEntityInfo, TKey> repository = ServiceProvider.GetService<IRepository<TEntityInfo, TKey>>();
-            TEntityInfo[] items = repository.GetByPredicate(m => true).ToArray();
+            TEntityInfo[] items = repository.TrackEntities.ToArray();
 
             //删除的实体信息
             TEntityInfo[] removeItems = items.Except(entityInfos,
                 EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassName)).ToArray();
             int removeCount = removeItems.Length;
-            if (repository.Delete(removeItems) > 0)
+            repository.UnitOfWork.TransactionEnabled = true;
+            foreach (TEntityInfo removeItem in removeItems)
             {
-                items = repository.GetByPredicate(m => true).ToArray();
+                try
+                {
+                    removeItem.IsDeleted = true;
+                    repository.Delete(removeItem);
+                }
+                catch (Exception)
+                {
+                    //无法物理删除，可能是外键约束，改为逻辑删除
+                    repository.Recycle(removeItem);
+                }
+            }
+            int tmpCount = repository.UnitOfWork.SaveChanges();
+            if (tmpCount > 0)
+            {
+                items = repository.TrackEntities.ToArray();
             }
 
             repository.UnitOfWork.TransactionEnabled = true;

@@ -8,15 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 using OSharp.Core.Reflection;
-using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Mapping

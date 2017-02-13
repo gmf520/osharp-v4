@@ -8,10 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Security.Models;
 using OSharp.Demo.Models.Identity;
@@ -22,6 +18,6 @@ namespace OSharp.Demo.Models.OAuth
     /// <summary>
     /// 实体类——客户端刷新Token
     /// </summary>
-    public class ClientRefreshToken : ClientRefreshTokenBase<Guid, Client, int, User, int>
+    public class OAuthClientRefreshToken : OAuthClientRefreshTokenBase<Guid, OAuthClient, int, User, int>
     { }
 }

@@ -7,12 +7,6 @@
 //  <last-date>2015-10-20 10:48</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Core.Data;
 
 
@@ -21,8 +15,8 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体信息输入DTO基类
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    public class EntityInfoBaseInputDto<TKey> : IInputDto<TKey>
+    /// <typeparam name="TKey">实体数据编号类型</typeparam>
+    public abstract class EntityInfoBaseInputDto<TKey> : IInputDto<TKey>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识
@@ -43,6 +37,5 @@ namespace OSharp.Core.Security
         /// 获取 是否启用数据日志
         /// </summary>
         public bool DataLogEnabled { get; set; }
-
     }
 }

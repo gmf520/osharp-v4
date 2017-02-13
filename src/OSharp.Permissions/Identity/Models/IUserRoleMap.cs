@@ -7,12 +7,6 @@
 //  <last-date>2015-09-13 17:25</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -28,9 +22,9 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public interface IUserRoleMap<TKey, TUser, TUserKey, TRole, TRoleKey> : IEntity<TKey>, IExpirable
-        where TUser : IUser<TUserKey>
-        where TRole : IRole<TRoleKey>
+    public interface IUserRoleMap<out TKey, TUser, TUserKey, TRole, TRoleKey> : IEntity<TKey>, IExpirable
+        where TUser : UserBase<TUserKey>
+        where TRole : RoleBase<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 用户信息

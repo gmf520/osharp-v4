@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Owin.Security;
@@ -24,7 +21,7 @@ namespace OSharp.Core.Security
     /// </summary>
     public class OsharpAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
-        private readonly IClientValidator _clientValidator;
+        private readonly IOAuthClientValidator _ioAuthClientValidator;
         private readonly IPasswordValidator _passwordValidator;
 
         /// <summary>
@@ -33,8 +30,8 @@ namespace OSharp.Core.Security
         public OsharpAuthorizationServerProvider(IServiceProvider serviceProvider)
         {
             serviceProvider.CheckNotNull("serviceProvider");
-            _clientValidator = serviceProvider.GetService<IClientValidator>();
-            if (_clientValidator == null)
+            _ioAuthClientValidator = serviceProvider.GetService<IOAuthClientValidator>();
+            if (_ioAuthClientValidator == null)
             {
                 throw new InvalidOperationException(Resources.ClientValidatorIsNull);
             }
@@ -55,7 +52,7 @@ namespace OSharp.Core.Security
             string clientId, clientSecret;
             context.TryGetBasicCredentials(out clientId, out clientSecret);
             //判断客户端Id与客户端密钥的合法性，不合法的拦截
-            bool validated = await _clientValidator.Validate(clientId, clientSecret);
+            bool validated = await _ioAuthClientValidator.Validate(clientId, clientSecret);
             if (!validated)
             {
                 context.SetError("invalid_client", "client is not valid.");
@@ -144,7 +141,7 @@ namespace OSharp.Core.Security
         /// <returns></returns>
         public async override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            string redirectUri = await _clientValidator.GetRedirectUrl(context.ClientId);
+            string redirectUri = await _ioAuthClientValidator.GetRedirectUrl(context.ClientId);
             if (redirectUri != null)
             {
                 context.Validated(redirectUri);

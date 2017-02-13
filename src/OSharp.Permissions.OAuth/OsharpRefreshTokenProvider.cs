@@ -8,16 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Owin.Security.Infrastructure;
-
-using OSharp.Core.Data;
 
 
 namespace OSharp.Core.Security
@@ -27,12 +20,12 @@ namespace OSharp.Core.Security
     /// </summary>
     public class OsharpRefreshTokenProvider : AuthenticationTokenProvider, IRefreshTokenProvider
     {
-        private readonly IClientRefreshTokenStore _clientRefreshTokenStore;
+        private readonly IOAuthClientRefreshTokenStore _clientRefreshTokenStore;
 
         /// <summary>
         /// 初始化一个<see cref="OsharpRefreshTokenProvider"/>类型的新实例
         /// </summary>
-        public OsharpRefreshTokenProvider(IClientRefreshTokenStore clientRefreshTokenStore)
+        public OsharpRefreshTokenProvider(IOAuthClientRefreshTokenStore clientRefreshTokenStore)
         {
             _clientRefreshTokenStore = clientRefreshTokenStore;
         }

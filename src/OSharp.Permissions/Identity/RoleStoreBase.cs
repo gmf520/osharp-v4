@@ -27,15 +27,16 @@ namespace OSharp.Core.Identity
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     public abstract class RoleStoreBase<TRole, TRoleKey> :
         IQueryableRoleStore<TRole, TRoleKey>,
-        ITransientDependency
+        IScopeDependency
         where TRole : RoleBase<TRoleKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         private bool _disposed;
 
         /// <summary>
         /// 获取或设置 角色仓储对象
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { private get; set; }
+        public IRepository<TRole, TRoleKey> RoleRepository { protected get; set; }
 
         #region Implementation of IDisposable
 
@@ -103,7 +104,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<TRole> FindByNameAsync(string roleName)
         {
             roleName.CheckNotNull("roleName");
-            return (await RoleRepository.GetByPredicateAsync(m => m.Name.Equals(roleName))).FirstOrDefault();
+            return await Task.Run(() => RoleRepository.TrackEntities.Where(m => m.Name.Equals(roleName)).FirstOrDefault());
         }
 
         #endregion

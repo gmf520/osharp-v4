@@ -7,10 +7,6 @@
 //  <last-date>2015-08-07 2:34</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using OSharp.Core.Dependency;
@@ -32,14 +28,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="dto">数据角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddEntityRoleMapAsync(TEntityRoleMapDto dto);
+        Task<OperationResult> CreateEntityRoleMapAsync(TEntityRoleMapDto dto);
 
         /// <summary>
         /// 编辑数据角色映射信息
         /// </summary>
         /// <param name="dto">数据角色映射信息DTO</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditEntityRoleMapAsync(TEntityRoleMapDto dto);
+        Task<OperationResult> UpdateEntityRoleMapAsync(TEntityRoleMapDto dto);
 
         /// <summary>
         /// 删除数据角色映射信息

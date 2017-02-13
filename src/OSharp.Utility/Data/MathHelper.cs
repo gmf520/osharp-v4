@@ -8,9 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Utility.Data
@@ -26,6 +25,17 @@ namespace OSharp.Utility.Data
         public static double GetDistance(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow((x1 - x2), 2) + Math.Pow((y1 - y2), 2));
+        }
+
+        /// <summary>
+        /// 计算四则表达式的结果
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public static double FourSpecies(string exp)
+        {
+            MathExpression expression = new MathExpression(exp);
+            return expression.Compute();
         }
     }
 }

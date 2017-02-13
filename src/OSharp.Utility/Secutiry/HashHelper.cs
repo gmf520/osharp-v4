@@ -6,9 +6,6 @@
 //  <last-date>2014:07:05 15:18</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 

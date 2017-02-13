@@ -7,17 +7,14 @@
 //  <last-date>2015-11-06 6:13</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.Owin.Security.Infrastructure;
 
 
 namespace OSharp.Core.Security
 {
+    /// <summary>
+    /// 定义刷新客户端标识提供者
+    /// </summary>
     public interface IRefreshTokenProvider : IAuthenticationTokenProvider
     { }
 }

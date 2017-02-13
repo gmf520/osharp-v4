@@ -7,10 +7,6 @@
 //  <last-date>2015-11-10 2:52</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 
@@ -19,7 +15,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 定义客户端刷新Token存储功能
     /// </summary>
-    public interface IClientRefreshTokenStore
+    public interface IOAuthClientRefreshTokenStore
     {
         /// <summary>
         /// 获取刷新Token

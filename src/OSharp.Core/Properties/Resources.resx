@@ -132,15 +132,6 @@
   <data name="DbContextInitializerConfig_InitializerNotExists" xml:space="preserve">
     <value>上下文初始化类型“{0}”不存在</value>
   </data>
-  <data name="FrameworkInitializer_DatabaseInitializeIsNull" xml:space="preserve">
-    <value>数据库初始化器不能为空，请确定IoC组件已加载了IDatabaseInitializer的实现类</value>
-  </data>
-  <data name="FrameworkInitializer_EntityInfoHandlerIsNull" xml:space="preserve">
-    <value>数据处理初始化器不能为空，请确定IoC组件已加载了IEntityInfoHandler的实现类</value>
-  </data>
-  <data name="FrameworkInitializer_FunctionHandlerIsNull" xml:space="preserve">
-    <value>数据处理初始化器不能为空，请确定IoC组件已加载了IFunctionHandler的实现类</value>
-  </data>
   <data name="IocInitializerBase_TypeNotIRepositoryType" xml:space="preserve">
     <value>类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。</value>
   </data>

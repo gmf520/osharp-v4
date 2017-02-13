@@ -19,9 +19,19 @@ namespace OSharp.Web.Mvc.UI
     public static class Extensions
     {
         /// <summary>
-        /// 操作结果转ajax操作结果
+        /// 将业务操作结果转ajax操作结果
         /// </summary>
-        public static AjaxResult ToAjaxResult(this OperationResult<object> result)
+        public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result)
+        {
+            string content = result.Message ?? result.ResultType.ToDescription();
+            AjaxResultType type = result.ResultType.ToAjaxResultType();
+            return new AjaxResult(content, type, result.Data);
+        }
+
+        /// <summary>
+        /// 将业务操作结果转ajax操作结果
+        /// </summary>
+        public static AjaxResult ToAjaxResult(this OperationResult result)
         {
             string content = result.Message ?? result.ResultType.ToDescription();
             AjaxResultType type = result.ResultType.ToAjaxResultType();

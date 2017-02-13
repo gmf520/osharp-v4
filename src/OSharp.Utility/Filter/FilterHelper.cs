@@ -1,6 +1,13 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="FilterHelper.cs" company="OSharp开源团队">
+//      Copyright (c) 2014 OSharp. All rights reserved.
+//  </copyright>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2014:07:04 18:09</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -121,7 +128,7 @@ namespace OSharp.Utility.Filter
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
         /// <returns></returns>
-        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule = null)
+        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
         {
             ParameterExpression param = Expression.Parameter(typeof(T), "m");
             Expression body = GetExpressionBody(param, rule);
@@ -236,9 +243,10 @@ namespace OSharp.Utility.Filter
             //}
 
             Type elementType = conversionType.GetUnNullableType();
-            object value = rule.Value is string
-                ? rule.Value.ToString().CastTo(conversionType)
-                : Convert.ChangeType(rule.Value, elementType);
+            object value = rule.Value.CastTo(conversionType);
+            //object value = rule.Value is string
+            //    ? rule.Value.ToString().CastTo(conversionType)
+            //    : Convert.ChangeType(rule.Value, elementType);
             return Expression.Constant(value, conversionType);
         }
 

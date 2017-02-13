@@ -51,7 +51,7 @@ namespace OSharp.Utility.Extensions
             itemFormatFunc.CheckNotNull("itemFormatFunc");
             if (!collection.Any())
             {
-                return null;
+                return string.Empty;
             }
             StringBuilder sb = new StringBuilder();
             int i = 0;

@@ -8,11 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Utility.Extensions;
 
@@ -26,6 +22,7 @@ namespace OSharp.Core.Security
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
     public class LoginedAnthentication<TFunction, TFunctionKey> : ILoginedAnthentication<TFunction, TFunctionKey>
         where TFunction : FunctionBase<TFunctionKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 执行功能权限验证

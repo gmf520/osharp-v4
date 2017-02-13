@@ -14,14 +14,10 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 
-using OSharp.Data.Entity;
 using OSharp.Core.Identity;
 using OSharp.Core.Mapping;
-using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
-using OSharp.Demo.Identity;
 using OSharp.Demo.Models.Identity;
-using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 

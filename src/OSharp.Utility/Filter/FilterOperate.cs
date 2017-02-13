@@ -6,13 +6,6 @@
 //  <last-date>2014:07:04 18:09</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Utility.Filter
 {
     /// <summary>

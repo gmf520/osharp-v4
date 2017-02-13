@@ -6,8 +6,6 @@
 //  <last-date>2015-01-08 0:24</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 using OSharp.Core.Identity.Models;

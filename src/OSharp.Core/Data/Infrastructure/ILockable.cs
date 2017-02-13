@@ -7,13 +7,6 @@
 //  <last-date>2015-10-21 22:32</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Core.Data
 {
     /// <summary>
@@ -22,7 +15,7 @@ namespace OSharp.Core.Data
     public interface ILockable
     {
         /// <summary>
-        /// 获取或设置 是否锁定
+        /// 获取或设置 是否锁定，用于禁用当前信息
         /// </summary>
         bool IsLocked { get; set; }
     }

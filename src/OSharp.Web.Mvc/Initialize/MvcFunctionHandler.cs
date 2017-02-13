@@ -8,11 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Utility;
 using OSharp.Utility.Extensions;
@@ -70,7 +70,16 @@ namespace OSharp.Web.Mvc.Initialize
                 throw new InvalidOperationException(Resources.FunctionHandler_MethodNotMvcAction.FormatWith(method.Name));
             }
 
+            Type type = method.DeclaringType;
+            if (type == null)
+            {
+                throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
+            }
             FunctionType functionType = FunctionType.Anonymouse;
+            if (type.HasAttribute<AuthorizeAttribute>(true))
+            {
+                functionType = FunctionType.Logined;
+            }
             if (method.HasAttribute<AllowAnonymousAttribute>(true))
             {
                 functionType = FunctionType.Anonymouse;
@@ -82,11 +91,6 @@ namespace OSharp.Web.Mvc.Initialize
             else if (method.HasAttribute<RoleLimitAttribute>(true))
             {
                 functionType = FunctionType.RoleLimit;
-            }
-            Type type = method.DeclaringType;
-            if (type == null)
-            {
-                throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
             }
             Function function = new Function()
             {
@@ -119,15 +123,18 @@ namespace OSharp.Web.Mvc.Initialize
             string area = index > 6 ? @namespace.Substring(index, @namespace.IndexOf(".Controllers", StringComparison.Ordinal) - index) : null;
             return area;
         }
-
+        
         /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>
-        /// <param name="method">方法信息</param>
+        /// <param name="action">要判断的功能信息</param>
+        /// <param name="method">功能相关的方法信息</param>
+        /// <param name="functions">已存在的功能信息集合</param>
         /// <returns></returns>
-        protected override bool IsIgnoreMethod(MethodInfo method)
+        protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
-            return method.HasAttribute<HttpPostAttribute>();
+            bool flag = base.IsIgnoreMethod(action, method, functions);
+            return flag && method.HasAttribute<HttpPostAttribute>();
         }
     }
 }

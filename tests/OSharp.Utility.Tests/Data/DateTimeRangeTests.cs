@@ -11,8 +11,6 @@ using System;
 
 using Xunit;
 
-using OSharp.UnitTest.Infrastructure;
-
 using Smocks;
 
 

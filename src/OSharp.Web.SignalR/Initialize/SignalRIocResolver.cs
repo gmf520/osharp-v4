@@ -10,8 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.AspNet.SignalR;
 
@@ -25,6 +23,11 @@ namespace OSharp.Web.SignalR.Initialize
     /// </summary>
     public class SignalRIocResolver : IIocResolver
     {
+        /// <summary>
+        /// 获取或设置 带生命周期作用域的Hub对象解析委托
+        /// </summary>
+        public static Func<Type, object> LifetimeResolveFunc { private get; set; }
+
         /// <summary>
         /// 获取指定类型的实例
         /// </summary>
@@ -42,6 +45,14 @@ namespace OSharp.Web.SignalR.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
+            if (LifetimeResolveFunc != null)
+            {
+                object obj = LifetimeResolveFunc(type);
+                if (obj != null)
+                {
+                    return obj;
+                }
+            }
             return GlobalHost.DependencyResolver.GetService(type);
         }
 
@@ -62,6 +73,15 @@ namespace OSharp.Web.SignalR.Initialize
         /// <returns></returns>
         public IEnumerable<object> Resolves(Type type)
         {
+            if (LifetimeResolveFunc != null)
+            {
+                Type typeToResolve = typeof(IEnumerable<>).MakeGenericType(type);
+                Array array = LifetimeResolveFunc(typeToResolve) as Array;
+                if (array != null)
+                {
+                    return array.Cast<object>();
+                }
+            }
             return GlobalHost.DependencyResolver.GetServices(type);
         }
     }

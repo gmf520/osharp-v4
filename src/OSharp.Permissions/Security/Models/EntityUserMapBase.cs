@@ -8,11 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 using OSharp.Core.Identity.Models;
@@ -65,5 +61,10 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// 获取或设置 信息创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
     }
 }

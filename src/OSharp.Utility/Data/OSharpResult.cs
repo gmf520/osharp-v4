@@ -7,12 +7,6 @@
 //  <last-date>2015-08-03 18:29</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 namespace OSharp.Utility.Data
 {
     /// <summary>
@@ -58,6 +52,8 @@ namespace OSharp.Utility.Data
     /// <typeparam name="TData">结果数据类型</typeparam>
     public abstract class OSharpResult<TResultType, TData> : IOSharpResult<TResultType, TData>
     {
+        protected string _message;
+
         /// <summary>
         /// 初始化一个<see cref="OSharpResult{TResultType,TData}"/>类型的新实例
         /// </summary>
@@ -85,7 +81,7 @@ namespace OSharp.Utility.Data
         protected OSharpResult(TResultType type, string message, TData data)
         {
             ResultType = type;
-            Message = message;
+            _message = message;
             Data = data;
         }
 
@@ -97,7 +93,11 @@ namespace OSharp.Utility.Data
         /// <summary>
         /// 获取或设置 返回消息
         /// </summary>
-        public string Message { get; set; }
+        public virtual string Message
+        {
+            get { return _message; }
+            set { _message = value; }
+        }
 
         /// <summary>
         /// 获取或设置 结果数据

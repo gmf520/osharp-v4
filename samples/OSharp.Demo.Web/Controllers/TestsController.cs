@@ -86,7 +86,7 @@ namespace OSharp.Demo.Web.Controllers
 
         public async Task<ActionResult> Test1()
         {
-            ClientStore clientStore = ServiceProvider.GetService<ClientStore>();
+            OAuthClientStore oAuthClientStore = ServiceProvider.GetService<OAuthClientStore>();
             OperationResult result = null;
             //ClientInputDto clientDto = new ClientInputDto()
             //{
@@ -97,13 +97,13 @@ namespace OSharp.Demo.Web.Controllers
             //    RedirectUrl = "http://localhost:10240"
             //};
             //result = await clientStore.AddClient(clientDto);
-            ClientSecretInputDto secretDto = new ClientSecretInputDto()
+            OAuthClientSecretInputDto secretDto = new OAuthClientSecretInputDto()
             {
                 Type = "Test Type",
                 Remark = "Remark",
                 ClientId = 2
             };
-            result = await clientStore.AddClientSecret(secretDto);
+            result = await oAuthClientStore.CreateClientSecret(secretDto);
             return Content(result.Message);
         }
 

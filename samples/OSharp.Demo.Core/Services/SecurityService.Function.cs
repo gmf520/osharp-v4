@@ -8,14 +8,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core.Context;
-using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Mapping;
 using OSharp.Core.Security;
@@ -96,53 +93,73 @@ namespace OSharp.Demo.Services
         /// </summary>
         /// <param name="inputDtos">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult EditFunctions(params FunctionInputDto[] inputDtos)
+        public async Task<OperationResult> EditFunctions(params FunctionInputDto[] inputDtos)
         {
             inputDtos.CheckNotNull("dtos");
-            List<string> names = new List<string>();
             FunctionRepository.UnitOfWork.TransactionEnabled = true;
+            List<string> names = new List<string>();
             foreach (FunctionInputDto dto in inputDtos)
             {
-                if (FunctionRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
+                OperationResult result = await SecurityManager.UpdateFunction(dto);
+                if (!result.Successed)
                 {
-                    return new OperationResult(OperationResultType.Error, "名称为“{0}”的功能信息已存在".FormatWith(dto.Name));
+                    return result;
                 }
-                Function entity = FunctionRepository.GetByKey(dto.Id);
-                if (entity == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull);
-                }
-                FunctionType oldType = entity.FunctionType;
-                if (dto.DataLogEnabled && !dto.OperateLogEnabled && !entity.OperateLogEnabled && !entity.DataLogEnabled)
-                {
-                    dto.OperateLogEnabled = true;
-                }
-                else if (!dto.OperateLogEnabled && dto.DataLogEnabled && entity.OperateLogEnabled && entity.DataLogEnabled)
-                {
-                    dto.DataLogEnabled = false;
-                }
-                entity = dto.MapTo(entity);
-                if (entity.Url.IsNullOrEmpty())
-                {
-                    entity.Url = null;
-                }
-                if (oldType != entity.FunctionType)
-                {
-                    entity.IsTypeChanged = true;
-                }
-                FunctionRepository.Update(entity);
-                names.Add(entity.Name);
+                names.Add(dto.Name);
             }
-            int count = FunctionRepository.UnitOfWork.SaveChanges();
-            OperationResult result = count > 0
-                ? new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()))
-                : new OperationResult(OperationResultType.NoChanged);
-            if (result.ResultType == OperationResultType.Success)
+            int count = await FunctionRepository.UnitOfWork.SaveChangesAsync();
+            if (count > 0)
             {
                 IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
                 handler.RefreshCache();
+                return new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()));
             }
-            return result;
+            return OperationResult.NoChanged;
+
+            //List<string> names = new List<string>();
+            //FunctionRepository.UnitOfWork.TransactionEnabled = true;
+            //foreach (FunctionInputDto dto in inputDtos)
+            //{
+            //    if (FunctionRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
+            //    {
+            //        return new OperationResult(OperationResultType.Error, "名称为“{0}”的功能信息已存在".FormatWith(dto.Name));
+            //    }
+            //    Function entity = FunctionRepository.GetByKey(dto.Id);
+            //    if (entity == null)
+            //    {
+            //        return new OperationResult(OperationResultType.QueryNull);
+            //    }
+            //    FunctionType oldType = entity.FunctionType;
+            //    if (dto.DataLogEnabled && !dto.OperateLogEnabled && !entity.OperateLogEnabled && !entity.DataLogEnabled)
+            //    {
+            //        dto.OperateLogEnabled = true;
+            //    }
+            //    else if (!dto.OperateLogEnabled && dto.DataLogEnabled && entity.OperateLogEnabled && entity.DataLogEnabled)
+            //    {
+            //        dto.DataLogEnabled = false;
+            //    }
+            //    entity = dto.MapTo(entity);
+            //    if (entity.Url.IsNullOrEmpty())
+            //    {
+            //        entity.Url = null;
+            //    }
+            //    if (oldType != entity.FunctionType)
+            //    {
+            //        entity.IsTypeChanged = true;
+            //    }
+            //    FunctionRepository.Update(entity);
+            //    names.Add(entity.Name);
+            //}
+            //int count = FunctionRepository.UnitOfWork.SaveChanges();
+            //OperationResult result = count > 0
+            //    ? new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(names.ExpandAndToString()))
+            //    : new OperationResult(OperationResultType.NoChanged);
+            //if (result.ResultType == OperationResultType.Success)
+            //{
+            //    IFunctionHandler handler = ServiceProvider.GetService<IFunctionHandler>();
+            //    handler.RefreshCache();
+            //}
+            //return result;
         }
 
         /// <summary>
@@ -162,9 +179,9 @@ namespace OSharp.Demo.Services
                 {
                     return new OperationResult(OperationResultType.QueryNull);
                 }
-                if (!entity.IsCustom)
+                if (!entity.IsCustom && !entity.IsDeleted)
                 {
-                    return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，不能删除".FormatWith(entity.Name));
+                    return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，并且未被回收，不能删除".FormatWith(entity.Name));
                 }
                 FunctionRepository.Delete(entity);
                 names.Add(entity.Name);

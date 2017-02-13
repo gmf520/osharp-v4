@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+
+using OSharp.Utility.Extensions;
+using System.Linq;
 
 using Xunit;
 
@@ -66,26 +69,38 @@ namespace OSharp.Utility.Extensions.Tests
         {
             string value = null;
             Assert.False(value.IsIpAddress());
+            value = "321.ad.54.22";
+            Assert.False(value.IsIpAddress());
             value = "0.0.0.0";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "1.1.1.1";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "192.168.0.1";
-            Assert.False(value.IsIpAddress());
+            Assert.True(value.IsIpAddress());
             value = "255.255.255.255";
             Assert.True(value.IsIpAddress());
         }
 
         [Fact()]
-        public void AddQueryStringTest()
+        public void AddUrlQueryTest()
         {
             const string url = "http://localhost:801";
             string excepted = url + "?id=1";
-            Assert.Equal(url.AddQueryString("id=1"), excepted);
+            Assert.Equal(url.AddUrlQuery("id=1"), excepted);
             excepted = url + "?name=abc";
-            Assert.Equal(url.AddQueryString("name=abc"), excepted);
+            Assert.Equal(url.AddUrlQuery("name=abc"), excepted);
             excepted = url + "?id=1&name=abc";
-            Assert.Equal(url.AddQueryString("id=1", "name=abc"), excepted);
+            Assert.Equal(url.AddUrlQuery("id=1", "name=abc"), excepted);
+        }
+
+        [Fact()]
+        public void GetQueryParamTest()
+        {
+            string url = "http://www.baidu.com?key=website&word=beyond&name=%E9%83%AD%E6%98%8E%E9%94%8B";
+            Assert.Equal(url.GetUrlQuery("key"), "website");
+            Assert.Equal(url.GetUrlQuery("word"), "beyond");
+            Assert.Equal(url.GetUrlQuery("name"), "%E9%83%AD%E6%98%8E%E9%94%8B");
+            Assert.Equal(url.GetUrlQuery("nokey"), string.Empty);
         }
 
         [Fact()]
@@ -94,6 +109,90 @@ namespace OSharp.Utility.Extensions.Tests
             const string url = "http://localhost:801";
             string excepted = url + "#title";
             Assert.Equal(url.AddHashFragment("title"), excepted);
+        }
+
+        [Fact()]
+        public void MatchFirstNumberTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchFirstNumber(), "13800138000");
+        }
+
+        [Fact()]
+        public void MatchLastNumberTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchLastNumber(), "123202901");
+        }
+
+        [Fact()]
+        public void MatchNumbersTest()
+        {
+            const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.Equal(source.MatchNumbers(), new[] { "13800138000", "123456789", "123202901" });
+        }
+
+        [Fact()]
+        public void IsMatchNumberTest()
+        {
+            string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
+            Assert.True(source.IsMatchNumber());
+            source = "你以为你委膙啊";
+            Assert.False(source.IsMatchNumber());
+        }
+
+        [Fact()]
+        public void IsMatchNumberTest1()
+        {
+            string source = "123456789";
+            Assert.True(source.IsMatchNumber(9));
+            source = "123456789s";
+            Assert.False(source.IsMatchNumber(9));
+        }
+
+        [Fact()]
+        public void SubstringTest()
+        {
+            const string source = "IP地址是四段点分十进制的字符串表示的";
+            Assert.Equal(source.Substring("四段", "的字符串","好"), "点分十进制");
+        }
+
+        [Fact()]
+        public void IsUnicodeTest()
+        {
+            string source = "今天天气不错";
+            Assert.True(source.IsUnicode());
+            source = "abc123";
+            Assert.False(source.IsUnicode());
+        }
+
+        [Fact()]
+        public void IsIdentityCardTest()
+        {
+            string value = "321081199801018994";
+            Assert.True(value.IsIdentityCard());
+            value = "371328198104016829";
+            Assert.True(value.IsIdentityCard());
+            value = "37132819810401652x";
+            Assert.True(value.IsIdentityCard());
+        }
+
+        [Fact()]
+        public void GetChineseSpellTest()
+        {
+            char @char = '郭';
+            Assert.Equal(@char.GetChineseSpell(), "G");
+
+            string str = "郭明锋";
+            Assert.Equal(str.GetChineseSpell(), "GMF");
+        }
+
+        [Fact()]
+        public void ToUnicodeStringTest()
+        {
+            string unicode = "编码".ToUnicodeString();
+            Assert.Equal(@"\u7f16\u7801", unicode);
+            Assert.Equal("编码", unicode.FromUnicodeString());
         }
     }
 }

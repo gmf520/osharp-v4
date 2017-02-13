@@ -7,12 +7,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
 
@@ -25,8 +19,8 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TKey">编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public abstract class UserLoginBase<TKey, TUser, TUserKey> : EntityBase<TKey>, IUserLogin<TKey, TUser, TUserKey>
-        where TUser : IUser<TUserKey>
+    public abstract class UserLoginBase<TKey, TUser, TUserKey> : EntityBase<TKey>, IUserLogin<TKey, TUser, TUserKey>, ICreatedTime
+        where TUser : UserBase<TUserKey>
     {
         /// <summary>
         /// 获取或设置 第三方登录提供者
@@ -37,6 +31,11 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 第三方登录密钥
         /// </summary>
         public string ProviderKey { get; set; }
+
+        /// <summary>
+        /// 获取设置 信息创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 获取或设置 相关用户信息

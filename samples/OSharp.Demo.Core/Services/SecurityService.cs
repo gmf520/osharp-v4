@@ -7,14 +7,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Data;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
+using OSharp.Demo.Security;
 
 
 namespace OSharp.Demo.Services
@@ -38,5 +35,10 @@ namespace OSharp.Demo.Services
         /// 获取或设置 实体数据信息仓储对象
         /// </summary>
         public IRepository<EntityInfo, Guid> EntityInfoRepository { protected get; set; }
+
+        /// <summary>
+        /// 获取或设置 安全权限管理对象
+        /// </summary>
+        public SecurityManager SecurityManager { get; set; }
     }
 }

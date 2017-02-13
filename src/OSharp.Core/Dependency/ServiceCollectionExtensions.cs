@@ -10,8 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Properties;
 using OSharp.Utility.Extensions;
@@ -23,7 +21,7 @@ namespace OSharp.Core.Dependency
     /// 服务集合扩展辅助操作
     /// </summary>
     public static class ServiceCollectionExtensions
-    {
+    { 
         /// <summary>
         /// 注册即时生命周期类型的映射信息
         /// </summary>
@@ -373,23 +371,28 @@ namespace OSharp.Core.Dependency
         }
 
         /// <summary>
-        /// 尝试将映射描述添加到服务映射集合中，存在则不添加
+        /// 尝试将映射描述添加到服务映射集合中，存在则替换并后移
         /// </summary>
         /// <param name="collection">服务映射集合</param>
         /// <param name="descriptor">服务映射信息</param>
         /// <returns></returns>
         public static IServiceCollection TryAdd(this IServiceCollection collection, ServiceDescriptor descriptor)
         {
-            if (collection.Any(m => m.ServiceType == descriptor.ServiceType && m.ImplementationType == descriptor.ImplementationType))
+            ServiceDescriptor exist = collection.FirstOrDefault(m => m.ServiceType == descriptor.ServiceType && m.ImplementationType == descriptor.ImplementationType);
+            if (exist == null)
             {
-                return collection;
+                collection.Add(descriptor);
             }
-            collection.Add(descriptor);
+            else
+            {
+                collection.Remove(exist);
+                collection.Add(descriptor);
+            }
             return collection;
         }
 
         /// <summary>
-        /// 尝试将多个映射描述添加到服务映射集合中，存在则路过
+        /// 尝试将多个映射描述添加到服务映射集合中，存在则替换并后移
         /// </summary>
         /// <param name="collection">服务映射集合</param>
         /// <param name="descriptors">多个服务映射信息</param>

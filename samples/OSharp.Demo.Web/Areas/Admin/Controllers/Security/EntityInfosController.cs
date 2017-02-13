@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 
-using OSharp.Core.Caching;
 using OSharp.Core.Data.Extensions;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;

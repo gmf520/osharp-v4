@@ -1,5 +1,4 @@
-﻿using OSharp.Utility.Extensions;
-using System.Threading;
+﻿using System.Threading;
 
 using Xunit;
 
