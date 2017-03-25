@@ -7,7 +7,10 @@
 //  <last-date>2015-08-03 18:39</last-date>
 // -----------------------------------------------------------------------
 
+using System.Dynamic;
+
 using OSharp.Utility.Data;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Security
@@ -15,19 +18,12 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 权限检查结果
     /// </summary>
-    public class AuthenticationResult : OSharpResult<AuthenticationResultType>
+    public sealed class AuthenticationResult : OSharpResult<AuthenticationResultType>
     {
         static AuthenticationResult()
         {
-            Allowed = new AuthenticationResult();
+            Allowed = new AuthenticationResult(AuthenticationResultType.Allowed);
         }
-
-        /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
-        /// </summary>
-        public AuthenticationResult()
-            : this(AuthenticationResultType.Allowed)
-        { }
 
         /// <summary>
         /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
@@ -40,8 +36,24 @@ namespace OSharp.Core.Security
         /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
         /// </summary>
         public AuthenticationResult(AuthenticationResultType type, string message)
-            : base(type, message, null)
+            : this(type, message, null)
         { }
+
+        /// <summary>
+        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// </summary>
+        public AuthenticationResult(AuthenticationResultType type, string message, object data)
+            : base(type, message, data)
+        { }
+
+        /// <summary>
+        /// 获取或设置 返回消息
+        /// </summary>
+        public override string Message
+        {
+            get { return _message ?? ResultType.ToDescription(); }
+            set { _message = value; }
+        }
 
         /// <summary>
         /// 获取或设置 允许的检查结果

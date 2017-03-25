@@ -38,6 +38,14 @@ namespace OSharp.Core.Identity
         /// </summary>
         public IRepository<TRole, TRoleKey> RoleRepository { protected get; set; }
 
+        /// <summary>
+        /// 角色信息查询数据集
+        /// </summary>
+        public IQueryable<TRole> Roles
+        {
+            get { return RoleRepository.Entities; }
+        }
+
         #region Implementation of IDisposable
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<TRole> FindByNameAsync(string roleName)
         {
             roleName.CheckNotNull("roleName");
-            return await Task.Run(() => RoleRepository.TrackEntities.Where(m => m.Name.Equals(roleName)).FirstOrDefault());
+            return await Task.Run(() => RoleRepository.TrackEntities.FirstOrDefault(m => m.Name.Equals(roleName)));
         }
 
         #endregion
@@ -116,14 +124,6 @@ namespace OSharp.Core.Identity
         protected virtual void Dispose(bool disposing)
         {
             _disposed = true;
-        }
-
-        /// <summary>
-        /// 角色信息查询数据集
-        /// </summary>
-        public IQueryable<TRole> Roles
-        {
-            get { return RoleRepository.Entities; }
         }
 
     }

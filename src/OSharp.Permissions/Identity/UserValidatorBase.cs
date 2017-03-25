@@ -50,7 +50,7 @@ namespace OSharp.Core.Identity
         /// </summary>
         /// <param name="user">待验证的用户信息</param>
         /// <returns></returns>
-        public async override Task<IdentityResult> ValidateAsync(TUser user)
+        public override async Task<IdentityResult> ValidateAsync(TUser user)
         {
             IdentityResult result = await base.ValidateAsync(user);
             if (!result.Succeeded)
@@ -77,7 +77,7 @@ namespace OSharp.Core.Identity
             {
                 return;
             }
-            errors.Add("用户昵称“{0}”已存在，请更换");
+            errors.Add("用户昵称“{0}”已存在，请更换".FormatWith(nickName));
         }
     }
 }

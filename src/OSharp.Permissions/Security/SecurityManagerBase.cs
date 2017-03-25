@@ -170,7 +170,7 @@ namespace OSharp.Core.Security
                 removeNames.Add(module.Name);
             }
 
-            return await ModuleRepository.UnitOfWork.SaveChangesAsync() > 0
+            return addNames.Count + removeNames.Count > 0
                 ? new OperationResult(OperationResultType.Success,
                     "角色“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(role.Name, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
                 : OperationResult.NoChanged;
@@ -225,14 +225,14 @@ namespace OSharp.Core.Security
                 TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
                 if (module == null)
                 {
-                    return new OperationResult(OperationResultType.QueryNull, "编号为“{}”的模块信息不存在".FormatWith(moduleId));
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
                 }
                 module.Users.Remove(user);
                 await ModuleRepository.UpdateAsync(module);
                 removeNames.Add(module.Name);
             }
 
-            return await ModuleRepository.UnitOfWork.SaveChangesAsync() > 0
+            return addNames.Count + removeNames.Count > 0
                 ? new OperationResult(OperationResultType.Success,
                     "用户“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(user.UserName, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
                 : OperationResult.NoChanged;
@@ -574,7 +574,7 @@ namespace OSharp.Core.Security
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的数据角色映射信息不存在");
             }
             map = dto.MapTo(map);
-            if (!map.EntityInfo.Id.Equals(dto.EntityInfoId))
+            if (map.EntityInfo == null || !map.EntityInfo.Id.Equals(dto.EntityInfoId))
             {
                 TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
                 if (entityInfo == null)
@@ -583,7 +583,7 @@ namespace OSharp.Core.Security
                 }
                 map.EntityInfo = entityInfo;
             }
-            if (!map.Role.Id.Equals(dto.RoleId))
+            if (map.Role == null || !map.Role.Id.Equals(dto.RoleId))
             {
                 TRole role = await RoleRepository.GetByKeyAsync(dto.RoleId);
                 if (role == null)
@@ -687,7 +687,7 @@ namespace OSharp.Core.Security
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的数据角色映射信息不存在");
             }
             map = dto.MapTo(map);
-            if (!map.EntityInfo.Id.Equals(dto.EntityInfoId))
+            if (map.EntityInfo == null || !map.EntityInfo.Id.Equals(dto.EntityInfoId))
             {
                 TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
                 if (entityInfo == null)
@@ -696,7 +696,7 @@ namespace OSharp.Core.Security
                 }
                 map.EntityInfo = entityInfo;
             }
-            if (!map.User.Id.Equals(dto.UserId))
+            if (map.User == null || !map.User.Id.Equals(dto.UserId))
             {
                 TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
                 if (user == null)

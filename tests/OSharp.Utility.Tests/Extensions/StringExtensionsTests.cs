@@ -2,6 +2,7 @@
 
 using OSharp.Utility.Extensions;
 using System.Linq;
+using System.Text;
 
 using Xunit;
 
@@ -195,6 +196,15 @@ namespace OSharp.Utility.Extensions.Tests
             string unicode = "编码".ToUnicodeString();
             Assert.Equal(@"\u7f16\u7801", unicode);
             Assert.Equal("编码", unicode.FromUnicodeString());
+        }
+
+        [Fact()]
+        public void ToHexStringTest()
+        {
+            string str1 = "http://b1.1ydb360.com/app/index.php?i=8&c=entry&rid=53&id=2286&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com&from=groupmessage&winzoom=1";
+            string hex = str1.ToHexString();
+            string str2 = hex.FromHexString();
+            Assert.Equal(str1, str2);
         }
     }
 }

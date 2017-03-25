@@ -64,10 +64,6 @@
     <Compile Include="RedisClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OSharp.Core\OSharp.Core.csproj">
-      <Project>{F7C67C95-FACB-4160-9A88-CB738E65E034}</Project>
-      <Name>OSharp.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSharp.Utility\OSharp.Utility.csproj">
       <Project>{946E0A0A-8280-46B3-893E-1B00A554CCAB}</Project>
       <Name>OSharp.Utility</Name>

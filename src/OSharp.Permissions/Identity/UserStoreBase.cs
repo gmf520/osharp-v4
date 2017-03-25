@@ -273,7 +273,7 @@ namespace OSharp.Core.Identity
         #endregion
 
         #region Implementation of IUserRoleMapStore<in TUserRoleMapInputDto,in TUserRoleMapKey,in TUserKey,TRoleKey>
-        
+
         /// <summary>
         /// 添加用户角色映射信息
         /// </summary>
@@ -281,7 +281,7 @@ namespace OSharp.Core.Identity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
             TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault()); ;
@@ -290,7 +290,7 @@ namespace OSharp.Core.Identity
                 return new OperationResult(OperationResultType.Error,
                     "“{0}-{1}”的映射信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
             }
-            
+
             map = dto.MapTo<TUserRoleMap>();
             TUser user = UserRepository.GetByKey(dto.UserId);
             if (user == null)
@@ -316,7 +316,7 @@ namespace OSharp.Core.Identity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
             TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault());
@@ -330,7 +330,7 @@ namespace OSharp.Core.Identity
                 map = await UserRoleMapRepository.GetByKeyAsync(dto.Id);
             }
             map = dto.MapTo(map);
-            if (!map.User.Id.Equals(dto.UserId))
+            if (map.User == null || !map.User.Id.Equals(dto.UserId))
             {
                 TUser user = UserRepository.GetByKey(dto.UserId);
                 if (user == null)
@@ -339,7 +339,7 @@ namespace OSharp.Core.Identity
                 }
                 map.User = user;
             }
-            if (!map.Role.Id.Equals(dto.RoleId))
+            if (map.Role == null || !map.Role.Id.Equals(dto.RoleId))
             {
                 TRole role = RoleRepository.GetByKey(dto.RoleId);
                 if (role == null)

@@ -18,7 +18,6 @@ using EntityFramework.Extensions;
 
 using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
-using OSharp.Data.Entity.Properties;
 using OSharp.Core.Mapping;
 using OSharp.Utility;
 using OSharp.Utility.Data;

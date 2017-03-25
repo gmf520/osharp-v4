@@ -511,7 +511,7 @@ namespace OSharp.Utility.Extensions
 
             return url + query;
         }
-        
+
         /// <summary>
         /// 将字符串转换为<see cref="byte"/>[]数组，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
@@ -527,7 +527,7 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 将<see cref="byte"/>[]数组转换为字符串，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
-        public static string ToString(this byte[] bytes, Encoding encoding)
+        public static string ToString(this byte[] bytes, Encoding encoding = null)
         {
             if (encoding == null)
             {
@@ -537,11 +537,67 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 将字符串转换为十六进制字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        public static string ToHexString(this string source, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] bytes = encoding.GetBytes(source);
+            return bytes.ToHexString();
+        }
+
+        /// <summary>
+        /// 将十六进制字符串转换为常规字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        public static string FromHexString(this string hexString, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] bytes = hexString.ToHexBytes();
+            return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 将byte[]编码为十六进制字符串
+        /// </summary>
+        /// <param name="bytes">byte[]数组</param>
+        /// <returns>十六进制字符串</returns>
+        public static string ToHexString(this byte[] bytes)
+        {
+            return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+        }
+
+        /// <summary>
+        /// 将十六进制字符串转换为byte[]
+        /// </summary>
+        /// <param name="hexString">十六进制字符串</param>
+        /// <returns>byte[]数组</returns>
+        public static byte[] ToHexBytes(this string hexString)
+        {
+            hexString = hexString.Replace(" ", "");
+            if (hexString.Length % 2 != 0)
+            {
+                hexString = hexString ?? "";
+            }
+            byte[] bytes = new byte[hexString.Length / 2];
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
+            return bytes;
+        }
+
+        /// <summary>
         /// 获取中文字符串的首字母
         /// </summary>
         public static string GetChineseSpell(this string cnString)
         {
-            cnString.CheckNotNull("cnString" );
+            cnString.CheckNotNull("cnString");
             if (!cnString.IsMatch(@"[\u4E00-\u9FA5]"))
             {
                 throw new ArgumentException("参数不是中文字符串", "cnString");
@@ -607,14 +663,14 @@ namespace OSharp.Utility.Extensions
                 m =>
                 {
                     short s;
-                    if (short.TryParse(m.Groups[1].Value, NumberStyles.HexNumber,CultureInfo.InstalledUICulture,out s))
+                    if (short.TryParse(m.Groups[1].Value, NumberStyles.HexNumber, CultureInfo.InstalledUICulture, out s))
                     {
                         return "" + (char)s;
                     }
                     return m.Value;
                 });
         }
-        
+
         #endregion
     }
 }
