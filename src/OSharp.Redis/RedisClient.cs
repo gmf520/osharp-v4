@@ -955,28 +955,87 @@ namespace OSharp.Redis
 
         #region 其他
 
+        /// <summary>
+        /// 创建一个事务，返回一个IRedisTransaction对象
+        /// </summary>
+        /// <returns></returns>
         public ITransaction CreateTransaction()
         {
             return GetDatabase().CreateTransaction();
         }
 
+        /// <summary>
+        /// 获取当前操作的数据库
+        /// </summary>
+        /// <returns></returns>
         public IDatabase GetDatabase()
         {
             return _conn.GetDatabase(DbNum);
         }
 
+        /// <summary>
+        /// 获取当前的服务器
+        /// </summary>
+        /// <param name="hostAndPort"></param>
+        /// <returns></returns>
         public IServer GetServer(string hostAndPort)
         {
             return _conn.GetServer(hostAndPort);
         }
 
         /// <summary>
-        /// 设置前缀
+        /// 设置自定义前缀
         /// </summary>
-        /// <param name="customKey"></param>
+        /// <param name="customKey">自定义前缀</param>
         public void SetSysCustomKey(string customKey)
         {
             CustomKey = customKey;
+        }
+
+        /// <summary>
+        /// 给指定键的数据加锁
+        /// </summary>
+        /// <param name="key">在数据库中的唯一键值</param>
+        /// <param name="token">加锁的标记，表示锁的拥有者，并负责解锁</param>
+        /// <param name="duration">锁的持续时间</param>
+        /// <returns></returns>
+        public bool LockTake(string key, string token, TimeSpan duration)
+        {
+            key = AddSysCustomKey(key);
+            return GetDatabase().LockTake(key, token, duration);
+        }
+
+        /// <summary>
+        /// 释放锁
+        /// </summary>
+        /// <param name="key">在数据库中的唯一键值</param>
+        /// <param name="token">加锁的标记，表示锁的拥有者，并负责解锁</param>
+        public bool LockRelease(string key, string token)
+        {
+            key = AddSysCustomKey(key);
+            return GetDatabase().LockRelease(key, token);
+        }
+
+        /// <summary>
+        /// 延伸一把锁
+        /// </summary>
+        /// <param name="key">在数据库中的唯一键值</param>
+        /// <param name="token">加锁的标记，表示锁的拥有者，并负责解锁</param>
+        /// <param name="expiry">延伸的时间</param>
+        public bool LockExtend(string key, string token, TimeSpan expiry)
+        {
+            key = AddSysCustomKey(key);
+            return GetDatabase().LockExtend(key, token, expiry);
+        }
+
+        /// <summary>
+        /// 查询一把锁的标记，锁的拥有者
+        /// </summary>
+        /// <param name="key">在数据库中的唯一键值</param>
+        public string LockQuery(string key)
+        {
+            key = AddSysCustomKey(key);
+            return GetDatabase().LockQuery(key);
         }
 
         #endregion 其他
