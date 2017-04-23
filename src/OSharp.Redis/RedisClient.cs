@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -1036,6 +1037,50 @@ namespace OSharp.Redis
         {
             key = AddSysCustomKey(key);
             return GetDatabase().LockQuery(key);
+        }
+
+        /// <summary>
+        /// 等待锁，并执行指定功能
+        /// </summary>
+        /// <typeparam name="T">项类型</typeparam>
+        /// <param name="key">在数据库中的唯一键值</param>
+        /// <param name="duration">单锁持续时间，默认10秒</param>
+        /// <param name="getDataFunc">从Redis中获取数据的操作</param>
+        /// <param name="setDataAction">将数据保存回Redis的操作</param>
+        /// <param name="lockTimeout">锁超时时间，默认120秒</param>
+        /// <returns></returns>
+        public T LockWait<T>(string key, Func<T> getDataFunc, Action<T> setDataAction = null, TimeSpan? duration = null, TimeSpan? lockTimeout = null) where T : class
+        {
+            key = AddSysCustomKey(key) + "_lock";
+            string token = Guid.NewGuid().ToString();
+            DateTime now = DateTime.Now;
+            var db = GetDatabase();
+            lockTimeout = lockTimeout ?? TimeSpan.FromSeconds(120);
+            while (true)
+            {
+                if (!db.LockTake(key, token, duration ?? TimeSpan.FromSeconds(10)))
+                {
+                    Thread.Sleep(200);
+                    if (DateTime.Now.Subtract(now) > lockTimeout)
+                    {
+                        throw new TimeoutException($"Redis并发锁的超时时间({lockTimeout.Value.Seconds}秒)已到");
+                    }
+                    continue;
+                }
+                try
+                {
+                    T result = getDataFunc();
+                    if (result != null && setDataAction != null)
+                    {
+                        setDataAction(result);
+                    }
+                    return result;
+                }
+                finally
+                {
+                    db.LockRelease(key, token);
+                }
+            }
         }
 
         #endregion 其他
