@@ -120,7 +120,7 @@ namespace OSharp.Redis
         /// </summary>
         /// <param name="keyValues">键值对</param>
         /// <returns></returns>
-        public bool StringSet(List<KeyValuePair<RedisKey, RedisValue>> keyValues)
+        public bool StringSet(List<KeyValuePair<string, string>> keyValues)
         {
             List<KeyValuePair<RedisKey, RedisValue>> newkeyValues =
                 keyValues.Select(p => new KeyValuePair<RedisKey, RedisValue>(AddSysCustomKey(p.Key), p.Value)).ToList();
@@ -130,8 +130,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 保存一个对象
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <param name="obj"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
@@ -167,8 +167,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取一个key的对象
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public T StringGet<T>(string key)
         {
@@ -179,7 +179,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字增长val
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="val">可以为负</param>
         /// <returns>增长后的值</returns>
         public double StringIncrement(string key, double val = 1)
@@ -191,7 +191,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字减少val
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="val">可以为负</param>
         /// <returns>减少后的值</returns>
         public double StringDecrement(string key, double val = 1)
@@ -222,7 +222,7 @@ namespace OSharp.Redis
         /// </summary>
         /// <param name="keyValues">键值对</param>
         /// <returns></returns>
-        public async Task<bool> StringSetAsync(List<KeyValuePair<RedisKey, RedisValue>> keyValues)
+        public async Task<bool> StringSetAsync(List<KeyValuePair<string, string>> keyValues)
         {
             List<KeyValuePair<RedisKey, RedisValue>> newkeyValues =
                 keyValues.Select(p => new KeyValuePair<RedisKey, RedisValue>(AddSysCustomKey(p.Key), p.Value)).ToList();
@@ -232,8 +232,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 保存一个对象
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <param name="obj"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
@@ -269,8 +269,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取一个key的对象
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<T> StringGetAsync<T>(string key)
         {
@@ -282,7 +282,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字增长val
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="val">可以为负</param>
         /// <returns>增长后的值</returns>
         public async Task<double> StringIncrementAsync(string key, double val = 1)
@@ -294,7 +294,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字减少val
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="val">可以为负</param>
         /// <returns>减少后的值</returns>
         public async Task<double> StringDecrementAsync(string key, double val = 1)
@@ -314,7 +314,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 移除指定ListId的内部List的值
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public void ListRemove<T>(string key, T value)
         {
@@ -325,7 +325,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取指定key的List
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public List<T> ListRange<T>(string key)
         {
@@ -340,7 +340,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 入队
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public void ListRightPush<T>(string key, T value)
         {
@@ -351,8 +351,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 出队
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public T ListRightPop<T>(string key)
         {
@@ -367,8 +367,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 入栈
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public void ListLeftPush<T>(string key, T value)
         {
@@ -379,8 +379,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 出栈
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public T ListLeftPop<T>(string key)
         {
@@ -395,7 +395,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取集合中的数量
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public long ListLength(string key)
         {
@@ -410,7 +410,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 移除指定ListId的内部List的值
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public async Task<long> ListRemoveAsync<T>(string key, T value)
         {
@@ -421,7 +421,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取指定key的List
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<List<T>> ListRangeAsync<T>(string key)
         {
@@ -433,7 +433,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 入队
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public async Task<long> ListRightPushAsync<T>(string key, T value)
         {
@@ -444,8 +444,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 出队
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<T> ListRightPopAsync<T>(string key)
         {
@@ -457,8 +457,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 入栈
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public async Task<long> ListLeftPushAsync<T>(string key, T value)
         {
@@ -469,8 +469,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 出栈
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<T> ListLeftPopAsync<T>(string key)
         {
@@ -482,7 +482,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取集合中的数量
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<long> ListLengthAsync(string key)
         {
@@ -501,8 +501,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 判断某个数据是否已经被缓存
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <returns></returns>
         public bool HashExists(string key, string dataKey)
         {
@@ -513,10 +513,10 @@ namespace OSharp.Redis
         /// <summary>
         /// 存储数据到hash表
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
-        /// <param name="t"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
+        /// <param name="t">要存储的数据</param>
         /// <returns></returns>
         public bool HashSet<T>(string key, string dataKey, T t)
         {
@@ -529,10 +529,28 @@ namespace OSharp.Redis
         }
 
         /// <summary>
+        /// 批量存储数据到hash表
+        /// </summary>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="items">要存储的数据键值集合</param>
+        /// <returns></returns>
+        public bool HashSet<T>(string key, List<KeyValuePair<string, T>> items)
+        {
+            key = AddSysCustomKey(key);
+            return Do(db =>
+            {
+                HashEntry[] entries = items.Select(m => new HashEntry(m.Key, ConvertJson(m.Value))).ToArray();
+                db.HashSet(key, entries);
+                return true;
+            });
+        }
+
+        /// <summary>
         /// 移除hash中的某值
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">要移除的数据键</param>
         /// <returns></returns>
         public bool HashDelete(string key, string dataKey)
         {
@@ -543,22 +561,25 @@ namespace OSharp.Redis
         /// <summary>
         /// 移除hash中的多个值
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="dataKeys"></param>
         /// <returns></returns>
-        public long HashDelete(string key, List<RedisValue> dataKeys)
+        public long HashDelete(string key, string[] dataKeys)
         {
             key = AddSysCustomKey(key);
-            //List<RedisValue> dataKeys1 = new List<RedisValue>() {"1","2"};
-            return Do(db => db.HashDelete(key, dataKeys.ToArray()));
+            return Do(db =>
+            {
+                RedisValue[] keys = dataKeys.Select(m => (RedisValue)m).ToArray();
+                return db.HashDelete(key, keys);
+            });
         }
 
         /// <summary>
         /// 从hash表获取数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <returns></returns>
         public T HashGet<T>(string key, string dataKey)
         {
@@ -571,10 +592,44 @@ namespace OSharp.Redis
         }
 
         /// <summary>
+        /// 从hash表获取多个数据
+        /// </summary>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKeys">数据键集合</param>
+        /// <returns></returns>
+        public T[] HashGet<T>(string key, string[] dataKeys)
+        {
+            key = AddSysCustomKey(key);
+            return Do(db =>
+            {
+                RedisValue[] keys = dataKeys.Select(m => (RedisValue)m).ToArray();
+                RedisValue[] values = db.HashGet(key, keys);
+                return values.Select(ConvertObj<T>).ToArray();
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <returns></returns>
+        public T[] HashGetAll<T>(string key)
+        {
+            key = AddSysCustomKey(key);
+            return Do(db =>
+            {
+                HashEntry[] entries = db.HashGetAll(key);
+                return entries.Select(m => ConvertObj<T>(m.Value)).ToArray();
+            });
+        }
+
+        /// <summary>
         /// 为数字增长val
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <param name="val">可以为负</param>
         /// <returns>增长后的值</returns>
         public double HashIncrement(string key, string dataKey, double val = 1)
@@ -586,8 +641,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字减少val
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <param name="val">可以为负</param>
         /// <returns>减少后的值</returns>
         public double HashDecrement(string key, string dataKey, double val = 1)
@@ -599,8 +654,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取hashkey所有Redis key
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public List<T> HashKeys<T>(string key)
         {
@@ -619,8 +674,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 判断某个数据是否已经被缓存
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <returns></returns>
         public async Task<bool> HashExistsAsync(string key, string dataKey)
         {
@@ -631,9 +686,9 @@ namespace OSharp.Redis
         /// <summary>
         /// 存储数据到hash表
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <param name="t"></param>
         /// <returns></returns>
         public async Task<bool> HashSetAsync<T>(string key, string dataKey, T t)
@@ -649,8 +704,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 移除hash中的某值
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <returns></returns>
         public async Task<bool> HashDeleteAsync(string key, string dataKey)
         {
@@ -661,22 +716,26 @@ namespace OSharp.Redis
         /// <summary>
         /// 移除hash中的多个值
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="dataKeys"></param>
         /// <returns></returns>
-        public async Task<long> HashDeleteAsync(string key, List<RedisValue> dataKeys)
+        public async Task<long> HashDeleteAsync(string key, string[] dataKeys)
         {
             key = AddSysCustomKey(key);
             //List<RedisValue> dataKeys1 = new List<RedisValue>() {"1","2"};
-            return await Do(db => db.HashDeleteAsync(key, dataKeys.ToArray()));
+            return await Do(db =>
+            {
+                RedisValue[] keys = dataKeys.Select(m => (RedisValue)m).ToArray();
+                return db.HashDeleteAsync(key, keys);
+            });
         }
 
         /// <summary>
         /// 从hash表获取数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <returns></returns>
         public async Task<T> HashGetAsync<T>(string key, string dataKey)
         {
@@ -688,8 +747,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字增长val
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <param name="val">可以为负</param>
         /// <returns>增长后的值</returns>
         public async Task<double> HashIncrementAsync(string key, string dataKey, double val = 1)
@@ -701,8 +760,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 为数字减少val
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dataKey"></param>
+        /// <param name="key">数据集键</param>
+        /// <param name="dataKey">数据键</param>
         /// <param name="val">可以为负</param>
         /// <returns>减少后的值</returns>
         public async Task<double> HashDecrementAsync(string key, string dataKey, double val = 1)
@@ -714,8 +773,8 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取hashkey所有Redis key
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">数据项类型</typeparam>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<List<T>> HashKeysAsync<T>(string key)
         {
@@ -735,7 +794,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         /// <param name="score"></param>
         public bool SortedSetAdd<T>(string key, T value, double score)
@@ -747,7 +806,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public bool SortedSetRemove<T>(string key, T value)
         {
@@ -758,7 +817,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取全部
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public List<T> SortedSetRangeByRank<T>(string key)
         {
@@ -773,7 +832,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取集合中的数量
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public long SortedSetLength(string key)
         {
@@ -788,7 +847,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         /// <param name="score"></param>
         public async Task<bool> SortedSetAddAsync<T>(string key, T value, double score)
@@ -800,7 +859,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <param name="value"></param>
         public async Task<bool> SortedSetRemoveAsync<T>(string key, T value)
         {
@@ -811,7 +870,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取全部
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<List<T>> SortedSetRangeByRankAsync<T>(string key)
         {
@@ -823,7 +882,7 @@ namespace OSharp.Redis
         /// <summary>
         /// 获取集合中的数量
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">数据集键</param>
         /// <returns></returns>
         public async Task<long> SortedSetLengthAsync(string key)
         {
@@ -923,7 +982,7 @@ namespace OSharp.Redis
         /// <summary>
         /// Redis发布订阅  发布
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">数据项类型</typeparam>
         /// <param name="channel"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
@@ -1003,7 +1062,7 @@ namespace OSharp.Redis
         public bool LockTake(string key, string token, TimeSpan duration)
         {
             key = AddSysCustomKey(key);
-            return GetDatabase().LockTake(key, token, duration);
+            return Do(db => db.LockTake(key, token, duration));
         }
 
         /// <summary>
@@ -1014,7 +1073,7 @@ namespace OSharp.Redis
         public bool LockRelease(string key, string token)
         {
             key = AddSysCustomKey(key);
-            return GetDatabase().LockRelease(key, token);
+            return Do(db => db.LockRelease(key, token));
         }
 
         /// <summary>
@@ -1026,7 +1085,7 @@ namespace OSharp.Redis
         public bool LockExtend(string key, string token, TimeSpan expiry)
         {
             key = AddSysCustomKey(key);
-            return GetDatabase().LockExtend(key, token, expiry);
+            return Do(db => db.LockExtend(key, token, expiry));
         }
 
         /// <summary>
@@ -1036,7 +1095,7 @@ namespace OSharp.Redis
         public string LockQuery(string key)
         {
             key = AddSysCustomKey(key);
-            return GetDatabase().LockQuery(key);
+            return Do(db => db.LockQuery(key));
         }
 
         /// <summary>
@@ -1053,34 +1112,36 @@ namespace OSharp.Redis
         {
             key = AddSysCustomKey(key) + "_lock";
             string token = Guid.NewGuid().ToString();
-            DateTime now = DateTime.Now;
-            var db = GetDatabase();
             lockTimeout = lockTimeout ?? TimeSpan.FromSeconds(120);
-            while (true)
+            return Do(db =>
             {
-                if (!db.LockTake(key, token, duration ?? TimeSpan.FromSeconds(10)))
+                DateTime now = DateTime.Now;
+                while (true)
                 {
-                    Thread.Sleep(200);
-                    if (DateTime.Now.Subtract(now) > lockTimeout)
+                    if (!db.LockTake(key, token, duration ?? TimeSpan.FromSeconds(10)))
                     {
-                        throw new TimeoutException($"Redis并发锁的超时时间({lockTimeout.Value.Seconds}秒)已到");
+                        Thread.Sleep(200);
+                        if (DateTime.Now.Subtract(now) > lockTimeout)
+                        {
+                            throw new TimeoutException($"Redis并发锁的超时时间({lockTimeout.Value.Seconds}秒)已到");
+                        }
+                        continue;
                     }
-                    continue;
-                }
-                try
-                {
-                    T result = getDataFunc();
-                    if (result != null && setDataAction != null)
+                    try
                     {
-                        setDataAction(result);
+                        T result = getDataFunc();
+                        if (result != null && setDataAction != null)
+                        {
+                            setDataAction(result);
+                        }
+                        return result;
                     }
-                    return result;
+                    finally
+                    {
+                        db.LockRelease(key, token);
+                    }
                 }
-                finally
-                {
-                    db.LockRelease(key, token);
-                }
-            }
+            });
         }
 
         #endregion 其他
