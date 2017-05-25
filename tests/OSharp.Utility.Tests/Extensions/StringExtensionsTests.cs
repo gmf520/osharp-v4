@@ -206,5 +206,13 @@ namespace OSharp.Utility.Extensions.Tests
             string str2 = hex.FromHexString();
             Assert.Equal(str1, str2);
         }
+
+        [Fact()]
+        public void IsUrlTest()
+        {
+            string url =
+                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2cb8ad06a252b27c&redirect_uri=http%3A%2F%2Ftpkwx.tpk.com%2FAdmin%2FWeixin%2FWeixinAuthCallback.aspx&response_type=code&scope=snsapi_userinfo&state=1$promotion#wechat_redirect";
+            Assert.True(url.IsUrl());
+        }
     }
 }

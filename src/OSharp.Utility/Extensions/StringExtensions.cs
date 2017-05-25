@@ -247,8 +247,19 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsUrl(this string value)
         {
-            const string pattern = @"^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#!]*[\w\-\@?^=%&amp;/~\+#!])?$";
-            return value.IsMatch(pattern);
+            try
+            {
+                if (value.IsNullOrEmpty() || value.Contains(' '))
+                {
+                    return false;
+                }
+                Uri uri = new Uri(value);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>

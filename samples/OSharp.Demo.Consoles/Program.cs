@@ -202,9 +202,8 @@ namespace OSharp.Demo.Consoles
 
         private static void Method06()
         {
-            var assembly = typeof(IServiceCollection).Assembly;
-            Console.WriteLine(assembly.FullName);
-            Console.WriteLine(assembly.Location);
+            string url = Console.ReadLine();
+            Console.WriteLine(url.IsUrl());
         }
 
         private static void Method07()
