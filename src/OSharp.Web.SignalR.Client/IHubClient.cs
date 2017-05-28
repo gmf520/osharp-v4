@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using Microsoft.AspNet.SignalR.Client;
 
@@ -36,11 +37,25 @@ namespace OSharp.Web.SignalR.Client
         void SendToHub(Expression<Action<TCalls>> call);
 
         /// <summary>
+        /// Send a message to the hub, using a client-to-hub contract method
+        /// </summary>
+        /// <param name="call">Expression calling to hub. Use like <code>hub => hub.MyMethod("hello", "world")</code></param>
+        /// <returns></returns>
+        Task SendToHubAsync(Expression<Action<TCalls>> call);
+
+        /// <summary>
         /// Send a message to the hub, using a client-to-hub contract method.
         /// <para>Will synchronously retrieve a response from the hub</para>
         /// </summary>
         /// <param name="call">Expression calling to hub. Use like <code>var helloWorld = RequestFromHub&lt;string&gt;(hub => hub.GetGreeting("world"))</code></param>
         TResult RequestFromHub<TResult>(Expression<Func<TCalls, TResult>> call);
+
+        /// <summary>
+        /// Send a message to the hub, using a client-to-hub contract method.
+        /// <para>Will synchronously retrieve a response from the hub</para>
+        /// </summary>
+        /// <param name="call">Expression calling to hub. Use like <code>var helloWorld = RequestFromHub&lt;string&gt;(hub => hub.GetGreeting("world"))</code></param>
+        Task<TResult> RequestFromHubAsync<TResult>(Expression<Func<TCalls, TResult>> call);
 
         #region BindEventHandler<> multi argument variants
 
