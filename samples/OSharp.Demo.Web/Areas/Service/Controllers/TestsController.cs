@@ -14,6 +14,7 @@ using System.Web.Http;
 using OSharp.Core.Security;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Http.Extensions;
+using OSharp.Web.Http.Filters;
 using OSharp.Web.Http.Logging;
 
 

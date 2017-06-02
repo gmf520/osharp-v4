@@ -8,14 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 
 using OSharp.Core.Data;
 using OSharp.Core.Extensions;
-using OSharp.Utility;
 using OSharp.Utility.Extensions;
 
 
@@ -26,7 +25,7 @@ namespace OSharp.Core.Security
     /// </summary>
     /// <typeparam name="TFunction">功能类型</typeparam>
     /// <typeparam name="TFunctionKey">功能编号类型</typeparam>
-    public abstract class FunctionAuthorizationBase<TFunction, TFunctionKey> : IFunctionAuthorization<TFunction>
+    public abstract class FunctionAuthorizationBase<TFunction, TFunctionKey> : IFunctionAuthorization
         where TFunction : class, IFunction, IEntity<TFunctionKey>
         where TFunctionKey : IEquatable<TFunctionKey>
     {
@@ -40,23 +39,30 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="function">要检查的功能信息</param>
         /// <returns></returns>
-        public AuthorizationResult Authenticate(TFunction function)
+        public AuthorizationResult Authorize(IFunction function)
         {
-            ClaimsPrincipal user = Thread.CurrentPrincipal as ClaimsPrincipal;
-            if (user == null)
-            {
-                return new AuthorizationResult(AuthorizationResultType.Error, "当前用户信息格式不正确，仅支持ClaimsPrincipal类型的用户信息");
-            }
-            return AuthenticateCore(function, user);
+            IPrincipal principal = Thread.CurrentPrincipal;
+            return Authorize(function, principal);
+        }
+
+        /// <summary>
+        /// 验证用户是否有执行指定功能的权限
+        /// </summary>
+        /// <param name="function">要验证的功能</param>
+        /// <param name="principal">在线用户信息</param>
+        /// <returns>功能权限验证结果</returns>
+        public AuthorizationResult Authorize(IFunction function, IPrincipal principal)
+        {
+            return AuthorizeCore(function, principal);
         }
 
         /// <summary>
         /// 重写以实现权限检查核心验证操作
         /// </summary>
-        /// <param name="user">当前在线用户信息</param>
         /// <param name="function">要验证的功能信息</param>
+        /// <param name="principal">当前用户在线信息</param>
         /// <returns></returns>
-        protected virtual AuthorizationResult AuthenticateCore(TFunction function, ClaimsPrincipal user)
+        protected virtual AuthorizationResult AuthorizeCore(IFunction function, IPrincipal principal)
         {
             if (function == null)
             {
@@ -73,7 +79,7 @@ namespace OSharp.Core.Security
                 return AuthorizationResult.Allowed;
             }
             //登录无效
-            if (user == null || !user.Identity.IsAuthenticated)
+            if (principal == null || !principal.Identity.IsAuthenticated)
             {
                 return new AuthorizationResult(AuthorizationResultType.LoggedOut);
             }
@@ -82,22 +88,45 @@ namespace OSharp.Core.Security
             {
                 return AuthorizationResult.Allowed;
             }
+            return AuthorizeRoleLimit(function, principal);
+        }
+
+        /// <summary>
+        /// 重写以实现 角色限制 的功能的功能权限验证
+        /// </summary>
+        /// <param name="function">要验证的功能信息</param>
+        /// <param name="user">用户在线信息</param>
+        /// <returns>功能权限验证结果</returns>
+        protected virtual AuthorizationResult AuthorizeRoleLimit(IFunction function, IPrincipal user)
+        {
+            ClaimsPrincipal claimsUser = user as ClaimsPrincipal;
+            if (claimsUser == null)
+            {
+                return new AuthorizationResult(AuthorizationResultType.Error, "当前用户信息格式不正确，仅支持ClaimsPrincipal类型的用户信息");
+            }
             //角色限制
-            ClaimsIdentity identity = user.Identity as ClaimsIdentity;
+            ClaimsIdentity identity = claimsUser.Identity as ClaimsIdentity;
             if (identity == null)
             {
                 return new AuthorizationResult(AuthorizationResultType.Error, "当前用户标识IIdentity格式不正确，仅支持ClaimsIdentity类型的用户标识");
             }
+            TFunction function1 = function as TFunction;
+            if (function1 == null)
+            {
+                return new AuthorizationResult(AuthorizationResultType.Error,
+                    "要检测的功能类型为“{0}”，不是要求的“{1}”类型".FormatWith(function.GetType()),
+                    typeof(TFunction));
+            }
             //检查角色-功能的权限
             string[] userRoleNames = identity.GetClaimValues(ClaimTypes.Role);
-            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(function.Id).ToArray();
+            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(function1.Id).ToArray();
             if (userRoleNames.Intersect(functionRoleNames).Any())
             {
                 return new AuthorizationResult(AuthorizationResultType.Allowed);
             }
             //检查用户-功能的权限
             TFunctionKey[] functionIds = FunctionAuthCache.GetUserFunctions(user.Identity.Name).ToArray();
-            if (functionIds.Contains(function.Id))
+            if (functionIds.Contains(function1.Id))
             {
                 return new AuthorizationResult(AuthorizationResultType.Allowed);
             }

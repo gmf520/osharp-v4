@@ -4,11 +4,10 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-06-02 1:45</last-date>
+//  <last-date>2017-06-02 16:17</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNet.Identity;
@@ -75,7 +74,7 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 创建功能权限缓存
         /// </summary>
-        public void BuildCaches()
+        public virtual void BuildCaches()
         {
             _cache.Clear();
             //只重建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
@@ -90,7 +89,7 @@ namespace OSharp.Core.Security
         /// 移除指定功能的缓存
         /// </summary>
         /// <param name="functionIds">功能编号集合</param>
-        public void RemoveFunctionCaches(TFunctionKey[] functionIds)
+        public virtual void RemoveFunctionCaches(TFunctionKey[] functionIds)
         {
             foreach (TFunctionKey functionId in functionIds)
             {
@@ -103,7 +102,7 @@ namespace OSharp.Core.Security
         /// 移除指定用户的缓存
         /// </summary>
         /// <param name="userNames">用户编号集合</param>
-        public void RemoveUserCaches(string[] userNames)
+        public virtual void RemoveUserCaches(string[] userNames)
         {
             foreach (string userName in userNames)
             {
@@ -117,14 +116,14 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="functionId">功能编号</param>
         /// <returns>能执行功能的角色名称集合</returns>
-        public string[] GetFunctionRoles(TFunctionKey functionId)
+        public virtual string[] GetFunctionRoles(TFunctionKey functionId)
         {
             string key = $"FunctionRoles_{functionId}";
             string[] roleNames = _cache.Get<string[]>(key);
             if (roleNames == null)
             {
                 roleNames = ModuleRepository.Entities.Where(m => m.Functions.Any(n => n.Id.Equals(functionId)))
-                .SelectMany(m => m.Roles.Select(n => n.Name)).Distinct().ToArray();
+                    .SelectMany(m => m.Roles.Select(n => n.Name)).Distinct().ToArray();
                 _cache.Set(key, roleNames);
             }
             return roleNames;
@@ -135,7 +134,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns>用户的所有特权功能</returns>
-        public TFunctionKey[] GetUserFunctions(string userName)
+        public virtual TFunctionKey[] GetUserFunctions(string userName)
         {
             string key = $"UserFunctions_{userName}";
             TFunctionKey[] functionIds = _cache.Get<TFunctionKey[]>(key);

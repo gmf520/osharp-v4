@@ -136,7 +136,7 @@
     <Compile Include="Internal\ReflectionHelper.cs" />
     <Compile Include="Logging\ApiLoggingInfo.cs" />
     <Compile Include="Logging\ILoggingRepository.cs" />
-    <Compile Include="Logging\OperateLogFilterAttribute.cs" />
+    <Compile Include="Filters\OperateLogFilterAttribute.cs" />
     <Compile Include="Messages\ConflictResponse.cs" />
     <Compile Include="Messages\CreateResponse.cs" />
     <Compile Include="Messages\IApiResource.cs" />
@@ -159,6 +159,7 @@
     <Compile Include="Routing\StartsWithConstraint.cs" />
     <Compile Include="Security\ClientCryptoDelegatingHandler.cs" />
     <Compile Include="Security\HostCryptoDelegatingHandler.cs" />
+    <Compile Include="Filters\OsharpAuthorizeAttribute.cs" />
     <Compile Include="Selectors\AreaHttpControllerSelector.cs" />
     <Compile Include="Selectors\CorsActionSelector.cs" />
     <Compile Include="Serialization\IHttpMessageSerializerAsync.cs" />
