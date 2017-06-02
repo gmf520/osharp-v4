@@ -86,5 +86,13 @@ namespace OSharp.Core.Security
         /// <param name="id">要查询的顶模块信息</param>
         /// <returns>允许的功能集合</returns>
         IEnumerable<TFunction> GetAllFunctions(TModuleKey id);
+
+        /// <summary>
+        /// 设置模块拥有的功能
+        /// </summary>
+        /// <param name="id">模块编号</param>
+        /// <param name="functionIds">功能编号集合</param>
+        /// <returns></returns>
+        Task<OperationResult> SetModuleFunctions(TModuleKey id, TFunctionKey[] functionIds);
     }
 }

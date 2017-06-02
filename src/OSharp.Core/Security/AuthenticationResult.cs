@@ -18,31 +18,31 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 权限检查结果
     /// </summary>
-    public sealed class AuthenticationResult : OSharpResult<AuthenticationResultType>
+    public sealed class AuthorizationResult : OSharpResult<AuthorizationResultType>
     {
-        static AuthenticationResult()
+        static AuthorizationResult()
         {
-            Allowed = new AuthenticationResult(AuthenticationResultType.Allowed);
+            Allowed = new AuthorizationResult(AuthorizationResultType.Allowed);
         }
 
         /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
         /// </summary>
-        public AuthenticationResult(AuthenticationResultType type)
+        public AuthorizationResult(AuthorizationResultType type)
             : this(type, null)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
         /// </summary>
-        public AuthenticationResult(AuthenticationResultType type, string message)
+        public AuthorizationResult(AuthorizationResultType type, string message)
             : this(type, message, null)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
         /// </summary>
-        public AuthenticationResult(AuthenticationResultType type, string message, object data)
+        public AuthorizationResult(AuthorizationResultType type, string message, object data)
             : base(type, message, data)
         { }
 
@@ -58,6 +58,6 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 允许的检查结果
         /// </summary>
-        public static AuthenticationResult Allowed { get; set; }
+        public static AuthorizationResult Allowed { get; set; }
     }
 }

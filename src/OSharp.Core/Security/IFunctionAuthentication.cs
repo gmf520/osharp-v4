@@ -16,13 +16,13 @@ namespace OSharp.Core.Security
     /// 定义功能权限验证器
     /// </summary>
     /// <typeparam name="TFunction">功能类型</typeparam>
-    public interface IFunctionAuthentication<in TFunction> : ISingletonDependency
+    public interface IFunctionAuthorization<in TFunction> : ISingletonDependency
     {
         /// <summary>
         /// 验证当前用户是否有执行指定功能的权限
         /// </summary>
         /// <param name="function"></param>
         /// <returns></returns>
-        AuthenticationResult Authenticate(TFunction function);
+        AuthorizationResult Authenticate(TFunction function);
     }
 }

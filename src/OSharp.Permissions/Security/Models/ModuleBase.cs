@@ -114,7 +114,7 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 拥有此模块的用户信息集合
         /// </summary>
-        public ICollection<TUser> Users { get; set; }
+        public virtual ICollection<TUser> Users { get; set; }
 
         /// <summary>
         /// 获取实体的TreePath，即由根结点Id到当前结点Id构成的字符串

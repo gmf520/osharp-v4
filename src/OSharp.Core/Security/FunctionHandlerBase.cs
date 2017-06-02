@@ -91,7 +91,13 @@ namespace OSharp.Core.Security
         {
             if (Functions == null)
             {
-                RefreshCache();
+                lock (this)
+                {
+                    if (Functions == null)
+                    {
+                        RefreshCache();
+                    }
+                }
             }
             Debug.Assert(Functions != null, "Functions != null");
             return Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller
