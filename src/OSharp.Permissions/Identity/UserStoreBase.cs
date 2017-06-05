@@ -217,7 +217,7 @@ namespace OSharp.Core.Identity
             {
                 return;
             }
-            TRole role = await Task.Run(() => RoleRepository.TrackEntities.FirstOrDefault(m => m.Name == roleName));
+            TRole role = RoleRepository.TrackEntities.FirstOrDefault(m => m.Name == roleName);
             if (role == null)
             {
                 throw new InvalidOperationException("名称为“{0}”的角色信息不存在".FormatWith(roleName));
@@ -236,8 +236,8 @@ namespace OSharp.Core.Identity
         {
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.FirstOrDefault(m => m.User.Id.Equals(user.Id)
-                  && m.Role.Name == roleName));
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.FirstOrDefault(m => m.User.Id.Equals(user.Id)
+                && m.Role.Name == roleName);
             if (map == null)
             {
                 return;
@@ -284,7 +284,7 @@ namespace OSharp.Core.Identity
             dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault()); ;
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault();
             if (map != null)
             {
                 return new OperationResult(OperationResultType.Error,
@@ -319,7 +319,7 @@ namespace OSharp.Core.Identity
             dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault());
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault();
             if (map != null && !map.Id.Equals(dto.Id))
             {
                 return new OperationResult(OperationResultType.Error,
@@ -644,7 +644,7 @@ namespace OSharp.Core.Identity
         public async Task<TUser> FindByEmailAsync(string email)
         {
             email.CheckNotNull("email");
-            return await Task.Run(() => UserRepository.TrackEntities.Where(m => m.Email.Equals(email)).FirstOrDefault());
+            return await Task.Run(() => UserRepository.TrackEntities.FirstOrDefault(m => m.Email.Equals(email)));
         }
 
         #endregion

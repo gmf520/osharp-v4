@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Caching;
 using OSharp.Core.Data;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security.Models;
 
 
@@ -52,24 +53,9 @@ namespace OSharp.Core.Security
         }
 
         /// <summary>
-        /// 获取或设置 角色仓储对象
+        /// 获取或设置 服务提供者
         /// </summary>
-        public IRepository<TRole, TRoleKey> RoleRepository { protected get; set; }
-
-        /// <summary>
-        /// 获取或设置 用户仓储对象
-        /// </summary>
-        public IRepository<TUser, TUserKey> UserRepository { protected get; set; }
-
-        /// <summary>
-        /// 获取或设置 功能仓储对象
-        /// </summary>
-        public IRepository<TFunction, TFunctionKey> FunctionRepository { protected get; set; }
-
-        /// <summary>
-        /// 获取或设置 模块仓储对象
-        /// </summary>
-        public IRepository<TModule, TModuleKey> ModuleRepository { protected get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 创建功能权限缓存
@@ -78,7 +64,8 @@ namespace OSharp.Core.Security
         {
             _cache.Clear();
             //只重建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
-            TFunction[] functions = FunctionRepository.Entities.Where(m => !m.IsLocked).ToArray();
+            IRepository<TFunction, TFunctionKey> functionRepository = ServiceProvider.GetService<IRepository<TFunction, TFunctionKey>>();
+            TFunction[] functions = functionRepository.Entities.Where(m => !m.IsLocked).ToArray();
             foreach (TFunction function in functions)
             {
                 GetFunctionRoles(function.Id);
@@ -122,7 +109,8 @@ namespace OSharp.Core.Security
             string[] roleNames = _cache.Get<string[]>(key);
             if (roleNames == null)
             {
-                roleNames = ModuleRepository.Entities.Where(m => m.Functions.Any(n => n.Id.Equals(functionId)))
+                IRepository<TModule, TModuleKey> moduleRepository = ServiceProvider.GetService<IRepository<TModule, TModuleKey>>();
+                roleNames = moduleRepository.Entities.Where(m => m.Functions.Any(n => n.Id.Equals(functionId)))
                     .SelectMany(m => m.Roles.Select(n => n.Name)).Distinct().ToArray();
                 _cache.Set(key, roleNames);
             }
@@ -140,7 +128,8 @@ namespace OSharp.Core.Security
             TFunctionKey[] functionIds = _cache.Get<TFunctionKey[]>(key);
             if (functionIds == null)
             {
-                functionIds = ModuleRepository.Entities.Where(m => m.Users.Any(n => n.UserName == userName))
+                IRepository<TModule, TModuleKey> moduleRepository = ServiceProvider.GetService<IRepository<TModule, TModuleKey>>();
+                functionIds = moduleRepository.Entities.Where(m => m.Users.Any(n => n.UserName == userName))
                     .SelectMany(m => m.Functions.Select(n => n.Id)).Distinct().ToArray();
                 _cache.Set(key, functionIds);
             }

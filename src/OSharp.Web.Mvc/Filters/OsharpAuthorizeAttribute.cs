@@ -37,7 +37,7 @@ namespace OSharp.Web.Mvc.Filters
         /// </summary>
         public IFunctionAuthorization FunctionAuthorization { get; set; }
 
-        /// <summary>
+        /// <summary> 
         /// When implemented in a derived class, gets a unique identifier for this <see cref="T:System.Attribute"/>.
         /// </summary>
         /// <returns>
@@ -105,19 +105,19 @@ namespace OSharp.Web.Mvc.Filters
             switch (type)
             {
                 case AuthorizationResultType.LoggedOut:
-                    filterContext.Result = new HttpUnauthorizedResult(result.Message);
+                    filterContext.Result = new HttpUnauthorizedResult();
                     break;
                 case AuthorizationResultType.PurviewLack:
-                    filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.Forbidden, result.Message);
+                    filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                     break;
                 case AuthorizationResultType.FunctionLocked:
-                    filterContext.Result = new HttpStatusCodeResult(423, result.Message);
+                    filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.Gone, "Function is Locked");
                     break;
                 case AuthorizationResultType.FunctionNotFound:
-                    filterContext.Result = new HttpNotFoundResult(result.Message);
+                    filterContext.Result = new HttpNotFoundResult();
                     break;
                 case AuthorizationResultType.Error:
-                    filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.InternalServerError, result.Message);
+                    filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
                     break;
             }
         }
@@ -145,6 +145,5 @@ namespace OSharp.Web.Mvc.Filters
             IFunction function = data as IFunction;
             validationStatus = OnCacheAuthorization(new HttpContextWrapper(context), function);
         }
-
     }
 }

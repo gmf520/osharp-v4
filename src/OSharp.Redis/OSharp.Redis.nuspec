@@ -16,6 +16,6 @@
     <tags>OSharp,Redis</tags>
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$.pdb" target="lib\net40\" />
+    <file src="bin\$configuration$\$id$.pdb" target="lib\net45\" />
   </files>
 </package>

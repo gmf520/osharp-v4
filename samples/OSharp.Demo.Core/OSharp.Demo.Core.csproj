@@ -111,6 +111,8 @@
     <Compile Include="Models\OAuth\ClientRefreshToken.cs" />
     <Compile Include="Models\Security\Module.cs" />
     <Compile Include="OAuth\OAuthClientRefreshTokenStore.cs" />
+    <Compile Include="Security\FunctionAuthCache.cs" />
+    <Compile Include="Security\FunctionAuthorization.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Services\ServiceCollectionExtensions.cs" />
     <Compile Include="Identity\SignInManager.cs" />

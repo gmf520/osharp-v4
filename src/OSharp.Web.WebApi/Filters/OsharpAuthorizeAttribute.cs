@@ -84,22 +84,23 @@ namespace OSharp.Web.Http.Filters
             if (actionContext == null)
                 throw new ArgumentNullException("actionContext");
             AuthorizationResultType type = result.ResultType;
+            string msg = StringToISO_8859_1(result.Message);
             switch (type)
             {
                 case AuthorizationResultType.LoggedOut:
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, result.Message);
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, msg);
                     break;
                 case AuthorizationResultType.PurviewLack:
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, result.Message);
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, msg);
                     break;
                 case AuthorizationResultType.FunctionLocked:
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Gone, result.Message);
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Gone, msg);
                     break;
                 case AuthorizationResultType.FunctionNotFound:
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.NotFound, result.Message);
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.NotFound, msg);
                     break;
                 case AuthorizationResultType.Error:
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, result.Message);
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, msg);
                     break;
             }
         }
@@ -108,6 +109,17 @@ namespace OSharp.Web.Http.Filters
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
                 || actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+        }
+
+        /// <summary>
+        /// 转换为ISO_8859_1
+        /// </summary>
+        /// <param name="srcText"></param>
+        /// <returns></returns>
+        private string StringToISO_8859_1(string srcText)
+        {
+            char[] src = srcText.ToCharArray();
+            return src.Select(t => @"&#" + (int)t + ";").Aggregate("", (current, str) => current + str);
         }
     }
 }
