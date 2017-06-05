@@ -145,7 +145,6 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
         {
             role.CheckNotNull("role");
-            moduleIds.CheckNotNull("moduleIds");
 
             TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
@@ -215,7 +214,6 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds)
         {
             user.CheckNotNull("user");
-            moduleIds.CheckNotNullOrEmpty("moduleIds");
 
             TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Users.Select(n => n.Id).Contains(user.Id)).Select(m => m.Id).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();

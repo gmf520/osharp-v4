@@ -63,10 +63,10 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         protected override Function GetFunction(MethodInfo method)
         {
-            if (method.ReturnType != typeof(IHttpActionResult) && method.ReturnType != typeof(Task<IHttpActionResult>))
-            {
-                throw new InvalidOperationException(Resources.FunctionHandler_MethodNotApiAction.FormatWith(method.Name));
-            }
+            if (!typeof(IHttpActionResult).IsAssignableFrom(method.ReturnType)
+                && (!method.ReturnType.IsGenericType || method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>)
+                    || !typeof(IHttpActionResult).IsAssignableFrom(method.ReturnType.GetGenericArguments()[0])))
+            { }
 
             FunctionType functionType = FunctionType.Anonymouse;
             if (method.HasAttribute<AllowAnonymousAttribute>(true))

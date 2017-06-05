@@ -203,8 +203,10 @@ namespace OSharp.Demo.Consoles
 
         private static void Method06()
         {
-            string url = Console.ReadLine();
-            Console.WriteLine(url.IsUrl());
+            string str = "我是中文HelloWorld123".ToBase64String();
+            Console.WriteLine(str);
+            str = str.FromBase64String();
+            Console.WriteLine(str);
         }
 
         private static void Method07()

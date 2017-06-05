@@ -65,11 +65,13 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         protected override Function GetFunction(MethodInfo method)
         {
-            if (method.ReturnType != typeof(ActionResult) && method.ReturnType != typeof(Task<ActionResult>))
+            if (!typeof(ActionResult).IsAssignableFrom(method.ReturnType)
+                && (!method.ReturnType.IsGenericType || method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>)
+                    || !typeof(ActionResult).IsAssignableFrom(method.ReturnType.GetGenericArguments()[0])))
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_MethodNotMvcAction.FormatWith(method.Name));
             }
-
+            
             Type type = method.DeclaringType;
             if (type == null)
             {
