@@ -27,6 +27,18 @@ namespace OSharp.Utility.Extensions
         #region IEnumerable的扩展
 
         /// <summary>
+        /// 打乱一个集合的项顺序
+        /// </summary>
+        public static IEnumerable<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            return source.OrderBy(m => Guid.NewGuid());
+        }
+
+        /// <summary>
         /// 将集合展开并分别转换成字符串，再以指定的分隔符衔接，拼成一个字符串返回。默认分隔符为逗号
         /// </summary>
         /// <param name="collection"> 要处理的集合 </param>
@@ -82,7 +94,7 @@ namespace OSharp.Utility.Extensions
             collection = collection as IList<T> ?? collection.ToList();
             return !collection.Any();
         }
-        
+
         /// <summary>
         /// 根据第三方条件是否为真来决定是否执行指定条件的查询
         /// </summary>

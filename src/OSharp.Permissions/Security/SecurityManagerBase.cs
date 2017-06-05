@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -116,6 +115,11 @@ namespace OSharp.Core.Security
         /// </summary>
         public IRepository<TEntityUserMap, TEntityUserMapKey> EntityUserMapRepository { protected get; set; }
 
+        /// <summary>
+        ///权限缓存对象
+        /// </summary>
+        public IFunctionAuthCache<TFunctionKey> FunctionAuthCache { get; set; }
+
         #endregion
 
         #region Implementation of ISecurityRole<in TRole,TRoleKey,TFunction,TFunctionKey,in TModuleKey>
@@ -148,7 +152,6 @@ namespace OSharp.Core.Security
             TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
 
-            ModuleRepository.UnitOfWork.BeginTransaction();
             foreach (TModuleKey moduleId in addModuleIds)
             {
                 TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
@@ -170,10 +173,21 @@ namespace OSharp.Core.Security
                 removeNames.Add(module.Name);
             }
 
-            return addNames.Count + removeNames.Count > 0
-                ? new OperationResult(OperationResultType.Success,
-                    "角色“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(role.Name, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
-                : OperationResult.NoChanged;
+            //todo:确认更新 role 是否有效
+            int count = await RoleRepository.UpdateAsync(role);
+
+            if (count > 0)
+            {
+                //移除 变更模块涉及到的功能权限缓存，使其更新
+                TModuleKey[] relateModuleIds = addModuleIds.Union(removeModuleIds).Distinct().ToArray();
+                TFunctionKey[] functionIds = ModuleRepository.Entities.Where(m => relateModuleIds.Contains(m.Id))
+                    .SelectMany(m => m.Functions.Select(n => n.Id)).Distinct().ToArray();
+                FunctionAuthCache.RemoveFunctionCaches(functionIds);
+
+                return new OperationResult(OperationResultType.Success,
+                    "角色“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(role.Name, addNames.ExpandAndToString(), removeNames.ExpandAndToString()));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion
@@ -217,7 +231,6 @@ namespace OSharp.Core.Security
                     return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
                 }
                 module.Users.Add(user);
-                await ModuleRepository.UpdateAsync(module);
                 addNames.Add(module.Name);
             }
             foreach (TModuleKey moduleId in removeModuleIds)
@@ -228,14 +241,20 @@ namespace OSharp.Core.Security
                     return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
                 }
                 module.Users.Remove(user);
-                await ModuleRepository.UpdateAsync(module);
                 removeNames.Add(module.Name);
             }
+            //todo:确认更新 user 是否有效
+            int count = await UserRepository.UpdateAsync(user);
 
-            return addNames.Count + removeNames.Count > 0
-                ? new OperationResult(OperationResultType.Success,
-                    "用户“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(user.UserName, addNames.ExpandAndToString(), removeNames.ExpandAndToString()))
-                : OperationResult.NoChanged;
+            if (count > 0)
+            {
+                //移除 当前用户的功能权限缓存，使其更新
+                FunctionAuthCache.RemoveUserCaches(new[] { user.UserName });
+
+                return new OperationResult(OperationResultType.Success,
+                    "用户“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(user.UserName, addNames.ExpandAndToString(), removeNames.ExpandAndToString()));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion
@@ -289,7 +308,7 @@ namespace OSharp.Core.Security
             }
             entity.TreePathString = entity.GetTreePath();
             return await ModuleRepository.InsertAsync(entity) > 0
-                ? new OperationResult(OperationResultType.Success, "模块“{0}”成功".FormatWith(dto.Name))
+                ? new OperationResult(OperationResultType.Success, "模块“{0}”创建成功".FormatWith(dto.Name))
                 : OperationResult.NoChanged;
         }
 
@@ -363,8 +382,62 @@ namespace OSharp.Core.Security
         public virtual IEnumerable<TFunction> GetAllFunctions(TModuleKey id)
         {
             TModule module = ModuleRepository.GetByKey(id);
+            if (module == null)
+            {
+                throw new InvalidOperationException("编号为“{0}”的模块信息不存在".FormatWith(id));
+            }
             TModuleKey[] keys = module.TreePathIds;
             return ModuleRepository.Entities.Where(m => keys.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
+        }
+
+        /// <summary>
+        /// 设置模块拥有的功能
+        /// </summary>
+        /// <param name="id">模块编号</param>
+        /// <param name="functionIds">功能编号集合</param>
+        /// <returns></returns>
+        public virtual async Task<OperationResult> SetModuleFunctions(TModuleKey id, TFunctionKey[] functionIds)
+        {
+            var module = ModuleRepository.TrackEntities.Where(m => m.Id.Equals(id)).Select(m => new
+            {
+                Data = m,
+                FunctionIds = m.Functions.Select(n => n.Id)
+            }).FirstOrDefault();
+            if (module == null)
+            {
+                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(id));
+            }
+            TModule entity = module.Data;
+            TFunctionKey[] addFunctionIds = functionIds.Except(module.FunctionIds).Distinct().ToArray();
+            if (addFunctionIds.Length > 0)
+            {
+                TFunction[] functions = FunctionRepository.TrackEntities.Where(m => addFunctionIds.Contains(m.Id)).ToArray();
+                foreach (TFunction function in functions)
+                {
+                    entity.Functions.Add(function);
+                }
+            }
+            TFunctionKey[] removeFunctionIds = module.FunctionIds.Except(functionIds).Distinct().ToArray();
+            if (removeFunctionIds.Length > 0)
+            {
+                TFunction[] functions = FunctionRepository.TrackEntities.Where(m => removeFunctionIds.Contains(m.Id)).ToArray();
+                foreach (TFunction function in functions)
+                {
+                    entity.Functions.Remove(function);
+                }
+            }
+            int count = await ModuleRepository.UpdateAsync(entity);
+
+            if (count > 0)
+            {
+                //移除 涉及功能的功能权限缓存，使其更新
+                TFunctionKey[] relateFunctionIds = addFunctionIds.Union(removeFunctionIds).Distinct().ToArray();
+                FunctionAuthCache.RemoveFunctionCaches(relateFunctionIds);
+
+                return new OperationResult(OperationResultType.Success,
+                    "模块“{0}”设置功能成功，共添加 {1} 个功能，移除 {2} 个功能。".FormatWith(entity.Name, addFunctionIds.Length, removeFunctionIds.Length));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion

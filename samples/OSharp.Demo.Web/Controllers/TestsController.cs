@@ -22,7 +22,7 @@ using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Mvc;
 using OSharp.Web.Mvc.Extensions;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 
 
 namespace OSharp.Demo.Web.Controllers

@@ -16,7 +16,7 @@ using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
 using OSharp.Utility.Filter;
 using OSharp.Web.Mvc;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 using OSharp.Web.Mvc.UI;
 
 

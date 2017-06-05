@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+﻿using OSharp.Utility.Extensions;
+// -----------------------------------------------------------------------
 //  <copyright file="DateTimeExtensionsTests.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
@@ -50,6 +51,12 @@ namespace OSharp.Utility.Extensions.Tests
             DateTime now = new DateTime(2015, 11, 4, 15, 10, 25);
             Assert.Equal(now.ToUniqueString(), "1530854625");
             Assert.Equal(now.ToUniqueString(true), "1530854625000");
+        }
+
+        [Fact()]
+        public void ToJsGetTimeTest()
+        {
+            string ts = DateTime.Now.ToJsGetTime();
         }
     }
 }

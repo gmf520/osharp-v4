@@ -475,7 +475,7 @@ namespace OSharp.Data.Entity
             predicate.CheckNotNull("predicate");
             TKey defaultId = default(TKey);
             var entity = _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefault();
-            bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
+            bool exists = (!typeof(TKey).IsValueType && id.Equals(null)) || id.Equals(defaultId)
                 ? entity != null
                 : entity != null && !entity.Id.Equals(id);
             return exists;

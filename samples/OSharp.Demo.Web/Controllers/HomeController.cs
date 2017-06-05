@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Web.Mvc;
 
 using OSharp.Utility.Logging;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 
 
 namespace OSharp.Demo.Web.Controllers

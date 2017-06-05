@@ -4,22 +4,21 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-09-24 20:21</last-date>
+//  <last-date>2015-09-23 17:37</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Web.Http.Filters;
+using System.Web.Mvc;
 
 using OSharp.Core.Context;
 using OSharp.Core.Extensions;
 using OSharp.Core.Logging;
 using OSharp.Core.Security;
-using OSharp.Web.Http.Extensions;
+using OSharp.Web.Mvc.Extensions;
 
 
-namespace OSharp.Web.Http.Logging
+namespace OSharp.Web.Mvc.Filters
 {
     /// <summary>
     /// 操作日志记录过滤器
@@ -43,31 +42,31 @@ namespace OSharp.Web.Http.Logging
         public IOperateLogWriter OperateLogWriter { get; set; }
 
         /// <summary>
-        /// Occurs after the action method is invoked.
+        /// Called after the action method executes.
         /// </summary>
-        /// <param name="actionExecutedContext">The action executed context.</param>
-        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        /// <param name="filterContext">The filter context.</param>
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            IFunction function = actionExecutedContext.Request.GetExecuteFunction(ServiceProvider);
+            IFunction function = filterContext.GetExecuteFunction(ServiceProvider);
             if (function == null || !function.OperateLogEnabled)
             {
                 return;
             }
             Operator @operator = new Operator()
             {
-                Ip = actionExecutedContext.Request.GetClientIpAddress()
+                Ip = filterContext.HttpContext.Request.GetIpAddress(),
             };
-            IIdentity identity = actionExecutedContext.ActionContext.RequestContext.Principal.Identity;
-            if (identity.IsAuthenticated)
+            if (filterContext.HttpContext.Request.IsAuthenticated)
             {
-                ClaimsIdentity user = identity as ClaimsIdentity;
-                if (user != null)
+                ClaimsIdentity identity = filterContext.HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
                 {
-                    @operator.UserId = user.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
-                    @operator.Name = user.GetClaimValueFirstOrDefault(ClaimTypes.Name);
-                    @operator.NickName = user.GetClaimValueFirstOrDefault(ClaimTypes.GivenName);
+                    @operator.UserId = identity.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
+                    @operator.Name = identity.GetClaimValueFirstOrDefault(ClaimTypes.Name);
+                    @operator.NickName = identity.GetClaimValueFirstOrDefault(ClaimTypes.GivenName);
                 }
             }
+
             OperateLog operateLog = new OperateLog()
             {
                 FunctionName = function.Name,
@@ -82,6 +81,5 @@ namespace OSharp.Web.Http.Logging
             }
             OperateLogWriter.Write(operateLog);
         }
-
     }
 }
