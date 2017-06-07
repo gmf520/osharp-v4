@@ -51,7 +51,7 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 节点内排序码
         /// </summary>
-        int OrderCode { get; set; }
+        double OrderCode { get; set; }
 
         /// <summary>
         /// 获取 从根结点到当前结点的树形路径编号数组，由<see cref="TreePathString"/>属性转换，此属性仅支持在内存中使用
