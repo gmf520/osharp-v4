@@ -1,12 +1,21 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="TypeExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-20 13:37</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
+
 
 namespace OSharp.Utility.Extensions
 {
@@ -191,6 +200,33 @@ namespace OSharp.Utility.Extensions
         {
             return method.ReturnType == typeof(Task)
                 || method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>);
+        }
+
+        /// <summary>
+        /// 返回当前类型是否是指定基类的派生类
+        /// </summary>
+        /// <param name="type">当前类型</param>
+        /// <param name="baseType">要判断的基类型</param>
+        /// <returns></returns>
+        public static bool IsBaseOn(this Type type, Type baseType)
+        {
+            if (type.IsGenericTypeDefinition)
+            {
+                return baseType.IsGenericAssignableFrom(type);
+            }
+            return baseType.IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// 返回当前类型是否是指定基类的派生类
+        /// </summary>
+        /// <typeparam name="TBaseType">要判断的基类型</typeparam>
+        /// <param name="type">当前类型</param>
+        /// <returns></returns>
+        public static bool IsBaseOn<TBaseType>(this Type type)
+        {
+            Type baseType = typeof(TBaseType);
+            return type.IsBaseOn(baseType);
         }
     }
 }

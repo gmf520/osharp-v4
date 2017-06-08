@@ -9,114 +9,118 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OSharp.UnitTest.Infrastructure;
-using OSharp.Utility.Extensions;
-
-using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    [TestClass()]
+
     public class TypeExtensionsTests
     {
-        [TestMethod()]
+        [Fact()]
         public void IsNullableTypeTest()
         {
             // ReSharper disable ConvertNullableToShortForm
-            Assert.IsTrue(typeof(int?).IsNullableType());
-            Assert.IsTrue(typeof(Nullable<int>).IsNullableType());
+            Assert.True(typeof(int?).IsNullableType());
+            Assert.True(typeof(Nullable<int>).IsNullableType());
 
-            Assert.IsFalse(typeof(int).IsNullableType());
+            Assert.False(typeof(int).IsNullableType());
         }
 
-        [TestMethod()]
+        [Fact()]
         public void IsEnumerableTest()
         {
-            Assert.IsTrue(typeof(string[]).IsEnumerable());
-            Assert.IsTrue(typeof(ICollection<string>).IsEnumerable());
-            Assert.IsTrue(typeof(IEnumerable<string>).IsEnumerable());
-            Assert.IsTrue(typeof(IList<string>).IsEnumerable());
-            Assert.IsTrue(typeof(Hashtable).IsEnumerable());
-            Assert.IsTrue(typeof(HashSet<string>).IsEnumerable());
+            Assert.True(typeof(string[]).IsEnumerable());
+            Assert.True(typeof(ICollection<string>).IsEnumerable());
+            Assert.True(typeof(IEnumerable<string>).IsEnumerable());
+            Assert.True(typeof(IList<string>).IsEnumerable());
+            Assert.True(typeof(Hashtable).IsEnumerable());
+            Assert.True(typeof(HashSet<string>).IsEnumerable());
 
-            Assert.IsFalse(typeof(int).IsEnumerable());
-            Assert.IsFalse(typeof(string).IsEnumerable());
+            Assert.False(typeof(int).IsEnumerable());
+            Assert.False(typeof(string).IsEnumerable());
         }
 
-        [TestMethod()]
+        [Fact()]
         public void GetNonNummableType()
         {
-            Assert.AreEqual(typeof(int?).GetNonNummableType(), typeof(int));
-            Assert.AreEqual(typeof(Nullable<int>).GetNonNummableType(), typeof(int));
+            Assert.Equal(typeof(int?).GetNonNummableType(), typeof(int));
+            Assert.Equal(typeof(Nullable<int>).GetNonNummableType(), typeof(int));
 
-            Assert.AreEqual(typeof(int).GetNonNummableType(), typeof(int));
+            Assert.Equal(typeof(int).GetNonNummableType(), typeof(int));
         }
 
-        [TestMethod()]
+        [Fact()]
         public void GetUnNullableTypeTest()
         {
-            Assert.AreEqual(typeof(int?).GetUnNullableType(), typeof(int));
-            Assert.AreEqual(typeof(Nullable<int>).GetUnNullableType(), typeof(int));
+            Assert.Equal(typeof(int?).GetUnNullableType(), typeof(int));
+            Assert.Equal(typeof(Nullable<int>).GetUnNullableType(), typeof(int));
 
-            Assert.AreEqual(typeof(int).GetUnNullableType(), typeof(int));
+            Assert.Equal(typeof(int).GetUnNullableType(), typeof(int));
         }
 
-        [TestMethod()]
+        [Fact()]
         public void ToDescriptionTest()
         {
             Type type = typeof(TestEntity);
-            Assert.AreEqual(type.ToDescription(), "测试实体");
+            Assert.Equal(type.ToDescription(), "测试实体");
             PropertyInfo property = type.GetProperty("Id");
-            Assert.AreEqual(property.ToDescription(), "编号");
+            Assert.Equal(property.ToDescription(), "编号");
 
             type = GetType();
-            Assert.AreEqual(type.ToDescription(), "OSharp.Utility.Extensions.Tests.TypeExtensionsTests");
+            Assert.Equal(type.ToDescription(), "OSharp.Utility.Extensions.Tests.TypeExtensionsTests");
         }
 
-        [TestMethod()]
+        [Fact()]
         public void HasAttributeTest()
         {
             Type type = GetType();
-            Assert.IsTrue(type.HasAttribute<TestClassAttribute>());
             MethodInfo method = type.GetMethod("HasAttributeTest");
-            Assert.IsTrue(method.HasAttribute<TestMethodAttribute>());
+            Assert.True(method.HasAttribute<FactAttribute>());
         }
 
-        [TestMethod()]
+        [Fact()]
         public void GetAttributeTest()
         {
             Type type = typeof(TestEntity);
-            Assert.AreEqual(type.GetAttribute<DescriptionAttribute>().Description, "测试实体");
+            Assert.Equal(type.GetAttribute<DescriptionAttribute>().Description, "测试实体");
             PropertyInfo property = type.GetProperty("Id");
-            Assert.AreEqual(property.GetAttribute<DescriptionAttribute>().Description, "编号");
+            Assert.Equal(property.GetAttribute<DescriptionAttribute>().Description, "编号");
             MethodInfo method = GetType().GetMethod("GetAttributeTest");
-            Assert.IsFalse(method.GetAttribute<TestMethodAttribute>() == null);
+            Assert.False(method.GetAttribute<FactAttribute>() == null);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void GetAttributesTest()
         {
             Type type = GetType();
-            Assert.AreEqual(type.GetAttributes<DescriptionAttribute>().Length, 0);
-            Assert.AreEqual(type.GetAttributes<TestClassAttribute>().Length, 1);
+            Assert.Equal(type.GetAttributes<DescriptionAttribute>().Length, 0);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void IsGenericAssignableFromTest()
         {
-            Assert.IsTrue(typeof(IEnumerable<>).IsGenericAssignableFrom(typeof(List<>)));
-            Assert.IsTrue(typeof(List<>).IsGenericAssignableFrom(typeof(List<string>)));
+            Assert.True(typeof(IEnumerable<>).IsGenericAssignableFrom(typeof(List<>)));
+            Assert.True(typeof(List<>).IsGenericAssignableFrom(typeof(List<string>)));
 
-            ExceptionAssert.IsException<ArgumentException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 (typeof(string)).IsGenericAssignableFrom(typeof(int)));
+        }
+
+        [Fact()]
+        public void IsBaseOnTest()
+        {
+            Assert.True(typeof(List<>).IsBaseOn(typeof(List<>)));
+            Assert.True(typeof(List<>).IsBaseOn(typeof(IList<>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(List<string>)));
+            Assert.True(typeof(List<string>).IsBaseOn(typeof(IList<string>)));
+
+            Assert.True(typeof(string).IsBaseOn<IEnumerable>());
         }
     }
 }

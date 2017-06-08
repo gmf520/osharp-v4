@@ -7,17 +7,13 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Demo.Dtos.Security;
-using OSharp.SiteBase.Security;
 using OSharp.Utility.Data;
 
 
@@ -26,7 +22,7 @@ namespace OSharp.Demo.Contracts
     /// <summary>
     /// 业务契约——功能模块
     /// </summary>
-    public interface ISecurityContract : ILifetimeScopeDependency
+    public interface ISecurityContract : IScopeDependency
     {
         #region 功能信息业务
 
@@ -46,16 +42,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加功能信息信息
         /// </summary>
-        /// <param name="dtos">要添加的功能信息DTO信息</param>
+        /// <param name="inputDtos">要添加的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddFunctions(params FunctionDto[] dtos);
+        OperationResult AddFunctions(params FunctionInputDto[] inputDtos);
 
         /// <summary>
         /// 更新功能信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的功能信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditFunctions(params FunctionDto[] dtos);
+        Task<OperationResult> EditFunctions(params FunctionInputDto[] inputDtos);
 
         /// <summary>
         /// 删除功能信息信息
@@ -76,9 +72,9 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的实体数据信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的实体数据信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditEntityInfos(params EntityInfoDto[] dtos);
+        OperationResult EditEntityInfos(params EntityInfoInputDto[] inputDtos);
 
         #endregion
 

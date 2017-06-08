@@ -8,9 +8,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -33,14 +35,17 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         /// <param name="value">要搜索匹配项的字符串</param>
         /// <param name="pattern">要匹配的正则表达式模式</param>
+        /// <param name="isContains">是否包含，否则全匹配</param>
         /// <returns>如果正则表达式找到匹配项，则为 true；否则，为 false</returns>
-        public static bool IsMatch(this string value, string pattern)
+        public static bool IsMatch(this string value, string pattern, bool isContains = true)
         {
             if (value == null)
             {
                 return false;
             }
-            return Regex.IsMatch(value, pattern);
+            return isContains
+                ? Regex.IsMatch(value, pattern)
+                : Regex.Match(value, pattern).Success;
         }
 
         /// <summary>
@@ -75,6 +80,115 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 在指定的输入字符串中匹配第一个数字字符串
+        /// </summary>
+        public static string MatchFirstNumber(this string value)
+        {
+            MatchCollection matches = Regex.Matches(value, @"\d+");
+            if (matches.Count == 0)
+            {
+                return string.Empty;
+            }
+            return matches[0].Value;
+        }
+
+        /// <summary>
+        /// 在指定字符串中匹配最后一个数字字符串
+        /// </summary>
+        public static string MatchLastNumber(this string value)
+        {
+            MatchCollection matches = Regex.Matches(value, @"\d+");
+            if (matches.Count == 0)
+            {
+                return string.Empty;
+            }
+            return matches[matches.Count - 1].Value;
+        }
+
+        /// <summary>
+        /// 在指定字符串中匹配所有数字字符串
+        /// </summary>
+        public static IEnumerable<string> MatchNumbers(this string value)
+        {
+            return Matches(value, @"\d+");
+        }
+
+        /// <summary>
+        /// 检测指定字符串中是否包含数字
+        /// </summary>
+        public static bool IsMatchNumber(this string value)
+        {
+            return IsMatch(value, @"\d");
+        }
+
+        /// <summary>
+        /// 检测指定字符串是否全部为数字并且长度等于指定长度
+        /// </summary>
+        public static bool IsMatchNumber(this string value, int length)
+        {
+            Regex regex = new Regex(@"^\d{" + length + "}$");
+            return regex.IsMatch(value);
+        }
+
+        /// <summary>
+        /// 截取指定字符串之间的字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="startString">起始字符串</param>
+        /// <param name="endStrings">结束字符串，多个可选</param>
+        /// <returns>返回的中间字符串</returns>
+        public static string Substring(this string source, string startString, params string[] endStrings)
+        {
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            int startIndex = 0;
+            if (!string.IsNullOrEmpty(startString))
+            {
+                startIndex = source.IndexOf(startString, StringComparison.Ordinal);
+                if (startIndex < 0)
+                {
+                    throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", startString));
+                }
+                startIndex = startIndex + startString.Length;
+            }
+            int endIndex = source.Length;
+            foreach (string endString in endStrings)
+            {
+                if (string.IsNullOrEmpty(endString))
+                {
+                    break;
+                }
+                endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
+                if (endIndex < 0 || endIndex < startIndex)
+                {
+                    continue;
+                }
+                break;
+            }
+            if (endIndex < 0 || endIndex < startIndex)
+            {
+                throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endStrings.ExpandAndToString()));
+            }
+            
+            int length = endIndex - startIndex;
+            return source.Substring(startIndex, length);
+        }
+
+        /// <summary>
+        /// 用正则表达式截取字符串
+        /// </summary>
+        public static string Substring2(this string source, string startString, string endString)
+        {
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            return source.Match($"(?<={startString})(.+?)(?={endString})");
+        }
+
+        /// <summary>
         /// 是否电子邮件
         /// </summary>
         public static bool IsEmail(this string value)
@@ -88,7 +202,7 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIpAddress(this string value)
         {
-            const string pattern = @"^(\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d\.){3}\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d$";
+            const string pattern = @"^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$";
             return value.IsMatch(pattern);
         }
 
@@ -127,8 +241,46 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsIdentityCard(this string value)
         {
-            const string pattern = @"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$";
-            return value.IsMatch(pattern);
+            if (value.Length != 15 && value.Length != 18)
+            {
+                return false;
+            }
+            Regex regex;
+            string[] array;
+            DateTime time;
+            if (value.Length == 15)
+            {
+                regex = new Regex(@"^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})_");
+                if (!regex.Match(value).Success)
+                {
+                    return false;
+                }
+                array = regex.Split(value);
+                return DateTime.TryParse(string.Format("{0}-{1}-{2}", "19" + array[2], array[3], array[4]), out time);
+            }
+            regex = new Regex(@"^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9Xx])$");
+            if (!regex.Match(value).Success)
+            {
+                return false;
+            }
+            array = regex.Split(value);
+            if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", array[2], array[3], array[4]), out time))
+            {
+                return false;
+            }
+            //校验最后一位
+            string[] chars = value.ToCharArray().Select(m => m.ToString()).ToArray();
+            int[] weights = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+            int sum = 0;
+            for (int i = 0; i < 17; i++)
+            {
+                int num = int.Parse(chars[i]);
+                sum = sum + num * weights[i];
+            }
+            int mod = sum % 11;
+            string vCode = "10X98765432";//检验码字符串
+            string last = vCode.ToCharArray().ElementAt(mod).ToString();
+            return chars.Last().ToUpper() == last;
         }
 
         /// <summary>
@@ -149,6 +301,7 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 指示指定的字符串是 null 还是 System.String.Empty 字符串
         /// </summary>
+        [DebuggerStepThrough]
         public static bool IsNullOrEmpty(this string value)
         {
             return string.IsNullOrEmpty(value);
@@ -157,7 +310,17 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 指示指定的字符串是 null、空还是仅由空白字符组成。
         /// </summary>
+        [DebuggerStepThrough]
         public static bool IsNullOrWhiteSpace(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>
+        /// 指示指定的字符串是 null、空还是仅由空白字符组成。
+        /// </summary>
+        [DebuggerStepThrough]
+        public static bool IsMissing(this string value)
         {
             return string.IsNullOrWhiteSpace(value);
         }
@@ -168,6 +331,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="format">字符串格式，占位符以{n}表示</param>
         /// <param name="args">用于填充占位符的参数</param>
         /// <returns>格式化后的字符串</returns>
+        [DebuggerStepThrough]
         public static string FormatWith(this string format, params object[] args)
         {
             format.CheckNotNull("format");
@@ -268,6 +432,69 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 给URL添加查询参数
+        /// </summary>
+        /// <param name="url">URL字符串</param>
+        /// <param name="queries">要添加的参数，形如："id=1,cid=2"</param>
+        /// <returns></returns>
+        public static string AddUrlQuery(this string url, params string[] queries)
+        {
+            foreach (string query in queries)
+            {
+                if (!url.Contains("?"))
+                {
+                    url += "?";
+                }
+                else if (!url.EndsWith("&"))
+                {
+                    url += "&";
+                }
+
+                url = url + query;
+            }
+            return url;
+        }
+
+        /// <summary>
+        /// 获取URL中指定参数的值，不存在返回空字符串
+        /// </summary>
+        public static string GetUrlQuery(this string url, string key)
+        {
+            Uri uri = new Uri(url);
+            string query = uri.Query;
+            if (query.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            query = query.TrimStart('?');
+            var dict = (from m in query.Split("&", true)
+                        let strs = m.Split("=")
+                        select new KeyValuePair<string, string>(strs[0], strs[1]))
+                .ToDictionary(m => m.Key, m => m.Value);
+            if (dict.ContainsKey(key))
+            {
+                return dict[key];
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 给URL添加 # 参数
+        /// </summary>
+        /// <param name="url">URL字符串</param>
+        /// <param name="query">要添加的参数</param>
+        /// <returns></returns>
+        public static string AddHashFragment(this string url, string query)
+        {
+            if (!url.Contains("#"))
+            {
+                url += "#";
+            }
+
+            return url + query;
+        }
+        
+        /// <summary>
         /// 将字符串转换为<see cref="byte"/>[]数组，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
         public static byte[] ToBytes(this string value, Encoding encoding = null)
@@ -291,6 +518,85 @@ namespace OSharp.Utility.Extensions
             return encoding.GetString(bytes);
         }
 
+        /// <summary>
+        /// 获取中文字符串的首字母
+        /// </summary>
+        public static string GetChineseSpell(this string cnString)
+        {
+            cnString.CheckNotNull("cnString" );
+            if (!cnString.IsMatch(@"[\u4E00-\u9FA5]"))
+            {
+                throw new ArgumentException("参数不是中文字符串", "cnString");
+            }
+            int length = cnString.Length;
+            string result = null;
+            for (int i = 0; i < length; i++)
+            {
+                result += GetChineseSpell(cnString[i]);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取单个中文字符的拼音首字母
+        /// </summary>
+        /// <param name="cnChar"></param>
+        /// <returns></returns>
+        public static string GetChineseSpell(this char cnChar)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(cnChar.ToString());
+            if (bytes.Length > 1)
+            {
+                int area = (short)bytes[0];
+                int pos = (short)bytes[1];
+                int code = (area << 8) + pos;
+                int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
+
+                for (int i = 0; i < 26; i++)
+                {
+                    int max = 55290;
+                    if (i != 25)
+                    {
+                        max = areacode[i + 1];
+                    }
+                    if (areacode[i] <= code && code < max)
+                    {
+                        return Encoding.Default.GetString(new byte[] { (byte)(97 + i) }).ToUpper();
+                    }
+                }
+                return "*";
+            }
+            return cnChar.ToString();
+        }
+
+        /// <summary>
+        /// 将字符串进行Unicode编码，变成形如“\u7f16\u7801”的形式
+        /// </summary>
+        /// <param name="source">要进行编号的字符串</param>
+        public static string ToUnicodeString(this string source)
+        {
+            Regex regex = new Regex(@"[^\u0000-\u00ff]");
+            return regex.Replace(source, m => string.Format(@"\u{0:x4}", (short)m.Value[0]));
+        }
+
+        /// <summary>
+        /// 将形如“\u7f16\u7801”的Unicode字符串解码
+        /// </summary>
+        public static string FromUnicodeString(this string source)
+        {
+            Regex regex = new Regex(@"\\u([0-9a-fA-F]{4})", RegexOptions.Compiled);
+            return regex.Replace(source,
+                m =>
+                {
+                    short s;
+                    if (short.TryParse(m.Groups[1].Value, NumberStyles.HexNumber,CultureInfo.InstalledUICulture,out s))
+                    {
+                        return "" + (char)s;
+                    }
+                    return m.Value;
+                });
+        }
+        
         #endregion
     }
 }

@@ -6,11 +6,7 @@
 //  <last-date>2015-07-06 1:13</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Dependency;
 
@@ -20,7 +16,7 @@ namespace OSharp.Core.Logging
     /// <summary>
     /// 数据日志缓存接口
     /// </summary>
-    public interface IDataLogCache : ILifetimeScopeDependency
+    public interface IDataLogCache : IScopeDependency
     {
         /// <summary>
         /// 获取 数据日志集合

@@ -7,12 +7,6 @@
 //  <last-date>2015-07-29 13:41</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Core.Configs;
 
 
@@ -26,7 +20,7 @@ namespace OSharp.Core.Initialize
         /// <summary>
         /// 开始初始化基础日志
         /// </summary>
-        /// <param name="config">基础日志配置信息</param>
+        /// <param name="config">日志配置信息</param>
         void Initialize(LoggingConfig config);
     }
 }

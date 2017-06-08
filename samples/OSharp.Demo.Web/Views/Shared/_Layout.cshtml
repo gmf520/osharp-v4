@@ -3,10 +3,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    @RenderSection("header", false)
 </head>
 <body>
     <div>
         @RenderBody()
     </div>
+    <script type="text/javascript" src="/Scripts/jquery-1.11.3.js"></script>
+@RenderSection("footer", false)
 </body>
 </html>

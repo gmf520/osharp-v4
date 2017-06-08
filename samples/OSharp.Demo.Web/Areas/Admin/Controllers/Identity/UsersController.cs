@@ -7,24 +7,18 @@
 //  <last-date>2015-08-10 12:36</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Identity;
-using OSharp.Demo.Models.Identity;
-using OSharp.SiteBase.Extensions;
 using OSharp.Utility;
 using OSharp.Utility.Data;
-using OSharp.Web.Mvc.Binders;
+using OSharp.Web.Mvc.Extensions;
 using OSharp.Web.Mvc.Security;
-using OSharp.Web.UI;
+using OSharp.Web.Mvc.UI;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
@@ -84,10 +78,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [AllowAnonymous]
         [Description("管理-用户-新增")]
-        public async Task<ActionResult> Add([ModelBinder(typeof(JsonBinder<UserDto>))] ICollection<UserDto> dtos)
+        public async Task<ActionResult> Add(UserInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = await IdentityContract.AddUsers(dtos.ToArray());
+            OperationResult result = await IdentityContract.AddUsers(dtos);
             return Json(result.ToAjaxResult());
         }
 
@@ -95,10 +89,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [Logined]
         [Description("管理-用户-编辑")]
-        public async Task<ActionResult> Edit([ModelBinder(typeof(JsonBinder<UserDto>))] ICollection<UserDto> dtos)
+        public async Task<ActionResult> Edit(UserInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = await IdentityContract.EditUsers(dtos.ToArray());
+            OperationResult result = await IdentityContract.EditUsers(dtos);
             return Json(result.ToAjaxResult());
         }
 
@@ -106,10 +100,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [AjaxOnly]
         [RoleLimit]
         [Description("管理-用户-删除")]
-        public async Task<ActionResult> Delete([ModelBinder(typeof(JsonBinder<int>))] ICollection<int> ids)
+        public async Task<ActionResult> Delete(int[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = await IdentityContract.DeleteUsers(ids.ToArray());
+            OperationResult result = await IdentityContract.DeleteUsers(ids);
             return Json(result.ToAjaxResult());
         }
 

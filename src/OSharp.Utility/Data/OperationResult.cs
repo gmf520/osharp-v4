@@ -7,6 +7,9 @@
 //  <last-date>2015-08-03 18:31</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Utility.Extensions;
+
+
 namespace OSharp.Utility.Data
 {
     /// <summary>
@@ -24,7 +27,7 @@ namespace OSharp.Utility.Data
         /// 初始化一个<see cref="OperationResult"/>类型的新实例
         /// </summary>
         public OperationResult()
-            : this(OperationResultType.Success)
+            : this(OperationResultType.NoChanged)
         { }
 
         /// <summary>
@@ -49,14 +52,14 @@ namespace OSharp.Utility.Data
         { }
 
         /// <summary>
-        /// 获取或设置 成功的操作结果
+        /// 获取 成功的操作结果
         /// </summary>
-        public static OperationResult Success { get; set; }
+        public static OperationResult Success { get; private set; }
 
         /// <summary>
-        /// 获取或设置 未变更的操作结果
+        /// 获取 未变更的操作结果
         /// </summary>
-        public static OperationResult NoChanged { get; set; }
+        public new static OperationResult NoChanged { get; private set; }
     }
 
 
@@ -66,11 +69,16 @@ namespace OSharp.Utility.Data
     /// <typeparam name="TData">返回数据的类型</typeparam>
     public class OperationResult<TData> : OSharpResult<OperationResultType, TData>
     {
+        static OperationResult()
+        {
+            NoChanged = new OperationResult<TData>(OperationResultType.NoChanged);
+        }
+
         /// <summary>
         /// 初始化一个<see cref="OperationResult"/>类型的新实例
         /// </summary>
         public OperationResult()
-            : this(OperationResultType.Success)
+            : this(OperationResultType.NoChanged)
         { }
 
         /// <summary>
@@ -93,5 +101,27 @@ namespace OSharp.Utility.Data
         public OperationResult(OperationResultType resultType, string message, TData data)
             : base(resultType, message, data)
         { }
+
+        /// <summary>
+        /// 获取或设置 返回消息
+        /// </summary>
+        public override string Message
+        {
+            get { return _message ?? ResultType.ToDescription(); }
+            set { _message = value; }
+        }
+
+        /// <summary>
+        /// 获取 未变更的操作结果
+        /// </summary>
+        public static OperationResult<TData> NoChanged { get; private set; }
+
+        /// <summary>
+        /// 获取 是否成功
+        /// </summary>
+        public bool Successed
+        {
+            get { return ResultType == OperationResultType.Success; }
+        }
     }
 }

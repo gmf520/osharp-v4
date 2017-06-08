@@ -11,10 +11,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs.ConfigFile;
+using OSharp.Core.Properties;
 using OSharp.Utility.Extensions;
 
 
@@ -41,18 +40,23 @@ namespace OSharp.Core.Configs
             Type type = Type.GetType(element.InitializerTypeName);
             if (type == null)
             {
-                throw new InvalidOperationException("上下文初始化类型“{0}”不存在".FormatWith(element.InitializerTypeName));
+                throw new InvalidOperationException(Resources.DbContextInitializerConfig_InitializerNotExists.FormatWith(element.InitializerTypeName));
             }
             InitializerType = type;
 
+            string binPath = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
             string[] mapperFiles = element.EntityMapperFiles.Split(',')
                 .Select(fileName => fileName.EndsWith(".dll") ? fileName : fileName + ".dll")
-                .Select(fileName => Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, fileName)).ToArray();
+                .Select(fileName => Path.Combine(binPath, fileName)).ToArray();
             EntityMapperAssemblies = mapperFiles.Select(Assembly.LoadFrom).ToList();
 
-            if (element.CreateDatabaseInitializer != null && element.CreateDatabaseInitializer.InitializerTypeName != null)
+            if (element.CreateDatabaseInitializer != null && !element.CreateDatabaseInitializer.InitializerTypeName.IsMissing())
             {
                 CreateDatabaseInitializerType = Type.GetType(element.CreateDatabaseInitializer.InitializerTypeName);
+                if (CreateDatabaseInitializerType == null)
+                {
+                    throw new InvalidOperationException(Resources.ConfigFile_NameToTypeIsNull.FormatWith(element.CreateDatabaseInitializer.InitializerTypeName));
+                }
             }
         }
 

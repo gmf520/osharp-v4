@@ -6,12 +6,6 @@
 //  <last-date>2015-06-30 18:05</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using OSharp.Core.Configs.ConfigFile;
 
 
@@ -38,7 +32,7 @@ namespace OSharp.Core.Configs
         internal LoggingConfig(LoggingElement element)
         {
             EntryConfig = new LoggingEntryConfig(element.LoggingEntry);
-            DataLoggingConfig = new DataLoggingConfig(element.DataLogging);
+            //DataLoggingConfig = new DataLoggingConfig(element.DataLogging);
             BasicLoggingConfig = new BasicLoggingConfig(element.BasicLogging);
         }
 

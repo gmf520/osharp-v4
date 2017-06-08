@@ -7,11 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Utility.IO
@@ -45,7 +41,7 @@ namespace OSharp.Utility.IO
             {
                 foreach (string dir in dirs)
                 {
-                    Copy(dir, targetPath + targetPath + dir.Substring(dir.LastIndexOf("\\", StringComparison.Ordinal)));
+                    Copy(dir, targetPath + dir.Substring(dir.LastIndexOf("\\", StringComparison.Ordinal)));
                 }
             }
             if (searchPatterns != null && searchPatterns.Length > 0)

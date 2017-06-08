@@ -6,12 +6,15 @@
 //  <last-date>2015-06-16 22:10</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Core.Data;
+
+
 namespace OSharp.Core.Security
 {
     /// <summary>
     /// 功能接口，最小功能信息
     /// </summary>
-    public interface IFunction
+    public interface IFunction : ILockable, IRecyclable
     {
         /// <summary>
         /// 获取或设置 功能名称
@@ -39,6 +42,11 @@ namespace OSharp.Core.Security
         FunctionType FunctionType { get; set; }
 
         /// <summary>
+        /// 获取或设置 功能类型是否更改过，如为true，刷新功能时将忽略功能类型
+        /// </summary>
+        bool IsTypeChanged { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否启用操作日志
         /// </summary>
         bool OperateLogEnabled { get; set; }
@@ -59,9 +67,14 @@ namespace OSharp.Core.Security
         bool IsCacheSliding { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否锁定
+        /// 获取或设置 是否自定义功能
         /// </summary>
-        bool IsLocked { get; set; }
+        bool IsCustom { get; set; }
+
+        /// <summary>
+        /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
+        /// </summary>
+        PlatformToken PlatformToken { get; set; }
 
         /// <summary>
         /// 获取或设置 功能地址

@@ -7,15 +7,9 @@
 //  <last-date>2015-08-03 20:54</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core.Data;
 using OSharp.Core.Identity;
 using OSharp.Demo.Models.Identity;
+using OSharp.Demo.Dtos.Identity;
 
 
 namespace OSharp.Demo.Identity
@@ -23,6 +17,6 @@ namespace OSharp.Demo.Identity
     /// <summary>
     /// 用户存储实现
     /// </summary>
-    public class UserStore : UserStoreBase<User, int, Role, int, UserRoleMap, int, UserLogin, int, UserClaim, int>
+    public class UserStore : UserStoreBase<User, int, Role, int, UserRoleMap, UserRoleMapInputDto, int, UserLogin, int, UserClaim, int>
     { }
 }

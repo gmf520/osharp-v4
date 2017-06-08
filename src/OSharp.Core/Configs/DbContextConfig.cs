@@ -7,13 +7,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs.ConfigFile;
-using OSharp.Utility;
+using OSharp.Core.Properties;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Configs
@@ -43,6 +40,10 @@ namespace OSharp.Core.Configs
             DataLoggingEnabled = element.DataLoggingEnabled;
             ConnectionStringName = element.ConnectionStringName;
             ContextType = Type.GetType(element.ContextTypeName);
+            if (ContextType == null)
+            {
+                throw new InvalidOperationException(Resources.ConfigFile_NameToTypeIsNull.FormatWith(element.ContextTypeName));
+            }
             InitializerConfig = new DbContextInitializerConfig(element.DbContextInitializer);
         }
         

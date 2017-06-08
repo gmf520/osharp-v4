@@ -7,10 +7,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Core.Data
@@ -21,7 +17,7 @@ namespace OSharp.Core.Data
     public interface ICreatedTime
     {
         /// <summary>
-        /// 获取设置 信息创建时间
+        /// 获取或设置 信息创建时间
         /// </summary>
         DateTime CreatedTime { get; set; }
     }

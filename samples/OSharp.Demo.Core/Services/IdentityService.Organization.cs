@@ -10,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Demo.Dtos.Identity;
 using OSharp.Demo.Models.Identity;
@@ -48,13 +46,13 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 添加组织机构信息信息
         /// </summary>
-        /// <param name="dtos">要添加的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">要添加的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult AddOrganizations(params OrganizationDto[] dtos)
+        public OperationResult AddOrganizations(params OrganizationInputDto[] inputDtos)
         {
-            dtos.CheckNotNull("dtos");
+            inputDtos.CheckNotNull("dtos");
             List<Organization> organizations = new List<Organization>();
-            OperationResult result = OrganizationRepository.Insert(dtos,
+            OperationResult result = OrganizationRepository.Insert(inputDtos,
                 dto =>
                 {
                     if (OrganizationRepository.CheckExists(m => m.Name == dto.Name))
@@ -87,14 +85,14 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 更新组织机构信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult EditOrganizations(params OrganizationDto[] dtos)
+        public OperationResult EditOrganizations(params OrganizationInputDto[] inputDtos)
         {
-            dtos.CheckNotNull("dtos");
+            inputDtos.CheckNotNull("dtos");
             List<Organization> organizations = new List<Organization>();
-            OperationResult result = OrganizationRepository.Update(dtos,
-                dto =>
+            OperationResult result = OrganizationRepository.Update(inputDtos,
+                (dto, entity) =>
                 {
                     if (OrganizationRepository.CheckExists(m => m.Name == dto.Name, dto.Id))
                     {

@@ -6,30 +6,22 @@
 //  <last-date>2014:07:08 17:11</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using OSharp.Utility.Extensions;
+using Xunit;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    [TestClass()]
+    
     public class EnumExtensionsTests
     {
-        [TestMethod()]
+        [Fact()]
         public void ToDescriptionTest()
         {
             TestEnum value = TestEnum.EnumItemA;
-            Assert.AreEqual(value.ToDescription(), "枚举项A");
+            Assert.Equal(value.ToDescription(), "枚举项A");
 
             value = TestEnum.EnumItemB;
-            Assert.AreEqual(value.ToDescription(), "EnumItemB");
+            Assert.Equal(value.ToDescription(), "EnumItemB");
         }
 
 

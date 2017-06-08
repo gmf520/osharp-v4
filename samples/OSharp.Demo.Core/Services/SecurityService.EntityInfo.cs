@@ -6,14 +6,9 @@
 //  <last-date>2015-07-15 2:05</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-using OSharp.Core.Context;
+using OSharp.Core.Dependency;
 using OSharp.Core.Security;
 using OSharp.Demo.Dtos.Security;
 using OSharp.Utility.Data;
@@ -36,15 +31,16 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的实体数据信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的实体数据信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult EditEntityInfos(params EntityInfoDto[] dtos)
+        public OperationResult EditEntityInfos(params EntityInfoInputDto[] inputDtos)
         {
-            OperationResult result = EntityInfoRepository.Update(dtos);
+            OperationResult result = EntityInfoRepository.Update(inputDtos);
 
             if (result.ResultType == OperationResultType.Success)
             {
-                OSharpContext.Current.EntityInfoHandler.RefreshCache();
+                IEntityInfoHandler handler = ServiceProvider.GetService<IEntityInfoHandler>();
+                handler.RefreshCache();
             }
             return result;
         }

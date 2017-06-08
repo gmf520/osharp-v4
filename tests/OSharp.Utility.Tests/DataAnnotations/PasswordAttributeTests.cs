@@ -6,23 +6,15 @@
 //  <last-date>2015-07-26 14:38</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Utility.DataAnnotations;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.DataAnnotations.Tests
 {
-    [TestClass()]
+    
     public class PasswordAttributeTests
     {
-        [TestMethod()]
+        [Fact()]
         public void IsValidTest()
         {
             PasswordAttribute attr = new PasswordAttribute()
@@ -33,19 +25,19 @@ namespace OSharp.Utility.DataAnnotations.Tests
                 RequiredLowercase = false,
                 RequiredUppercase = false
             };
-            Assert.IsTrue(attr.IsValid(null));
-            Assert.IsFalse(attr.IsValid("213"));
-            Assert.IsTrue(attr.IsValid("123456"));
+            Assert.True(attr.IsValid(null));
+            Assert.False(attr.IsValid("213"));
+            Assert.True(attr.IsValid("123456"));
             attr.CanOnlyDigit = false;
-            Assert.IsFalse(attr.IsValid("12356"));
-            Assert.IsTrue(attr.IsValid("123abc"));
+            Assert.False(attr.IsValid("12356"));
+            Assert.True(attr.IsValid("123abc"));
             attr.RequiredLowercase = true;
-            Assert.IsFalse(attr.IsValid("123ABC"));
-            Assert.IsTrue(attr.IsValid("123abc"));
+            Assert.False(attr.IsValid("123ABC"));
+            Assert.True(attr.IsValid("123abc"));
             attr.RequiredUppercase = true;
-            Assert.IsFalse(attr.IsValid("123abc"));
-            Assert.IsFalse(attr.IsValid("123ABC"));
-            Assert.IsTrue(attr.IsValid("123AbC"));
+            Assert.False(attr.IsValid("123abc"));
+            Assert.False(attr.IsValid("123ABC"));
+            Assert.True(attr.IsValid("123AbC"));
         }
     }
 }

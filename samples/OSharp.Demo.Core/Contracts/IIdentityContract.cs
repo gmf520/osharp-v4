@@ -7,13 +7,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Demo.Dtos.Identity;
 using OSharp.Demo.Models.Identity;
@@ -25,7 +22,7 @@ namespace OSharp.Demo.Contracts
     /// <summary>
     /// 业务契约——身份认证模块
     /// </summary>
-    public interface IIdentityContract : ILifetimeScopeDependency
+    public interface IIdentityContract : IScopeDependency
     {
         #region 组织机构信息业务
 
@@ -45,16 +42,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加组织机构信息信息
         /// </summary>
-        /// <param name="dtos">要添加的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">要添加的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddOrganizations(params OrganizationDto[] dtos);
+        OperationResult AddOrganizations(params OrganizationInputDto[] inputDtos);
 
         /// <summary>
         /// 更新组织机构信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的组织机构信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的组织机构信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditOrganizations(params OrganizationDto[] dtos);
+        OperationResult EditOrganizations(params OrganizationInputDto[] inputDtos);
 
         /// <summary>
         /// 删除组织机构信息信息
@@ -83,16 +80,16 @@ namespace OSharp.Demo.Contracts
         /// <summary>
         /// 添加角色信息信息
         /// </summary>
-        /// <param name="dtos">要添加的角色信息DTO信息</param>
+        /// <param name="inputDtos">要添加的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult AddRoles(params RoleDto[] dtos);
+        OperationResult AddRoles(params RoleInputDto[] inputDtos);
 
         /// <summary>
         /// 更新角色信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的角色信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        OperationResult EditRoles(params RoleDto[] dtos);
+        OperationResult EditRoles(params RoleInputDto[] inputDtos);
 
         /// <summary>
         /// 删除角色信息信息
@@ -123,14 +120,14 @@ namespace OSharp.Demo.Contracts
         /// </summary>
         /// <param name="dtos">要添加的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> AddUsers(params UserDto[] dtos);
+        Task<OperationResult> AddUsers(params UserInputDto[] dtos);
 
         /// <summary>
         /// 更新用户信息信息
         /// </summary>
         /// <param name="dtos">包含更新信息的用户信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> EditUsers(params UserDto[] dtos);
+        Task<OperationResult> EditUsers(params UserInputDto[] dtos);
 
         /// <summary>
         /// 删除用户信息信息

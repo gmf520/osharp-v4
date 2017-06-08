@@ -7,24 +7,21 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
-using OSharp.Core.Caching;
 using OSharp.Core.Data.Extensions;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Dtos.Security;
-using OSharp.SiteBase.Extensions;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
-using OSharp.Web.Mvc.Binders;
 using OSharp.Web.Mvc.Security;
-using OSharp.Web.UI;
+using OSharp.Web.Mvc.UI;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
@@ -55,7 +52,6 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
                     new SortCondition("Name")
                 };
             }
-            IFunction function = this.GetExecuteFunction();
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
             var page = SecurityContract.Functions.ToPage(predicate,
                 request.PageCondition,
@@ -111,30 +107,30 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-新增")]
-        public ActionResult Add([ModelBinder(typeof(JsonBinder<FunctionDto>))] ICollection<FunctionDto> dtos)
+        public ActionResult Add(FunctionInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos");
-            OperationResult result = SecurityContract.AddFunctions(dtos.ToArray());
+            OperationResult result = SecurityContract.AddFunctions(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-编辑")]
-        public ActionResult Edit([ModelBinder(typeof(JsonBinder<FunctionDto>))] ICollection<FunctionDto> dtos)
+        public async Task<ActionResult> Edit(FunctionInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
-            OperationResult result = SecurityContract.EditFunctions(dtos.ToArray());
+            OperationResult result = await SecurityContract.EditFunctions(dtos);
             return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-删除")]
-        public ActionResult Delete([ModelBinder(typeof(JsonBinder<Guid>))] ICollection<Guid> ids)
+        public ActionResult Delete(Guid[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = SecurityContract.DeleteFunctions(ids.ToArray());
+            OperationResult result = SecurityContract.DeleteFunctions(ids);
             return Json(result.ToAjaxResult());
         }
 

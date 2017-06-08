@@ -8,18 +8,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Utility.Collections
 {
     /// <summary>
-    /// 相等比较辅助类，用于快速创建<see cref="IEqualityComparer&lt;T&gt;"/>的实例
+    /// 相等比较辅助类，用于快速创建<see cref="IEqualityComparer{T}"/>的实例
     /// </summary>
     /// <example>
-    /// var equalityComparer1 = EqualityHelper[Person].CreateComparer(p => p.ID);
+    /// var equalityComparer1 = EqualityHelper{Person}.CreateComparer(p => p.ID);
     /// var equalityComparer2 = EqualityHelper[Person].CreateComparer(p => p.Name);
     /// var equalityComparer3 = EqualityHelper[Person].CreateComparer(p => p.Birthday.Year);
     /// </example>

@@ -6,22 +6,12 @@
 //  <last-date>2015-07-13 9:31</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core.Dependency;
-
-
 namespace OSharp.Core.Security
 {
     /// <summary>
     /// 功能信息处理器
     /// </summary>
-    public interface IFunctionHandler : ISingletonDependency
+    public interface IFunctionHandler
     {
         /// <summary>
         /// 从程序集中刷新功能数据，主要检索MVC的Controller-Action信息

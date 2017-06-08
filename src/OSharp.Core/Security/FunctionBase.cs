@@ -73,6 +73,11 @@ namespace OSharp.Core.Security
         public bool IsCacheSliding { get; set; }
 
         /// <summary>
+        /// 获取或设置 功能提供者，如Mvc，WebApi，SignalR等，用于功能的技术分组
+        /// </summary>
+        public PlatformToken PlatformToken { get; set; }
+
+        /// <summary>
         /// 获取或设置 功能地址
         /// </summary>
         public string Url { get; set; }
@@ -101,5 +106,10 @@ namespace OSharp.Core.Security
         /// 获取或设置 是否自定义功能
         /// </summary>
         public bool IsCustom { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否已逻辑删除
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }

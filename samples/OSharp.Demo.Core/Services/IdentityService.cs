@@ -6,13 +6,6 @@
 //  <last-date>2015-06-30 3:35</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core;
 using OSharp.Core.Data;
 using OSharp.Demo.Contracts;
 using OSharp.Demo.Models.Identity;
@@ -48,6 +41,6 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 获取或设置 用户角色映射信息仓储对象
         /// </summary>
-        public IRepository<UserRoleMap, int> UserRoleMapRepository { get; set; }
+        public IRepository<UserRoleMap, int> UserRoleMapRepository { protected get; set; }
     }
 }

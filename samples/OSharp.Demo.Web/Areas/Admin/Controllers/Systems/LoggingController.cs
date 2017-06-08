@@ -6,11 +6,8 @@
 //  <last-date>2015-06-30 3:51</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 using OSharp.Core.Logging;
@@ -18,9 +15,8 @@ using OSharp.Demo.Contracts;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
-using OSharp.Web.Mvc.Binders;
 using OSharp.Web.Mvc.Security;
-using OSharp.Web.UI;
+using OSharp.Web.Mvc.UI;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
@@ -95,10 +91,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
 
         [AjaxOnly]
         [Description("管理-操作日志-删除")]
-        public ActionResult DeleteOperateLogs([ModelBinder(typeof(JsonBinder<int>))] ICollection<int> ids)
+        public ActionResult DeleteOperateLogs(int[] ids)
         {
             ids.CheckNotNull("ids");
-            OperationResult result = LoggingContract.DeleteOperateLogs(ids.ToArray());
+            OperationResult result = LoggingContract.DeleteOperateLogs(ids);
             return Json(result.ToAjaxResult(), JsonRequestBehavior.AllowGet);
         }
 
@@ -124,7 +120,6 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         public ActionResult SystemLogs()
         {
             return Content("数据日志");
-            return View();
         }
 
         #endregion

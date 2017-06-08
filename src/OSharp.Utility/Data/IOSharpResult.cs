@@ -7,12 +7,6 @@
 //  <last-date>2015-08-03 18:20</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 namespace OSharp.Utility.Data
 {
     /// <summary>

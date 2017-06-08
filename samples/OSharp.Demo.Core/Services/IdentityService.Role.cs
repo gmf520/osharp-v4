@@ -44,11 +44,11 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 添加角色信息信息
         /// </summary>
-        /// <param name="dtos">要添加的角色信息DTO信息</param>
+        /// <param name="inputDtos">要添加的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult AddRoles(params RoleDto[] dtos)
+        public OperationResult AddRoles(params RoleInputDto[] inputDtos)
         {
-            return RoleRepository.Insert(dtos,
+            return RoleRepository.Insert(inputDtos,
                 dto =>
                 {
                     if (dto.OrganizationId.HasValue)
@@ -60,7 +60,7 @@ namespace OSharp.Demo.Services
                     }
                     else if (RoleRepository.CheckExists(m => m.Name == dto.Name && m.Organization == null))
                     {
-                        throw new Exception("无组织机构的名称为的角色已存在，不能重复添加".FormatWith(dto.Name));
+                        throw new Exception("无组织机构的名称为“{0}”的角色已存在，不能重复添加".FormatWith(dto.Name));
                     }
                 },
                 (dto, entity) =>
@@ -85,14 +85,14 @@ namespace OSharp.Demo.Services
         /// <summary>
         /// 更新角色信息信息
         /// </summary>
-        /// <param name="dtos">包含更新信息的角色信息DTO信息</param>
+        /// <param name="inputDtos">包含更新信息的角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public OperationResult EditRoles(params RoleDto[] dtos)
+        public OperationResult EditRoles(params RoleInputDto[] inputDtos)
         {
-            return RoleRepository.Update(dtos,
-                dto =>
+            return RoleRepository.Update(inputDtos,
+                (dto, entity) =>
                 {
-                    if (dto.IsSystem)
+                    if (entity.IsSystem)
                     {
                         throw new Exception("角色“{0}”为系统角色，不能编辑".FormatWith(dto.Name));
                     }

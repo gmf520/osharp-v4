@@ -6,13 +6,6 @@
 //  <last-date>2015-07-15 18:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Core
 {
     /// <summary>
@@ -20,6 +13,8 @@ namespace OSharp.Core
     /// </summary>
     public class Constants
     {
-        public const string CurrentFunctionKey = "OSHARP_FUNCTION_CURRENT";
+        public const string CurrentMvcFunctionKey = "OSHARP_MVC_FUNCTION_CURRENT";
+        public const string CurrentWebApiFunctionKey = "OSHARP_WEBAPI_FUNCTION_CURRENT";
+        public const string VerifyCodeSession = "OSHARP_VERIFY_CODE_SESSION";
     }
 }

@@ -6,13 +6,7 @@
 //  <last-date>2015-06-25 14:42</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using OSharp.Core.Data.Entity;
+using OSharp.Data.Entity;
 using OSharp.Demo.Models.Identity;
 
 

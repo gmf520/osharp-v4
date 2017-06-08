@@ -8,13 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Reflection;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Dependency
@@ -29,13 +27,13 @@ namespace OSharp.Core.Dependency
         /// </summary>
         public SingletonDependencyTypeFinder()
         {
-            AssemblyFinder = new CurrentDomainAssemblyFinder();
+            AssemblyFinder = new DirectoryAssemblyFinder();
         }
 
         /// <summary>
         /// 获取或设置 程序集查找器
         /// </summary>
-        public IAssemblyFinder AssemblyFinder { get; set; }
+        public IAllAssemblyFinder AssemblyFinder { get; set; }
 
         /// <summary>
         /// 查找指定条件的项
@@ -53,11 +51,21 @@ namespace OSharp.Core.Dependency
         /// <returns></returns>
         public Type[] FindAll()
         {
-            Assembly[] assemblies = AssemblyFinder.FindAll();
-            return assemblies.SelectMany(assembly =>
-                assembly.GetTypes().Where(type =>
-                    typeof(ISingletonDependency).IsAssignableFrom(type) && !type.IsAbstract))
-                .Distinct().ToArray();
+            try
+            {
+                Assembly[] assemblies = AssemblyFinder.FindAll();
+                return assemblies.SelectMany(assembly =>
+                    assembly.GetTypes().Where(type =>
+                        typeof(ISingletonDependency).IsAssignableFrom(type) && !type.IsAbstract))
+                    .Distinct().ToArray();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                string msg = e.Message;
+                Exception[] exs = e.LoaderExceptions;
+                msg = msg + "\r\n详情：" + exs.Select(m => m.Message).ExpandAndToString("---");
+                throw new Exception(msg, e);
+            }
         }
 
     }

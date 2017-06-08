@@ -7,13 +7,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Properties;
 
 
 namespace OSharp.Utility.Data
@@ -37,10 +35,6 @@ namespace OSharp.Utility.Data
             fromRadix.CheckBetween("fromRadix", 2, 62, true, true);
 
             value = value.Trim();
-            if (value == string.Empty)
-            {
-                return 0L;
-            }
             string baseChar = BaseChar.Substring(0, fromRadix);
             ulong result = 0;
             for (int i = 0; i < value.Length; i++)
@@ -48,16 +42,9 @@ namespace OSharp.Utility.Data
                 char @char = value[i];
                 if (!baseChar.Contains(@char))
                 {
-                    throw new ArgumentException(string.Format("参数中的字符\"{0}\"不是 {1} 进制数的有效字符。", @char, fromRadix));
+                    throw new ArgumentException(string.Format(Resources.AnyRadixConvert_CharacterIsNotValid, @char, fromRadix));
                 }
-                try
-                {
-                    result += (ulong)baseChar.IndexOf(@char) * (ulong)Math.Pow(baseChar.Length, value.Length - i - 1);
-                }
-                catch (Exception)
-                {
-                    throw new OverflowException("运算溢出。");
-                }
+                result += (ulong)baseChar.IndexOf(@char) * (ulong)Math.Pow(baseChar.Length, value.Length - i - 1);
             }
             return result;
         }
@@ -71,7 +58,10 @@ namespace OSharp.Utility.Data
         public static string H2X(ulong value, int toRadix)
         {
             toRadix.CheckBetween("fromRadix", 2, 62, true, true);
-
+            if (value == 0)
+            {
+                return "0";
+            }
             string baseChar = BaseChar.Substring(0, toRadix);
             string result = string.Empty;
             while (value > 0)
@@ -107,6 +97,7 @@ namespace OSharp.Utility.Data
         /// <returns>16进制数的字符串</returns>
         public static string _10To16(int value)
         {
+            value.CheckGreaterThan("value", 0, true);
             string str = X2X(value.ToString(CultureInfo.InvariantCulture), 10, 16);
             return str.IsNullOrEmpty() ? "0" : str[0] == '0' ? str : '0' + str;
         }

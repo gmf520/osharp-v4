@@ -6,14 +6,10 @@
 //  <last-date>2014-07-18 18:25</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.VisualBasic.FileIO;
 

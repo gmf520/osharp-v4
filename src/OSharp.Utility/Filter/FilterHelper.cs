@@ -1,6 +1,13 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="FilterHelper.cs" company="OSharp开源团队">
+//      Copyright (c) 2014 OSharp. All rights reserved.
+//  </copyright>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2014:07:04 18:09</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -73,6 +80,17 @@ namespace OSharp.Utility.Filter
                         return Expression.Call(left, typeof(string).GetMethod("Contains", new[] { typeof(string) }), right);
                     }
                 },
+                {
+                    FilterOperate.NotContains,
+                    (left, right) =>
+                    {
+                        if (left.Type != typeof(string))
+                        {
+                            throw new NotSupportedException("“NotContains”比较方式只支持字符串类型的数据");
+                        }
+                        return Expression.Not(Expression.Call(left, typeof(string).GetMethod("Contains", new[] { typeof(string) }), right));
+                    }
+                }
                 //{
                 //    FilterOperates.StdIn, (left, right) =>
                 //    {
@@ -110,7 +128,7 @@ namespace OSharp.Utility.Filter
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
         /// <returns></returns>
-        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule = null)
+        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
         {
             ParameterExpression param = Expression.Parameter(typeof(T), "m");
             Expression body = GetExpressionBody(param, rule);
@@ -128,11 +146,8 @@ namespace OSharp.Utility.Filter
             MemberInfo[] members = type.GetMember(operate.CastTo<string>());
             if (members.Length > 0)
             {
-                object[] attributes = members[0].GetCustomAttributes(typeof(OperateCodeAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    return ((OperateCodeAttribute)attributes[0]).Code;
-                }
+                OperateCodeAttribute attribute = members[0].GetAttribute<OperateCodeAttribute>();
+                return attribute == null ? null : attribute.Code;
             }
             return null;
         }
@@ -144,6 +159,7 @@ namespace OSharp.Utility.Filter
         /// <returns></returns>
         public static FilterOperate GetFilterOperate(string code)
         {
+            code.CheckNotNullOrEmpty("code");
             Type type = typeof(FilterOperate);
             MemberInfo[] members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
             foreach (MemberInfo member in members)
@@ -204,7 +220,7 @@ namespace OSharp.Utility.Filter
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
                 {
-                    throw new OSharpException(string.Format(Resources.Filter_RuleFieldInTypeNotFound, rule.Field, type.FullName));
+                    throw new InvalidOperationException(string.Format(Resources.Filter_RuleFieldInTypeNotFound, rule.Field, type.FullName));
                 }
                 type = property.PropertyType;
                 propertyAccess = Expression.MakeMemberAccess(propertyAccess, property);
@@ -227,9 +243,10 @@ namespace OSharp.Utility.Filter
             //}
 
             Type elementType = conversionType.GetUnNullableType();
-            object value = rule.Value is string
-                ? rule.Value.ToString().CastTo(conversionType)
-                : Convert.ChangeType(rule.Value, elementType);
+            object value = rule.Value.CastTo(conversionType);
+            //object value = rule.Value is string
+            //    ? rule.Value.ToString().CastTo(conversionType)
+            //    : Convert.ChangeType(rule.Value, elementType);
             return Expression.Constant(value, conversionType);
         }
 

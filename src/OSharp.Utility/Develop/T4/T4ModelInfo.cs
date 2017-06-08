@@ -8,11 +8,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using OSharp.Utility.Extensions;
 
@@ -28,32 +26,29 @@ namespace OSharp.Utility.Develop.T4
         /// 初始化一个<see cref="T4ModelInfo"/>类型的新实例
         /// </summary>
         /// <param name="modelType">实体类型</param>
-        /// <param name="useModuleDir">是否使用模块文件夹</param>
-        public T4ModelInfo(Type modelType, bool useModuleDir = false)
+        /// <param name="moduleNamePattern">模块名称正则表达式，用于从实体命名空间中提取模块名称</param>
+        public T4ModelInfo(Type modelType, string moduleNamePattern = null)
         {
-            modelType.CheckNotNull("modelType" );
+            modelType.CheckNotNull("modelType");
             string @namespace = modelType.Namespace;
             if (@namespace == null)
             {
                 return;
             }
             Namespace = @namespace;
-            UseModuleDir = useModuleDir;
-            if (useModuleDir)
+            if (moduleNamePattern != null)
             {
-                int index = @namespace.LastIndexOf('.') + 1;
-                ModuleName = @namespace.Substring(index, @namespace.Length - index);
+                ModuleName = @namespace.Match(moduleNamePattern);
             }
             Name = modelType.Name;
             Description = modelType.ToDescription();
             Properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var property in Properties)
+            PropertyInfo property = Properties.FirstOrDefault(m => m.HasAttribute<KeyAttribute>())
+                ?? Properties.FirstOrDefault(m => m.Name.ToUpper() == "ID")
+                    ?? Properties.FirstOrDefault(m => m.Name.ToUpper().EndsWith("ID"));
+            if (property != null)
             {
-                if (property.HasAttribute<KeyAttribute>() || property.Name.ToUpper() == "ID" || property.Name.ToUpper().EndsWith("ID"))
-                {
-                    KeyType = property.PropertyType;
-                    break;
-                }
+                KeyType = property.PropertyType;
             }
         }
 
@@ -61,12 +56,7 @@ namespace OSharp.Utility.Develop.T4
         /// 获取或设置 主键类型
         /// </summary>
         public Type KeyType { get; private set; }
-
-        /// <summary>
-        /// 获取 是否使用模块文件夹
-        /// </summary>
-        public bool UseModuleDir { get; private set; }
-
+        
         /// <summary>
         /// 获取 模型所在模块名称
         /// </summary>

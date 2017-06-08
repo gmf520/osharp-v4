@@ -10,47 +10,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.UnitTest.Infrastructure;
-using OSharp.Utility.Exceptions;
-using OSharp.Utility.Filter;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.Filter.Tests
 {
-    [TestClass()]
-    public class FilterHelperTests : UnitTestBase
+    public class FilterHelperTests : EntityTestBase
     {
-        [TestMethod()]
+        [Fact()]
         public void GetExpressionTest()
         {
             IQueryable<TestEntity> source = Entities.AsQueryable();
 
             //空条件
-            Expression<Func<TestEntity, bool>> predicate = FilterHelper.GetExpression<TestEntity>();
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source));
+            FilterRule rule = null;
+            Expression<Func<TestEntity, bool>> predicate = FilterHelper.GetExpression<TestEntity>(rule);
+            Assert.True(source.Where(predicate).SequenceEqual(source));
 
             //单条件，属性不存在
-            FilterRule rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
-            FilterRule rule1 = rule;
-            ExceptionAssert.IsException<OSharpException>(() => FilterHelper.GetExpression<TestEntity>(rule1));
+            rule = new FilterRule("Name1", "5", FilterOperate.EndsWith);
+            Assert.Throws<InvalidOperationException>(() => FilterHelper.GetExpression<TestEntity>(rule));
 
             //单条件
             rule = new FilterRule("Name", "5", FilterOperate.EndsWith);
             predicate = FilterHelper.GetExpression<TestEntity>(rule);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.EndsWith("5"))));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.EndsWith("5"))));
 
             //二级条件
             rule = new FilterRule("Name.Length", 5, FilterOperate.Greater);
             predicate = FilterHelper.GetExpression<TestEntity>(rule);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5)));
 
             //多条件，异常
-            ExceptionAssert.IsException<OSharpException>(() => new FilterGroup
+            Assert.Throws<InvalidOperationException>(() => new FilterGroup
             {
                 Rules = new List<FilterRule> { rule, new FilterRule("IsDeleted", true) },
                 Operate = FilterOperate.Equal
@@ -63,7 +58,7 @@ namespace OSharp.Utility.Filter.Tests
                 Operate = FilterOperate.And
             };
             predicate = FilterHelper.GetExpression<TestEntity>(group);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5 && m.IsDeleted)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.Name.Length > 5 && m.IsDeleted)));
 
             //条件组嵌套
             DateTime dt = DateTime.Now;
@@ -77,8 +72,44 @@ namespace OSharp.Utility.Filter.Tests
                 Operate = FilterOperate.Or
             };
             predicate = FilterHelper.GetExpression<TestEntity>(group);
-            Assert.IsTrue(source.Where(predicate).SequenceEqual(source.Where(m => m.AddDate > dt || m.Name.Length > 5 && m.IsDeleted)));
+            Assert.True(source.Where(predicate).SequenceEqual(source.Where(m => m.AddDate > dt || m.Name.Length > 5 && m.IsDeleted)));
 
         }
+
+        [Fact()]
+        public void ToOperateCodeTest()
+        {
+            Assert.Equal(FilterOperate.And.ToOperateCode(), "and");
+            Assert.Equal(FilterOperate.Or.ToOperateCode(), "or");
+            Assert.Equal(FilterOperate.Equal.ToOperateCode(), "equal");
+            Assert.Equal(FilterOperate.NotEqual.ToOperateCode(), "notequal");
+            Assert.Equal(FilterOperate.Less.ToOperateCode(), "less");
+            Assert.Equal(FilterOperate.LessOrEqual.ToOperateCode(), "lessorequal");
+            Assert.Equal(FilterOperate.Greater.ToOperateCode(), "greater");
+            Assert.Equal(FilterOperate.GreaterOrEqual.ToOperateCode(), "greaterorequal");
+            Assert.Equal(FilterOperate.StartsWith.ToOperateCode(), "startswith");
+            Assert.Equal(FilterOperate.EndsWith.ToOperateCode(), "endswith");
+            Assert.Equal(FilterOperate.Contains.ToOperateCode(), "contains");
+        }
+
+        [Fact()]
+        public void GetFilterOperateTest()
+        {
+            Assert.Throws<ArgumentNullException>(() => FilterHelper.GetFilterOperate(null));
+            Assert.Throws<ArgumentException>(() => FilterHelper.GetFilterOperate(""));
+
+            Assert.Equal(FilterHelper.GetFilterOperate("and"), FilterOperate.And);
+            Assert.Equal(FilterHelper.GetFilterOperate("or"), FilterOperate.Or);
+            Assert.Equal(FilterHelper.GetFilterOperate("equal"), FilterOperate.Equal);
+            Assert.Equal(FilterHelper.GetFilterOperate("notequal"), FilterOperate.NotEqual);
+            Assert.Equal(FilterHelper.GetFilterOperate("less"), FilterOperate.Less);
+            Assert.Equal(FilterHelper.GetFilterOperate("lessorequal"), FilterOperate.LessOrEqual);
+            Assert.Equal(FilterHelper.GetFilterOperate("greater"), FilterOperate.Greater);
+            Assert.Equal(FilterHelper.GetFilterOperate("greaterorequal"), FilterOperate.GreaterOrEqual);
+            Assert.Equal(FilterHelper.GetFilterOperate("startswith"), FilterOperate.StartsWith);
+            Assert.Equal(FilterHelper.GetFilterOperate("endswith"), FilterOperate.EndsWith);
+            Assert.Equal(FilterHelper.GetFilterOperate("contains"), FilterOperate.Contains);
+        }
+
     }
 }

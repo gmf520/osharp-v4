@@ -22,7 +22,16 @@
             { field: "Remark", title: "角色描述", width: 300, sortable: true, editor: { type: "textarea", options: { validType: "length[1,500]" } } },
             { field: "CreatedTime", title: "创建时间", width: 150, halign: "center", align: "center", sortable: true, formatter: function(value) { return $.osharp.tools.formatDate(value); } }
         ]];
-
+        enableFilterData = true;
+        filterData = [
+            { field: "Id", type: "numberbox", op: ["equal", "notequal", "less", "lessorequal", "greater", "greaterorequal"] },
+            { field: "Name", type: "text", op: ["equal", "notequal", "contains", "beginwith", "endwith"] },
+            { field: "IsAdmin", type: "combobox", op: ["equal", "notequal"], options: { valueField: "id", data: $.osharp.data.bool } },
+            { field: "IsSystem", type: "combobox", op: ["equal", "notequal"], options: { valueField: "id", data: $.osharp.data.bool } },
+            { field: "IsLocked", type: "combobox", op: ["equal", "notequal"], options: { valueField: "id", data: $.osharp.data.bool } },
+            { field: "Remark", type: "text", op: ["equal", "notequal", "contains", "beginwith", "endwith"] },
+            { field: "CreatedTime", type: "datetimebox", op: ["less", "greater"] },
+        ];
         startfunction = function() {
             //功能权限
             function functionPermission() {

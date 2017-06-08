@@ -7,13 +7,12 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using OSharp.Utility.Data;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Data
@@ -24,6 +23,17 @@ namespace OSharp.Core.Data
     /// <typeparam name="TKey">主键数据类型</typeparam>
     public abstract class EntityBase<TKey> : IEntity<TKey>
     {
+        /// <summary>
+        /// 初始化一个<see cref="EntityBase{TKey}"/>类型的新实例
+        /// </summary>
+        protected EntityBase()
+        {
+            if (typeof(TKey) == typeof(Guid))
+            {
+                Id = CombHelper.NewComb().CastTo<TKey>();
+            }
+        }
+
         #region 属性
 
         /// <summary>
@@ -32,7 +42,7 @@ namespace OSharp.Core.Data
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DisplayName("主键")]
         public TKey Id { get; set; }
-        
+
         #endregion
 
         #region 方法
@@ -53,7 +63,7 @@ namespace OSharp.Core.Data
             {
                 return false;
             }
-            return Id.Equals(Id);
+            return entity.Id.Equals(Id);
         }
 
         /// <summary>

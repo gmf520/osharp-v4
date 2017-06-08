@@ -7,11 +7,8 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
+using OSharp.Core.Dependency;
 
 
 namespace OSharp.Core.Security
@@ -19,13 +16,13 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 实体信息处理器
     /// </summary>
-    public interface IEntityInfoHandler
+    public interface IEntityInfoHandler : ISingletonDependency
     {
         /// <summary>
         /// 从程序集中刷新实体信息数据
         /// </summary>
         void Initialize();
-         
+
         /// <summary>
         /// 查找指定实体类型的实体信息
         /// </summary>

@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="OSharpConfig.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2015-10-10 11:05</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Core.Configs.ConfigFile;
 
@@ -15,12 +20,12 @@ namespace OSharp.Core.Configs
     /// </summary>
     public sealed class OSharpConfig
     {
+        private const string OSharpSectionName = "osharp";
         private static readonly Lazy<OSharpConfig> InstanceLazy
             = new Lazy<OSharpConfig>(() => new OSharpConfig());
-        private const string OSharpSectionName = "osharp";
 
         /// <summary>
-        /// 初始化一个心得<see cref="OSharpConfig"/>实例
+        /// 初始化一个新的<see cref="OSharpConfig"/>实例
         /// </summary>
         private OSharpConfig()
         {
@@ -40,8 +45,30 @@ namespace OSharp.Core.Configs
         /// </summary>
         public static OSharpConfig Instance
         {
-            get { return InstanceLazy.Value; }
+            get
+            {
+                OSharpConfig config = InstanceLazy.Value;
+                if (DataConfigReseter != null)
+                {
+                    config.DataConfig = DataConfigReseter.Reset(config.DataConfig);
+                }
+                if (LoggingConfigReseter != null)
+                {
+                    config.LoggingConfig = LoggingConfigReseter.Reset(config.LoggingConfig);
+                }
+                return config;
+            }
         }
+
+        /// <summary>
+        /// 获取或设置 数据配置重置信息
+        /// </summary>
+        public static IDataConfigReseter DataConfigReseter { get; set; }
+
+        /// <summary>
+        /// 获取或设置 日志配置重置信息
+        /// </summary>
+        public static ILoggingConfigReseter LoggingConfigReseter { get; set; }
 
         /// <summary>
         /// 获取或设置 数据配置信息

@@ -6,13 +6,6 @@
 //  <last-date>2014:07:04 18:09</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 namespace OSharp.Utility.Filter
 {
     /// <summary>
@@ -71,31 +64,37 @@ namespace OSharp.Utility.Filter
         /// <summary>
         /// 以……开始
         /// </summary>
-        [OperateCode("startwith")]
+        [OperateCode("startswith")]
         StartsWith = 9,
 
         /// <summary>
         /// 以……结束
         /// </summary>
-        [OperateCode("endwith")]
+        [OperateCode("endswith")]
         EndsWith = 10,
 
         /// <summary>
-        /// 包含（相似）
+        /// 字符串的包含（相似）
         /// </summary>
         [OperateCode("contains")]
         Contains = 11,
+
+        /// <summary>
+        /// 字符串的不包含
+        /// </summary>
+        [OperateCode("notcontains")]
+        NotContains = 12,
 
         ///// <summary>
         ///// 包括在
         ///// </summary>
         //[OperateCode("in")]
-        //In = 12,
+        //In = 13,
 
         ///// <summary>
         ///// 不包括在
         ///// </summary>
         //[OperateCode("notin")]
-        //NotIn = 13
+        //NotIn = 14
     }
 }

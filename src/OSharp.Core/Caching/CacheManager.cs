@@ -8,11 +8,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.Utility;
 
@@ -24,7 +19,6 @@ namespace OSharp.Core.Caching
     /// </summary>
     public static class CacheManager
     {
-        private static readonly object LockObj = new object();
         private static readonly ConcurrentDictionary<string, ICache> Cachers;
         //两级缓存
         internal static readonly ICacheProvider[] Providers = new ICacheProvider[2];

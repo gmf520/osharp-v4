@@ -1,86 +1,82 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
-//      Copyright (c) 2014 OSharp. All rights reserved.
+//  <copyright file="CollectionExtensionsTests.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2014:07:10 10:59</last-date>
+//  <last-date>2015-10-16 2:30</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OSharp.UnitTest.Infrastructure;
 using OSharp.Utility.Data;
-using OSharp.Utility.Extensions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 
 namespace OSharp.Utility.Extensions.Tests
 {
-    [TestClass()]
     public class CollectionExtensionsTests
     {
-        [TestMethod()]
+        [Fact()]
         public void ExpandAndToStringTest_IEnumerable()
         {
             List<int> source = new List<int>();
             //当为空集合时，返回null
-            Assert.AreEqual(source.ExpandAndToString(), null);
+            Assert.Equal(source.ExpandAndToString(), null);
 
             source.AddRange(new List<int>() { 1, 2, 3, 4, 5, 6 });
             //没有分隔符时，默认为逗号
-            Assert.AreEqual(source.ExpandAndToString(), "1,2,3,4,5,6");
-            Assert.AreEqual(source.ExpandAndToString(null), "123456");
-            Assert.AreEqual(source.ExpandAndToString(""), "123456");
-            Assert.AreEqual(source.ExpandAndToString("|"), "1|2|3|4|5|6");
+            Assert.Equal(source.ExpandAndToString(), "1,2,3,4,5,6");
+            Assert.Equal(source.ExpandAndToString(null), "123456");
+            Assert.Equal(source.ExpandAndToString(""), "123456");
+            Assert.Equal(source.ExpandAndToString("|"), "1|2|3|4|5|6");
         }
 
-        [TestMethod]
+        [Fact()]
         public void ExpandAndToStringTest_IEnumerable2()
         {
             List<int> source = new List<int> { 1, 2, 3, 4, 5, 6 };
 
             //转换委托不能为空
-            ExceptionAssert.IsException<ArgumentNullException>(() => source.ExpandAndToString(null));
+            Assert.Throws<ArgumentNullException>(() => source.ExpandAndToString(itemFormatFunc: null));
             //没有分隔符时，默认为逗号
-            Assert.AreEqual(source.ExpandAndToString(item => (item + 1).ToString()), "2,3,4,5,6,7");
-            Assert.AreEqual(source.ExpandAndToString(item => (item + 1).ToString(), "|"), "2|3|4|5|6|7");
+            Assert.Equal(source.ExpandAndToString(item => (item + 1).ToString()), "2,3,4,5,6,7");
+            Assert.Equal(source.ExpandAndToString(item => (item + 1).ToString(), "|"), "2|3|4|5|6|7");
         }
 
-        [TestMethod()]
+        [Fact()]
         public void IsEmptyTest_IEnumerable()
         {
             List<int> source = new List<int>();
-            Assert.IsTrue(source.IsEmpty());
+            Assert.True(source.IsEmpty());
 
             source.Add(1);
-            Assert.IsFalse(source.IsEmpty());
+            Assert.False(source.IsEmpty());
         }
 
-        [TestMethod()]
+        [Fact()]
         public void WhereIfTest_IEnumerable()
         {
             List<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-            CollectionAssert.AreEqual(source.WhereIf(m => m > 5, false).ToList(), source);
+            Assert.Equal(source.WhereIf(m => m > 5, false).ToList(), source);
             List<int> actual = new List<int> { 6, 7 };
-            CollectionAssert.AreEqual(source.WhereIf(m => m > 5, true).ToList(), actual);
+            Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void DistinctByTest_IEnumerable()
         {
             List<int> source = new List<int> { 1, 2, 3, 3, 4, 4, 5, 6, 7, 7 };
             List<int> actual = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-            CollectionAssert.AreEqual(source.DistinctBy(m => m).ToList(), actual);
+            Assert.Equal(source.DistinctBy(m => m).ToList(), actual);
         }
 
-        [TestMethod]
+        [Fact()]
         public void OrderByTest_IEnumerable()
         {
             IEnumerable<TestEntity> source = new List<TestEntity>
@@ -91,15 +87,15 @@ namespace OSharp.Utility.Extensions.Tests
                 new TestEntity { Id = 3, Name = "hdg" },
             };
 
-            Assert.AreEqual(source.OrderBy("Id").ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
-            Assert.AreEqual(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length)).ToArray()[1].Name, "fda");
-            Assert.AreEqual(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
+            Assert.Equal(source.OrderBy("Id").ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
+            Assert.Equal(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length)).ToArray()[1].Name, "fda");
+            Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void ThenByTest_IEnumerable()
         {
             IEnumerable<TestEntity> source = new List<TestEntity>
@@ -109,21 +105,23 @@ namespace OSharp.Utility.Extensions.Tests
                 new TestEntity { Id = 6, Name = "rwg", IsDeleted = true },
                 new TestEntity { Id = 3, Name = "hdg" },
             };
-            Assert.AreEqual(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
-            Assert.AreEqual(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
+            Assert.Equal(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
+            Assert.Equal(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
                 "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
         }
-        [TestMethod()]
+
+        [Fact()]
         public void WhereIfTest_IQueryable()
         {
             IQueryable<int> source = new List<int> { 1, 2, 3, 4, 5, 6, 7 }.AsQueryable();
-            CollectionAssert.AreEqual(source.WhereIf(m => m > 5, false).ToList(), source.ToList());
+            Assert.Equal(source.WhereIf(m => m > 5, false).ToList(), source.ToList());
 
             List<int> actual = new List<int> { 6, 7 };
-            CollectionAssert.AreEqual(source.WhereIf(m => m > 5, true).ToList(), actual);
+            Assert.Equal(source.WhereIf(m => m > 5, true).ToList(), actual);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void OrderByTest_IQueryable()
         {
             IQueryable<TestEntity> source = new List<TestEntity>
@@ -134,15 +132,15 @@ namespace OSharp.Utility.Extensions.Tests
                 new TestEntity { Id = 3, Name = "hdg" },
             }.AsQueryable();
 
-            Assert.AreEqual(source.OrderBy("Id").ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
-            Assert.AreEqual(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
-            Assert.AreEqual(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length)).ToArray()[1].Name, "fda");
-            Assert.AreEqual(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
+            Assert.Equal(source.OrderBy("Id").ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
+            Assert.Equal(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length, ListSortDirection.Ascending)).ToArray()[1].Name, "fda");
+            Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
         }
 
-        [TestMethod()]
+        [Fact()]
         public void ThenByTest_IQueryable()
         {
             IQueryable<TestEntity> source = new List<TestEntity>
@@ -152,10 +150,10 @@ namespace OSharp.Utility.Extensions.Tests
                 new TestEntity { Id = 6, Name = "rwg", IsDeleted = true },
                 new TestEntity { Id = 3, Name = "hdg" },
             }.AsQueryable();
-            Assert.AreEqual(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
-            Assert.AreEqual(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
+            Assert.Equal(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
+            Assert.Equal(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
                 "hdg");
+            Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
         }
-
     }
 }
