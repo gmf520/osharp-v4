@@ -286,11 +286,26 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> CreateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
-            if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name))
+            var exist = ModuleRepository.Entities.Where(m => m.Name == dto.Name && m.Parent != null && m.Parent.Id.Equals(dto.ParentId))
+                .Select(m => new { ParentName = m.Parent.Name }).FirstOrDefault();
+            if (exist != null)
             {
-                return new OperationResult(OperationResultType.Error, "名称为“{0}”的模块已存在，不能重复添加".FormatWith(dto.Name));
+                return new OperationResult(OperationResultType.Error, "模块“{0}”中已存在名称为“{1}”的子模块，不能重复添加".FormatWith(exist.ParentName, dto.Name));
             }
+
             TModule entity = dto.MapTo<TModule>();
+            //排序码，不存在为1，否则同级最大+1
+            var peerModules = ModuleRepository.Entities.Where(m => m.Parent.Id.Equals(dto.ParentId)).Select(m => new { m.OrderCode }).ToArray();
+            if (peerModules.Length == 0)
+            {
+                entity.OrderCode = 1;
+            }
+            else
+            {
+                double maxCode = peerModules.Max(m => m.OrderCode);
+                entity.OrderCode = maxCode + 1;
+            }
+            //父模块
             if (!dto.ParentId.Equals(default(TModuleKey)))
             {
                 TModule parent = await ModuleRepository.GetByKeyAsync(dto.ParentId);
@@ -304,8 +319,12 @@ namespace OSharp.Core.Security
             {
                 entity.Parent = default(TModule);
             }
+            ModuleRepository.UnitOfWork.BeginTransaction();
+            int count = await ModuleRepository.InsertAsync(entity);
             entity.TreePathString = entity.GetTreePath();
-            return await ModuleRepository.InsertAsync(entity) > 0
+            await ModuleRepository.UpdateAsync(entity);
+
+            return count > 0
                 ? new OperationResult(OperationResultType.Success, "模块“{0}”创建成功".FormatWith(dto.Name))
                 : OperationResult.NoChanged;
         }
@@ -318,9 +337,11 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> UpdateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
-            if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name, dto.Id))
+            var exist = ModuleRepository.Entities.Where(m => m.Name == dto.Name && m.Parent != null && m.Parent.Id.Equals(dto.ParentId))
+                .Select(m => new { m.Id, ParentName = m.Parent.Name }).FirstOrDefault();
+            if (exist != null && !exist.Id.Equals(dto.Id))
             {
-                return new OperationResult(OperationResultType.Error, "名称为“{0}”的模块已存在，不能重复添加".FormatWith(dto.Name));
+                return new OperationResult(OperationResultType.Error, "模块“{0}”中已存在名称为“{1}”的子模块，不能重复添加".FormatWith(exist.ParentName, dto.Name));
             }
             TModule entity = await ModuleRepository.GetByKeyAsync(dto.Id);
             if (entity == null)

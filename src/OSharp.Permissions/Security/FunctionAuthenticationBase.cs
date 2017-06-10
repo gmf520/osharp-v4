@@ -30,6 +30,19 @@ namespace OSharp.Core.Security
         where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
+        /// 初始化一个<see cref="FunctionAuthorizationBase{TFunction, TFunctionKey}"/>类型的新实例
+        /// </summary>
+        protected FunctionAuthorizationBase()
+        {
+            SuperRoleName = "系统管理员";
+        }
+
+        /// <summary>
+        /// 获取 超级管理员角色
+        /// </summary>
+        protected virtual string SuperRoleName { get; private set; }
+        
+        /// <summary>
         /// 获取或设置 功能权限信息缓存
         /// </summary>
         public IFunctionAuthCache<TFunctionKey> FunctionAuthCache { get; set; }
@@ -117,18 +130,26 @@ namespace OSharp.Core.Security
                     "要检测的功能类型为“{0}”，不是要求的“{1}”类型".FormatWith(function.GetType()),
                     typeof(TFunction));
             }
+
             //检查角色-功能的权限
             string[] userRoleNames = identity.GetClaimValues(ClaimTypes.Role);
-            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(function1.Id).ToArray();
+
+            //如果是超级管理员角色
+            if (userRoleNames.Contains(SuperRoleName))
+            {
+                return AuthorizationResult.Allowed;
+            }
+
+            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(function1.Id);
             if (userRoleNames.Intersect(functionRoleNames).Any())
             {
                 return new AuthorizationResult(AuthorizationResultType.Allowed);
             }
             //检查用户-功能的权限
-            TFunctionKey[] functionIds = FunctionAuthCache.GetUserFunctions(user.Identity.Name).ToArray();
+            TFunctionKey[] functionIds = FunctionAuthCache.GetUserFunctions(user.Identity.Name);
             if (functionIds.Contains(function1.Id))
             {
-                return new AuthorizationResult(AuthorizationResultType.Allowed);
+                return AuthorizationResult.Allowed;
             }
             return new AuthorizationResult(AuthorizationResultType.PurviewLack);
         }

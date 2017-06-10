@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="IFunctionAuthentication.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2015 OSharp. All rights reserved.
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2015-08-03 13:55</last-date>
+//  <last-date>2017-06-10 13:45</last-date>
 // -----------------------------------------------------------------------
 
 using System.Security.Principal;

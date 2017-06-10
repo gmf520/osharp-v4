@@ -178,6 +178,7 @@
     <Compile Include="Security\EntityInfoBaseInputDto.cs" />
     <Compile Include="Security\FunctionBaseInputDto.cs" />
     <Compile Include="Security\IEntityTypeFinder.cs" />
+    <Compile Include="Security\IFunctionAuthCache.cs" />
     <Compile Include="Security\IFunctionAuthentication.cs" />
     <Compile Include="Security\IFunctionMethodFinder.cs" />
     <Compile Include="Security\IFunctionTypeFinder.cs" />

@@ -18,6 +18,7 @@ using OSharp.Core.Identity.Models;
 using OSharp.Utility.Extensions;
 
 
+
 namespace OSharp.Core.Identity
 {
     /// <summary>
@@ -69,7 +70,7 @@ namespace OSharp.Core.Identity
             string nickName = user.NickName;
             if (user.NickName.IsMissing())
             {
-                errors.Add("用户昵称不存在");
+                errors.Add("用户昵称不能为空");
                 return;
             }
             TUser existUser = _manager.Users.FirstOrDefault(m => m.NickName == nickName);

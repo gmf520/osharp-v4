@@ -93,7 +93,7 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 父模块信息
         /// </summary>
-        public TModule Parent { get; set; }
+        public virtual TModule Parent { get; set; }
 
         /// <summary>
         /// 获取或设置 子模块集合，子模块自动拥有父模块的功能
