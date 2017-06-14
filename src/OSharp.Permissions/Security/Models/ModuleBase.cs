@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -58,16 +59,19 @@ namespace OSharp.Core.Security.Models
         /// <summary>
         /// 获取或设置 模块名称
         /// </summary>
+        [Required, DisplayName("模块名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 模块描述
         /// </summary>
+        [DisplayName("模块描述")]
         public string Remark { get; set; }
 
         /// <summary>
         /// 获取或设置 节点内排序码
         /// </summary>
+        [DisplayName("排序码")]
         public double OrderCode { get; set; }
 
         /// <summary>

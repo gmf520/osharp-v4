@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using OSharp.Core.Data;
@@ -26,13 +27,13 @@ namespace OSharp.Core.Security
         /// <summary>
         /// 获取或设置 实体类型全名
         /// </summary>
-        [DisplayName("类型全名")]
+        [Required, DisplayName("类型全名")]
         public string ClassName { get; set; }
 
         /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
-        [DisplayName("实体名称")]
+        [Required, DisplayName("实体名称")]
         public string Name { get; set; }
 
         /// <summary>

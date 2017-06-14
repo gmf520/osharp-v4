@@ -46,13 +46,20 @@ namespace OSharp.Web.Mvc.Initialize
             {
                 throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotMvcControllerType.FormatWith(type.FullName));
             }
+
+            FunctionType controllerFunctionType = type.HasAttribute<LoginedAttribute>() || type.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : (type.HasAttribute<RoleLimitAttribute>()
+                    ? FunctionType.RoleLimit
+                    : FunctionType.Anonymouse);
+
             Function function = new Function()
             {
                 Name = type.ToDescription(),
                 Area = GetArea(type),
                 Controller = type.Name.Replace("Controller", string.Empty),
                 IsController = true,
-                FunctionType = FunctionType.Anonymouse,
+                FunctionType = controllerFunctionType,
                 PlatformToken = PlatformToken
             };
             return function;
@@ -71,36 +78,34 @@ namespace OSharp.Web.Mvc.Initialize
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_MethodNotMvcAction.FormatWith(method.Name));
             }
-            
+
             Type type = method.DeclaringType;
             if (type == null)
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
             }
-            FunctionType functionType = FunctionType.Anonymouse;
-            if (type.HasAttribute<AuthorizeAttribute>(true))
-            {
-                functionType = FunctionType.Logined;
-            }
-            if (method.HasAttribute<AllowAnonymousAttribute>(true))
-            {
-                functionType = FunctionType.Anonymouse;
-            }
-            else if (method.HasAttribute<LoginedAttribute>(true))
-            {
-                functionType = FunctionType.Logined;
-            }
-            else if (method.HasAttribute<RoleLimitAttribute>(true))
-            {
-                functionType = FunctionType.RoleLimit;
-            }
+
+            FunctionType controllerFunctionType = type.HasAttribute<LoginedAttribute>() || type.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : (type.HasAttribute<RoleLimitAttribute>()
+                    ? FunctionType.RoleLimit
+                    : FunctionType.Anonymouse);
+
+            FunctionType actionFunctionType = method.HasAttribute<LoginedAttribute>() || method.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : method.HasAttribute<AllowAnonymousAttribute>()
+                    ? FunctionType.Anonymouse
+                    : method.HasAttribute<RoleLimitAttribute>()
+                        ? FunctionType.RoleLimit
+                        : controllerFunctionType;
+
             Function function = new Function()
             {
                 Name = method.ToDescription(),
                 Area = GetArea(type),
                 Controller = type.Name.Replace("Controller", string.Empty),
                 Action = method.Name,
-                FunctionType = functionType,
+                FunctionType = actionFunctionType,
                 PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = method.HasAttribute<AjaxOnlyAttribute>(),
@@ -125,7 +130,7 @@ namespace OSharp.Web.Mvc.Initialize
             string area = index > 6 ? @namespace.Substring(index, @namespace.IndexOf(".Controllers", StringComparison.Ordinal) - index) : null;
             return area;
         }
-        
+
         /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>

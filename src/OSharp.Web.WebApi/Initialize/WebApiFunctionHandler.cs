@@ -44,13 +44,20 @@ namespace OSharp.Web.Http.Initialize
             {
                 throw new InvalidOperationException(Resources.ActionMethodInfoFinder_TypeNotApiControllerType.FormatWith(type.FullName));
             }
+
+            FunctionType controllerFunctionType = type.HasAttribute<LoginedAttribute>() || type.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : (type.HasAttribute<RoleLimitAttribute>()
+                    ? FunctionType.RoleLimit
+                    : FunctionType.Anonymouse);
+
             Function function = new Function()
             {
                 Name = type.ToDescription(),
                 Area = GetArea(type),
                 Controller = type.Name.Replace("ApiController", string.Empty).Replace("Controller", string.Empty),
                 IsController = true,
-                FunctionType = FunctionType.Anonymouse,
+                FunctionType = controllerFunctionType,
                 PlatformToken = PlatformToken
             };
             return function;
@@ -67,32 +74,34 @@ namespace OSharp.Web.Http.Initialize
                 && (!method.ReturnType.IsGenericType || method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>)
                     || !typeof(IHttpActionResult).IsAssignableFrom(method.ReturnType.GetGenericArguments()[0])))
             { }
-
-            FunctionType functionType = FunctionType.Anonymouse;
-            if (method.HasAttribute<AllowAnonymousAttribute>(true))
-            {
-                functionType = FunctionType.Anonymouse;
-            }
-            else if (method.HasAttribute<LoginedAttribute>(true))
-            {
-                functionType = FunctionType.Logined;
-            }
-            else if (method.HasAttribute<RoleLimitAttribute>(true))
-            {
-                functionType = FunctionType.RoleLimit;
-            }
+            
             Type type = method.DeclaringType;
             if (type == null)
             {
                 throw new InvalidOperationException(Resources.FunctionHandler_DefindActionTypeIsNull.FormatWith(method.Name));
             }
+
+            FunctionType controllerFunctionType = type.HasAttribute<LoginedAttribute>() || type.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : (type.HasAttribute<RoleLimitAttribute>()
+                    ? FunctionType.RoleLimit
+                    : FunctionType.Anonymouse);
+
+            FunctionType actionFunctionType = method.HasAttribute<LoginedAttribute>() || method.HasAttribute<AuthorizeAttribute>()
+                ? FunctionType.Logined
+                : method.HasAttribute<AllowAnonymousAttribute>()
+                    ? FunctionType.Anonymouse
+                    : method.HasAttribute<RoleLimitAttribute>()
+                        ? FunctionType.RoleLimit
+                        : controllerFunctionType;
+
             Function function = new Function()
             {
                 Name = method.ToDescription(),
                 Area = GetArea(type),
                 Controller = type.Name.Replace("ApiController", string.Empty).Replace("Controller", string.Empty),
                 Action = method.Name,
-                FunctionType = functionType,
+                FunctionType = actionFunctionType,
                 PlatformToken = PlatformToken,
                 IsController = false,
                 IsAjax = false,

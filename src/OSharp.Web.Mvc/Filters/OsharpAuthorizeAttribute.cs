@@ -22,7 +22,7 @@ namespace OSharp.Web.Mvc.Filters
     /// <summary>
     /// 功能权限授权验证
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class OsharpAuthorizeAttribute : FilterAttribute, IAuthorizationFilter
     {
         private readonly object _typeId = new object();
