@@ -113,5 +113,10 @@ namespace OSharp.Demo.Web.Controllers
             IdentityResult result = await manager.AddPasswordAsync(1, "gmf31529019");
             return Content(result.ToJsonString());
         }
+
+        public ActionResult Test3()
+        {
+            return null;
+        }
     }
 }

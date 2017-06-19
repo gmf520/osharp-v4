@@ -116,6 +116,7 @@
     <Compile Include="Handlers\HeadMessageHandler.cs" />
     <Compile Include="Handlers\MethodOverrideHandler.cs" />
     <Compile Include="Handlers\NotAcceptableMessageHandler.cs" />
+    <Compile Include="Handlers\RequestLifetimeScopeHandler.cs" />
     <Compile Include="Handlers\RequestResponseTraceHandlerHandler.cs" />
     <Compile Include="Handlers\RequireHttpsHandler.cs" />
     <Compile Include="Handlers\SelfHostConsoleOutputHandler.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Initialize\WebApiControllerTypeFinder.cs" />
     <Compile Include="Initialize\WebApiFunctionHandler.cs" />
     <Compile Include="Initialize\WebApiIocResolver.cs" />
+    <Compile Include="Internal\Constants.cs" />
     <Compile Include="Internal\EnumerableExtensions.cs" />
     <Compile Include="Internal\HttpHeaderNames.cs" />
     <Compile Include="Internal\IsInExtensions.cs" />

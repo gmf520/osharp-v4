@@ -62,7 +62,7 @@ namespace OSharp.Autofac.Http
             builder.RegisterWebApiModelBinderProvider();
             builder.Populate(services);
             IContainer container = builder.Build();
-            IDependencyResolver resolver = new AutofacWebApiDependencyResolver(container);
+            AutofacWebApiDependencyResolver resolver = new AutofacWebApiDependencyResolver(container);
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
             return (IServiceProvider)resolver.GetService(typeof(IServiceProvider));
         }
