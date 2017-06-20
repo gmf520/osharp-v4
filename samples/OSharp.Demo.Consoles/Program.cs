@@ -245,7 +245,15 @@ namespace OSharp.Demo.Consoles
 
         private static void Method09()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("请输入字符串source");
+            string source = Console.ReadLine();
+            Console.WriteLine("请输入字符串target");
+            string target = Console.ReadLine();
+
+            double point;
+            Console.WriteLine(source.LevenshteinDistance(target, out point, true));
+            Console.WriteLine(point);
+            Console.WriteLine(source.GetSimilarityWith(target));
         }
 
         private static void Method10()

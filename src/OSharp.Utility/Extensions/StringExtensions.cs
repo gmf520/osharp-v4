@@ -627,7 +627,7 @@ namespace OSharp.Utility.Extensions
             }
             return bytes;
         }
-        
+
         /// <summary>
         /// 获取中文字符串的首字母
         /// </summary>
@@ -710,7 +710,12 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 计算当前字符串与指定字符串的编辑距离(相似度)
         /// </summary>
-        public static int LevenshteinDistance(this string source, string target, out double similarity, bool ingoneCase = false)
+        /// <param name="source">源字符串</param>
+        /// <param name="target">目标字符串</param>
+        /// <param name="similarity">输出相似度</param>
+        /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <returns>编辑距离</returns>
+        public static int LevenshteinDistance(this string source, string target, out double similarity, bool ignoreCase = false)
         {
             if (string.IsNullOrEmpty(source))
             {
@@ -729,7 +734,7 @@ namespace OSharp.Utility.Extensions
             }
 
             string from, to;
-            if (ingoneCase)
+            if (ignoreCase)
             {
                 from = source;
                 to = target;
@@ -742,20 +747,20 @@ namespace OSharp.Utility.Extensions
 
             int m = from.Length, n = to.Length;
             int[,] mn = new int[m + 1, n + 1];
-            for (int i = 0; i < m; i++)
+            for (int i = 0; i <= m; i++)
             {
                 mn[i, 0] = i;
             }
-            for (int j = 0; j < n; j++)
+            for (int j = 1; j <= n; j++)
             {
                 mn[0, j] = j;
             }
-            for (int i = 0; i < m; i++)
+            for (int i = 1; i <= m; i++)
             {
                 char c = from[i - 1];
-                for (int j = 0; j < n; j++)
+                for (int j = 1; j <= n; j++)
                 {
-                    if (c == to[j-1])
+                    if (c == to[j - 1])
                     {
                         mn[i, j] = mn[i - 1, j - 1];
                     }
@@ -769,6 +774,32 @@ namespace OSharp.Utility.Extensions
             int maxLength = Math.Max(m, n);
             similarity = (double)(maxLength - mn[m, n]) / maxLength;
             return mn[m, n];
+        }
+
+        /// <summary>
+        /// 计算两个字符串的相似度，应用公式：相似度=kq*q/(kq*q+kr*r+ks*s)(kq>0,kr>=0,ka>=0)
+        /// 其中，q是字符串1和字符串2中都存在的单词的总数，s是字符串1中存在，字符串2中不存在的单词总数，r是字符串2中存在，字符串1中不存在的单词总数. kq,kr和ka分别是q,r,s的权重，根据实际的计算情况，我们设kq=2，kr=ks=1.
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="target">目标字符串</param>
+        /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <returns>字符串相似度</returns>
+        public static double GetSimilarityWith(this string source, string target, bool ignoreCase = false)
+        {
+            if (string.IsNullOrEmpty(source) && string.IsNullOrEmpty(target))
+            {
+                return 1;
+            }
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target))
+            {
+                return 0;
+            }
+            const double kq = 2, kr = 1, ks = 1;
+            char[] sourceChars = source.ToCharArray(), targetChars = target.ToCharArray();
+
+            //获取交集数量
+            int q = sourceChars.Intersect(targetChars).Count(), s = sourceChars.Length - q, r = targetChars.Length - q;
+            return kq * q / (kq * q + kr * r + ks * s);
         }
 
         #endregion
