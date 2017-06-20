@@ -183,13 +183,7 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static string Substring2(this string source, string startString, string endString)
         {
-            if (source.IsMissing())
-            {
-                return string.Empty;
-            }
-
-            string result = source.Match(string.Format("(?<={0})(.+?)(?={1})", startString, endString));
-            return result.IsMissing() ? null : result;
+            return source.Substring2(startString, endString, false);
         }
 
         /// <summary>
@@ -711,6 +705,70 @@ namespace OSharp.Utility.Extensions
                     }
                     return m.Value;
                 });
+        }
+
+        /// <summary>
+        /// 计算当前字符串与指定字符串的编辑距离(相似度)
+        /// </summary>
+        public static int LevenshteinDistance(this string source, string target, out double similarity, bool ingoneCase = false)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                if (string.IsNullOrEmpty(target))
+                {
+                    similarity = 1;
+                    return 0;
+                }
+                similarity = 0;
+                return target.Length;
+            }
+            if (string.IsNullOrEmpty(target))
+            {
+                similarity = 0;
+                return source.Length;
+            }
+
+            string from, to;
+            if (ingoneCase)
+            {
+                from = source;
+                to = target;
+            }
+            else
+            {
+                from = source.ToLower();
+                to = source.ToLower();
+            }
+
+            int m = from.Length, n = to.Length;
+            int[,] mn = new int[m + 1, n + 1];
+            for (int i = 0; i < m; i++)
+            {
+                mn[i, 0] = i;
+            }
+            for (int j = 0; j < n; j++)
+            {
+                mn[0, j] = j;
+            }
+            for (int i = 0; i < m; i++)
+            {
+                char c = from[i - 1];
+                for (int j = 0; j < n; j++)
+                {
+                    if (c == to[j-1])
+                    {
+                        mn[i, j] = mn[i - 1, j - 1];
+                    }
+                    else
+                    {
+                        mn[i, j] = Math.Min(mn[i - 1, j - 1], Math.Min(mn[i - 1, j], mn[i, j - 1])) + 1;
+                    }
+                }
+            }
+
+            int maxLength = Math.Max(m, n);
+            similarity = (double)(maxLength - mn[m, n]) / maxLength;
+            return mn[m, n];
         }
 
         #endregion
