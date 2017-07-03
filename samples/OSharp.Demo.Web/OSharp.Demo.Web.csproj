@@ -550,6 +550,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\WebApi\ValuesController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
+    <Compile Include="Data\MyAutoMigrationsConfiguration.cs" />
+    <Compile Include="Data\MyDbContextInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

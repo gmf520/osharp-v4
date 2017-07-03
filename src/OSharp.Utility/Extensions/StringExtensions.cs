@@ -542,6 +542,14 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 将<see cref="byte"/>[]数组转换为Base64字符串
+        /// </summary>
+        public static string ToBase64String(this byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
+        }
+
+        /// <summary>
         /// 将字符串转换为Base64字符串，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
         /// <param name="source">正常的字符串</param>
