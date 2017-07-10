@@ -7,8 +7,14 @@
 //  <last-date>2015-10-14 2:40</last-date>
 // -----------------------------------------------------------------------
 
-using AutoMapper;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
+using OSharp.Core.Data;
 using OSharp.Core.Mapping;
 
 
@@ -41,6 +47,18 @@ namespace OSharp.AutoMapper
         public TTarget MapTo<TSource, TTarget>(TSource source, TTarget target)
         {
             return Mapper.Map(source, target);
+        }
+
+        /// <summary>
+        /// 将数据源映射为指定输出DTO的集合
+        /// </summary>
+        /// <typeparam name="TOutputDto">输出DTO类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="membersToExpand">成员展开</param>
+        /// <returns>输出DTO的结果集</returns>
+        public IQueryable<TOutputDto> ToOutput<TOutputDto>(IQueryable source, params Expression<Func<TOutputDto, object>>[] membersToExpand)
+        {
+            return source.ProjectTo(membersToExpand);
         }
     }
 }

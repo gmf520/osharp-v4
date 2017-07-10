@@ -94,7 +94,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dtos\Identity\OrganizationInputDto.cs" />
+    <Compile Include="Dtos\Identity\OrganizationOutputDto.cs" />
     <Compile Include="Dtos\Identity\RoleInputDto.cs" />
+    <Compile Include="Dtos\Identity\RoleOutputDto.cs" />
     <Compile Include="Dtos\Identity\UserInputDto.cs" />
     <Compile Include="Dtos\Identity\UserRoleMapInputDto.cs" />
     <Compile Include="Dtos\OAuth\ClientInputDto.cs" />
