@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.AspNet.SignalR.Client;
 
@@ -164,6 +165,22 @@ namespace OSharp.Web.SignalR.Client
         }
 
         /// <summary>
+        /// Send a message to the hub, using a client-to-hub contract method
+        /// </summary>
+        /// <param name="call">Expression calling to hub. Use like <code>hub => hub.MyMethod("hello", "world")</code></param>
+        /// <returns></returns>
+        public Task SendToHubAsync(Expression<Action<TCalls>> call)
+        {
+            var invocation = call.GetInvocation();
+
+            WaitForConnection();
+
+            Task task = _proxy.Invoke(invocation.MethodName, invocation.ParameterValues);
+            if (task == null) throw new Exception("Could not contact hub");
+            return task;
+        }
+
+        /// <summary>
         /// Send a message to the hub, using a client-to-hub contract method.
         /// <para>Will synchronously retrieve a response from the hub</para>
         /// </summary>
@@ -178,6 +195,22 @@ namespace OSharp.Web.SignalR.Client
             if (task == null) throw new Exception("Could not contact hub");
             task.Wait();
             return task.Result;
+        }
+
+        /// <summary>
+        /// Send a message to the hub, using a client-to-hub contract method.
+        /// <para>Will synchronously retrieve a response from the hub</para>
+        /// </summary>
+        /// <param name="call">Expression calling to hub. Use like <code>var helloWorld = RequestFromHub&lt;string&gt;(hub => hub.GetGreeting("world"))</code></param>
+        public Task<TResult> RequestFromHubAsync<TResult>(Expression<Func<TCalls, TResult>> call)
+        {
+            var invocation = call.GetInvocation();
+
+            WaitForConnection();
+
+            Task<TResult> task = _proxy.Invoke<TResult>(invocation.MethodName, invocation.ParameterValues);
+            if (task == null) throw new Exception("Could not contact hub");
+            return task;
         }
 
         /// <summary>
@@ -211,7 +244,7 @@ namespace OSharp.Web.SignalR.Client
         private T Convert<T>(JToken obj)
         {
             // ReSharper disable once RedundantCast
-            if (obj as object == null)
+            if ((obj as object) == null)
             {
                 return default(T);
             }

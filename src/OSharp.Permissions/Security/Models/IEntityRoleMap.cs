@@ -7,6 +7,8 @@
 //  <last-date>2015-08-07 2:08</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNet.Identity;
 
 using OSharp.Core.Data;
@@ -22,6 +24,9 @@ namespace OSharp.Core.Security.Models
     public interface IEntityRoleMap<out TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey> : IEntity<TKey>, ILockable, ICreatedTime
         where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
+        where TKey : IEquatable<TKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

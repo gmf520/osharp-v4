@@ -7,7 +7,10 @@
 //  <last-date>2015-08-03 18:39</last-date>
 // -----------------------------------------------------------------------
 
+using System.Dynamic;
+
 using OSharp.Utility.Data;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Security
@@ -15,37 +18,46 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 权限检查结果
     /// </summary>
-    public class AuthenticationResult : OSharpResult<AuthenticationResultType>
+    public sealed class AuthorizationResult : OSharpResult<AuthorizationResultType>
     {
-        static AuthenticationResult()
+        static AuthorizationResult()
         {
-            Allowed = new AuthenticationResult();
+            Allowed = new AuthorizationResult(AuthorizationResultType.Allowed);
         }
 
         /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
         /// </summary>
-        public AuthenticationResult()
-            : this(AuthenticationResultType.Allowed)
-        { }
-
-        /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
-        /// </summary>
-        public AuthenticationResult(AuthenticationResultType type)
+        public AuthorizationResult(AuthorizationResultType type)
             : this(type, null)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="AuthenticationResult"/>类型的新实例
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
         /// </summary>
-        public AuthenticationResult(AuthenticationResultType type, string message)
-            : base(type, message, null)
+        public AuthorizationResult(AuthorizationResultType type, string message)
+            : this(type, message, null)
         { }
+
+        /// <summary>
+        /// 初始化一个<see cref="AuthorizationResult"/>类型的新实例
+        /// </summary>
+        public AuthorizationResult(AuthorizationResultType type, string message, object data)
+            : base(type, message, data)
+        { }
+
+        /// <summary>
+        /// 获取或设置 返回消息
+        /// </summary>
+        public override string Message
+        {
+            get { return _message ?? ResultType.ToDescription(); }
+            set { _message = value; }
+        }
 
         /// <summary>
         /// 获取或设置 允许的检查结果
         /// </summary>
-        public static AuthenticationResult Allowed { get; set; }
+        public static AuthorizationResult Allowed { get; set; }
     }
 }

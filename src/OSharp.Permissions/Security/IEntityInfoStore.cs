@@ -27,6 +27,7 @@ namespace OSharp.Core.Security
     public interface IEntityInfoStore<TEntityInfo, in TEntityInfoKey, in TEntityInfoInputDto>
         where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
         where TEntityInfoInputDto : EntityInfoBaseInputDto<TEntityInfoKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
     {
         #region 实体数据信息业务
 
@@ -42,14 +43,14 @@ namespace OSharp.Core.Security
         /// <param name="id">更新的实体数据信息编号</param>
         /// <returns>实体数据信息是否存在</returns>
         Task<bool> CheckEntityInfoExists(Expression<Func<TEntityInfo, bool>> predicate, TEntityInfoKey id = default(TEntityInfoKey));
-        
+
         /// <summary>
         /// 更新实体数据信息信息
         /// </summary>
         /// <param name="dto">包含更新信息的实体数据信息DTO信息</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> UpdateEntityInfo(TEntityInfoInputDto dto);
-        
+
         #endregion
     }
 }

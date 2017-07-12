@@ -27,13 +27,13 @@ namespace OSharp.Core.Identity
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
-        /// 由用户信息创建<see cref="ClaimsIdentity"/>对象
+        /// 由用户信息创建<see cref="ClaimsIdentity"/>对象，重写添加昵称和邮箱信息
         /// </summary>
         /// <param name="manager">用户管理器</param>
         /// <param name="user">用户信息</param>
         /// <param name="authenticationType"></param>
         /// <returns></returns>
-        public async override Task<ClaimsIdentity> CreateAsync(UserManager<TUser, TUserKey> manager, TUser user, string authenticationType)
+        public override async Task<ClaimsIdentity> CreateAsync(UserManager<TUser, TUserKey> manager, TUser user, string authenticationType)
         {
             ClaimsIdentity identity = await base.CreateAsync(manager, user, authenticationType);
             if (!user.NickName.IsMissing())

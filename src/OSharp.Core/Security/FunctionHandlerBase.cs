@@ -28,6 +28,7 @@ namespace OSharp.Core.Security
     /// <typeparam name="TKey">功能信息主键类型</typeparam>
     public abstract class FunctionHandlerBase<TFunction, TKey> : IFunctionHandler
         where TFunction : FunctionBase<TKey>, IFunction, new()
+        where TKey : IEquatable<TKey>
     {
         private ILogger _logger;
 
@@ -71,6 +72,10 @@ namespace OSharp.Core.Security
         {
             Type[] types = TypeFinder.FindAll();
             TFunction[] functions = GetFunctions(types);
+            if (functions.Length == 0)
+            {
+                return;
+            }
             UpdateToRepository(functions);
             RefreshCache();
         }
@@ -86,7 +91,13 @@ namespace OSharp.Core.Security
         {
             if (Functions == null)
             {
-                RefreshCache();
+                lock (this)
+                {
+                    if (Functions == null)
+                    {
+                        RefreshCache();
+                    }
+                }
             }
             Debug.Assert(Functions != null, "Functions != null");
             return Functions.FirstOrDefault(m => m.Area == area && m.Controller == controller
@@ -193,7 +204,7 @@ namespace OSharp.Core.Security
             return functions.FirstOrDefault(m => m.Action == action && m.Controller == controller
                 && m.Area == area && m.Name == name && m.PlatformToken == PlatformToken);
         }
-        
+
         /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>
@@ -228,27 +239,28 @@ namespace OSharp.Core.Security
             TFunction[] removeItems = items.Where(m => !m.IsCustom).Except(functions,
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
             int removeCount = removeItems.Length;
-            repository.UnitOfWork.TransactionEnabled = true;
+            repository.UnitOfWork.BeginTransaction();
+            int tmpCount = 0;
             foreach (TFunction removeItem in removeItems)
             {
                 try
                 {
                     removeItem.IsDeleted = true;
-                    repository.Delete(removeItem);
+                    tmpCount += repository.Delete(removeItem);
                 }
                 catch (Exception)
                 {
                     //无法物理删除，可能是外键约束，改为逻辑删除
-                    repository.Recycle(removeItem);
+                    tmpCount += repository.Recycle(removeItem);
                 }
             }
-            int tmpCount = repository.UnitOfWork.SaveChanges();
+            repository.UnitOfWork.Commit();
             if (tmpCount > 0)
             {
                 items = repository.TrackEntities.ToArray();
             }
 
-            repository.UnitOfWork.TransactionEnabled = true;
+            repository.UnitOfWork.BeginTransaction();
             //处理新增的功能
             TFunction[] addItems = functions.Except(items,
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action + m.PlatformToken)).ToArray();
@@ -257,6 +269,7 @@ namespace OSharp.Core.Security
 
             //处理更新的功能
             int updateCount = 0;
+            tmpCount = 0;
             foreach (TFunction item in items)
             {
                 if (item.IsCustom)
@@ -287,12 +300,12 @@ namespace OSharp.Core.Security
                 }
                 if (isUpdate)
                 {
-                    repository.Update(item);
+                    tmpCount += repository.Update(item);
                     updateCount++;
                 }
             }
-            int count = repository.UnitOfWork.SaveChanges();
-            if (removeCount > 0 || count > 0)
+            repository.UnitOfWork.Commit();
+            if (removeCount > 0 || tmpCount > 0)
             {
                 string message = "刷新功能信息";
                 if (addCount > 0)

@@ -16,7 +16,7 @@ using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
 using OSharp.Utility.Filter;
 using OSharp.Web.Mvc;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 using OSharp.Web.Mvc.UI;
 
 
@@ -30,6 +30,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
     {
         protected virtual IQueryable<TEntity> GetQueryData<TEntity, TKey>(IQueryable<TEntity> source, out int total, GridRequest request = null)
             where TEntity : EntityBase<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (request == null)
             {

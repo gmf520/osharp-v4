@@ -21,6 +21,8 @@ namespace OSharp.Core.Identity.Models
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class UserClaimBase<TKey, TUser, TUserKey> : EntityBase<TKey>, IUserClaim<TKey, TUser, TUserKey>, ICreatedTime
         where TUser : UserBase<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 摘要类型

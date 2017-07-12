@@ -6,6 +6,7 @@
 //  <last-date>2015-07-11 1:14</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using OSharp.Core.Data;
@@ -17,6 +18,7 @@ namespace OSharp.Core.Security
     /// 功能信息基类
     /// </summary>
     public abstract class FunctionBase<TKey> : EntityBase<TKey>, IFunction
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取 功能名称

@@ -22,7 +22,7 @@ namespace OSharp.Demo.Security
     /// </summary>
     public class SecurityManager
         : SecurityManagerBase<Role, int, User, int, Module, ModuleInputDto, int, Function, FunctionInputDto, Guid,
-              EntityInfo, EntityInfoInputDto, Guid, FunctionUserMap, FunctionUserMapInputDto, int,
-              EntityRoleMap, EntityRoleMapInputDto, int, EntityUserMap, EntityUserMapInputDto, int>
+              EntityInfo, EntityInfoInputDto, Guid, EntityRoleMap, EntityRoleMapInputDto,
+              int, EntityUserMap, EntityUserMapInputDto, int>
     { }
 }

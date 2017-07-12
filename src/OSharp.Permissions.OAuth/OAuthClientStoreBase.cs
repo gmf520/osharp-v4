@@ -29,6 +29,8 @@ namespace OSharp.Core.Security
         where TClientSecret : OAuthClientSecretBase<TClientSecretKey, TClient, TClientKey>
         where TClientInputDto : OAuthClientBaseInputDto<TClientKey>
         where TClientSecretInputDto : OAuthClientSecretBaseInputDto<TClientSecretKey, TClientKey>
+        where TClientKey : IEquatable<TClientKey>
+        where TClientSecretKey : IEquatable<TClientSecretKey>
     {
         /// <summary>
         /// 获取或设置 客户端仓储对象

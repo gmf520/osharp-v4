@@ -111,7 +111,6 @@ namespace OSharp.Utility.Extensions
         public static bool HasAttribute<T>(this MemberInfo memberInfo, bool inherit = false) where T : Attribute
         {
             return memberInfo.IsDefined(typeof(T), inherit);
-            //return memberInfo.GetCustomAttributes(typeof(T), inherit).Any(m => (m as T) != null);
         }
 
         /// <summary>

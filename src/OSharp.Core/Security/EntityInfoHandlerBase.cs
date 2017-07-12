@@ -27,9 +27,10 @@ namespace OSharp.Core.Security
     /// <typeparam name="TKey">主键类型</typeparam>
     public abstract class EntityInfoHandlerBase<TEntityInfo, TKey> : IEntityInfoHandler
         where TEntityInfo : EntityInfoBase<TKey>, IEntity<TKey>, new()
+        where TKey : IEquatable<TKey>
     {
         private ILogger _logger;
-        
+
         /// <summary>
         /// 获取 日志对象
         /// </summary>
@@ -134,27 +135,28 @@ namespace OSharp.Core.Security
             TEntityInfo[] removeItems = items.Except(entityInfos,
                 EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassName)).ToArray();
             int removeCount = removeItems.Length;
-            repository.UnitOfWork.TransactionEnabled = true;
+            repository.UnitOfWork.BeginTransaction();
+            int tmpCount = 0;
             foreach (TEntityInfo removeItem in removeItems)
             {
                 try
                 {
                     removeItem.IsDeleted = true;
-                    repository.Delete(removeItem);
+                    tmpCount += repository.Delete(removeItem);
                 }
                 catch (Exception)
                 {
                     //无法物理删除，可能是外键约束，改为逻辑删除
-                    repository.Recycle(removeItem);
+                    tmpCount += repository.Recycle(removeItem);
                 }
             }
-            int tmpCount = repository.UnitOfWork.SaveChanges();
+            repository.UnitOfWork.Commit();
             if (tmpCount > 0)
             {
                 items = repository.TrackEntities.ToArray();
             }
 
-            repository.UnitOfWork.TransactionEnabled = true;
+            repository.UnitOfWork.BeginTransaction();
             //处理新增的实体信息
             TEntityInfo[] addItems = entityInfos.Except(items,
                 EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassName)).ToArray();
@@ -163,6 +165,7 @@ namespace OSharp.Core.Security
 
             //处理更新的实体信息
             int updateCount = 0;
+            tmpCount = 0;
             foreach (TEntityInfo item in items)
             {
                 bool isUpdate = false;
@@ -179,12 +182,12 @@ namespace OSharp.Core.Security
                 }
                 if (isUpdate)
                 {
-                    repository.Update(item);
+                    tmpCount += repository.Update(item);
                     updateCount++;
                 }
             }
-            int count = repository.UnitOfWork.SaveChanges();
-            if (removeCount > 0 || count > 0)
+            repository.UnitOfWork.Commit();
+            if (removeCount > 0 || tmpCount > 0)
             {
                 string message = "刷新实体信息";
                 if (addCount > 0)

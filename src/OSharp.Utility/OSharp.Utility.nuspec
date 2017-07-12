@@ -4,14 +4,14 @@
     <id>OSharp.Utility</id>
     <version>$version$</version>
     <title>OSharp.Utility</title>
-    <authors>OSharp开源团队</authors>
+    <authors>柳柳软件</authors>
     <owners>http://www.osharp.org</owners>
     <projectUrl>https://github.com/i66soft/osharp</projectUrl>
     <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;s=80</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OSharp工具组件，对常用工具类辅助操作进行封装</description>
     <summary>OSharp工具组件</summary>
-    <copyright>Copyright © OSharp 2014-2015</copyright>
+    <copyright>Copyright © 66SOFT 2014-2015</copyright>
     <language>zh-CN</language>
     <tags>OSharp,Utility</tags>
   </metadata>

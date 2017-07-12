@@ -7,6 +7,13 @@
 //  <last-date>2015-10-14 0:42</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+
+using OSharp.Core.Data;
+
+
 namespace OSharp.Core.Mapping
 {
     /// <summary>
@@ -31,5 +38,14 @@ namespace OSharp.Core.Mapping
         /// <param name="target">待更新的目标对象</param>
         /// <returns>更新后的目标类型对象</returns>
         TTarget MapTo<TSource, TTarget>(TSource source, TTarget target);
+
+        /// <summary>
+        /// 将数据源映射为指定输出DTO的集合
+        /// </summary>
+        /// <typeparam name="TOutputDto">输出DTO类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="membersToExpand">成员展开</param>
+        /// <returns>输出DTO的结果集</returns>
+        IQueryable<TOutputDto> ToOutput<TOutputDto>(IQueryable source, params Expression<Func<TOutputDto, object>>[] membersToExpand);
     }
 }

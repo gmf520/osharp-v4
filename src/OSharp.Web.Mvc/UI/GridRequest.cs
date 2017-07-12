@@ -28,7 +28,7 @@ namespace OSharp.Web.Mvc.UI
         /// </summary>
         public GridRequest(HttpRequestBase request)
         {
-            string jsonWhere = request.Params["where"];
+            string jsonWhere = request.Params["filter_group"];
             FilterGroup = !jsonWhere.IsNullOrEmpty() ? JsonHelper.FromJson<FilterGroup>(jsonWhere) : new FilterGroup();
 
             int pageIndex = request.Params["pageIndex"].CastTo(1);

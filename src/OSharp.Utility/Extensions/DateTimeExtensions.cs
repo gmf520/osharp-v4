@@ -51,5 +51,14 @@ namespace OSharp.Utility.Extensions
             string value = string.Format("{0}{1}{2}", dateTime.ToString("yy"), dateTime.DayOfYear, sedonds);
             return milsec ? value + dateTime.ToString("fff") : value;
         }
+
+        /// <summary>
+        /// 将时间转换为JS时间格式(Date.getTime())
+        /// </summary>
+        public static string ToJsGetTime(this DateTime dateTime)
+        {
+            DateTime utc = dateTime.ToUniversalTime();
+            return ((long)utc.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds).ToString();
+        }
     }
 }
