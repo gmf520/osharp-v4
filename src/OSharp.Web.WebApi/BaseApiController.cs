@@ -2,14 +2,14 @@
 using System.Web.Http;
 
 using OSharp.Web.Http.Filters;
-using OSharp.Web.Http.Logging;
 
 
 namespace OSharp.Web.Http
 {
     /// <summary>
-    /// WebAPI的控制器基类
+    /// OSharp-WebAPI的控制器基类
     /// </summary>
+    [OsharpAuthorize]
     [OperateLogFilter]
     public abstract class BaseApiController : ApiController
     {

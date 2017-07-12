@@ -17,8 +17,9 @@ using OSharp.Web.Mvc.UI;
 namespace OSharp.Web.Mvc
 {
     /// <summary>
-    /// 控制器基类
+    /// OSharp-MVC的控制器基类
     /// </summary>
+    [OsharpAuthorize]
     [OperateLogFilter]
     public abstract class BaseController : Controller
     {
