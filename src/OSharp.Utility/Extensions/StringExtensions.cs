@@ -263,7 +263,7 @@ namespace OSharp.Utility.Extensions
         /// 2.身份证号码为18位数字；
         /// 3.身份证号码为17位数字+1个字母
         /// </summary>
-        public static bool IsIdentityCard(this string value)
+        public static bool IsIdentityCardId(this string value)
         {
             if (value.Length != 15 && value.Length != 18)
             {
