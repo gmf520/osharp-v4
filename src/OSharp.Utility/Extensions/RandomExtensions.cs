@@ -216,12 +216,12 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
-        /// 获取身份证号
+        /// 获取随机身份证号
         /// </summary>
         /// <param name="random"></param>
         /// <param name="areaCodes">指定的地区码</param>
         /// <returns></returns>
-        public static string GetIdentityCardId(this Random random, params string[] areaCodes)
+        public static string NextIdentityCardId(this Random random, params string[] areaCodes)
         {
             if (areaCodes.Length == 0)
             {

@@ -187,10 +187,10 @@ namespace OSharp.Demo.Consoles
 
         private static void Method04()
         {
-            string value = Guid.NewGuid().ToString("N");
-            Console.WriteLine(value);
-            value = Convert.ToBase64String(value.ToBytes());
-            Console.WriteLine(value);
+            Random rnd = new Random();
+            string id = rnd.NextIdentityCardId();
+            Console.WriteLine(id);
+            Console.WriteLine(id.IsIdentityCardId());
         }
 
         private static void Method05()
