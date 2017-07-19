@@ -60,7 +60,7 @@ namespace OSharp.Demo.Services
         public async Task<OperationResult> AddUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
-            UserRepository.UnitOfWork.TransactionEnabled = true;
+            UserRepository.UnitOfWork.BeginTransaction();
             foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
@@ -83,9 +83,8 @@ namespace OSharp.Demo.Services
                 }
                 names.Add(user.UserName);
             }
-            return UserRepository.UnitOfWork.SaveChanges() > 0
-                ? new OperationResult(OperationResultType.Success, "用户“{0}”创建成功".FormatWith(names.ExpandAndToString()))
-                : OperationResult.NoChanged;
+            UserRepository.UnitOfWork.Commit();
+            return new OperationResult(OperationResultType.Success, "用户“{0}”创建成功".FormatWith(names.ExpandAndToString()));
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace OSharp.Demo.Services
         public async Task<OperationResult> EditUsers(params UserInputDto[] dtos)
         {
             List<string> names = new List<string>();
-            UserRepository.UnitOfWork.TransactionEnabled = true;
+            UserRepository.UnitOfWork.BeginTransaction();
             foreach (UserInputDto dto in dtos)
             {
                 IdentityResult result;
@@ -123,9 +122,8 @@ namespace OSharp.Demo.Services
                 }
                 names.Add(dto.UserName);
             }
-            return UserRepository.UnitOfWork.SaveChanges() > 0
-                ? new OperationResult(OperationResultType.Success, "用户“{0}”更新成功".FormatWith(names.ExpandAndToString()))
-                : OperationResult.NoChanged;
+            UserRepository.UnitOfWork.Commit();
+            return new OperationResult(OperationResultType.Success, "用户“{0}”更新成功".FormatWith(names.ExpandAndToString()));
         }
 
         /// <summary>
@@ -161,7 +159,8 @@ namespace OSharp.Demo.Services
             int[] existIds = UserRoleMapRepository.Entities.Where(m => m.User.Id == id).Select(m => m.Role.Id).ToArray();
             int[] addIds = roleIds.Except(existIds).ToArray();
             int[] removeIds = existIds.Except(roleIds).ToArray();
-            UserRoleMapRepository.UnitOfWork.TransactionEnabled = true;
+            UserRoleMapRepository.UnitOfWork.BeginTransaction();
+            int count = 0;
             foreach (int addId in addIds)
             {
                 Role role = await RoleRepository.GetByKeyAsync(addId);
@@ -170,10 +169,11 @@ namespace OSharp.Demo.Services
                     return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
                 }
                 UserRoleMap map = new UserRoleMap() { User = user, Role = role };
-                await UserRoleMapRepository.InsertAsync(map);
+                count += await UserRoleMapRepository.InsertAsync(map);
             }
-            await UserRoleMapRepository.DeleteAsync(m => m.User.Id == id && removeIds.Contains(m.Role.Id));
-            return await UserRoleMapRepository.UnitOfWork.SaveChangesAsync() > 0
+            count += await UserRoleMapRepository.DeleteAsync(m => m.User.Id == id && removeIds.Contains(m.Role.Id));
+            UserRoleMapRepository.UnitOfWork.Commit();
+            return count > 0
                 ? new OperationResult(OperationResultType.Success, "用户“{0}”指派角色操作成功".FormatWith(user.UserName))
                 : OperationResult.NoChanged;
         }

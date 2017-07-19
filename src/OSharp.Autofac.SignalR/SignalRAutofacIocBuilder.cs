@@ -9,6 +9,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 
 using Autofac;
 using Autofac.Integration.SignalR;
@@ -57,10 +58,20 @@ namespace OSharp.Autofac.SignalR
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterHubs(assemblies).AsSelf().PropertiesAutowired();
+            builder.RegisterLifetimeHubManager();
             builder.Populate(services);
             IContainer container = builder.Build();
             IDependencyResolver resolver = new AutofacDependencyResolver(container);
             GlobalHost.DependencyResolver = resolver;
+            SignalRIocResolver.LifetimeResolveFunc = type =>
+            {
+                ILifetimeScope scope = CallContext.LogicalGetData(LifetimeHubManager.LifetimeScopeKey) as ILifetimeScope;
+                if (scope == null)
+                {
+                    return null;
+                }
+                return scope.ResolveOptional(type);
+            };
             return resolver.Resolve<IServiceProvider>();
         }
     }

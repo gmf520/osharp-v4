@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+
+using OSharp.Utility.Extensions;
+using System.Linq;
+using System.Text;
 
 using Xunit;
 
@@ -79,15 +83,25 @@ namespace OSharp.Utility.Extensions.Tests
         }
 
         [Fact()]
-        public void AddQueryStringTest()
+        public void AddUrlQueryTest()
         {
             const string url = "http://localhost:801";
             string excepted = url + "?id=1";
-            Assert.Equal(url.AddQueryString("id=1"), excepted);
+            Assert.Equal(url.AddUrlQuery("id=1"), excepted);
             excepted = url + "?name=abc";
-            Assert.Equal(url.AddQueryString("name=abc"), excepted);
+            Assert.Equal(url.AddUrlQuery("name=abc"), excepted);
             excepted = url + "?id=1&name=abc";
-            Assert.Equal(url.AddQueryString("id=1", "name=abc"), excepted);
+            Assert.Equal(url.AddUrlQuery("id=1", "name=abc"), excepted);
+        }
+
+        [Fact()]
+        public void GetQueryParamTest()
+        {
+            string url = "http://www.baidu.com?key=website&word=beyond&name=%E9%83%AD%E6%98%8E%E9%94%8B";
+            Assert.Equal(url.GetUrlQuery("key"), "website");
+            Assert.Equal(url.GetUrlQuery("word"), "beyond");
+            Assert.Equal(url.GetUrlQuery("name"), "%E9%83%AD%E6%98%8E%E9%94%8B");
+            Assert.Equal(url.GetUrlQuery("nokey"), string.Empty);
         }
 
         [Fact()]
@@ -140,8 +154,10 @@ namespace OSharp.Utility.Extensions.Tests
         [Fact()]
         public void SubstringTest()
         {
-            const string source = "IP地址是四段点分十进制的字符串表示的";
-            Assert.Equal(source.Substring("四段", "的字符串"), "点分十进制");
+            const string source = "http://vote3.52meirongwang.com/members/vote_detail.aspx?id=484&pid=37857&from=groupmessage&isappinstalled=0";
+            Assert.Equal(source.Substring("?id=", "&"), "484");
+            Assert.Equal(source.Substring("&pid=", "&"), "37857");
+            Assert.Equal(source.Substring("&isappinstalled=", "&", ""), "0");
         }
 
         [Fact()]
@@ -162,6 +178,41 @@ namespace OSharp.Utility.Extensions.Tests
             Assert.True(value.IsIdentityCard());
             value = "37132819810401652x";
             Assert.True(value.IsIdentityCard());
+        }
+
+        [Fact()]
+        public void GetChineseSpellTest()
+        {
+            char @char = '郭';
+            Assert.Equal(@char.GetChineseSpell(), "G");
+
+            string str = "郭明锋";
+            Assert.Equal(str.GetChineseSpell(), "GMF");
+        }
+
+        [Fact()]
+        public void ToUnicodeStringTest()
+        {
+            string unicode = "编码".ToUnicodeString();
+            Assert.Equal(@"\u7f16\u7801", unicode);
+            Assert.Equal("编码", unicode.FromUnicodeString());
+        }
+
+        [Fact()]
+        public void ToHexStringTest()
+        {
+            string str1 = "http://b1.1ydb360.com/app/index.php?i=8&c=entry&rid=53&id=2286&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com&from=groupmessage&winzoom=1";
+            string hex = str1.ToHexString();
+            string str2 = hex.FromHexString();
+            Assert.Equal(str1, str2);
+        }
+
+        [Fact()]
+        public void IsUrlTest()
+        {
+            string url =
+                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2cb8ad06a252b27c&redirect_uri=http%3A%2F%2Ftpkwx.tpk.com%2FAdmin%2FWeixin%2FWeixinAuthCallback.aspx&response_type=code&scope=snsapi_userinfo&state=1$promotion#wechat_redirect";
+            Assert.True(url.IsUrl());
         }
     }
 }

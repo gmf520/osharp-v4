@@ -255,7 +255,7 @@
             }
             if (param.filterRules) {
                 if (param.filterRules != "[]") {
-                    param.where = getFilterGroup(param.filterRules);
+                    param.filter_group = getFilterGroup(param.filterRules);
                 }
                 delete param.filterRules;
             }

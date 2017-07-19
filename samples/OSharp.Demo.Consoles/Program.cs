@@ -1,21 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 
+using Autofac;
+
 using OSharp.App.Local.Initialize;
 using OSharp.AutoMapper;
 using OSharp.Core;
+using OSharp.Core.Caching;
 using OSharp.Core.Data;
 using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
+using OSharp.Demo.Models.Identity;
 using OSharp.Logging.Log4Net;
+using OSharp.Redis;
 using OSharp.Utility.Extensions;
+
+using StackExchange.Redis;
 
 
 namespace OSharp.Demo.Consoles
@@ -165,7 +173,7 @@ namespace OSharp.Demo.Consoles
             provider.GetServices<IUnitOfWork>().ToList().ForEach(Console.WriteLine);
             provider.GetServices<IFinder<Assembly>>().ToList().ForEach(Console.WriteLine);
             Console.WriteLine(provider.GetService<IServiceCollection>());
-            
+
         }
 
         private static void Method03()
@@ -179,50 +187,104 @@ namespace OSharp.Demo.Consoles
 
         private static void Method04()
         {
-            string value = Guid.NewGuid().ToString("N");
-            Console.WriteLine(value);
-            value = Convert.ToBase64String(value.ToBytes());
-            Console.WriteLine(value);
+            Random rnd = new Random();
+            string id = rnd.NextIdentityCardId();
+            Console.WriteLine(id);
+            Console.WriteLine(id.IsIdentityCardId());
         }
 
         private static void Method05()
         {
             RandomNumberGenerator generator = new RNGCryptoServiceProvider();
-            byte[] bytes = new byte[96]; 
+            byte[] bytes = new byte[96];
             generator.GetBytes(bytes);
             Console.WriteLine(Convert.ToBase64String(bytes));
         }
 
         private static void Method06()
         {
-            var assembly = typeof(IServiceCollection).Assembly;
-            Console.WriteLine(assembly.FullName);
-            Console.WriteLine(assembly.Location);
+            string str = "我是中文HelloWorld123".ToBase64String();
+            Console.WriteLine(str);
+            str = str.FromBase64String();
+            Console.WriteLine(str);
         }
 
         private static void Method07()
         {
-            throw new NotImplementedException();
+            string name = Console.ReadLine();
+            var users = _program.IdentityContract.Users.OrderBy(m => m.NickName).Where(m => !m.IsLocked
+                  && (m.NickName == name || m.UserName.StartsWith(name)));
+
+            Console.WriteLine(users.Expression);
+            Console.WriteLine();
+            string key = new ExpressionCacheKeyGenerator(users.Expression).GetKey();
+            Console.WriteLine(key);
+            Console.WriteLine();
+            Console.WriteLine(key.ToMd5Hash());
         }
 
         private static void Method08()
         {
-            throw new NotImplementedException();
+            string tag = "test";
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<Program>().AsSelf().InstancePerLifetimeScope();//.InstancePerMatchingLifetimeScope(tag);
+            IContainer container = builder.Build();
+            ILifetimeScope scope1 = container.BeginLifetimeScope(tag);
+            Console.WriteLine(scope1.GetHashCode());
+            Program p1 = scope1.Resolve<Program>();
+            Console.WriteLine(p1.GetHashCode());
+            p1 = scope1.Resolve<Program>();
+            Console.WriteLine(p1.GetHashCode());
+            ILifetimeScope scope2 = container.BeginLifetimeScope(tag);
+            Console.WriteLine(scope2.GetHashCode());
+            Program p2 = scope2.Resolve<Program>();
+            Console.WriteLine(p2.GetHashCode());
+            p2 = scope2.Resolve<Program>();
+            Console.WriteLine(p2.GetHashCode());
         }
 
         private static void Method09()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("请输入字符串source");
+            string source = Console.ReadLine();
+            Console.WriteLine("请输入字符串target");
+            string target = Console.ReadLine();
+
+            double point;
+            Console.WriteLine(source.LevenshteinDistance(target, out point, true));
+            Console.WriteLine(point);
+            Console.WriteLine(source.GetSimilarityWith(target));
         }
 
         private static void Method10()
         {
-            throw new NotImplementedException();
+            RedisClient redis = new RedisClient();
+            const string key = "key001";
+            Console.WriteLine(redis.StringGet(key));
+            Console.WriteLine(redis.StringSet(key, "Hello World."));
+            Console.WriteLine(redis.StringGet(key));
+            Console.WriteLine(redis.StringIncrement(key));
+            Console.WriteLine(redis.StringDecrement(key));
         }
 
         private static void Method11()
         {
-            throw new NotImplementedException();
+            string key = ".OnlineClient";
+            RedisClient redis = new RedisClient();
+            //var vals = redis.HashKeys<OnlineClientDto>(key);
+            //Console.WriteLine(vals.Count);
+            OnlineClientDto dto = new OnlineClientDto()
+            {
+                Name = Guid.NewGuid().ToString(),
+                ConnectionId = Guid.NewGuid().ToString(),
+                IpAddress = "127.0.5.1",
+                ConnectedTime = DateTime.Now
+            };
+            Console.WriteLine(redis.HashSet(key,"key001", dto));
+            var vals = redis.HashKeys<string>(key);
+            Console.WriteLine(vals.ToJsonString());
+            Console.WriteLine(redis.HashGet<OnlineClientDto>(key, vals[0]).ToJsonString());
+            
         }
 
         private static void Method12()
@@ -259,5 +321,57 @@ namespace OSharp.Demo.Consoles
         {
             throw new NotImplementedException();
         }
+    }
+    public class OnlineClientDto
+    {
+        /// <summary>
+        /// 获取或设置 客户端名，以名为准来寻找客户端
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端连接Id
+        /// </summary>
+        public string ConnectionId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端所在电脑名称
+        /// </summary>
+        public string ClientHostName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端版本
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端IP
+        /// </summary>
+        public string IpAddress { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否正在工作
+        /// </summary>
+        public bool IsWorking { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否自动工作的客户端
+        /// </summary>
+        public bool IsAutoRunWork { get; set; }
+
+        /// <summary>
+        /// 获取或设置 连接时间
+        /// </summary>
+        public DateTime ConnectedTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 最后工作时间
+        /// </summary>
+        public DateTime? LastWorkTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 正在投票的订单编号
+        /// </summary>
+        public int? VotingOrderId { get; set; }
     }
 }

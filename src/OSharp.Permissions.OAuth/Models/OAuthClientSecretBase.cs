@@ -7,6 +7,7 @@
 //  <last-date>2015-10-31 15:45</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using OSharp.Core.Data;
@@ -19,6 +20,8 @@ namespace OSharp.Core.Security.Models
     /// </summary>
     public abstract class OAuthClientSecretBase<TKey, TClient, TClientKey> : ExpirableBase<TKey>, IOAuthClientSecret<TKey>
         where TClient : IOAuthClient<TClientKey>
+        where TKey : IEquatable<TKey>
+        where TClientKey : IEquatable<TClientKey>
     {
         /// <summary>
         /// 获取或设置 密钥值

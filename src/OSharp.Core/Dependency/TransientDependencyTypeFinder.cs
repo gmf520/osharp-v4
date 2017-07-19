@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using OSharp.Core.Reflection;
+using OSharp.Utility.Extensions;
 
 
 namespace OSharp.Core.Dependency
@@ -50,11 +51,21 @@ namespace OSharp.Core.Dependency
         /// <returns></returns>
         public Type[] FindAll()
         {
-            Assembly[] assemblies = AssemblyFinder.FindAll();
-            return assemblies.SelectMany(assembly =>
-                assembly.GetTypes().Where(type =>
-                    typeof(ITransientDependency).IsAssignableFrom(type) && !type.IsAbstract))
-                .Distinct().ToArray();
+            try
+            {
+                Assembly[] assemblies = AssemblyFinder.FindAll();
+                return assemblies.SelectMany(assembly =>
+                    assembly.GetTypes().Where(type =>
+                        typeof(ITransientDependency).IsAssignableFrom(type) && !type.IsAbstract))
+                    .Distinct().ToArray();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                string msg = e.Message;
+                Exception[] exs = e.LoaderExceptions;
+                msg = msg + "\r\n详情：" + exs.Select(m => m.Message).ExpandAndToString("---");
+                throw new Exception(msg, e);
+            }
         }
     }
 }

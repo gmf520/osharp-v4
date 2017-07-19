@@ -155,7 +155,7 @@ namespace OSharp.Demo.Services
                 return;
             }
             List<Organization> organizations = OrganizationRepository.GetInclude(m => m.Parent).Where(m => ids.Contains(m.Id)).ToList();
-            OrganizationRepository.UnitOfWork.TransactionEnabled = true;
+            OrganizationRepository.UnitOfWork.BeginTransaction();
             foreach (Organization organization in organizations)
             {
                 organization.TreePath = organization.Parent == null
@@ -163,7 +163,7 @@ namespace OSharp.Demo.Services
                     : organization.Parent.TreePathIds.Union(new[] { organization.Id }).ExpandAndToString();
                 OrganizationRepository.Update(organization);
             }
-            OrganizationRepository.UnitOfWork.SaveChanges();
+            OrganizationRepository.UnitOfWork.Commit();
         }
 
         #endregion

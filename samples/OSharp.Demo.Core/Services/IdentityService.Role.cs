@@ -60,7 +60,7 @@ namespace OSharp.Demo.Services
                     }
                     else if (RoleRepository.CheckExists(m => m.Name == dto.Name && m.Organization == null))
                     {
-                        throw new Exception("无组织机构的名称为的角色已存在，不能重复添加".FormatWith(dto.Name));
+                        throw new Exception("无组织机构的名称为“{0}”的角色已存在，不能重复添加".FormatWith(dto.Name));
                     }
                 },
                 (dto, entity) =>

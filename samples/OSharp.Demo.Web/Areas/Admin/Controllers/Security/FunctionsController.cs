@@ -10,6 +10,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using OSharp.Core.Data.Extensions;
@@ -98,7 +99,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
             }).ToArray();
             return Json(gridData, JsonRequestBehavior.AllowGet);
         }
-
+        
         #endregion
 
         #region 功能方法
@@ -116,10 +117,10 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [AjaxOnly]
         [Description("管理-功能-编辑")]
-        public ActionResult Edit(FunctionInputDto[] dtos)
+        public async Task<ActionResult> Edit(FunctionInputDto[] dtos)
         {
             dtos.CheckNotNull("dtos" );
-            OperationResult result = SecurityContract.EditFunctions(dtos);
+            OperationResult result = await SecurityContract.EditFunctions(dtos);
             return Json(result.ToAjaxResult());
         }
 

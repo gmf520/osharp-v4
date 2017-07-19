@@ -10,19 +10,26 @@ using OSharp.Web.Http.Extensions;
 
 namespace OSharp.Web.Http.Handlers
 {
-    public class ThrottlingHandler
-        : DelegatingHandler
+    /// <summary>
+    /// API限流拦截处理器
+    /// </summary>
+    public class ThrottlingHandler : DelegatingHandler
     {
         private readonly IThrottleStore _store;
         private readonly Func<string, long> _maxRequestsForUserIdentifier;
         private readonly TimeSpan _period;
         private readonly string _message;
 
+        /// <summary>
+        /// 初始化一个<see cref="ThrottlingHandler"/>类型的新实例
+        /// </summary>
         public ThrottlingHandler(IThrottleStore store, Func<string, long> maxRequestsForUserIdentifier, TimeSpan period)
             : this(store, maxRequestsForUserIdentifier, period, "The allowed number of requests has been exceeded.")
-        {
-        }
+        { }
 
+        /// <summary>
+        /// 初始化一个<see cref="ThrottlingHandler"/>类型的新实例
+        /// </summary>
         public ThrottlingHandler(IThrottleStore store, Func<string, long> maxRequestsForUserIdentifier, TimeSpan period, string message)
         {
             _store = store;
@@ -31,6 +38,11 @@ namespace OSharp.Web.Http.Handlers
             _message = message;
         }
 
+        /// <summary>
+        /// 获取请求标识，这里返回请求的IP地址
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         protected virtual string GetUserIdentifier(HttpRequestMessage request)
         {
             return request.GetClientIpAddress();
@@ -84,7 +96,7 @@ namespace OSharp.Web.Http.Handlers
                 httpResponse.Headers.Add("RateLimit-Remaining", remaining.ToString());
 
                 return httpResponse;
-            });
+            }, cancellationToken);
         }
 
         protected Task<HttpResponseMessage> CreateResponse(HttpRequestMessage request, HttpStatusCode statusCode, string message)

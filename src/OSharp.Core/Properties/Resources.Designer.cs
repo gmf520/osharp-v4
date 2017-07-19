@@ -106,33 +106,6 @@ namespace OSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   查找类似 数据库初始化器不能为空，请确定IoC组件已加载了IDatabaseInitializer的实现类 的本地化字符串。
-        /// </summary>
-        internal static string FrameworkInitializer_DatabaseInitializeIsNull {
-            get {
-                return ResourceManager.GetString("FrameworkInitializer_DatabaseInitializeIsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 数据处理初始化器不能为空，请确定IoC组件已加载了IEntityInfoHandler的实现类 的本地化字符串。
-        /// </summary>
-        internal static string FrameworkInitializer_EntityInfoHandlerIsNull {
-            get {
-                return ResourceManager.GetString("FrameworkInitializer_EntityInfoHandlerIsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 数据处理初始化器不能为空，请确定IoC组件已加载了IFunctionHandler的实现类 的本地化字符串。
-        /// </summary>
-        internal static string FrameworkInitializer_FunctionHandlerIsNull {
-            get {
-                return ResourceManager.GetString("FrameworkInitializer_FunctionHandlerIsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 无法解析类型“{0}”的构造函数中类型为“{1}”的参数 的本地化字符串。
         /// </summary>
         internal static string Ioc_CannotResolveService {

@@ -7,6 +7,8 @@
 //  <last-date>2015-10-31 16:12</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -16,6 +18,7 @@ namespace OSharp.Core.Security.Models
     /// 定义OAuth客户端应用信息
     /// </summary>
     public interface IOAuthClient<out TKey> : IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 应用名称
@@ -46,7 +49,7 @@ namespace OSharp.Core.Security.Models
         /// 获取或设置 重定向地址
         /// </summary>
         string RedirectUrl { get; set; }
-        
+
         /// <summary>
         /// 获取或设置 需要授权
         /// </summary>

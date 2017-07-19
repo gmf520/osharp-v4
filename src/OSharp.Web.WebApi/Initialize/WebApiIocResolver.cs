@@ -10,9 +10,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
+using System.Web.Http.Dependencies;
 
 using OSharp.Core.Dependency;
+using OSharp.Web.Http.Internal;
 
 
 namespace OSharp.Web.Http.Initialize
@@ -39,6 +42,11 @@ namespace OSharp.Web.Http.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
+            IDependencyScope scope = CallContext.LogicalGetData(InternalConstants.RequestLifetimeScopeKey) as IDependencyScope;
+            if (scope != null)
+            {
+                return scope.GetService(type);
+            }
             return GlobalConfiguration.Configuration.DependencyResolver.GetService(type);
         }
 

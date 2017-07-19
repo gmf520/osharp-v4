@@ -29,6 +29,9 @@ namespace OSharp.Core.Identity.Models
         ICreatedTime
         where TUser : UserBase<TUserKey>
         where TRole : RoleBase<TRoleKey>
+        where TKey : IEquatable<TKey>
+        where TUserKey : IEquatable<TUserKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 是否锁定
@@ -49,6 +52,6 @@ namespace OSharp.Core.Identity.Models
         /// 获取或设置 角色信息
         /// </summary>
         public virtual TRole Role { get; set; }
-        
+
     }
 }

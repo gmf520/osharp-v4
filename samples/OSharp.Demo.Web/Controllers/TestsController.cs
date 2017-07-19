@@ -22,7 +22,7 @@ using OSharp.Utility.Data;
 using OSharp.Utility.Extensions;
 using OSharp.Web.Mvc;
 using OSharp.Web.Mvc.Extensions;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 
 
 namespace OSharp.Demo.Web.Controllers
@@ -112,6 +112,11 @@ namespace OSharp.Demo.Web.Controllers
             UserManager manager = ServiceProvider.GetService<UserManager>();
             IdentityResult result = await manager.AddPasswordAsync(1, "gmf31529019");
             return Content(result.ToJsonString());
+        }
+
+        public ActionResult Test3()
+        {
+            return null;
         }
     }
 }

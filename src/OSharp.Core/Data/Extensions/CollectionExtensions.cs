@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using OSharp.Core.Mapping;
 using OSharp.Core.Properties;
 using OSharp.Utility;
 using OSharp.Utility.Data;
@@ -79,6 +80,57 @@ namespace OSharp.Core.Data.Extensions
             int total;
             TResult[] data = source.Where(predicate, pageIndex, pageSize, out total, sortConditions).Select(selector).ToArray();
             return new PageResult<TResult>() { Total = total, Data = data };
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询指定输出DTO的分页信息
+        /// </summary>
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <typeparam name="TOutputDto">输出DTO数据类型</typeparam>
+        /// <param name="source">要查询的数据集</param>
+        /// <param name="predicate">查询条件谓语表达式</param>
+        /// <param name="pageCondition">分页查询条件</param>
+        /// <returns>分页结果信息</returns>
+        public static PageResult<TOutputDto> ToPage<TEntity, TOutputDto>(this IQueryable<TEntity> source,
+            Expression<Func<TEntity, bool>> predicate,
+            PageCondition pageCondition)
+            where TOutputDto : IOutputDto
+        {
+            source.CheckNotNull("source");
+            predicate.CheckNotNull("predicate");
+            pageCondition.CheckNotNull("pageCondition");
+            return source.ToPage<TEntity, TOutputDto>(predicate,
+                pageCondition.PageIndex,
+                pageCondition.PageSize,
+                pageCondition.SortConditions);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询出指定输出DTO的分页信息
+        /// </summary>
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <typeparam name="TOutputDto">输出DTO数据类型</typeparam>
+        /// <param name="source">要查询的数据集</param>
+        /// <param name="predicate">查询条件谓语表达式</param>
+        /// <param name="pageIndex">分页索引</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="sortConditions">排序条件集合</param>
+        /// <returns>分页结果信息</returns>
+        public static PageResult<TOutputDto> ToPage<TEntity, TOutputDto>(this IQueryable<TEntity> source,
+            Expression<Func<TEntity, bool>> predicate,
+            int pageIndex,
+            int pageSize,
+            SortCondition[] sortConditions)
+            where TOutputDto : IOutputDto
+        {
+            source.CheckNotNull("source");
+            predicate.CheckNotNull("predicate");
+            pageIndex.CheckGreaterThan("pageIndex", 0);
+            pageSize.CheckGreaterThan("pageSize", 0);
+
+            int total;
+            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out total, sortConditions).ToOutput<TOutputDto>().ToArray();
+            return new PageResult<TOutputDto>() { Total = total, Data = data };
         }
 
         /// <summary>
@@ -153,12 +205,12 @@ namespace OSharp.Core.Data.Extensions
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
         }
-        
+
         /// <summary>
         /// 从指定<see cref="IQueryable{T}"/>集合中查询未过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unexpired<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IExpirable
+            where TEntity : class, IExpirable
         {
             DateTime now = DateTime.Now;
             Expression<Func<TEntity, bool>> predicate =
@@ -179,10 +231,32 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>集合中查询已过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Expired<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : class, IExpirable
+        {
+            DateTime now = DateTime.Now;
+            Expression<Func<TEntity, bool>> predicate = m => m.EndTime != null && m.EndTime.Value < now;
+            return source.Where(predicate);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IEnumerable{T}"/>集合中查询已过期的子数据集，用于筛选实现了<see cref="IExpirable"/>接口的数据集
+        /// </summary>
+        public static IEnumerable<TEntity> Expired<TEntity>(this IEnumerable<TEntity> source)
+            where TEntity : IExpirable
+        {
+            DateTime now = DateTime.Now;
+            Func<TEntity, bool> predicate = m => m.EndTime != null && m.EndTime.Value < now;
+            return source.Where(predicate);
+        }
+
+        /// <summary>
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询未逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unrecycled<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : IRecyclable
+            where TEntity : class, IRecyclable
         {
             return source.Where(m => !m.IsDeleted);
         }
@@ -197,10 +271,28 @@ namespace OSharp.Core.Data.Extensions
         }
 
         /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>数据集中查询已逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Recycled<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : class, IRecyclable
+        {
+            return source.Where(m => m.IsDeleted);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IEnumerable{T}"/>数据集中查询已逻辑删除的子数据集，用于筛选实现了<see cref="IRecyclable"/>接口的数据集
+        /// </summary>
+        public static IEnumerable<TEntity> Recycled<TEntity>(this IEnumerable<TEntity> source)
+            where TEntity : IRecyclable
+        {
+            return source.Where(m => m.IsDeleted);
+        }
+
+        /// <summary>
         /// 从指定<see cref="IQueryable{T}"/>数据集中查询未锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
         /// </summary>
         public static IQueryable<TEntity> Unlocked<TEntity>(this IQueryable<TEntity> source)
-            where TEntity : ILockable
+            where TEntity : class, ILockable
         {
             return source.Where(m => !m.IsLocked);
         }
@@ -212,6 +304,24 @@ namespace OSharp.Core.Data.Extensions
             where TEntity : ILockable
         {
             return source.Where(m => !m.IsLocked);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>数据集中查询已锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
+        /// </summary>
+        public static IQueryable<TEntity> Locked<TEntity>(this IQueryable<TEntity> source)
+            where TEntity : class, ILockable
+        {
+            return source.Where(m => m.IsLocked);
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IEnumerable{T}"/>数据集中查询已锁定的子数据集，用于筛选实现了<see cref="ILockable"/>接口的数据集
+        /// </summary>
+        public static IEnumerable<TEntity> Locked<TEntity>(this IEnumerable<TEntity> source)
+            where TEntity : ILockable
+        {
+            return source.Where(m => m.IsLocked);
         }
     }
 }

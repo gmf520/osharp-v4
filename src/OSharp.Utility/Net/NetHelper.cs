@@ -7,7 +7,9 @@
 //  <last-date>2016-03-16 13:07</last-date>
 // -----------------------------------------------------------------------
 
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Text;
 
 
 namespace OSharp.Utility.Net
@@ -17,6 +19,27 @@ namespace OSharp.Utility.Net
     /// </summary>
     public static class NetHelper
     {
+        /// <summary>
+        /// 是否能Ping通指定主机
+        /// </summary>
+        public static bool Ping(string ip)
+        {
+            try
+            {
+                Ping ping = new Ping();
+                PingOptions options = new PingOptions { DontFragment = true };
+                string data = "Test Data";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+                int timeout = 1000;
+                PingReply reply = ping.Send(ip, timeout, buffer, options);
+                return reply != null && reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// 网络是否畅通
         /// </summary>

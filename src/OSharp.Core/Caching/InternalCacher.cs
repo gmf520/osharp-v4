@@ -70,7 +70,11 @@ namespace OSharp.Core.Caching
             {
                 return default(T);
             }
-            return (T)value;
+            if (value is T)
+            {
+                return (T)value;
+            }
+            return default(T);
         }
 
         /// <summary>

@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\OSharp.Web.SignalR.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -81,6 +82,7 @@
       <Link>Properties\VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Initialize\AppBuilderExtensions.cs" />
+    <Compile Include="Extensions\SignalRExtensions.cs" />
     <Compile Include="Initialize\SignalRFunctionHandler.cs" />
     <Compile Include="Initialize\SignalRHubMethodInfoFinder.cs" />
     <Compile Include="Initialize\SignalRHubTypeFinder.cs" />
@@ -103,7 +105,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Web.SignalR.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

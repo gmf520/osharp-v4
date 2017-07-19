@@ -28,8 +28,8 @@ namespace OSharp.AutoMapper
             services.CheckNotNull("services" );
             services.AddSingleton<IMapper, AutoMapperMapper>();
             services.AddSingleton<InputDtoTypeFinder>();
-            services.AddSingleton<EntityTypeFinder>();
             services.AddSingleton<OutputDtoTypeFinder>();
+            services.AddSingleton<EntityTypeFinder>();
             services.AddSingleton<IMapTuple, InputDtoEntityMapTuple>();
             services.AddSingleton<IMapTuple, EntityOutputDtoMapTuple>();
         }

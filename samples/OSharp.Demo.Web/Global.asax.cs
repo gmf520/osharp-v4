@@ -13,6 +13,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using OSharp.Utility.Logging;
 using OSharp.Web.Http.Extensions;
 using OSharp.Web.Mvc.Routing;
 
@@ -21,6 +22,8 @@ namespace OSharp.Demo.Web
 {
     public class Global : HttpApplication
     {
+        private ILogger _logger;
+
         protected void Application_Start(object sender, EventArgs e)
         {
             AreaRegistration.RegisterAllAreas();
@@ -38,6 +41,21 @@ namespace OSharp.Demo.Web
                 "{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new[] { "OSharp.Demo.Web.Controllers" });
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            GetLogger();
+            Exception ex = Server.GetLastError();
+            _logger.Fatal("全局异常Application_Error", ex);
+        }
+        
+        private void GetLogger()
+        {
+            if (_logger == null)
+            {
+                _logger = LogManager.GetLogger<Global>();
+            }
         }
     }
 }

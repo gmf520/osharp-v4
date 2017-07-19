@@ -22,6 +22,8 @@ namespace OSharp.Core.Security.Models
     public abstract class OAuthClientRefreshTokenBase<TKey, TClient, TClientKey, TUser, TUserKey> : EntityBase<TKey>, IOAuthClientRefreshToken<TKey>
         where TClient : IOAuthClient<TClientKey>
         where TUser : IUser<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TClientKey : IEquatable<TClientKey>
     {
         /// <summary>
         /// 获取或设置 Token值

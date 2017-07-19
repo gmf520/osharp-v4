@@ -43,9 +43,6 @@ namespace OSharp.Core.Security
     /// <typeparam name="TEntityInfo">实体数据信息类型</typeparam>
     /// <typeparam name="TEntityInfoKey">实体数据信息编号类型</typeparam>
     /// <typeparam name="TEntityInfoInputDto">实体数据输入DTO类型</typeparam>
-    /// <typeparam name="TFunctionUserMap">功能用户映射类型</typeparam>
-    /// <typeparam name="TFunctionUserMapInputDto">功能用户映射输入DTO类型</typeparam>
-    /// <typeparam name="TFunctionUserMapKey">功能用户映射编号类型</typeparam>
     /// <typeparam name="TEntityRoleMap">数据角色映射类型</typeparam>
     /// <typeparam name="TEntityRoleMapInputDto">数据角色映射输入DTO类型</typeparam>
     /// <typeparam name="TEntityRoleMapKey">数据角色映射编号类型</typeparam>
@@ -53,34 +50,33 @@ namespace OSharp.Core.Security
     /// <typeparam name="TEntityUserMapInputDto">数据用户映射输入DTO类型</typeparam>
     /// <typeparam name="TEntityUserMapKey">数据用户映射编号类型</typeparam>
     public abstract class SecurityManagerBase<TRole, TRoleKey, TUser, TUserKey, TModule, TModuleInputDto, TModuleKey, TFunction, TFunctionInputDto, TFunctionKey,
-        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TFunctionUserMap, TFunctionUserMapInputDto, TFunctionUserMapKey, TEntityRoleMap, TEntityRoleMapInputDto, TEntityRoleMapKey,
-        TEntityUserMap, TEntityUserMapInputDto, TEntityUserMapKey>
+        TEntityInfo, TEntityInfoInputDto, TEntityInfoKey, TEntityRoleMap, TEntityRoleMapInputDto,
+        TEntityRoleMapKey, TEntityUserMap, TEntityUserMapInputDto, TEntityUserMapKey>
         : ISecurityManager<TRole, TRoleKey, TUser, TUserKey, TFunction, TFunctionKey, TModuleKey>,
         IModuleStore<TModule, TModuleKey, TModuleInputDto, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>,
         IFunctionStore<TFunction, TFunctionKey, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoKey, TEntityInfoInputDto>,
-        IFunctionUserStore<TFunctionUserMapInputDto, TFunctionUserMapKey, TFunctionKey, TUserKey>,
         IEntityRoleStore<TEntityRoleMapInputDto, TEntityRoleMapKey, TEntityInfoKey, TRoleKey>,
         IEntityUserStore<TEntityUserMapInputDto, TEntityUserMapKey, TEntityInfoKey, TUserKey>
         where TRole : EntityBase<TRoleKey>, IRole<TRoleKey>
         where TUser : EntityBase<TUserKey>, IUser<TUserKey>
-        where TModule : IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
+        where TModule : class, IModule<TModuleKey, TModule, TFunction, TFunctionKey, TRole, TRoleKey, TUser, TUserKey>
         where TModuleInputDto : ModuleBaseInputDto<TModuleKey>
-        where TFunction : IFunction, IEntity<TFunctionKey>
+        where TFunction : class, IFunction, IEntity<TFunctionKey>
         where TFunctionInputDto : FunctionBaseInputDto<TFunctionKey>
-        where TEntityInfo : IEntityInfo, IEntity<TEntityInfoKey>
+        where TEntityInfo : class, IEntityInfo, IEntity<TEntityInfoKey>
         where TEntityInfoInputDto : EntityInfoBaseInputDto<TEntityInfoKey>
-        where TFunctionUserMap : IFunctionUserMap<TFunctionUserMapKey, TFunction, TFunctionKey, TUser, TUserKey>
-        where TFunctionUserMapInputDto : FunctionUserMapBaseInputDto<TFunctionUserMapKey, TFunctionKey, TUserKey>
-        where TEntityRoleMap : IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
+        where TEntityRoleMap : class, IEntityRoleMap<TEntityRoleMapKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
         where TEntityRoleMapInputDto : EntityRoleMapBaseInputDto<TEntityRoleMapKey, TEntityInfoKey, TRoleKey>
-        where TEntityUserMap : IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
+        where TEntityUserMap : class, IEntityUserMap<TEntityUserMapKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
         where TEntityUserMapInputDto : EntityUserMapBaseInputDto<TEntityUserMapKey, TEntityInfoKey, TUserKey>
-        where TModuleKey : struct, IEquatable<TModuleKey>
+        where TModuleKey : IEquatable<TModuleKey>
         where TRoleKey : IEquatable<TRoleKey>
         where TUserKey : IEquatable<TUserKey>
         where TFunctionKey : IEquatable<TFunctionKey>
         where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TEntityRoleMapKey : IEquatable<TEntityRoleMapKey>
+        where TEntityUserMapKey : IEquatable<TEntityUserMapKey>
     {
         #region 仓储对象属性
 
@@ -110,11 +106,6 @@ namespace OSharp.Core.Security
         public IRepository<TModule, TModuleKey> ModuleRepository { protected get; set; }
 
         /// <summary>
-        /// 获取或设置 功能用户映射仓储对象
-        /// </summary>
-        public IRepository<TFunctionUserMap, TFunctionUserMapKey> FunctionUserMapRepository { protected get; set; }
-
-        /// <summary>
         /// 获取或设置 数据角色映射仓储对象
         /// </summary>
         public IRepository<TEntityRoleMap, TEntityRoleMapKey> EntityRoleMapRepository { protected get; set; }
@@ -123,6 +114,11 @@ namespace OSharp.Core.Security
         /// 获取或设置 数据用户映射仓储对象
         /// </summary>
         public IRepository<TEntityUserMap, TEntityUserMapKey> EntityUserMapRepository { protected get; set; }
+
+        /// <summary>
+        ///权限缓存对象
+        /// </summary>
+        public IFunctionAuthCache<TFunctionKey> FunctionAuthCache { get; set; }
 
         #endregion
 
@@ -133,11 +129,11 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="role">角色信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role)
+        public virtual IEnumerable<TFunction> GetRoleAllFunctions(TRole role)
         {
             role.CheckNotNull("role");
             List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToList();
-            return moduleIds.SelectMany(GetModuleAllowedFunctions);
+            return moduleIds.SelectMany(GetAllFunctions).DistinctBy(m => m.Id);
         }
 
         /// <summary>
@@ -146,21 +142,51 @@ namespace OSharp.Core.Security
         /// <param name="role">角色信息</param>
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
+        public virtual async Task<OperationResult> SetRoleModules(TRole role, params TModuleKey[] moduleIds)
         {
             role.CheckNotNull("role");
-            moduleIds.CheckNotNullOrEmpty("moduleIds");
-            moduleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id))
-                .Select(m => m.Id).Concat(moduleIds).Distinct().ToArray();
-            var moduleSource = ModuleRepository.Entities.Where(m => moduleIds.Contains(m.Id)).Select(m => new { m.Id, m.TreePathString }).ToArray();
-            string[] treePathSource = moduleSource.Select(m => m.TreePathString).Distinct().OrderByDescending(m => m.Length).ToArray();
-            List<string> treePaths = new List<string>();
-            
-            
 
+            TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Roles.Select(n => n.Id).Contains(role.Id)).Select(m => m.Id).ToArray();
+            TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
+            TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
+            List<string> addNames = new List<string>(), removeNames = new List<string>();
 
+            foreach (TModuleKey moduleId in addModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Roles.Add(role);
+                addNames.Add(module.Name);
+            }
+            foreach (TModuleKey moduleId in removeModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Roles.Remove(role);
+                removeNames.Add(module.Name);
+            }
 
-            throw new NotImplementedException();
+            //todo:确认更新 role 是否有效
+            int count = await RoleRepository.UpdateAsync(role);
+
+            if (count > 0)
+            {
+                //移除 变更模块涉及到的功能权限缓存，使其更新
+                TModuleKey[] relateModuleIds = addModuleIds.Union(removeModuleIds).Distinct().ToArray();
+                TFunctionKey[] functionIds = ModuleRepository.Entities.Where(m => relateModuleIds.Contains(m.Id))
+                    .SelectMany(m => m.Functions.Select(n => n.Id)).Distinct().ToArray();
+                FunctionAuthCache.RemoveFunctionCaches(functionIds);
+
+                return new OperationResult(OperationResultType.Success,
+                    "角色“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(role.Name, addNames.ExpandAndToString(), removeNames.ExpandAndToString()));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion
@@ -168,13 +194,15 @@ namespace OSharp.Core.Security
         #region Implementation of ISecurityUser<in TUser,TUserKey,TFunction,TFunctionKey,in TModuleKey>
 
         /// <summary>
-        /// 获取指定用户的允许功能集合
+        /// 获取赋予给用户的功能集合，不包含用户拥有的角色赋予的功能集合
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual Task<IEnumerable<TFunction>> GetUserAllowedFunctions(TUser user)
+        public virtual IEnumerable<TFunction> GetUserAllFunctions(TUser user)
         {
-            throw new NotImplementedException();
+            user.CheckNotNull("user");
+            List<TModuleKey> moduleIds = ModuleRepository.Entities.Where(m => m.Users.Select(n => n.Id).Contains(user.Id)).Select(m => m.Id).ToList();
+            return moduleIds.SelectMany(GetAllFunctions).DistinctBy(m => m.Id);
         }
 
         /// <summary>
@@ -183,20 +211,48 @@ namespace OSharp.Core.Security
         /// <param name="user">用户信息</param>
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds)
+        public virtual async Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds)
         {
-            throw new NotImplementedException();
-        }
+            user.CheckNotNull("user");
 
-        /// <summary>
-        /// 给用户添加特殊功能限制
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <param name="functions">要添加的功能编号及控制类型集合</param>
-        /// <returns></returns>
-        public virtual Task<OperationResult> SetUserFunctions(TUser user, params Tuple<TFunctionKey, FilterType>[] functions)
-        {
-            throw new NotImplementedException();
+            TModuleKey[] existModuleIds = ModuleRepository.Entities.Where(m => m.Users.Select(n => n.Id).Contains(user.Id)).Select(m => m.Id).ToArray();
+            TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
+            TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
+            List<string> addNames = new List<string>(), removeNames = new List<string>();
+
+            ModuleRepository.UnitOfWork.BeginTransaction();
+            foreach (TModuleKey moduleId in addModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Users.Add(user);
+                addNames.Add(module.Name);
+            }
+            foreach (TModuleKey moduleId in removeModuleIds)
+            {
+                TModule module = await ModuleRepository.GetByKeyAsync(moduleId);
+                if (module == null)
+                {
+                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(moduleId));
+                }
+                module.Users.Remove(user);
+                removeNames.Add(module.Name);
+            }
+            //todo:确认更新 user 是否有效
+            int count = await UserRepository.UpdateAsync(user);
+
+            if (count > 0)
+            {
+                //移除 当前用户的功能权限缓存，使其更新
+                FunctionAuthCache.RemoveUserCaches(new[] { user.UserName });
+
+                return new OperationResult(OperationResultType.Success,
+                    "用户“{0}”添加模块“{1}”，移除模块“{2}”操作成功".FormatWith(user.UserName, addNames.ExpandAndToString(), removeNames.ExpandAndToString()));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion
@@ -230,27 +286,47 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> CreateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
-            if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name))
+            var exist = ModuleRepository.Entities.Where(m => m.Name == dto.Name && m.Parent != null && m.Parent.Id.Equals(dto.ParentId))
+                .Select(m => new { ParentName = m.Parent.Name }).FirstOrDefault();
+            if (exist != null)
             {
-                return new OperationResult(OperationResultType.Error, "名称为“{0}”的模块已存在，不能重复添加".FormatWith(dto.Name));
+                return new OperationResult(OperationResultType.Error, "模块“{0}”中已存在名称为“{1}”的子模块，不能重复添加".FormatWith(exist.ParentName, dto.Name));
             }
-            TModule module = dto.MapTo<TModule>();
-            if (dto.ParentId.HasValue)
+
+            TModule entity = dto.MapTo<TModule>();
+            //排序码，不存在为1，否则同级最大+1
+            var peerModules = ModuleRepository.Entities.Where(m => m.Parent.Id.Equals(dto.ParentId)).Select(m => new { m.OrderCode }).ToArray();
+            if (peerModules.Length == 0)
             {
-                TModule parent = await ModuleRepository.GetByKeyAsync(dto.ParentId.Value);
-                if (parent == null)
-                {
-                    return new OperationResult(OperationResultType.Error, "编号为“{0}”的父模块信息不存在".FormatWith(dto.ParentId.Value));
-                }
-                module.Parent = parent;
+                entity.OrderCode = 1;
             }
             else
             {
-                module.Parent = default(TModule);
+                double maxCode = peerModules.Max(m => m.OrderCode);
+                entity.OrderCode = maxCode + 1;
             }
-            module.TreePathString = module.GetTreePath();
-            await ModuleRepository.InsertAsync(module);
-            return OperationResult.Success;
+            //父模块
+            if (!dto.ParentId.Equals(default(TModuleKey)))
+            {
+                TModule parent = await ModuleRepository.GetByKeyAsync(dto.ParentId);
+                if (parent == null)
+                {
+                    return new OperationResult(OperationResultType.Error, "编号为“{0}”的父模块信息不存在".FormatWith(dto.ParentId));
+                }
+                entity.Parent = parent;
+            }
+            else
+            {
+                entity.Parent = default(TModule);
+            }
+            ModuleRepository.UnitOfWork.BeginTransaction();
+            int count = await ModuleRepository.InsertAsync(entity);
+            entity.TreePathString = entity.GetTreePath();
+            await ModuleRepository.UpdateAsync(entity);
+
+            return count > 0
+                ? new OperationResult(OperationResultType.Success, "模块“{0}”创建成功".FormatWith(dto.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -261,35 +337,38 @@ namespace OSharp.Core.Security
         public virtual async Task<OperationResult> UpdateModule(TModuleInputDto dto)
         {
             dto.CheckNotNull("dto");
-            if (await ModuleRepository.CheckExistsAsync(m => m.Name == dto.Name, dto.Id))
+            var exist = ModuleRepository.Entities.Where(m => m.Name == dto.Name && m.Parent != null && m.Parent.Id.Equals(dto.ParentId))
+                .Select(m => new { m.Id, ParentName = m.Parent.Name }).FirstOrDefault();
+            if (exist != null && !exist.Id.Equals(dto.Id))
             {
-                return new OperationResult(OperationResultType.Error, "名称为“{0}”的模块已存在，不能重复添加".FormatWith(dto.Name));
+                return new OperationResult(OperationResultType.Error, "模块“{0}”中已存在名称为“{1}”的子模块，不能重复添加".FormatWith(exist.ParentName, dto.Name));
             }
-            TModule module = await ModuleRepository.GetByKeyAsync(dto.Id);
-            if (module == null)
+            TModule entity = await ModuleRepository.GetByKeyAsync(dto.Id);
+            if (entity == null)
             {
                 return new OperationResult(OperationResultType.Error, "编号为“{0}”的模块信息不存在".FormatWith(dto.Id));
             }
-            module = dto.MapTo(module);
-            if (dto.ParentId.HasValue)
+            entity = dto.MapTo(entity);
+            if (!dto.ParentId.Equals(default(TModuleKey)))
             {
-                if (module.Parent == null || !module.Parent.Id.Equals(dto.ParentId))
+                if (entity.Parent == null || !entity.Parent.Id.Equals(dto.ParentId))
                 {
-                    TModule parent = await ModuleRepository.GetByKeyAsync(dto.ParentId.Value);
+                    TModule parent = await ModuleRepository.GetByKeyAsync(dto.ParentId);
                     if (parent == null)
                     {
-                        return new OperationResult(OperationResultType.Error, "编号为“{0}”的父模块信息不存在".FormatWith(dto.ParentId.Value));
+                        return new OperationResult(OperationResultType.Error, "编号为“{0}”的父模块信息不存在".FormatWith(dto.ParentId));
                     }
-                    module.Parent = parent;
+                    entity.Parent = parent;
                 }
             }
             else
             {
-                module.Parent = default(TModule);
+                entity.Parent = default(TModule);
             }
-            module.TreePathString = module.GetTreePath();
-            await ModuleRepository.UpdateAsync(module);
-            return OperationResult.Success;
+            entity.TreePathString = entity.GetTreePath();
+            return await ModuleRepository.UpdateAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "模块“{0}”更新成功".FormatWith(dto.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -299,32 +378,85 @@ namespace OSharp.Core.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> DeleteModule(TModuleKey id)
         {
-            TModule module = await ModuleRepository.GetByKeyAsync(id);
-            if (module == null)
+            TModule entity = await ModuleRepository.GetByKeyAsync(id);
+            if (entity == null)
             {
                 return OperationResult.Success;
             }
-            if (module.SubModules.Count > 0)
+            if (entity.SubModules.Count > 0)
             {
-                return new OperationResult(OperationResultType.Error, "模块“{0}”的子模块不为空，不能删除".FormatWith(module.Name));
+                return new OperationResult(OperationResultType.Error, "模块“{0}”的子模块不为空，不能删除".FormatWith(entity.Name));
             }
-            module.Functions.Clear();
-            await ModuleRepository.DeleteAsync(module);
-            return OperationResult.Success;
+            entity.Functions.Clear();
+            return await ModuleRepository.DeleteAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "模块“{0}”删除成功".FormatWith(entity.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
-        /// 获取指定模块及其子模块的所有可用功能集合
+        /// 获取指定模块及其父模块的所有可用功能集合
         /// </summary>
         /// <param name="id">要查询的顶模块信息</param>
         /// <returns>允许的功能集合</returns>
-        public virtual IEnumerable<TFunction> GetModuleAllowedFunctions(TModuleKey id)
+        public virtual IEnumerable<TFunction> GetAllFunctions(TModuleKey id)
         {
-            string idstr = id.ToString();
-            idstr = "$" + idstr + "$";
-            IQueryable<TModuleKey> subIds =
-                ModuleRepository.Entities.Where(m => m.TreePathString != null && m.TreePathString.Contains(idstr)).Select(m => m.Id);
-            return ModuleRepository.Entities.Where(m => subIds.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
+            TModule module = ModuleRepository.GetByKey(id);
+            if (module == null)
+            {
+                throw new InvalidOperationException("编号为“{0}”的模块信息不存在".FormatWith(id));
+            }
+            TModuleKey[] keys = module.TreePathIds;
+            return ModuleRepository.Entities.Where(m => keys.Contains(m.Id)).SelectMany(m => m.Functions).DistinctBy(m => m.Id);
+        }
+
+        /// <summary>
+        /// 设置模块拥有的功能
+        /// </summary>
+        /// <param name="id">模块编号</param>
+        /// <param name="functionIds">功能编号集合</param>
+        /// <returns></returns>
+        public virtual async Task<OperationResult> SetModuleFunctions(TModuleKey id, TFunctionKey[] functionIds)
+        {
+            var module = ModuleRepository.TrackEntities.Where(m => m.Id.Equals(id)).Select(m => new
+            {
+                Data = m,
+                FunctionIds = m.Functions.Select(n => n.Id)
+            }).FirstOrDefault();
+            if (module == null)
+            {
+                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的模块信息不存在".FormatWith(id));
+            }
+            TModule entity = module.Data;
+            TFunctionKey[] addFunctionIds = functionIds.Except(module.FunctionIds).Distinct().ToArray();
+            if (addFunctionIds.Length > 0)
+            {
+                TFunction[] functions = FunctionRepository.TrackEntities.Where(m => addFunctionIds.Contains(m.Id)).ToArray();
+                foreach (TFunction function in functions)
+                {
+                    entity.Functions.Add(function);
+                }
+            }
+            TFunctionKey[] removeFunctionIds = module.FunctionIds.Except(functionIds).Distinct().ToArray();
+            if (removeFunctionIds.Length > 0)
+            {
+                TFunction[] functions = FunctionRepository.TrackEntities.Where(m => removeFunctionIds.Contains(m.Id)).ToArray();
+                foreach (TFunction function in functions)
+                {
+                    entity.Functions.Remove(function);
+                }
+            }
+            int count = await ModuleRepository.UpdateAsync(entity);
+
+            if (count > 0)
+            {
+                //移除 涉及功能的功能权限缓存，使其更新
+                TFunctionKey[] relateFunctionIds = addFunctionIds.Union(removeFunctionIds).Distinct().ToArray();
+                FunctionAuthCache.RemoveFunctionCaches(relateFunctionIds);
+
+                return new OperationResult(OperationResultType.Success,
+                    "模块“{0}”设置功能成功，共添加 {1} 个功能，移除 {2} 个功能。".FormatWith(entity.Name, addFunctionIds.Length, removeFunctionIds.Length));
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion
@@ -376,8 +508,9 @@ namespace OSharp.Core.Security
             {
                 entity.Url = null;
             }
-            await FunctionRepository.InsertAsync(entity);
-            return OperationResult.Success;
+            return await FunctionRepository.InsertAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "功能“{0}”创建成功".FormatWith(dto.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -414,8 +547,9 @@ namespace OSharp.Core.Security
             {
                 entity.IsTypeChanged = true;
             }
-            await FunctionRepository.UpdateAsync(entity);
-            return OperationResult.Success;
+            return await FunctionRepository.UpdateAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "功能“{0}”更新成功".FormatWith(dto.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -434,8 +568,9 @@ namespace OSharp.Core.Security
             {
                 return new OperationResult(OperationResultType.Error, "功能“{0}”不是自定义功能，并且未被回收，不能删除".FormatWith(entity.Name));
             }
-            await FunctionRepository.DeleteAsync(entity);
-            return OperationResult.Success;
+            return await FunctionRepository.DeleteAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "功能“{0}”删除成功".FormatWith(entity.Name))
+                : OperationResult.NoChanged;
         }
 
         #endregion
@@ -474,93 +609,9 @@ namespace OSharp.Core.Security
                 return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的实体数据信息不存在".FormatWith(dto.Id));
             }
             entity = dto.MapTo(entity);
-            await EntityInfoRepository.UpdateAsync(entity);
-            return OperationResult.Success;
-        }
-
-        #endregion
-
-        #region Implementation of IFunctionUserStore<in TFunctionUserMapInputDto,in TFunctionUserMapKey,in TFunctionKey,TUserKey>
-
-        /// <summary>
-        /// 增加功能用户映射信息
-        /// </summary>
-        /// <param name="dto">功能用户映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> CreateFunctionUserMapAsync(TFunctionUserMapInputDto dto)
-        {
-            dto.CheckNotNull("dto");
-            if (await FunctionUserMapRepository.CheckExistsAsync(m => m.Function.Id.Equals(dto.FunctionId) && m.User.Id.Equals(dto.UserId)))
-            {
-                return OperationResult.Success;
-            }
-            TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-            if (function == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的功能信息不存在".FormatWith(dto.FunctionId));
-            }
-            TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
-            if (user == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的用户信息不存在".FormatWith(dto.UserId));
-            }
-            TFunctionUserMap map = dto.MapTo<TFunctionUserMap>();
-            map.Function = function;
-            map.User = user;
-            await FunctionUserMapRepository.InsertAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息添加成功");
-        }
-
-        /// <summary>
-        /// 编辑功能用户映射信息
-        /// </summary>
-        /// <param name="dto">功能用户映射信息DTO</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> UpdateFunctionUserMapAsync(TFunctionUserMapInputDto dto)
-        {
-            dto.CheckNotNull("dto");
-            TFunctionUserMap map = await FunctionUserMapRepository.GetByKeyAsync(dto.Id);
-            if (map == null)
-            {
-                return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”的功能用户映射信息不存在".FormatWith(dto.Id));
-            }
-            map = dto.MapTo(map);
-            if (!map.Function.Id.Equals(dto.FunctionId))
-            {
-                TFunction function = await FunctionRepository.GetByKeyAsync(dto.FunctionId);
-                if (function == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”指定编号的功能信息不存在".FormatWith(dto.FunctionId));
-                }
-                map.Function = function;
-            }
-            if (!map.User.Id.Equals(dto.UserId))
-            {
-                TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
-                if (user == null)
-                {
-                    return new OperationResult(OperationResultType.QueryNull, "编号为“{0}”指定编号的用户信息不存在".FormatWith(dto.UserId));
-                }
-                map.User = user;
-            }
-            await FunctionUserMapRepository.UpdateAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息编辑成功");
-        }
-
-        /// <summary>
-        /// 删除功能用户映射信息
-        /// </summary>
-        /// <param name="id">功能用户映射编号</param>
-        /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult> DeleteFunctionUserMapAsync(TFunctionUserMapKey id)
-        {
-            TFunctionUserMap map = await FunctionUserMapRepository.GetByKeyAsync(id);
-            if (map == null)
-            {
-                return OperationResult.NoChanged;
-            }
-            await FunctionUserMapRepository.DeleteAsync(map);
-            return new OperationResult(OperationResultType.Success, "功能用户映射信息删除成功");
+            return await EntityInfoRepository.UpdateAsync(entity) > 0
+                ? new OperationResult(OperationResultType.Success, "实体“{0}”更新成功".FormatWith(dto.Name))
+                : OperationResult.NoChanged;
         }
 
         #endregion
@@ -596,8 +647,9 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            await EntityRoleMapRepository.InsertAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功");
+            return await EntityRoleMapRepository.InsertAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "角色“{0}”与数据“{1}”映射信息创建成功".FormatWith(role.Name, entityInfo.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -614,7 +666,7 @@ namespace OSharp.Core.Security
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的数据角色映射信息不存在");
             }
             map = dto.MapTo(map);
-            if (!map.EntityInfo.Id.Equals(dto.EntityInfoId))
+            if (map.EntityInfo == null || !map.EntityInfo.Id.Equals(dto.EntityInfoId))
             {
                 TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
                 if (entityInfo == null)
@@ -623,7 +675,7 @@ namespace OSharp.Core.Security
                 }
                 map.EntityInfo = entityInfo;
             }
-            if (!map.Role.Id.Equals(dto.RoleId))
+            if (map.Role == null || !map.Role.Id.Equals(dto.RoleId))
             {
                 TRole role = await RoleRepository.GetByKeyAsync(dto.RoleId);
                 if (role == null)
@@ -636,8 +688,9 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            await EntityRoleMapRepository.UpdateAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功");
+            return await EntityRoleMapRepository.UpdateAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "角色“{0}”与实体“{1}”的映射信息更新成功".FormatWith(map.Role.Name, map.EntityInfo.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -652,8 +705,9 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            await EntityRoleMapRepository.DeleteAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功");
+            return await EntityRoleMapRepository.DeleteAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "角色与实体的映射信息删除成功")
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -706,8 +760,9 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            await EntityUserMapRepository.InsertAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息添加成功");
+            return await EntityUserMapRepository.InsertAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与实体“{1}”的映射信息创建成功".FormatWith(user.UserName, entityInfo.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -724,7 +779,7 @@ namespace OSharp.Core.Security
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的数据角色映射信息不存在");
             }
             map = dto.MapTo(map);
-            if (!map.EntityInfo.Id.Equals(dto.EntityInfoId))
+            if (map.EntityInfo == null || !map.EntityInfo.Id.Equals(dto.EntityInfoId))
             {
                 TEntityInfo entityInfo = await EntityInfoRepository.GetByKeyAsync(dto.EntityInfoId);
                 if (entityInfo == null)
@@ -733,7 +788,7 @@ namespace OSharp.Core.Security
                 }
                 map.EntityInfo = entityInfo;
             }
-            if (!map.User.Id.Equals(dto.UserId))
+            if (map.User == null || !map.User.Id.Equals(dto.UserId))
             {
                 TUser user = await UserRepository.GetByKeyAsync(dto.UserId);
                 if (user == null)
@@ -746,8 +801,9 @@ namespace OSharp.Core.Security
             {
                 map.FilterGroupJson = dto.FilterGroup.ToJsonString();
             }
-            await EntityUserMapRepository.UpdateAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息编辑成功");
+            return await EntityUserMapRepository.UpdateAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与实体“{1}”的映射信息更新成功".FormatWith(map.User.UserName, map.EntityInfo.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -762,8 +818,9 @@ namespace OSharp.Core.Security
             {
                 return OperationResult.NoChanged;
             }
-            await EntityUserMapRepository.DeleteAsync(map);
-            return new OperationResult(OperationResultType.Success, "数据角色映射信息删除成功");
+            return await EntityUserMapRepository.DeleteAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户与实体的映射信息删除成功")
+                : OperationResult.NoChanged;
         }
 
         /// <summary>

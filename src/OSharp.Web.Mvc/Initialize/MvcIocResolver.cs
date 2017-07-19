@@ -22,13 +22,29 @@ namespace OSharp.Web.Mvc.Initialize
     public class MvcIocResolver : IIocResolver
     {
         /// <summary>
+        /// 从全局容器中解析对象委托
+        /// </summary>
+        public static Func<Type, object> GlobalResolveFunc { private get; set; }
+
+        /// <summary>
         /// 获取指定类型的实例
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <returns></returns>
         public T Resolve<T>()
         {
-            return DependencyResolver.Current.GetService<T>();
+            try
+            {
+                return DependencyResolver.Current.GetService<T>();
+            }
+            catch (Exception)
+            {
+                if (GlobalResolveFunc != null)
+                {
+                    return (T)GlobalResolveFunc(typeof(T));
+                }
+                return default(T);
+            }
         }
 
         /// <summary>
@@ -38,7 +54,19 @@ namespace OSharp.Web.Mvc.Initialize
         /// <returns></returns>
         public object Resolve(Type type)
         {
-            return DependencyResolver.Current.GetService(type);
+            try
+            {
+                return DependencyResolver.Current.GetService(type);
+            }
+            catch (Exception)
+            {
+                if (GlobalResolveFunc != null)
+                {
+                    return GlobalResolveFunc(type);
+                }
+                return null;
+            }
+            
         }
 
         /// <summary>

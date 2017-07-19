@@ -7,10 +7,14 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
+using System.Linq;
 using System.Web.Mvc;
 
+using OSharp.Core.Mapping;
+using OSharp.Demo.Contracts;
+using OSharp.Demo.Dtos.Identity;
 using OSharp.Utility.Logging;
-using OSharp.Web.Mvc.Logging;
+using OSharp.Web.Mvc.Filters;
 
 
 namespace OSharp.Demo.Web.Controllers
@@ -21,10 +25,13 @@ namespace OSharp.Demo.Web.Controllers
     {
         private static readonly ILogger Logger = LogManager.GetLogger(typeof(HomeController));
 
+        public IIdentityContract IdentityContract { get; set; }
+
         [Description("网站-首页")]
         public ActionResult Index()
         {
             Logger.Debug("访问首页，将转向到后台管理首页");
+            
             //return RedirectToAction("Index", "Home", new { area = "Admin" });
             //var data = new
             //{

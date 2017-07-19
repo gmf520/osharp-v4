@@ -7,6 +7,8 @@
 //  <last-date>2015-11-01 2:08</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Core.Data;
 
 
@@ -17,6 +19,8 @@ namespace OSharp.Core.Security.Models
     /// </summary>
     public abstract class OAuthClientClaimBase<TKey, TClient, TClientKey> : EntityBase<TKey>, IOAuthClientClaim<TKey>
         where TClient : IOAuthClient<TClientKey>
+        where TKey : IEquatable<TKey>
+        where TClientKey : IEquatable<TClientKey>
     {
         /// <summary>
         /// 获取或设置 摘要类型

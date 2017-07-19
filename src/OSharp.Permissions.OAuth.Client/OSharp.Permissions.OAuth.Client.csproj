@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\OSharp.Permissions.OAuth.Client.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -105,7 +106,6 @@
     <Compile Include="OAuth2Token.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="OSharp.Permissions.OAuth.Client.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

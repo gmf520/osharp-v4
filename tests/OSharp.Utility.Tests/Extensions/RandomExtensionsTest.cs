@@ -64,8 +64,8 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomNumberStringTest()
         {
             Random rnd = new Random();
-            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
-            string rndNum = rnd.GetRandomNumberString(10);
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.NextNumberString(-5));
+            string rndNum = rnd.NextNumberString(10);
             Assert.True(rndNum.Length == 10);
         }
 
@@ -73,8 +73,8 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomLetterStringTest()
         {
             Random rnd = new Random();
-            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
-            string rndNum = rnd.GetRandomLetterString(10);
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.NextNumberString(-5));
+            string rndNum = rnd.NextLetterString(10);
             Assert.True(rndNum.Length == 10);
         }
 
@@ -82,8 +82,8 @@ namespace OSharp.Utility.Extensions.Tests
         public void GetRandomLetterAndNumberString()
         {
             Random rnd = new Random();
-            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.GetRandomNumberString(-5));
-            string rndNum = rnd.GetRandomLetterAndNumberString(10);
+            Assert.Throws<ArgumentOutOfRangeException>(() => rnd.NextNumberString(-5));
+            string rndNum = rnd.NextLetterAndNumberString(10);
             Assert.True(rndNum.Length == 10);
         }
     }

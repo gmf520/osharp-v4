@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CD943B7-DF8C-444B-A341-93894542B8CF}"
 EndProject
@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{95964771-8
 		docs\OSharp开发框架架构示图.vsd = docs\OSharp开发框架架构示图.vsd
 		docs\OSharp日志模块示图.png = docs\OSharp日志模块示图.png
 		docs\OSharp日志模块示图.vsd = docs\OSharp日志模块示图.vsd
+		docs\osharp权限系统分析.md = docs\osharp权限系统分析.md
 		docs\OSharp权限系统设计.png = docs\OSharp权限系统设计.png
 		docs\OSharp权限系统设计.vsd = docs\OSharp权限系统设计.vsd
 		docs\OSharp框架初始化总体流程图.png = docs\OSharp框架初始化总体流程图.png
@@ -92,6 +93,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.OAuth.Client", "src\OSharp.Permissions.OAuth.Client\OSharp.Permissions.OAuth.Client.csproj", "{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Web.SignalR.Client", "src\OSharp.Web.SignalR.Client\OSharp.Web.SignalR.Client.csproj", "{42DC902E-89CE-4CC3-BFF2-017F6B804D2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Autofac.Hangfire", "src\OSharp.Autofac.Hangfire\OSharp.Autofac.Hangfire.csproj", "{8BFBF42C-D5FD-46F4-8A32-DABC19455077}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{9C2217D9-6890-49EF-9593-C1D20BBC204D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,6 +196,14 @@ Global
 		{42DC902E-89CE-4CC3-BFF2-017F6B804D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42DC902E-89CE-4CC3-BFF2-017F6B804D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42DC902E-89CE-4CC3-BFF2-017F6B804D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BFBF42C-D5FD-46F4-8A32-DABC19455077}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -224,5 +237,7 @@ Global
 		{85C8D5B7-1692-434C-AFCD-01940930F6C5} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{15F1E2CE-C9ED-463D-B842-3B8FA922F8C6} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 		{42DC902E-89CE-4CC3-BFF2-017F6B804D2D} = {83C2F482-D836-49EE-A54D-B8686574B297}
+		{8BFBF42C-D5FD-46F4-8A32-DABC19455077} = {6A4D4590-B97E-46D0-9F8F-1C82A97D2BBC}
+		{9C2217D9-6890-49EF-9593-C1D20BBC204D} = {0CD943B7-DF8C-444B-A341-93894542B8CF}
 	EndGlobalSection
 EndGlobal

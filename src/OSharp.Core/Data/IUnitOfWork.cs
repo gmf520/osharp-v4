@@ -9,6 +9,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 
@@ -22,13 +23,29 @@ namespace OSharp.Core.Data
         #region 属性
 
         /// <summary>
-        /// 获取或设置 是否开启事务提交
+        /// 获取 是否开启事务提交
         /// </summary>
-        bool TransactionEnabled { get; set; }
+        bool TransactionEnabled { get; }
 
         #endregion
 
         #region 方法
+
+        /// <summary>
+        /// 显式开启数据上下文事务
+        /// </summary>
+        /// <param name="isolationLevel">指定连接的事务锁定行为</param>
+        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified);
+
+        /// <summary>
+        /// 提交当前上下文的事务更改
+        /// </summary>
+        void Commit();
+
+        /// <summary>
+        /// 显式回滚事务，仅在显式开启事务后有用
+        /// </summary>
+        void Rollback();
 
         /// <summary>
         /// 对数据库执行给定的 DDL/DML 命令。 

@@ -8,10 +8,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -132,14 +134,71 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 截取指定字符串之间的字符串
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="source"></param>
         /// <param name="startString">起始字符串</param>
-        /// <param name="endString">结束字符串</param>
+        /// <param name="endStrings">结束字符串，可多个</param>
         /// <returns>返回的中间字符串</returns>
-        public static string Substring(this string value, string startString, string endString)
+        public static string Substring(this string source, string startString, params string[] endStrings)
         {
-            Regex rg = new Regex("(?<=(" + startString + "))[.\\s\\S]*?(?=(" + endString + "))", RegexOptions.Multiline | RegexOptions.Singleline);
-            return rg.Match(value).Value;
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            int startIndex = 0;
+            if (!string.IsNullOrEmpty(startString))
+            {
+                startIndex = source.IndexOf(startString, StringComparison.Ordinal);
+                if (startIndex < 0)
+                {
+                    throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", startString));
+                }
+                startIndex = startIndex + startString.Length;
+            }
+            int endIndex = source.Length;
+            endStrings = endStrings.OrderByDescending(m => m.Length).ToArray();
+            foreach (string endString in endStrings)
+            {
+                if (string.IsNullOrEmpty(endString))
+                {
+                    endIndex = source.Length;
+                    break;
+                }
+                endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
+                if (endIndex < 0 || endIndex < startIndex)
+                {
+                    continue;
+                }
+                break;
+            }
+            if (endIndex < 0 || endIndex < startIndex)
+            {
+                throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endStrings.ExpandAndToString()));
+            }
+            
+            int length = endIndex - startIndex;
+            return source.Substring(startIndex, length);
+        }
+
+        /// <summary>
+        /// 用正则表达式截取字符串
+        /// </summary>
+        public static string Substring2(this string source, string startString, string endString)
+        {
+            return source.Substring2(startString, endString, false);
+        }
+
+        /// <summary>
+        /// 用正则表达式截取字符串
+        /// </summary>
+        public static string Substring2(this string source, string startString, string endString, bool containsEmpty)
+        {
+            if (source.IsMissing())
+            {
+                return string.Empty;
+            }
+            string inner = containsEmpty ? "\\s\\S" : "\\S";
+            string result = source.Match(string.Format("(?<={0})([{1}]+?)(?={2})", startString, inner, endString));
+            return result.IsMissing() ? null : result;
         }
 
         /// <summary>
@@ -183,8 +242,19 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsUrl(this string value)
         {
-            const string pattern = @"^(http|https|ftp|rtsp|mms):(\/\/|\\\\)[A-Za-z0-9%\-_@]+\.[A-Za-z0-9%\-_@]+[A-Za-z0-9\.\/=\?%\-&_~`@:\+!;]*$";
-            return value.IsMatch(pattern);
+            try
+            {
+                if (value.IsNullOrEmpty() || value.Contains(' '))
+                {
+                    return false;
+                }
+                Uri uri = new Uri(value);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -193,7 +263,7 @@ namespace OSharp.Utility.Extensions
         /// 2.身份证号码为18位数字；
         /// 3.身份证号码为17位数字+1个字母
         /// </summary>
-        public static bool IsIdentityCard(this string value)
+        public static bool IsIdentityCardId(this string value)
         {
             if (value.Length != 15 && value.Length != 18)
             {
@@ -391,7 +461,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="url">URL字符串</param>
         /// <param name="queries">要添加的参数，形如："id=1,cid=2"</param>
         /// <returns></returns>
-        public static string AddQueryString(this string url, params string[] queries)
+        public static string AddUrlQuery(this string url, params string[] queries)
         {
             foreach (string query in queries)
             {
@@ -407,6 +477,29 @@ namespace OSharp.Utility.Extensions
                 url = url + query;
             }
             return url;
+        }
+
+        /// <summary>
+        /// 获取URL中指定参数的值，不存在返回空字符串
+        /// </summary>
+        public static string GetUrlQuery(this string url, string key)
+        {
+            Uri uri = new Uri(url);
+            string query = uri.Query;
+            if (query.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            query = query.TrimStart('?');
+            var dict = (from m in query.Split("&", true)
+                        let strs = m.Split("=")
+                        select new KeyValuePair<string, string>(strs[0], strs[1]))
+                .ToDictionary(m => m.Key, m => m.Value);
+            if (dict.ContainsKey(key))
+            {
+                return dict[key];
+            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -440,13 +533,282 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 将<see cref="byte"/>[]数组转换为字符串，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
-        public static string ToString(this byte[] bytes, Encoding encoding)
+        public static string ToString(this byte[] bytes, Encoding encoding = null)
         {
             if (encoding == null)
             {
                 encoding = Encoding.UTF8;
             }
             return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 将<see cref="byte"/>[]数组转换为Base64字符串
+        /// </summary>
+        public static string ToBase64String(this byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
+        }
+
+        /// <summary>
+        /// 将字符串转换为Base64字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        /// <param name="source">正常的字符串</param>
+        /// <param name="encoding">编码</param>
+        /// <returns>Base64字符串</returns>
+        public static string ToBase64String(this string source, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            return Convert.ToBase64String(encoding.GetBytes(source));
+        }
+
+        /// <summary>
+        /// 将Base64字符串转换为正常字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        /// <param name="base64String">Base64字符串</param>
+        /// <param name="encoding">编码</param>
+        /// <returns>正常字符串</returns>
+        public static string FromBase64String(this string base64String, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] bytes = Convert.FromBase64String(base64String);
+            return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 将字符串转换为十六进制字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        public static string ToHexString(this string source, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] bytes = encoding.GetBytes(source);
+            return bytes.ToHexString();
+        }
+
+        /// <summary>
+        /// 将十六进制字符串转换为常规字符串，默认编码为<see cref="Encoding.UTF8"/>
+        /// </summary>
+        public static string FromHexString(this string hexString, Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] bytes = hexString.ToHexBytes();
+            return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 将byte[]编码为十六进制字符串
+        /// </summary>
+        /// <param name="bytes">byte[]数组</param>
+        /// <returns>十六进制字符串</returns>
+        public static string ToHexString(this byte[] bytes)
+        {
+            return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+        }
+
+        /// <summary>
+        /// 将十六进制字符串转换为byte[]
+        /// </summary>
+        /// <param name="hexString">十六进制字符串</param>
+        /// <returns>byte[]数组</returns>
+        public static byte[] ToHexBytes(this string hexString)
+        {
+            hexString = hexString.Replace(" ", "");
+            if (hexString.Length % 2 != 0)
+            {
+                hexString = hexString ?? "";
+            }
+            byte[] bytes = new byte[hexString.Length / 2];
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
+            return bytes;
+        }
+
+        /// <summary>
+        /// 获取中文字符串的首字母
+        /// </summary>
+        public static string GetChineseSpell(this string cnString)
+        {
+            cnString.CheckNotNull("cnString");
+            if (!cnString.IsMatch(@"[\u4E00-\u9FA5]"))
+            {
+                throw new ArgumentException("参数不是中文字符串", "cnString");
+            }
+            int length = cnString.Length;
+            string result = null;
+            for (int i = 0; i < length; i++)
+            {
+                result += GetChineseSpell(cnString[i]);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取单个中文字符的拼音首字母
+        /// </summary>
+        /// <param name="cnChar"></param>
+        /// <returns></returns>
+        public static string GetChineseSpell(this char cnChar)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(cnChar.ToString());
+            if (bytes.Length > 1)
+            {
+                int area = (short)bytes[0];
+                int pos = (short)bytes[1];
+                int code = (area << 8) + pos;
+                int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
+
+                for (int i = 0; i < 26; i++)
+                {
+                    int max = 55290;
+                    if (i != 25)
+                    {
+                        max = areacode[i + 1];
+                    }
+                    if (areacode[i] <= code && code < max)
+                    {
+                        return Encoding.Default.GetString(new byte[] { (byte)(97 + i) }).ToUpper();
+                    }
+                }
+                return "*";
+            }
+            return cnChar.ToString();
+        }
+
+        /// <summary>
+        /// 将字符串进行Unicode编码，变成形如“\u7f16\u7801”的形式
+        /// </summary>
+        /// <param name="source">要进行编号的字符串</param>
+        public static string ToUnicodeString(this string source)
+        {
+            Regex regex = new Regex(@"[^\u0000-\u00ff]");
+            return regex.Replace(source, m => string.Format(@"\u{0:x4}", (short)m.Value[0]));
+        }
+
+        /// <summary>
+        /// 将形如“\u7f16\u7801”的Unicode字符串解码
+        /// </summary>
+        public static string FromUnicodeString(this string source)
+        {
+            Regex regex = new Regex(@"\\u([0-9a-fA-F]{4})", RegexOptions.Compiled);
+            return regex.Replace(source,
+                m =>
+                {
+                    short s;
+                    if (short.TryParse(m.Groups[1].Value, NumberStyles.HexNumber, CultureInfo.InstalledUICulture, out s))
+                    {
+                        return "" + (char)s;
+                    }
+                    return m.Value;
+                });
+        }
+
+        /// <summary>
+        /// 计算当前字符串与指定字符串的编辑距离(相似度)
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="target">目标字符串</param>
+        /// <param name="similarity">输出相似度</param>
+        /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <returns>编辑距离</returns>
+        public static int LevenshteinDistance(this string source, string target, out double similarity, bool ignoreCase = false)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                if (string.IsNullOrEmpty(target))
+                {
+                    similarity = 1;
+                    return 0;
+                }
+                similarity = 0;
+                return target.Length;
+            }
+            if (string.IsNullOrEmpty(target))
+            {
+                similarity = 0;
+                return source.Length;
+            }
+
+            string from, to;
+            if (ignoreCase)
+            {
+                from = source;
+                to = target;
+            }
+            else
+            {
+                from = source.ToLower();
+                to = source.ToLower();
+            }
+
+            int m = from.Length, n = to.Length;
+            int[,] mn = new int[m + 1, n + 1];
+            for (int i = 0; i <= m; i++)
+            {
+                mn[i, 0] = i;
+            }
+            for (int j = 1; j <= n; j++)
+            {
+                mn[0, j] = j;
+            }
+            for (int i = 1; i <= m; i++)
+            {
+                char c = from[i - 1];
+                for (int j = 1; j <= n; j++)
+                {
+                    if (c == to[j - 1])
+                    {
+                        mn[i, j] = mn[i - 1, j - 1];
+                    }
+                    else
+                    {
+                        mn[i, j] = Math.Min(mn[i - 1, j - 1], Math.Min(mn[i - 1, j], mn[i, j - 1])) + 1;
+                    }
+                }
+            }
+
+            int maxLength = Math.Max(m, n);
+            similarity = (double)(maxLength - mn[m, n]) / maxLength;
+            return mn[m, n];
+        }
+
+        /// <summary>
+        /// 计算两个字符串的相似度，应用公式：相似度=kq*q/(kq*q+kr*r+ks*s)(kq>0,kr>=0,ka>=0)
+        /// 其中，q是字符串1和字符串2中都存在的单词的总数，s是字符串1中存在，字符串2中不存在的单词总数，r是字符串2中存在，字符串1中不存在的单词总数. kq,kr和ka分别是q,r,s的权重，根据实际的计算情况，我们设kq=2，kr=ks=1.
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="target">目标字符串</param>
+        /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <returns>字符串相似度</returns>
+        public static double GetSimilarityWith(this string source, string target, bool ignoreCase = false)
+        {
+            if (string.IsNullOrEmpty(source) && string.IsNullOrEmpty(target))
+            {
+                return 1;
+            }
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target))
+            {
+                return 0;
+            }
+            const double kq = 2, kr = 1, ks = 1;
+            char[] sourceChars = source.ToCharArray(), targetChars = target.ToCharArray();
+
+            //获取交集数量
+            int q = sourceChars.Intersect(targetChars).Count(), s = sourceChars.Length - q, r = targetChars.Length - q;
+            return kq * q / (kq * q + kr * r + ks * s);
         }
 
         #endregion

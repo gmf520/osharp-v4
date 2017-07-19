@@ -20,8 +20,9 @@ namespace OSharp.Data.Entity
     /// </summary>
     /// <typeparam name="TEntity">动态实体类型</typeparam>
     /// <typeparam name="TKey">动态主键类型</typeparam>
-    public abstract class EntityConfigurationBase<TEntity, TKey> : EntityTypeConfiguration<TEntity>, IEntityMapper 
+    public abstract class EntityConfigurationBase<TEntity, TKey> : EntityTypeConfiguration<TEntity>, IEntityMapper
         where TEntity : class, IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取 相关上下文类型，如为null，将使用默认上下文<see cref="DefaultDbContext"/>，否则使用指定的上下文类型
@@ -49,6 +50,7 @@ namespace OSharp.Data.Entity
     /// <typeparam name="TKey">动态主键类型</typeparam>
     public abstract class ComplexTypeConfigurationBase<TComplexType, TKey> : ComplexTypeConfiguration<TComplexType>, IEntityMapper
         where TComplexType : class, IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取 相关上下文类型，如为null，将使用默认上下文，否则使用指定的上下文类型

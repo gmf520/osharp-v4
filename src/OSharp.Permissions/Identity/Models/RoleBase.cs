@@ -21,6 +21,7 @@ namespace OSharp.Core.Identity.Models
     /// </summary>
     /// <typeparam name="TKey">角色编号类型</typeparam>
     public abstract class RoleBase<TKey> : EntityBase<TKey>, IRole<TKey>, ICreatedTime, ILockable
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 角色名

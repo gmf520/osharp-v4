@@ -25,6 +25,9 @@ namespace OSharp.Core.Security.Models
         : EntityBase<TKey>, IEntityRoleMap<TKey, TEntityInfo, TEntityInfoKey, TRole, TRoleKey>
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TRole : RoleBase<TRoleKey>
+        where TKey : IEquatable<TKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

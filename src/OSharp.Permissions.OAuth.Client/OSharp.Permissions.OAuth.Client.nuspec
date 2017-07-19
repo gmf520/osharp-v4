@@ -4,14 +4,14 @@
     <id>OSharp.Permissions.OAuth.Client</id>
     <version>$version$</version>
     <title>OSharp.Permissions.OAuth.Client</title>
-    <authors>OSharp开源团队</authors>
+    <authors>柳柳软件</authors>
     <owners>http://www.osharp.org</owners>
     <projectUrl>https://github.com/i66soft/osharp</projectUrl>
     <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;s=80</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OSharp权限OAuth客户端组件，用于访问OSharp-OAuth的Http客户端组件</description>
     <summary>OSharp权限OAuth客户端组件</summary>
-    <copyright>Copyright © OSharp 2015</copyright>
+    <copyright>Copyright © 66SOFT 2015</copyright>
     <language>zh-CN</language>
     <tags>OSharp,OAuth</tags>
   </metadata>

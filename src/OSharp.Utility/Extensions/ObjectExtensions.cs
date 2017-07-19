@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
+using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 using Newtonsoft.Json;
 
@@ -99,10 +102,33 @@ namespace OSharp.Utility.Extensions
         /// <param name="leftEqual"> 是否可等于上限（默认等于） </param>
         /// <param name="rightEqual"> 是否可等于下限（默认等于） </param>
         /// <returns> 是否介于 </returns>
-        public static bool IsBetween<T>(this IComparable<T> value, T start, T end, bool leftEqual = false, bool rightEqual = false) where T : IComparable
+        public static bool IsBetween<T>(this IComparable<T> value, T start, T end, bool leftEqual = true, bool rightEqual = true) where T : IComparable
         {
             bool flag = leftEqual ? value.CompareTo(start) >= 0 : value.CompareTo(start) > 0;
             return flag && (rightEqual ? value.CompareTo(end) <= 0 : value.CompareTo(end) < 0);
+        }
+
+        /// <summary>
+        /// 判断当前值是否介于指定范围内
+        /// </summary>
+        /// <typeparam name="T"> 动态类型 </typeparam>
+        /// <param name="value"> 动态类型对象 </param>
+        /// <param name="min">范围小值</param>
+        /// <param name="max">范围大值</param>
+        /// <param name="minEqual">是否可等于小值（默认等于）</param>
+        /// <param name="maxEqual">是否可等于大值（默认等于）</param>
+        public static bool IsInRange<T>(this IComparable<T> value, T min, T max, bool minEqual = true, bool maxEqual = true) where T : IComparable
+        {
+            bool flag = minEqual ? value.CompareTo(min) >= 0 : value.CompareTo(min) > 0;
+            return flag && (maxEqual ? value.CompareTo(max) <= 0 : value.CompareTo(max) < 0);
+        }
+
+        /// <summary>
+        /// 是否存在于
+        /// </summary>
+        public static bool IsIn<T>(this T value, params T[] source)
+        {
+            return source.Contains(value);
         }
 
         /// <summary>
@@ -139,6 +165,29 @@ namespace OSharp.Utility.Extensions
             }
             return expando as ExpandoObject;
         }
+
+        /// <summary>
+        /// 对象深度拷贝，复制出一个数据一样，但地址不一样的新版本
+        /// </summary>
+        public static T DeepClone<T>(this T obj) where T : class
+        {
+            if (obj == null)
+            {
+                return default(T);
+            }
+            if (typeof(T).HasAttribute<SerializableAttribute>())
+            {
+                throw new NotSupportedException("当前对象未标记特性“{0}”，无法进行DeepClone操作".FormatWith(typeof(SerializableAttribute)));
+            }
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, obj);
+                ms.Seek(0L, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(ms);
+            }
+        }
+
         #endregion
     }
 }

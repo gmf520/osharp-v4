@@ -16,6 +16,7 @@ using OSharp.Core;
 using OSharp.Core.Dependency;
 using OSharp.Utility;
 using OSharp.Web.Http.Filters;
+using OSharp.Web.Http.Handlers;
 
 using Owin;
 
@@ -47,6 +48,10 @@ namespace OSharp.Web.Http.Initialize
         {
             HttpConfiguration config = GlobalConfiguration.Configuration;
 
+            //注册请求生命周期Scope的处理器
+            config.MessageHandlers.Add(new RequestLifetimeScopeHandler());
+
+            //全局异常处理
             config.Filters.Add(new ExceptionHandlingAttribute());
             config.Formatters.Clear();
             config.Formatters.Add(new JsonMediaTypeFormatter());

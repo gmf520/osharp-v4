@@ -18,7 +18,6 @@ using EntityFramework.Extensions;
 
 using OSharp.Core.Data;
 using OSharp.Core.Data.Extensions;
-using OSharp.Data.Entity.Properties;
 using OSharp.Core.Mapping;
 using OSharp.Utility;
 using OSharp.Utility.Data;
@@ -34,6 +33,7 @@ namespace OSharp.Data.Entity
     /// <typeparam name="TKey">主键类型</typeparam>
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         private readonly DbSet<TEntity> _dbSet;
 
@@ -77,7 +77,7 @@ namespace OSharp.Data.Entity
             entity.CheckNotNull("entity");
             entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
             _dbSet.Add(entity);
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace OSharp.Data.Entity
                 entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
             }
             _dbSet.AddRange(entities);
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -195,7 +195,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.LogicDelete);
                 ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             }
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.Restore);
                 ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             }
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace OSharp.Data.Entity
             entity.CheckNotNull("entity");
             entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
             _dbSet.Remove(entity);
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
             }
             _dbSet.RemoveRange(entities);
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -350,31 +350,23 @@ namespace OSharp.Data.Entity
         }
 
         /// <summary>
-        /// 直接删除指定编号的实体，此方法不支持事务
+        /// 直接删除指定编号的实体
         /// </summary>
         /// <param name="key">实体主键</param>
         /// <returns></returns>
         public int DeleteDirect(TKey key)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("DeleteDirect"));
-            }
             CheckEntityKey(key, "key");
             return DeleteDirect(m => m.Id.Equals(key));
         }
 
         /// <summary>
-        /// 直接删除所有符合特定条件的实体，此方法不支持事务
+        /// 直接删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
         public int DeleteDirect(Expression<Func<TEntity, bool>> predicate)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("DeleteDirect"));
-            }
             predicate.CheckNotNull("predicate");
             return _dbSet.Where(predicate).Delete();
         }
@@ -388,7 +380,7 @@ namespace OSharp.Data.Entity
         {
             entity.CheckNotNull("entity");
             ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
-            return SaveChanges();
+            return UnitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -436,7 +428,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = SaveChanges();
+            int count = UnitOfWork.SaveChanges();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -446,36 +438,29 @@ namespace OSharp.Data.Entity
         }
 
         /// <summary>
-        /// 直接更新指定编号的数据，此方法不支持事务
+        /// 直接更新指定编号的数据
         /// </summary>
         /// <param name="key">实体编号</param>
         /// <param name="updatExpression">更新属性表达式</param>
         /// <returns>操作影响的行数</returns>
         public int UpdateDirect(TKey key, Expression<Func<TEntity, TEntity>> updatExpression)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("UpdateDirect"));
-            }
             CheckEntityKey(key, "key");
             updatExpression.CheckNotNull("updatExpression");
             return UpdateDirect(m => m.Id.Equals(key), updatExpression);
         }
 
         /// <summary>
-        /// 直接更新指定条件的数据，此方法不支持事务
+        /// 直接更新指定条件的数据
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updatExpression">更新属性表达式</param>
         /// <returns>操作影响的行数</returns>
         public int UpdateDirect(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updatExpression)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("UpdateDirect"));
-            }
             predicate.CheckNotNull("predicate");
             updatExpression.CheckNotNull("updatExpression");
+            
             return _dbSet.Where(predicate).Update(updatExpression);
         }
 
@@ -490,7 +475,7 @@ namespace OSharp.Data.Entity
             predicate.CheckNotNull("predicate");
             TKey defaultId = default(TKey);
             var entity = _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefault();
-            bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
+            bool exists = (!typeof(TKey).IsValueType && id.Equals(null)) || id.Equals(defaultId)
                 ? entity != null
                 : entity != null && !entity.Id.Equals(id);
             return exists;
@@ -571,7 +556,7 @@ namespace OSharp.Data.Entity
             entity.CheckNotNull("entity");
             entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
             _dbSet.Add(entity);
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -587,7 +572,7 @@ namespace OSharp.Data.Entity
                 entity.CheckICreatedAudited<TEntity, TKey>().CheckICreatedTime<TEntity, TKey>();
             }
             _dbSet.AddRange(entities);
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -631,7 +616,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -689,7 +674,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.LogicDelete);
                 ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             }
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -741,7 +726,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.Restore);
                 ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
             }
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -754,7 +739,7 @@ namespace OSharp.Data.Entity
             entity.CheckNotNull("entity");
             entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
             _dbSet.Remove(entity);
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -794,7 +779,7 @@ namespace OSharp.Data.Entity
                 entity.CheckIRecycle<TEntity, TKey>(RecycleOperation.PhysicalDelete);
             }
             _dbSet.RemoveRange(entities);
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -836,7 +821,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -846,31 +831,23 @@ namespace OSharp.Data.Entity
         }
 
         /// <summary>
-        /// 直接删除指定编号的实体，此方法不支持事务
+        /// 直接删除指定编号的实体
         /// </summary>
         /// <param name="key">实体主键</param>
         /// <returns></returns>
         public async Task<int> DeleteDirectAsync(TKey key)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("DeleteDirectAsync"));
-            }
             CheckEntityKey(key, "key");
             return await DeleteDirectAsync(m => m.Id.Equals(key));
         }
 
         /// <summary>
-        /// 直接删除所有符合特定条件的实体，此方法不支持事务
+        /// 直接删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
         public async Task<int> DeleteDirectAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("DeleteDirectAsync"));
-            }
             predicate.CheckNotNull("predicate");
             return await _dbSet.Where(predicate).DeleteAsync();
         }
@@ -884,7 +861,7 @@ namespace OSharp.Data.Entity
         {
             entity.CheckNotNull("entity");
             ((DbContext)UnitOfWork).Update<TEntity, TKey>(entity);
-            return await SaveChangesAsync();
+            return await UnitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -932,7 +909,7 @@ namespace OSharp.Data.Entity
                     names.Add(name);
                 }
             }
-            int count = await SaveChangesAsync();
+            int count = await UnitOfWork.SaveChangesAsync();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -942,34 +919,26 @@ namespace OSharp.Data.Entity
         }
 
         /// <summary>
-        /// 直接更新指定编号的数据，此方法不支持事务
+        /// 直接更新指定编号的数据
         /// </summary>
         /// <param name="key">实体编号</param>
         /// <param name="updatExpression">更新属性表达式</param>
         /// <returns>操作影响的行数</returns>
         public async Task<int> UpdateDirectAsync(TKey key, Expression<Func<TEntity, TEntity>> updatExpression)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("UpdateDirectAsync"));
-            }
             CheckEntityKey(key, "key");
             updatExpression.CheckNotNull("updatExpression");
             return await UpdateDirectAsync(m => m.Id.Equals(key), updatExpression);
         }
 
         /// <summary>
-        /// 直接更新指定条件的数据，此方法不支持事务
+        /// 直接更新指定条件的数据
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updatExpression">更新属性表达式</param>
         /// <returns>操作影响的行数</returns>
         public async Task<int> UpdateDirectAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updatExpression)
         {
-            if (UnitOfWork.TransactionEnabled)
-            {
-                throw new NotSupportedException(Resources.Repository_MethodNotSupportedTransaction.FormatWith("UpdateDirectAsync"));
-            }
             predicate.CheckNotNull("predicate");
             updatExpression.CheckNotNull("updatExpression");
             return await _dbSet.Where(predicate).UpdateAsync(updatExpression);
@@ -984,7 +953,7 @@ namespace OSharp.Data.Entity
         public async Task<bool> CheckExistsAsync(Expression<Func<TEntity, bool>> predicate, TKey id = default(TKey))
         {
             predicate.CheckNotNull("predicate");
-            TKey defaultId = default(TKey); 
+            TKey defaultId = default(TKey);
             var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
             bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
                 ? entity != null
@@ -1016,16 +985,6 @@ namespace OSharp.Data.Entity
         }
 
         #region 私有方法
-
-        private int SaveChanges()
-        {
-            return UnitOfWork.TransactionEnabled ? 0 : UnitOfWork.SaveChanges();
-        }
-
-        private async Task<int> SaveChangesAsync()
-        {
-            return UnitOfWork.TransactionEnabled ? 0 : await UnitOfWork.SaveChangesAsync();
-        }
 
         private static void CheckEntityKey(object key, string keyName)
         {

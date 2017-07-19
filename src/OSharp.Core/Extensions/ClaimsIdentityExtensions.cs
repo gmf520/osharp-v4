@@ -21,10 +21,18 @@ namespace OSharp.Core.Extensions
         /// <summary>
         /// 获取指定类型的Claim值
         /// </summary>
-        public static string GetClaimValue(this ClaimsIdentity identity, string type)
+        public static string GetClaimValueFirstOrDefault(this ClaimsIdentity identity, string type)
         {
             Claim claim = identity.Claims.FirstOrDefault(m => m.Type == type);
             return claim == null ? null : claim.Value;
+        }
+
+        /// <summary>
+        /// 获取指定类型的所有Claim值
+        /// </summary>
+        public static string[] GetClaimValues(this ClaimsIdentity identity, string type)
+        {
+            return identity.Claims.Where(m => m.Type == type).Select(m => m.Value).ToArray();
         }
     }
 }

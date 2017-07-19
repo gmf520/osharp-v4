@@ -8,7 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 
+using OSharp.Core.Data;
 using OSharp.Core.Properties;
 using OSharp.Utility;
 
@@ -56,6 +59,14 @@ namespace OSharp.Core.Mapping
         {
             CheckMapper();
             return _mapper.MapTo(source, target);
+        }
+
+        /// <summary>
+        /// 将数据源映射为指定<see cref="IOutputDto"/>的集合
+        /// </summary>
+        public static IQueryable<TOutputDto> ToOutput<TOutputDto>(this IQueryable source, params Expression<Func<TOutputDto, object>>[] membersToExpand)
+        {
+            return _mapper.ToOutput(source, membersToExpand);
         }
 
         /// <summary>
