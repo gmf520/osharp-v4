@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 
 using Autofac;
 
@@ -31,6 +34,7 @@ namespace OSharp.Demo.Consoles
     internal class Program : ISingletonDependency
     {
         private static Program _program;
+        private static readonly Stopwatch Watch = new Stopwatch();
 
         public IIocResolver IocResolver { get; set; }
 
@@ -43,16 +47,16 @@ namespace OSharp.Demo.Consoles
                 Console.WriteLine("正在初始化，请稍候……");
                 Stopwatch watch = Stopwatch.StartNew();
 
-                IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
-                IServiceCollection services = builder.Build();
-                services.AddLog4NetServices();
-                services.AddDataServices();
-                services.AddAutoMapperServices();
-                IIocBuilder iocBuilder = new LocalAutofacIocBuilder(services);
-                IFrameworkInitializer initializer = new FrameworkInitializer();
-                initializer.Initialize(iocBuilder);
+                //IServicesBuilder builder = new ServicesBuilder(new ServiceBuildOptions());
+                //IServiceCollection services = builder.Build();
+                //services.AddLog4NetServices();
+                //services.AddDataServices();
+                //services.AddAutoMapperServices();
+                //IIocBuilder iocBuilder = new LocalAutofacIocBuilder(services);
+                //IFrameworkInitializer initializer = new FrameworkInitializer();
+                //initializer.Initialize(iocBuilder);
 
-                _program = iocBuilder.ServiceProvider.GetService<Program>();
+                //_program = iocBuilder.ServiceProvider.GetService<Program>();
                 watch.Stop();
                 Console.WriteLine("程序初始化完毕并启动成功，耗时：{0}", watch.Elapsed);
             }
@@ -289,12 +293,41 @@ namespace OSharp.Demo.Consoles
 
         private static void Method12()
         {
-            throw new NotImplementedException();
+            string path = @"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.jpg";
+            Watch.Restart();
+            new Bitmap(path).GrayByPixels().Save(path + "GrayByPixels.jpg", ImageFormat.Jpeg);
+            Watch.Stop();
+            Console.WriteLine(Watch.Elapsed);
+            //Watch.Restart();
+            //new Bitmap(path).GrayByLine().Save(path + "GrayByLine.jpg", ImageFormat.Jpeg);
+            //Watch.Stop();
+            //Console.WriteLine(Watch.Elapsed);
+            Watch.Restart();
+            new Bitmap(path).Binaryzation().Save(path + "Binaryzation.jpg", ImageFormat.Jpeg);
+            Watch.Stop();
+            Console.WriteLine(Watch.Elapsed);
+            Watch.Restart();
+            new Bitmap(path).Binaryzation(100).Save(path + "Binaryzation32.jpg", ImageFormat.Jpeg);
+            Watch.Stop();
+            Console.WriteLine(Watch.Elapsed);
+            Watch.Restart();
+            new Bitmap(path).Threshoding(64).Save(path + "Threshoding32.jpg", ImageFormat.Jpeg);
+            Watch.Stop();
+            Console.WriteLine(Watch.Elapsed);
+            Watch.Restart();
+            new Bitmap(path).OtsuThreshold().Save(path + "OtsuThreshold.jpg", ImageFormat.Jpeg);
+            Watch.Stop();
+            Console.WriteLine(Watch.Elapsed);
         }
 
         private static void Method13()
         {
-            throw new NotImplementedException();
+            string path = @"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.jpg";
+            //new Bitmap(path).GrayByPixels().Threshoding(100).ClearNoise(50, 4).Save(path + "ClearNoise.jpg", ImageFormat.Jpeg);
+            Bitmap bmp = new Bitmap(path).GrayByPixels().Binaryzation().ClearNoise(100,4);
+            bmp.ToValid(60,4).Save(path + "ClearNoise.jpg", ImageFormat.Jpeg);
+            string code = bmp.ToCodeString(150, true);
+            File.WriteAllText(@"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.txt", code, Encoding.Default);
         }
 
         private static void Method14()
