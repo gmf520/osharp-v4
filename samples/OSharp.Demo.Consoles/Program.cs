@@ -182,7 +182,12 @@ namespace OSharp.Demo.Consoles
 
         private static void Method03()
         {
-            const string path = @"D:\WorkSpace\github\Repos\osharp";
+            string path = Console.ReadLine();
+            if (path.IsMissing())
+            {
+                path = @"D:\WorkSpace\Source\Repos\osharp";
+            }
+
             string[] files = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
             Console.WriteLine("cs文件个数：{0}", files.Length);
             int total = files.Sum(file => File.ReadAllLines(file).Count(m => !m.Trim().IsNullOrEmpty()));
@@ -191,10 +196,21 @@ namespace OSharp.Demo.Consoles
 
         private static void Method04()
         {
-            Random rnd = new Random();
-            string id = rnd.NextIdentityCardId();
-            Console.WriteLine(id);
-            Console.WriteLine(id.IsIdentityCardId());
+            string path = @"D:\ValidateCode\WeixiaoxinVipvote\source";
+            string[] files = Directory.GetFiles(path);
+            int count = 0;
+            foreach (string file in files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file);
+                string ext = Path.GetExtension(file);
+                Console.WriteLine(file);
+                Bitmap bmp = new Bitmap(file).GrayByPixels().ClearBorder(2).ClearNoise(200, 2);//.DeepByPixels(150);
+                bmp.Save($@"{path}\{name}-gray{ext}".Replace("source", "output"));
+                if (++count % 50 == 0)
+                {
+                    Console.ReadLine();
+                }
+            }
         }
 
         private static void Method05()
@@ -207,44 +223,17 @@ namespace OSharp.Demo.Consoles
 
         private static void Method06()
         {
-            string str = "我是中文HelloWorld123".ToBase64String();
-            Console.WriteLine(str);
-            str = str.FromBase64String();
-            Console.WriteLine(str);
+
         }
 
         private static void Method07()
         {
-            string name = Console.ReadLine();
-            var users = _program.IdentityContract.Users.OrderBy(m => m.NickName).Where(m => !m.IsLocked
-                  && (m.NickName == name || m.UserName.StartsWith(name)));
 
-            Console.WriteLine(users.Expression);
-            Console.WriteLine();
-            string key = new ExpressionCacheKeyGenerator(users.Expression).GetKey();
-            Console.WriteLine(key);
-            Console.WriteLine();
-            Console.WriteLine(key.ToMd5Hash());
         }
 
         private static void Method08()
         {
-            string tag = "test";
-            ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterType<Program>().AsSelf().InstancePerLifetimeScope();//.InstancePerMatchingLifetimeScope(tag);
-            IContainer container = builder.Build();
-            ILifetimeScope scope1 = container.BeginLifetimeScope(tag);
-            Console.WriteLine(scope1.GetHashCode());
-            Program p1 = scope1.Resolve<Program>();
-            Console.WriteLine(p1.GetHashCode());
-            p1 = scope1.Resolve<Program>();
-            Console.WriteLine(p1.GetHashCode());
-            ILifetimeScope scope2 = container.BeginLifetimeScope(tag);
-            Console.WriteLine(scope2.GetHashCode());
-            Program p2 = scope2.Resolve<Program>();
-            Console.WriteLine(p2.GetHashCode());
-            p2 = scope2.Resolve<Program>();
-            Console.WriteLine(p2.GetHashCode());
+
         }
 
         private static void Method09()
@@ -284,50 +273,21 @@ namespace OSharp.Demo.Consoles
                 IpAddress = "127.0.5.1",
                 ConnectedTime = DateTime.Now
             };
-            Console.WriteLine(redis.HashSet(key,"key001", dto));
+            Console.WriteLine(redis.HashSet(key, "key001", dto));
             var vals = redis.HashKeys<string>(key);
             Console.WriteLine(vals.ToJsonString());
             Console.WriteLine(redis.HashGet<OnlineClientDto>(key, vals[0]).ToJsonString());
-            
+
         }
 
         private static void Method12()
         {
-            string path = @"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.jpg";
-            Watch.Restart();
-            new Bitmap(path).GrayByPixels().Save(path + "GrayByPixels.jpg", ImageFormat.Jpeg);
-            Watch.Stop();
-            Console.WriteLine(Watch.Elapsed);
-            //Watch.Restart();
-            //new Bitmap(path).GrayByLine().Save(path + "GrayByLine.jpg", ImageFormat.Jpeg);
-            //Watch.Stop();
-            //Console.WriteLine(Watch.Elapsed);
-            Watch.Restart();
-            new Bitmap(path).Binaryzation().Save(path + "Binaryzation.jpg", ImageFormat.Jpeg);
-            Watch.Stop();
-            Console.WriteLine(Watch.Elapsed);
-            Watch.Restart();
-            new Bitmap(path).Binaryzation(100).Save(path + "Binaryzation32.jpg", ImageFormat.Jpeg);
-            Watch.Stop();
-            Console.WriteLine(Watch.Elapsed);
-            Watch.Restart();
-            new Bitmap(path).Threshoding(64).Save(path + "Threshoding32.jpg", ImageFormat.Jpeg);
-            Watch.Stop();
-            Console.WriteLine(Watch.Elapsed);
-            Watch.Restart();
-            new Bitmap(path).OtsuThreshold().Save(path + "OtsuThreshold.jpg", ImageFormat.Jpeg);
-            Watch.Stop();
-            Console.WriteLine(Watch.Elapsed);
+
         }
 
         private static void Method13()
         {
-            string path = @"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.jpg";
-            //new Bitmap(path).GrayByPixels().Threshoding(100).ClearNoise(50, 4).Save(path + "ClearNoise.jpg", ImageFormat.Jpeg);
-            Bitmap bmp = new Bitmap(path).GrayByPixels().Binaryzation().ClearNoise(100,4);
-            bmp.ToValid(60,4).Save(path + "ClearNoise.jpg", ImageFormat.Jpeg);
-            string code = bmp.ToCodeString(150, true);
-            File.WriteAllText(@"D:\Documents07\Visual Studio 2015\Projects\TestProjects\Test.Console02\bin\Debug\out\test.txt", code, Encoding.Default);
+
         }
 
         private static void Method14()

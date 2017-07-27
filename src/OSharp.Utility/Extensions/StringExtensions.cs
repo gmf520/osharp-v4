@@ -13,9 +13,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 using Newtonsoft.Json;
 
@@ -147,7 +149,7 @@ namespace OSharp.Utility.Extensions
             int startIndex = 0;
             if (!string.IsNullOrEmpty(startString))
             {
-                startIndex = source.IndexOf(startString, StringComparison.Ordinal);
+                startIndex = source.IndexOf(startString, StringComparison.OrdinalIgnoreCase);
                 if (startIndex < 0)
                 {
                     throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", startString));
@@ -163,7 +165,7 @@ namespace OSharp.Utility.Extensions
                     endIndex = source.Length;
                     break;
                 }
-                endIndex = source.IndexOf(endString, startIndex, StringComparison.Ordinal);
+                endIndex = source.IndexOf(endString, startIndex, StringComparison.OrdinalIgnoreCase);
                 if (endIndex < 0 || endIndex < startIndex)
                 {
                     continue;
@@ -579,6 +581,46 @@ namespace OSharp.Utility.Extensions
             }
             byte[] bytes = Convert.FromBase64String(base64String);
             return encoding.GetString(bytes);
+        }
+
+        /// <summary>
+        /// 将字符串进行UrlDecode解码
+        /// </summary>
+        /// <param name="source">待UrlDecode解码的字符串</param>
+        /// <returns>UrlDecode解码后的字符串</returns>
+        public static string ToUrlDecode(this string source)
+        {
+            return HttpUtility.UrlDecode(source);
+        }
+
+        /// <summary>
+        /// 将字符串进行UrlEncode编码
+        /// </summary>
+        /// <param name="source">待UrlEncode编码的字符串</param>
+        /// <returns>UrlEncode编码后的字符串</returns>
+        public static string ToUrlEncode(this string source)
+        {
+            return HttpUtility.UrlEncode(source);
+        }
+
+        /// <summary>
+        /// 将字符串进行HtmlDecode解码
+        /// </summary>
+        /// <param name="source">待HtmlDecode解码的字符串</param>
+        /// <returns>HtmlDecode解码后的字符串</returns>
+        public static string ToHtmlDecode(this string source)
+        {
+            return HttpUtility.HtmlDecode(source);
+        }
+
+        /// <summary>
+        /// 将字符串进行HtmlEncode编码
+        /// </summary>
+        /// <param name="source">待HtmlEncode编码的字符串</param>
+        /// <returns>HtmlEncode编码后的字符串</returns>
+        public static string ToHtmlEncode(this string source)
+        {
+            return HttpUtility.HtmlEncode(source);
         }
 
         /// <summary>

@@ -8,10 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.IO;
 using System.Runtime.InteropServices;
 
 
@@ -22,6 +24,20 @@ namespace OSharp.Utility.Extensions
     /// </summary>
     public static class BitmapExtensions
     {
+        /// <summary>
+        /// 将Bitmap转换为Byte[]
+        /// </summary>
+        /// <param name="bmp">待处理的图像</param>
+        /// <returns></returns>
+        public static byte[] ToBytes(this Bitmap bmp)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bmp.Save(ms, bmp.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
         /// <summary>
         /// 使图像绕中心点旋转一定角度
         /// </summary>
@@ -114,52 +130,49 @@ namespace OSharp.Utility.Extensions
         public static Bitmap GrayByPixels(this Bitmap bmp)
         {
             Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
-            for (int i = 0; i < bmp.Width; i++)
+            for (int y = 0; y < bmp.Height; y++)
             {
-                for (int j = 0; j < bmp.Height; j++)
+                for (int x = 0; x < bmp.Width; x++)
                 {
-                    Color pixel = bmp.GetPixel(i, j);
-                    byte gray = GetGrayColorValue(pixel);
-                    newBmp.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                    Color pixel = bmp.GetPixel(x, y);
+                    byte value = GetGrayColorValue(pixel);
+                    newBmp.SetPixel(x, y, Color.FromArgb(value, value, value));
                 }
             }
             return newBmp;
         }
 
-        ///// <summary>
-        ///// 图像灰度化，逐行方式
-        ///// </summary>
-        ///// <param name="bmp">待处理的图像</param>
-        ///// <returns></returns>
-        //public static Bitmap GrayByLine(this Bitmap bmp)
-        //{
-        //    Rectangle rectangle = new Rectangle(0, 0, bmp.Width, bmp.Height);
-        //    BitmapData data = bmp.LockBits(rectangle, ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-        //    IntPtr scan0 = data.Scan0;
-        //    int length = bmp.Width * bmp.Height;
-        //    int[] pixels = new int[length];
-        //    Marshal.Copy(scan0, pixels, 0, length);
-
-        //    //对图片进行处理
-        //    for (int i = 0; i < length; i++)
-        //    {
-        //        int gray = GetGrayColorValue(Color.FromArgb(pixels[i]));
-        //        pixels[i] = Color.FromArgb(gray, gray, gray).ToArgb();
-        //    }
-        //    bmp.UnlockBits(data);
-        //    return bmp;
-        //}
+        /// <summary>
+        /// 图像前景色加黑
+        /// </summary>
+        /// <param name="bmp">待处理的图像</param>
+        /// <param name="gray">指定灰度阈值，大于该值，则设置为白色，否则为黑色</param>
+        /// <returns> 深化后的图像 </returns>
+        public static Bitmap DeepByPixels(this Bitmap bmp, byte gray = 200)
+        {
+            Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    Color pixel = bmp.GetPixel(i, j);
+                    byte value = pixel.R > gray ? (byte)255 : (byte)0;
+                    newBmp.SetPixel(i, j, Color.FromArgb(value, value, value));
+                }
+            }
+            return newBmp;
+        }
 
         /// <summary>
         /// 去掉杂点，周边有效点数的方式(适合杂点/杂线粗为1)
         /// </summary>
         /// <param name="bmp">等处理图像</param>
         /// <param name="gray">临界灰度值，大于此值的点将视为无效点</param>
-        /// <param name="maxNearPoints">周边最大有效点数，有效点数小于此值，当前点视为杂点</param>
+        /// <param name="maxNearPoints">周边最大有效点数，有效点数小于此值，当前点视为杂点，取值范围[0,4]</param>
         /// <returns></returns>
-        public static Bitmap ClearNoise(this Bitmap bmp, int gray, int maxNearPoints)
+        public static Bitmap ClearNoise(this Bitmap bmp, byte gray, int maxNearPoints)
         {
+            maxNearPoints.CheckBetween("maxNearPoints", 1, 4, true, true);
             for (int x = 0; x < bmp.Width; x++)
             {
                 for (int y = 0; y < bmp.Height; y++)
@@ -330,22 +343,24 @@ namespace OSharp.Utility.Extensions
         /// 去除图片边框
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
-        /// <param name="borderWidth">边框宽度</param>
+        /// <param name="border">边框宽度</param>
         /// <returns></returns>
-        public static Bitmap ClearBorder(this Bitmap bmp, int borderWidth)
+        public static Bitmap ClearBorder(this Bitmap bmp, int border)
         {
             int width = bmp.Width, height = bmp.Height;
             Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, width, height), bmp.PixelFormat);
-            for (int i = 0; i < width; i++)
+
+            for (int x = 0; x < width; x++)
             {
-                for (int j = 0; j < height; j++)
+                for (int y = 0; y < height; y++)
                 {
-                    if (i < borderWidth || j < borderWidth || j > width - 1 - borderWidth || i > height - 1 - borderWidth)
+                    if (x < border || y < border || x > width - 1 - border || y > height - 1 - border)
                     {
-                        newBmp.SetPixel(j, i, Color.White);
+                        newBmp.SetPixel(x, y, Color.White);
                     }
                 }
             }
+
             return newBmp;
         }
 
@@ -657,7 +672,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="gray">灰度阈值</param>
         /// <param name="charCount">字符数量</param>
         /// <returns></returns>
-        public static Bitmap ToValid(this Bitmap bmp, int gray, int charCount)
+        public static Bitmap ToValid(this Bitmap bmp, byte gray, int charCount)
         {
             int posx1 = bmp.Width; int posy1 = bmp.Height;
             int posx2 = 0; int posy2 = 0;
@@ -698,7 +713,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="bmp">待处理的图片</param>
         /// <param name="gray">灰度阈值</param>
         /// <returns></returns>
-        public static Bitmap ToValid(this Bitmap bmp, int gray)
+        public static Bitmap ToValid(this Bitmap bmp, byte gray)
         {
             int posx1 = bmp.Width; int posy1 = bmp.Height;
             int posx2 = 0; int posy2 = 0;
@@ -795,7 +810,7 @@ namespace OSharp.Utility.Extensions
         /// <param name="gray">灰度临界值</param>
         /// <param name="lineBreak">是否换行，默认false</param>
         /// <returns></returns>
-        public static string ToCodeString(this Bitmap bmp, int gray, bool lineBreak = false)
+        public static string ToCodeString(this Bitmap bmp, byte gray, bool lineBreak = false)
         {
             string code = string.Empty;
             for (int y = 0; y < bmp.Height; y++)
