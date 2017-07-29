@@ -4,16 +4,19 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-07-18 10:38</last-date>
+//  <last-date>2017-07-29 19:35</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
 
@@ -24,6 +27,382 @@ namespace OSharp.Utility.Extensions
     /// </summary>
     public static class BitmapExtensions
     {
+        #region Byte[,]
+
+        /// <summary>
+        /// 将图像转换为 Color[,]颜色值二维数组
+        /// </summary>
+        public static Color[,] ToPixelArray2D(this Bitmap bmp)
+        {
+            int width = bmp.Width, height = bmp.Height;
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                Color[,] pixels = new Color[width, height];
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        pixels[x, y] = Color.FromArgb(ptr[2], ptr[1], ptr[0]);
+                        ptr += 3;
+                    }
+                    ptr += offset;
+                }
+                return pixels;
+            }
+        }
+
+        /// <summary>
+        /// 将图像转换为 Byte[,]灰度值二维数组，后续所有操作都将以二维数组作为中间变量
+        /// </summary>
+        public static byte[,] ToGrayArray2D(this Bitmap bmp)
+        {
+            int width = bmp.Width, height = bmp.Height;
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                byte[,] grayBytes = new byte[width, height];
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        grayBytes[x, y] = GetGrayValue(ptr[2], ptr[1], ptr[0]);
+                        ptr += 3;
+                    }
+                    ptr += offset;
+                }
+                bmp.UnlockBits(data);
+                return grayBytes;
+            }
+        }
+
+        /// <summary>
+        /// 将颜色数组二维数组转换为灰度值二维数组
+        /// </summary>
+        public static byte[,] ToGrayArray2D(this Color[,] pixels)
+        {
+            int width = pixels.GetLength(0), height = pixels.GetLength(1);
+            byte[,] grayBytes = new byte[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    grayBytes[x, y] = GetGrayValue(pixels[x, y]);
+                }
+            }
+            return grayBytes;
+        }
+
+        /// <summary>
+        /// 将二维颜色数组转换为图像
+        /// </summary>
+        public static Bitmap ToBitmap(this Color[,] pixels)
+        {
+            int width = pixels.GetLength(0), height = pixels.GetLength(1);
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        Color pixel = pixels[x, y];
+                        ptr[2] = pixel.R;
+                        ptr[1] = pixel.G;
+                        ptr[0] = pixel.B;
+                        ptr += 3;
+                    }
+                    ptr += offset;
+                }
+                bmp.UnlockBits(data);
+                return bmp;
+            }
+        }
+
+        /// <summary>
+        /// 将二维灰度数组转换为图像
+        /// </summary>
+        public static Bitmap ToBitmap(this byte[,] grayBytes)
+        {
+            int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        ptr[2] = ptr[1] = ptr[0] = grayBytes[x, y];
+                        ptr += 3;
+                    }
+                    ptr += offset;
+                }
+                bmp.UnlockBits(data);
+                return bmp;
+            }
+        }
+
+        /// <summary>
+        /// 将二维灰度数组二值化
+        /// </summary>
+        public static byte[,] Binaryzation(this byte[,] grayBytes, byte gray)
+        {
+            int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    grayBytes[x, y] = (byte)(grayBytes[x, y] > gray ? 255 : 0);
+                }
+            }
+            return grayBytes;
+        }
+
+        /// <summary>
+        /// 将二维灰度数组前景色加黑
+        /// </summary>
+        public static byte[,] DeepFore(this byte[,] grayBytes, byte gray = 200)
+        {
+            int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (grayBytes[x, y] < gray)
+                    {
+                        grayBytes[x, y] = 0;
+                    }
+                }
+            }
+            return grayBytes;
+        }
+
+        /// <summary>
+        /// 去除噪音，周边有效点数的方式（适合杂点/细线）
+        /// </summary>
+        public static byte[,] ClearNoise(this byte[,] binBytes, byte gray, int maxNearPoints)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    byte value = binBytes[x, y];
+                    //背景，边框
+                    if (value > gray || (x == 0 || y == 0 || x == width - 1 || y == height - 1))
+                    {
+                        binBytes[x, y] = 255;
+                        continue;
+                    }
+                    int count = 0;
+                    if (binBytes[x - 1, y - 1] < gray) count++;
+                    if (binBytes[x, y - 1] < gray) count++;
+                    if (binBytes[x + 1, y - 1] < gray) count++;
+                    if (binBytes[x, y - 1] < gray) count++;
+                    if (binBytes[x, y + 1] < gray) count++;
+                    if (binBytes[x - 1, y + 1] < gray) count++;
+                    if (binBytes[x, y + 1] < gray) count++;
+                    if (binBytes[x + 1, y + 1] < gray) count++;
+                    //如果周边有效点数小于指定阈值，则清除该点
+                    if (count < maxNearPoints)
+                    {
+                        binBytes[x, y] = 255;
+                    }
+                }
+            }
+            return binBytes;
+        }
+
+        /// <summary>
+        /// 去除图片边框
+        /// </summary>
+        public static byte[,] ClearBorder(this byte[,] grayBytes, int border)
+        {
+            int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (x < border || y < border || x > width - 1 - border || y > height - 1 - border)
+                    {
+                        grayBytes[x, y] = 255;
+                    }
+                }
+            }
+            return grayBytes;
+        }
+
+        /// <summary>
+        /// 去除空白边界获取有效的图形
+        /// </summary>
+        public static byte[,] ToValid(this byte[,] binBytes, byte gray = 200)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            //有效矩形的左上/右下角坐标，左上坐标从右下开始拉，右下坐标从左上开始拉，所以初始值为
+            int x1 = width, y1 = height, x2 = 0, y2 = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    byte value = binBytes[x, y];
+                    if (value >= gray)
+                    {
+                        continue;
+                    }
+                    if (x1 > x) x1 = x;
+                    if (y1 > y) y1 = y;
+                    if (x2 < x) x2 = x;
+                    if (y2 < y) y2 = y;
+                }
+            }
+            //创建新矩阵，复制原数据到新矩阵
+            int newWidth = x2 - x1 + 1, newHeight = y2 - y1 + 1;
+            byte[,] newBytes = binBytes.Clone(x1, y1, newWidth, newHeight);
+            return newBytes;
+        }
+
+        /// <summary>
+        /// 从原矩阵中复制指定矩阵
+        /// </summary>
+        public static byte[,] Clone(this byte[,] sourceBytes, int x1, int y1, int width, int height)
+        {
+            int swidth = sourceBytes.GetLength(0), sheight = sourceBytes.GetLength(1);
+            if (swidth - x1 < width)
+            {
+                throw new ArgumentException("要截取的宽度超出界限");
+            }
+            if (sheight - y1 < height)
+            {
+                throw new ArgumentException("要截取的高度超出界限");
+            }
+            byte[,] newBytes = new byte[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    newBytes[x, y] = sourceBytes[x1 + x, y1 + y];
+                }
+            }
+            return newBytes;
+        }
+
+        /// <summary>
+        /// 统计二维二值化数组的的竖直投影
+        /// </summary>
+        public static int[] ShadowY(this byte[,] binBytes)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            int[] nums = new int[width];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (IsBlack(binBytes[x, y]))
+                    {
+                        nums[x]++;
+                    }
+                }
+            }
+            return nums;
+        }
+
+        /// <summary>
+        /// 统计二维二值化数组的横向投影
+        /// </summary>
+        public static int[] ShadowX(this byte[,] binBytes)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            int[] nums = new int[height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (IsBlack(binBytes[x, y]))
+                    {
+                        nums[y]++;
+                    }
+                }
+            }
+            return nums;
+        }
+
+        /// <summary>
+        /// 根据二值化数组的竖直投影数据分割图片
+        /// </summary>
+        /// <param name="binBytes">二维二值化数组</param>
+        /// <param name="minFontWidth">最小字符宽度，0则自动</param>
+        /// <param name="minLines">最小有效投影行数</param>
+        /// <returns></returns>
+        public static List<byte[,]> SplitShadowY(this byte[,] binBytes, byte minFontWidth = 0, byte minLines = 0)
+        {
+            int height = binBytes.GetLength(1);
+            int[] shadow = binBytes.ShadowY();
+            List<Tuple<int, int>> validXs = new List<Tuple<int, int>>();
+            int x1 = 0;
+            bool inFont = false;
+            for (int x = 0; x < shadow.Length; x++)
+            {
+                int value = shadow[x];
+                if (!inFont)
+                {
+                    if (value > minLines)
+                    {
+                        inFont = true;
+                        x1 = x;
+                    }
+                }
+                else
+                {
+                    if (value <= minLines)
+                    {
+                        inFont = false;
+                        if (minFontWidth == 0 || x - x1 > minFontWidth)
+                        {
+                            validXs.Add(new Tuple<int, int>(x1, x));
+                        }
+                    }
+                }
+            }
+
+            List<byte[,]> splits = validXs.Select(valid => binBytes.Clone(valid.Item1, 0, valid.Item2 - valid.Item1 + 1, height).ToValid()).ToList();
+            return splits;
+        }
+
+        /// <summary>
+        /// 将二维二值化数组转换为特征码字符串
+        /// </summary>
+        public static string ToCodeString(this byte[,] binBytes, byte gray, bool breakLine = false)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            string code = string.Empty;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    code += binBytes[x, y] < gray ? 1 : 0;
+                }
+                if (breakLine)
+                {
+                    code += "\r\n";
+                }
+            }
+            return code;
+        }
+
+        #endregion
+
+        #region Image
+
         /// <summary>
         /// 将Bitmap转换为Byte[]
         /// </summary>
@@ -135,9 +514,35 @@ namespace OSharp.Utility.Extensions
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     Color pixel = bmp.GetPixel(x, y);
-                    byte value = GetGrayColorValue(pixel);
+                    byte value = GetGrayValue(pixel);
                     newBmp.SetPixel(x, y, Color.FromArgb(value, value, value));
                 }
+            }
+            return newBmp;
+        }
+
+        /// <summary>
+        /// 图像灰度化，逐行扫描方式
+        /// </summary>
+        public static Bitmap GrayByLine(this Bitmap bmp)
+        {
+            int width = bmp.Width, height = bmp.Height;
+            Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
+            BitmapData data = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        ptr[0] = ptr[1] = ptr[2] = GetGrayValue(ptr[2], ptr[1], ptr[0]);
+                        ptr += 3;
+                    }
+                    ptr += offset;
+                }
+                newBmp.UnlockBits(data);
             }
             return newBmp;
         }
@@ -146,9 +551,9 @@ namespace OSharp.Utility.Extensions
         /// 图像前景色加黑
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
-        /// <param name="gray">指定灰度阈值，大于该值，则设置为白色，否则为黑色</param>
+        /// <param name="gray">指定灰度阈值，灰度小于该值，则设置为黑色</param>
         /// <returns> 深化后的图像 </returns>
-        public static Bitmap DeepByPixels(this Bitmap bmp, byte gray = 200)
+        public static Bitmap DeepFore(this Bitmap bmp, byte gray = 200)
         {
             Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
             for (int i = 0; i < bmp.Width; i++)
@@ -156,8 +561,10 @@ namespace OSharp.Utility.Extensions
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     Color pixel = bmp.GetPixel(i, j);
-                    byte value = pixel.R > gray ? (byte)255 : (byte)0;
-                    newBmp.SetPixel(i, j, Color.FromArgb(value, value, value));
+                    if (pixel.R < gray)
+                    {
+                        newBmp.SetPixel(i, j, Color.Black);
+                    }
                 }
             }
             return newBmp;
@@ -178,32 +585,25 @@ namespace OSharp.Utility.Extensions
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     Color piexl = bmp.GetPixel(x, y);
-                    if (piexl.R >= gray)
+                    //背景，边框
+                    if (piexl.R >= gray || (x == 0 || x == bmp.Width - 1 || y == 0 || y == bmp.Height - 1))
                     {
                         bmp.SetPixel(x, y, Color.White);
+                        continue;
                     }
-                    else
+                    int count = 0;
+                    if (bmp.GetPixel(x - 1, y - 1).R < gray) count++;
+                    if (bmp.GetPixel(x, y - 1).R < gray) count++;
+                    if (bmp.GetPixel(x + 1, y - 1).R < gray) count++;
+                    if (bmp.GetPixel(x - 1, y).R < gray) count++;
+                    if (bmp.GetPixel(x + 1, y).R < gray) count++;
+                    if (bmp.GetPixel(x - 1, y + 1).R < gray) count++;
+                    if (bmp.GetPixel(x, y + 1).R < gray) count++;
+                    if (bmp.GetPixel(x + 1, y + 1).R < gray) count++;
+                    //如果周边有效点数小于指定阈值，则清除该点
+                    if (count < maxNearPoints)
                     {
-                        int nearDots = 0;
-                        //判断周围8个点是否全为空
-                        if (x == 0 || x == bmp.Width - 1 || y == 0 || y == bmp.Height - 1)
-                        {
-                            //边框全去掉
-                            bmp.SetPixel(x, y, Color.White);
-                            continue;
-                        }
-                        if (bmp.GetPixel(x - 1, y - 1).R < gray) nearDots++;
-                        if (bmp.GetPixel(x, y - 1).R < gray) nearDots++;
-                        if (bmp.GetPixel(x + 1, y - 1).R < gray) nearDots++;
-                        if (bmp.GetPixel(x - 1, y).R < gray) nearDots++;
-                        if (bmp.GetPixel(x + 1, y).R < gray) nearDots++;
-                        if (bmp.GetPixel(x - 1, y + 1).R < gray) nearDots++;
-                        if (bmp.GetPixel(x, y + 1).R < gray) nearDots++;
-                        if (bmp.GetPixel(x + 1, y + 1).R < gray) nearDots++;
-                        if (nearDots < maxNearPoints)
-                        {
-                            bmp.SetPixel(x, y, Color.White);
-                        }
+                        bmp.SetPixel(x, y, Color.White);
                     }
                 }
             }
@@ -221,7 +621,8 @@ namespace OSharp.Utility.Extensions
             value = value < -255 ? -255 : value;
             value = value > 255 ? 255 : value;
             int width = bmp.Width, height = bmp.Height;
-            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, width, height), bmp.PixelFormat);
+            BitmapData bmpData = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             unsafe
             {
@@ -250,8 +651,8 @@ namespace OSharp.Utility.Extensions
                 } // y
             }
 
-            bmp.UnlockBits(bmpData);
-            return bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
+            newBmp.UnlockBits(bmpData);
+            return newBmp;
         }
 
         /// <summary>
@@ -266,9 +667,9 @@ namespace OSharp.Utility.Extensions
             value = value > 100 ? 100 : value;
             double contrast = (100.0 + value) / 100.0;
             contrast *= contrast;
-            int width = bmp.Width;
-            int height = bmp.Height;
-            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int width = bmp.Width, height = bmp.Height;
+            Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, width, height), bmp.PixelFormat);
+            BitmapData bmpData = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             unsafe
             {
@@ -291,8 +692,8 @@ namespace OSharp.Utility.Extensions
                     p += offset;
                 } // y
             }
-            bmp.UnlockBits(bmpData);
-            return bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
+            newBmp.UnlockBits(bmpData);
+            return newBmp;
         }
 
         /// <summary>
@@ -571,37 +972,37 @@ namespace OSharp.Utility.Extensions
         /// <returns> </returns>
         public static Bitmap Binaryzation(this Bitmap bmp, byte threshold)
         {
-            int widht = bmp.Width, height = bmp.Height;
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, widht, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            int width = bmp.Width, height = bmp.Height;
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             unsafe
             {
-                //将原始图片变成灰度二位数组
-                byte* p = (byte*)data.Scan0;
-                byte[,] source = new byte[widht, height];
-                int offset = data.Stride - widht * 3;
-                for (int j = 0; j < height; j++)
+                //将原始图片变成灰度二维数组
+                byte* ptr = (byte*)data.Scan0;
+                byte[,] source = new byte[width, height];
+                int offset = data.Stride - width * 3;
+                for (int y = 0; y < height; y++)
                 {
-                    for (int i = 0; i < widht; i++)
+                    for (int x = 0; x < width; x++)
                     {
-                        source[i, j] = (byte)((p[0] + p[1] + p[2]) / 3);
-                        p += 3;
+                        source[x, y] = GetGrayValue(ptr[2], ptr[1], ptr[0]);
+                        ptr += 3;
                     }
-                    p += offset;
+                    ptr += offset;
                 }
                 bmp.UnlockBits(data);
                 //将灰度二位数组转换为二值图像
-                Bitmap newBmp = new Bitmap(widht, height, PixelFormat.Format24bppRgb);
-                BitmapData newData = newBmp.LockBits(new Rectangle(0, 0, widht, height), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
-                p = (byte*)newData.Scan0;
-                offset = newData.Stride - widht * 3;
+                Bitmap newBmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                BitmapData newData = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+                ptr = (byte*)newData.Scan0;
+                offset = newData.Stride - width * 3;
                 for (int j = 0; j < height; j++)
                 {
-                    for (int i = 0; i < widht; i++)
+                    for (int i = 0; i < width; i++)
                     {
-                        p[0] = p[1] = p[2] = GetAverageColor(source, i, j, widht, height) > threshold ? (byte)255 : (byte)0;
-                        p += 3;
+                        ptr[0] = ptr[1] = ptr[2] = GetAverageColor(source, i, j, width, height) > threshold ? (byte)255 : (byte)0;
+                        ptr += 3;
                     }
-                    p += offset;
+                    ptr += offset;
                 }
                 newBmp.UnlockBits(newData);
                 return newBmp;
@@ -609,7 +1010,7 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
-        /// OTSU阈值法二值化
+        /// OTSU自动阈值法二值化
         /// </summary>
         public static Bitmap OtsuThreshold(this Bitmap bmp)
         {
@@ -666,6 +1067,43 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 固定阈值的二值化
+        /// </summary>
+        /// <param name="bmp">待处理的图片</param>
+        /// <param name="threshold">灰度阈值</param>
+        /// <returns> </returns>
+        public static Bitmap Threshoding(this Bitmap bmp, byte threshold)
+        {
+            int width = bmp.Width, height = bmp.Height;
+            Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
+            BitmapData data = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                int offset = data.Stride - width * 4;
+                for (int j = 0; j < height; j++)
+                {
+                    for (int i = 0; i < width; i++)
+                    {
+                        byte gray = GetGrayValue(ptr[2], ptr[1], ptr[0]);
+                        if (gray >= threshold)
+                        {
+                            ptr[0] = ptr[1] = ptr[2] = 255;
+                        }
+                        else
+                        {
+                            ptr[0] = ptr[1] = ptr[2] = 0;
+                        }
+                        ptr += 4;
+                    }
+                    ptr += offset;
+                }
+                newBmp.UnlockBits(data);
+                return newBmp;
+            }
+        }
+
+        /// <summary>
         /// 获取有效图形并调整为可平均分割的大小
         /// </summary>
         /// <param name="bmp">待处理的图片</param>
@@ -674,32 +1112,50 @@ namespace OSharp.Utility.Extensions
         /// <returns></returns>
         public static Bitmap ToValid(this Bitmap bmp, byte gray, int charCount)
         {
-            int posx1 = bmp.Width; int posy1 = bmp.Height;
-            int posx2 = 0; int posy2 = 0;
-            for (int i = 0; i < bmp.Height; i++)      //找有效区
+            int posx1 = bmp.Width;
+            int posy1 = bmp.Height;
+            int posx2 = 0;
+            int posy2 = 0;
+            for (int i = 0; i < bmp.Height; i++) //找有效区
             {
                 for (int j = 0; j < bmp.Width; j++)
                 {
                     int pixelValue = bmp.GetPixel(j, i).R;
-                    if (pixelValue < gray)     //根据灰度值
+                    if (pixelValue < gray) //根据灰度值
                     {
-                        if (posx1 > j) posx1 = j;
-                        if (posy1 > i) posy1 = i;
+                        if (posx1 > j)
+                        {
+                            posx1 = j;
+                        }
+                        if (posy1 > i)
+                        {
+                            posy1 = i;
+                        }
 
-                        if (posx2 < j) posx2 = j;
-                        if (posy2 < i) posy2 = i;
+                        if (posx2 < j)
+                        {
+                            posx2 = j;
+                        }
+                        if (posy2 < i)
+                        {
+                            posy2 = i;
+                        }
                     }
                 }
             }
             // 确保能整除
-            int span = charCount - (posx2 - posx1 + 1) % charCount;   //可整除的差额数
+            int span = charCount - (posx2 - posx1 + 1) % charCount; //可整除的差额数
             if (span < charCount)
             {
-                int leftSpan = span / 2;    //分配到左边的空列 ，如span为单数,则右边比左边大1
+                int leftSpan = span / 2; //分配到左边的空列 ，如span为单数,则右边比左边大1
                 if (posx1 > leftSpan)
+                {
                     posx1 = posx1 - leftSpan;
+                }
                 if (posx2 + span - leftSpan < bmp.Width)
+                {
                     posx2 = posx2 + span - leftSpan;
+                }
             }
             //复制新图
             Rectangle cloneRect = new Rectangle(posx1, posy1, posx2 - posx1 + 1, posy2 - posy1 + 1);
@@ -715,20 +1171,34 @@ namespace OSharp.Utility.Extensions
         /// <returns></returns>
         public static Bitmap ToValid(this Bitmap bmp, byte gray)
         {
-            int posx1 = bmp.Width; int posy1 = bmp.Height;
-            int posx2 = 0; int posy2 = 0;
-            for (int i = 0; i < bmp.Height; i++)      //找有效区
+            int posx1 = bmp.Width;
+            int posy1 = bmp.Height;
+            int posx2 = 0;
+            int posy2 = 0;
+            for (int y = 0; y < bmp.Height; y++) //找有效区
             {
-                for (int j = 0; j < bmp.Width; j++)
+                for (int x = 0; x < bmp.Width; x++)
                 {
-                    int pixelValue = bmp.GetPixel(j, i).R;
-                    if (pixelValue < gray)     //根据灰度值
+                    int pixelValue = bmp.GetPixel(x, y).R;
+                    if (pixelValue < gray) //根据灰度值
                     {
-                        if (posx1 > j) posx1 = j;
-                        if (posy1 > i) posy1 = i;
+                        if (posx1 > x)
+                        {
+                            posx1 = x;
+                        }
+                        if (posy1 > y)
+                        {
+                            posy1 = y;
+                        }
 
-                        if (posx2 < j) posx2 = j;
-                        if (posy2 < i) posy2 = i;
+                        if (posx2 < x)
+                        {
+                            posx2 = x;
+                        }
+                        if (posy2 < y)
+                        {
+                            posy2 = y;
+                        }
                     }
                 }
             }
@@ -744,10 +1214,12 @@ namespace OSharp.Utility.Extensions
         /// <param name="rowNum">水平上分割数</param>
         /// <param name="colNum">垂直上分割数</param>
         /// <returns>分割好的图片数组</returns>
-        public static Bitmap[] GetSplitPics(this Bitmap bmp, int rowNum, int colNum)
+        public static Bitmap[] SplitAverage(this Bitmap bmp, int rowNum, int colNum)
         {
             if (rowNum == 0 || colNum == 0)
+            {
                 return null;
+            }
             int singW = bmp.Width / rowNum;
             int singH = bmp.Height / colNum;
             Bitmap[] picArray = new Bitmap[rowNum * colNum];
@@ -757,50 +1229,10 @@ namespace OSharp.Utility.Extensions
                 for (int j = 0; j < rowNum; j++)
                 {
                     Rectangle cloneRect = new Rectangle(j * singW, i * singH, singW, singH);
-                    picArray[i * rowNum + j] = bmp.Clone(cloneRect, bmp.PixelFormat);//复制小块图
+                    picArray[i * rowNum + j] = bmp.Clone(cloneRect, bmp.PixelFormat); //复制小块图
                 }
             }
             return picArray;
-        }
-
-        /// <summary>
-        /// 固定阈值的二值化
-        /// </summary>
-        /// <param name="bmp">待处理的图片</param>
-        /// <param name="threshold">灰度阈值</param>
-        /// <returns> </returns>
-        public static Bitmap Threshoding(this Bitmap bmp, byte threshold)
-        {
-            int width = bmp.Width, height = bmp.Height;
-            Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
-            BitmapData data = newBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            unsafe
-            {
-                byte* p = (byte*)data.Scan0;
-                int offset = data.Stride - width * 4;
-                for (int j = 0; j < height; j++)
-                {
-                    for (int i = 0; i < width; i++)
-                    {
-                        byte r = p[2];
-                        byte g = p[1];
-                        byte b = p[0];
-                        byte gray = (byte)((r * 19595 + g * 38469 + b * 7472) >> 16);
-                        if (gray >= threshold)
-                        {
-                            p[0] = p[1] = p[2] = 255;
-                        }
-                        else
-                        {
-                            p[0] = p[1] = p[2] = 0;
-                        }
-                        p += 4;
-                    }
-                    p += offset;
-                }
-                newBmp.UnlockBits(data);
-                return newBmp;
-            }
         }
 
         /// <summary>
@@ -849,16 +1281,21 @@ namespace OSharp.Utility.Extensions
             return (byte)(result / 9);
         }
 
-        private static byte GetGrayColorValue(Color pixel)
+        private static byte GetGrayValue(Color pixel)
         {
-            byte r = pixel.R, g = pixel.G, b = pixel.B;
-            if (r + b + g != 0)
-            {
-                //Gray = 0.299*R + 0.587*G + 0.114*B 灰度计算公式
-                return (byte)((r * 19595 + g * 38469 + b * 7472) >> 16);
-            }
-            //否则，返回白色
-            return 255;
+            return GetGrayValue(pixel.R, pixel.G, pixel.B);
         }
+
+        private static byte GetGrayValue(byte red, byte green, byte blue)
+        {
+            return (byte)((red * 19595 + green * 38469 + blue * 7472) >> 16);
+        }
+
+        private static bool IsBlack(byte value)
+        {
+            return value == 0;
+        }
+
+        #endregion
     }
 }

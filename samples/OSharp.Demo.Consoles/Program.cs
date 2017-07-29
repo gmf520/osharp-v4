@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -223,12 +224,76 @@ namespace OSharp.Demo.Consoles
 
         private static void Method06()
         {
+            string file = Console.ReadLine().Replace("\"", "");//@"D:\ValidateCode\DiamondVote\source\24113532531.jpg";
+            string name = Path.GetFileNameWithoutExtension(file);
+            Bitmap bmp = new Bitmap(file);
+            Bitmap newBmp = (Bitmap)bmp.Clone();
+            newBmp = newBmp.GrayByPixels();
+
+            Dictionary<byte, int> dict = new Dictionary<byte, int>();
+            Dictionary<byte, List<Tuple<int, int>>> dict2 = new Dictionary<byte, List<Tuple<int, int>>>();
+            for (int y = 0; y < newBmp.Height; y++)
+            {
+                for (int x = 0; x < newBmp.Width; x++)
+                {
+                    byte gray = newBmp.GetPixel(x, y).R;
+                    if (dict.ContainsKey(gray))
+                    {
+                        dict[gray]++;
+                        dict2[gray].Add(new Tuple<int, int>(x, y));
+                    }
+                    else
+                    {
+                        dict.Add(gray, 1);
+                        dict2.Add(gray, new List<Tuple<int, int>>() { new Tuple<int, int>(x, y) });
+                    }
+                }
+            }
+
+            //dict = dict.OrderByDescending(m => m.Value).ToDictionary(m => m.Key, n => n.Value);
+            //foreach (var key in dict.Keys)
+            //{
+            //    Console.WriteLine($"{key}: {dict[key]}");
+            //}
+
+            dict2 = dict2.OrderByDescending(m => m.Value.Count).ToDictionary(m => m.Key, m => m.Value);
+            //foreach (var key in dict2.Keys)
+            //{
+            //    Console.WriteLine($"{key}: {dict2[key].Count}");
+            //}
+            var points = dict2.Take(2).OrderBy(m => m.Key).First();
+            Bitmap bmp2 = new Bitmap(bmp.Width, bmp.Height);
+            foreach (var point in points.Value)
+            {
+                byte gray = points.Key;
+                bmp2.SetPixel(point.Item1, point.Item2, Color.FromArgb(gray, gray, gray));
+            }
+            bmp2.Threshoding(200).ClearNoise(200, 4).Save(file.Replace(name, name + "-new"));
 
         }
 
         private static void Method07()
         {
+            string file = Console.ReadLine().Replace("\"", "");
+            string name = Path.GetFileNameWithoutExtension(file);
+            Bitmap bmp = new Bitmap(file);
+            byte[,] grayBytes = bmp.ToGrayArray2D();
+            var splits = grayBytes.SplitShadowY();
+            for (int i = 0; i < splits.Count; i++)
+            {
+                var m = splits[i];
+                m.ToBitmap().Save(file.Replace(name, name + "-split" + i));
+            }
 
+
+
+
+            //byte[,] grayBytes = bmp.ToValid(200).ToGrayArray2D();
+            //grayBytes = grayBytes.Binaryzation(180);
+            //File.WriteAllText(file.Replace(name + ".jpg", name + ".txt"), grayBytes.ToCodeString(200, true));
+            //int[] nums = grayBytes.ShadowY();
+            //string str = nums.Select((m, i) => $"{i}: {m}").ExpandAndToString("\n");
+            //Console.WriteLine(str);
         }
 
         private static void Method08()
