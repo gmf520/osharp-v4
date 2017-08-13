@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -26,6 +27,7 @@ using OSharp.Demo.Models.Identity;
 using OSharp.Logging.Log4Net;
 using OSharp.Redis;
 using OSharp.Utility.Extensions;
+using OSharp.Utility.Secutiry;
 
 using StackExchange.Redis;
 
@@ -36,6 +38,7 @@ namespace OSharp.Demo.Consoles
     {
         private static Program _program;
         private static readonly Stopwatch Watch = new Stopwatch();
+        private static readonly Random Random = new Random();
 
         public IIocResolver IocResolver { get; set; }
 
@@ -197,7 +200,7 @@ namespace OSharp.Demo.Consoles
 
         private static void Method04()
         {
-            string path = @"D:\ValidateCode\WeixiaoxinVipvote\source";
+            string path = @"D:\ValidateCode\heniw\source";
             string[] files = Directory.GetFiles(path);
             int count = 0;
             foreach (string file in files)
@@ -205,9 +208,10 @@ namespace OSharp.Demo.Consoles
                 string name = Path.GetFileNameWithoutExtension(file);
                 string ext = Path.GetExtension(file);
                 Console.WriteLine(file);
-                Bitmap bmp = new Bitmap(file).GrayByPixels().ClearBorder(2).ClearNoise(200, 2);//.DeepByPixels(150);
-                bmp.Save($@"{path}\{name}-gray{ext}".Replace("source", "output"));
-                if (++count % 50 == 0)
+                Bitmap bmp = new Bitmap(file);
+                byte[,] bytes = bmp.ToGrayArray2D().Binaryzation(250).ClearNoiseRound(200, 4).ClearNoiseArea(200, 30);
+                bytes.ToBitmap().Save($@"{path}\{name}-bin{ext}".Replace("source", "output"));
+                if (++count % 5 == 0)
                 {
                     Console.ReadLine();
                 }
@@ -274,55 +278,47 @@ namespace OSharp.Demo.Consoles
 
         private static void Method07()
         {
-            string file = Console.ReadLine().Replace("\"", "");
-            string name = Path.GetFileNameWithoutExtension(file);
-            Bitmap bmp = new Bitmap(file);
-            byte[,] grayBytes = bmp.ToGrayArray2D();
-            var splits = grayBytes.SplitShadowY();
-            for (int i = 0; i < splits.Count; i++)
+            string path = @"D:\ValidateCode\canglongwohu\source";
+            string[] files = Directory.GetFiles(path);
+            int count = 0;
+            foreach (string file in files)
             {
-                var m = splits[i];
-                m.ToBitmap().Save(file.Replace(name, name + "-split" + i));
+                string name = Path.GetFileNameWithoutExtension(file);
+                byte[,] grayBytes = new Bitmap(file).ToGrayArray2D().Binaryzation(200).ClearNoiseRound(150, 3);//.ClearBorder(1);
+                grayBytes.ToBitmap().Save(file.Replace("source", "output").Replace(name, $"{name}-bin"));
+
+                if (++count % 2 == 0)
+                {
+                    Console.ReadLine();
+                }
             }
-
-
-
-
-            //byte[,] grayBytes = bmp.ToValid(200).ToGrayArray2D();
-            //grayBytes = grayBytes.Binaryzation(180);
-            //File.WriteAllText(file.Replace(name + ".jpg", name + ".txt"), grayBytes.ToCodeString(200, true));
-            //int[] nums = grayBytes.ShadowY();
-            //string str = nums.Select((m, i) => $"{i}: {m}").ExpandAndToString("\n");
-            //Console.WriteLine(str);
         }
 
         private static void Method08()
         {
-
+            string file = @"D:\ValidateCode\canglongwohu\rename\0FPL.jpg";
+            int angle = Console.ReadLine().CastTo(0);
+            new Bitmap(file).Rotate(angle).Save($@"{file}.rotate.jpg");
         }
 
         private static void Method09()
         {
-            Console.WriteLine("请输入字符串source");
-            string source = Console.ReadLine();
-            Console.WriteLine("请输入字符串target");
-            string target = Console.ReadLine();
-
-            double point;
-            Console.WriteLine(source.LevenshteinDistance(target, out point, true));
-            Console.WriteLine(point);
-            Console.WriteLine(source.GetSimilarityWith(target));
+            string path = Console.ReadLine().Replace("\"", "");
+            new Bitmap(path).ToGrayArray2D().FloodFill(new Point(1, 1), 100).ToBitmap().Save(path + ".01.jpg");
         }
 
         private static void Method10()
         {
-            RedisClient redis = new RedisClient();
-            const string key = "key001";
-            Console.WriteLine(redis.StringGet(key));
-            Console.WriteLine(redis.StringSet(key, "Hello World."));
-            Console.WriteLine(redis.StringGet(key));
-            Console.WriteLine(redis.StringIncrement(key));
-            Console.WriteLine(redis.StringDecrement(key));
+            byte[,] bytes = new byte[5, 4];
+            for (int y = 0; y < 4; y++)
+            {
+                for (int x = 0; x < 5; x++)
+                {
+                    bytes[x, y] = (byte)Random.Next(1, 10);
+                }
+            }
+            Console.WriteLine(bytes.GetHashCode());
+            Console.WriteLine(bytes.Copy().GetHashCode());
         }
 
         private static void Method11()
@@ -347,12 +343,49 @@ namespace OSharp.Demo.Consoles
 
         private static void Method12()
         {
-
+            string t = "1501997510000";
+            string o = "//api.qiaomukeji.com/api/v1/component/getWxUserInfo";
+            string str = $"conststr=www.bjweifeng.cn&timestamp={t}&url={o}";
+            Console.WriteLine(str);
+            Console.WriteLine(HashHelper.GetSha1(str));
         }
 
         private static void Method13()
         {
-
+            string listUrlFormat = "http://www.xiuren8.com/index-{0}.htm";
+            List<string> urls = new List<string>();
+            HttpClient client = new HttpClient();
+            for (int i = 9; i <= 38; i++)
+            {
+                try
+                {
+                    string listUrl = listUrlFormat.FormatWith(i);
+                    string html = client.GetStringAsync(listUrl).Result;
+                    string[] perUrls = html.Substring("<div class=\"content products\" id=\"menu-2\">", "<nav class=\"text-center\"><ul class=\"pagination\">")
+                            .Matches("(?<=a href=\")(thread-\\d+\\.htm)(?=\")").ToArray();
+                    foreach (string perUrl in perUrls)
+                    {
+                        try
+                        {
+                            string url = $"http://www.xiuren8.com/{perUrl}";
+                            html = client.GetStringAsync(url).Result;
+                            url = html.Substring("下载地址:", "解压密码：").Substring("class=\"brush:html;toolbar:false\">", "</pre>");
+                            Console.WriteLine(url);
+                            urls.Add(url);
+                        }
+                        catch (Exception e)
+                        {
+                            
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                File.WriteAllLines($@"H:\迅雷下载\3\urls\urls-www.xiuren8.com-{i.ToString("D2")}.txt", urls);
+                urls.Clear();
+            }
         }
 
         private static void Method14()

@@ -27,7 +27,7 @@ namespace OSharp.Utility.Extensions
     /// </summary>
     public static class BitmapExtensions
     {
-        #region Byte[,]
+        #region Byte[,]图像处理扩展
 
         /// <summary>
         /// 将图像转换为 Color[,]颜色值二维数组
@@ -104,7 +104,7 @@ namespace OSharp.Utility.Extensions
         {
             int width = pixels.GetLength(0), height = pixels.GetLength(1);
             Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
@@ -133,7 +133,7 @@ namespace OSharp.Utility.Extensions
         {
             int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
             Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
@@ -190,7 +190,7 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 去除噪音，周边有效点数的方式（适合杂点/细线）
         /// </summary>
-        public static byte[,] ClearNoise(this byte[,] binBytes, byte gray, int maxNearPoints)
+        public static byte[,] ClearNoiseRound(this byte[,] binBytes, byte gray, int maxNearPoints)
         {
             int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
             for (int y = 0; y < height; y++)
@@ -224,6 +224,112 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 去除噪音，连通域降噪方式，去除连通点数小于阈值的连通区域
+        /// </summary>
+        public static byte[,] ClearNoiseArea(this byte[,] binBytes, byte gray, int minAreaPoints)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            byte[,] newBinBytes = binBytes.Copy();
+            //遍历所有点，是黑点0，把与黑点连通的所有点灰度都改为1，下一个连通区域改为2，直到所有连通区域都标记完毕
+            Dictionary<byte, Point[]> areaPointDict = new Dictionary<byte, Point[]>();
+            byte setGray = 1;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (IsBlack(newBinBytes[x, y]))
+                    {
+                        Point[] setPoints;
+                        newBinBytes.FloodFill(new Point(x, y), setGray, out setPoints);
+                        areaPointDict.Add(setGray, setPoints);
+
+                        setGray++;
+                        if (setGray >= 255)
+                        {
+                            setGray = 254;
+                        }
+                    }
+                }
+            }
+            //筛选出区域点数小于阈值的区域，将原图相应点设置为白色
+            List<Point[]> pointsList = areaPointDict.Where(m => m.Value.Length < minAreaPoints).Select(m => m.Value).ToList();
+            foreach (Point[] points in pointsList)
+            {
+                foreach (Point point in points)
+                {
+                    binBytes[point.X, point.Y] = 255;
+                }
+            }
+
+            return binBytes;
+        }
+
+        /// <summary>
+        /// 泛水填充算法，将相连通的区域使用指定灰度值填充
+        /// </summary>
+        public static byte[,] FloodFill(this byte[,] binBytes, Point point, byte replacementGray)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            Stack<Point> stack = new Stack<Point>();
+            byte gray = binBytes[point.X, point.Y];
+            stack.Push(point);
+
+            while (stack.Count > 0)
+            {
+                var p = stack.Pop();
+                if (p.X <= 0 || p.X >= width || p.Y <= 0 || p.Y >= height)
+                {
+                    continue;
+                }
+                if (binBytes[p.X, p.Y] == gray)
+                {
+                    binBytes[p.X, p.Y] = replacementGray;
+
+                    stack.Push(new Point(p.X - 1, p.Y));
+                    stack.Push(new Point(p.X + 1, p.Y));
+                    stack.Push(new Point(p.X, p.Y - 1));
+                    stack.Push(new Point(p.X, p.Y + 1));
+                }
+            }
+
+            return binBytes;
+        }
+
+        /// <summary>
+        /// 泛水填充算法，将相连通的区域使用指定灰度值填充
+        /// </summary>
+        public static byte[,] FloodFill(this byte[,] binBytes, Point point, byte replacementGray, out Point[] points)
+        {
+            int width = binBytes.GetLength(0), height = binBytes.GetLength(1);
+            List<Point> pointList = new List<Point>();
+            Stack<Point> stack = new Stack<Point>();
+            byte gray = binBytes[point.X, point.Y];
+            stack.Push(point);
+
+            while (stack.Count > 0)
+            {
+                var p = stack.Pop();
+                if (p.X <= 0 || p.X >= width || p.Y <= 0 || p.Y >= height)
+                {
+                    continue;
+                }
+                if (binBytes[p.X, p.Y] == gray)
+                {
+                    binBytes[p.X, p.Y] = replacementGray;
+                    pointList.Add(p);
+
+                    stack.Push(new Point(p.X - 1, p.Y));
+                    stack.Push(new Point(p.X + 1, p.Y));
+                    stack.Push(new Point(p.X, p.Y - 1));
+                    stack.Push(new Point(p.X, p.Y + 1));
+                }
+            }
+
+            points = pointList.ToArray();
+            return binBytes;
+        }
+
+        /// <summary>
         /// 去除图片边框
         /// </summary>
         public static byte[,] ClearBorder(this byte[,] grayBytes, int border)
@@ -240,6 +346,27 @@ namespace OSharp.Utility.Extensions
                 }
             }
             return grayBytes;
+        }
+
+        /// <summary>
+        /// 给图片添加边框，默认白色
+        /// </summary>
+        public static byte[,] AddBorder(this byte[,] grayBytes, int border, byte gray = 255)
+        {
+            int width = grayBytes.GetLength(0) + border * 2, height = grayBytes.GetLength(1) + border * 2;
+            byte[,] newBytes = new byte[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (x < border || y < border || x > width - 1 - border || y > height - 1 - border)
+                    {
+                        newBytes[x, y] = gray;
+                    }
+                }
+            }
+            newBytes = grayBytes.DrawTo(newBytes, border, border);
+            return newBytes;
         }
 
         /// <summary>
@@ -294,6 +421,34 @@ namespace OSharp.Utility.Extensions
                 }
             }
             return newBytes;
+        }
+
+        /// <summary>
+        /// 将小图画到大图中
+        /// </summary>
+        public static byte[,] DrawTo(this byte[,] smallBytes, byte[,] bigBytes, int x1, int y1)
+        {
+            int smallWidth = smallBytes.GetLength(0),
+                smallHeight = smallBytes.GetLength(1),
+                bigWidth = bigBytes.GetLength(0),
+                bigHeight = bigBytes.GetLength(1);
+            if (x1 + smallWidth > bigWidth)
+            {
+                throw new ArgumentException("大图矩阵宽度无法装下小矩阵宽度");
+            }
+            if (y1 + smallHeight > bigHeight)
+            {
+                throw new ArgumentException("大图矩阵高度无法装下小矩阵高度");
+            }
+            for (int y = 0; y < smallHeight; y++)
+            {
+                for (int x = 0; x < smallWidth; x++)
+                {
+                    bigBytes[x1 + x, y1 + y] = smallBytes[x, y];
+                }
+            }
+
+            return bigBytes;
         }
 
         /// <summary>
@@ -412,7 +567,12 @@ namespace OSharp.Utility.Extensions
         {
             using (MemoryStream ms = new MemoryStream())
             {
-                bmp.Save(ms, bmp.RawFormat);
+                ImageFormat format = bmp.RawFormat;
+                if (ImageFormat.MemoryBmp.Equals(format))
+                {
+                    format = ImageFormat.Bmp;
+                }
+                bmp.Save(ms, format);
                 return ms.ToArray();
             }
         }
@@ -436,8 +596,8 @@ namespace OSharp.Utility.Extensions
             int w1 = bmp.Width;
             int h1 = bmp.Height;
             //旋转后的宽和高
-            int w2 = (int)(Math.Max(Math.Abs(w1 * cos - h1 * sin), Math.Abs(w1 * cos + h1 * sin)));
-            int h2 = (int)(Math.Max(Math.Abs(w1 * sin - h1 * cos), Math.Abs(w1 * sin + h1 * cos)));
+            int w2 = (int)Math.Max(Math.Abs(w1 * cos - h1 * sin), Math.Abs(w1 * cos + h1 * sin));
+            int h2 = (int)Math.Max(Math.Abs(w1 * sin - h1 * cos), Math.Abs(w1 * sin + h1 * cos));
 
             Bitmap newBmp = new Bitmap(w2, h2);
             using (Graphics graphics = Graphics.FromImage(newBmp))
@@ -466,6 +626,23 @@ namespace OSharp.Utility.Extensions
                 graphics.Dispose();
                 return newBmp;
             }
+        }
+
+        /// <summary>
+        /// 对一个坐标点按照一个中心进行旋转
+        /// </summary>
+        public static Point Rotate(this Point center, Point point, int angle)
+        {
+            angle = angle % 360;
+
+            //弧度转换
+            double radian = angle * Math.PI / 180.0;
+            double cos = Math.Cos(radian), sin = Math.Sin(radian);
+
+            double x = (point.X - center.X) * cos + (point.Y - center.Y) * sin + center.X;
+            double y = (point.X - center.X) * sin + (point.Y - center.Y) * cos + center.Y;
+
+            return new Point((int)Math.Round(x, 0), (int)Math.Round(y, 0));
         }
 
         /// <summary>
@@ -1085,7 +1262,7 @@ namespace OSharp.Utility.Extensions
                 {
                     for (int i = 0; i < width; i++)
                     {
-                        byte gray = GetGrayValue(ptr[2], ptr[1], ptr[0]);
+                        byte gray = (byte)((ptr[2] + ptr[1] + ptr[0]) / 3);
                         if (gray >= threshold)
                         {
                             ptr[0] = ptr[1] = ptr[2] = 255;
@@ -1294,6 +1471,11 @@ namespace OSharp.Utility.Extensions
         private static bool IsBlack(byte value)
         {
             return value == 0;
+        }
+
+        private static bool IsWhite(byte value)
+        {
+            return value == 255;
         }
 
         #endregion
