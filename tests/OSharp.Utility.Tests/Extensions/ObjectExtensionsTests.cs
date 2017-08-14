@@ -37,15 +37,18 @@ namespace OSharp.Utility.Extensions.Tests
         public void IsBetweenTest()
         {
             const int num = 5;
-            Assert.True(num.IsBetween(0, 10));
-            Assert.False(num.IsBetween(5, 10));
+
+            Assert.True(num.IsBetween(1, 10));
+            Assert.True(num.IsBetween(5, 10));
+            Assert.True(num.IsBetween(5, 10));
             Assert.True(num.IsBetween(5, 10, true));
-            Assert.False(num.IsBetween(0, 5));
-            Assert.True(num.IsBetween(0, 5, false, true));
-            Assert.False(num.IsBetween(5, 5));
-            Assert.False(num.IsBetween(5, 5, true));
-            Assert.False(num.IsBetween(5, 5, false, true));
+            Assert.True(num.IsBetween(0, 5, true, true));
             Assert.True(num.IsBetween(5, 5, true, true));
+            Assert.False(num.IsBetween(5, 10, false));
+            Assert.False(num.IsBetween(0, 5, true, false));
+            Assert.False(num.IsBetween(5, 5, true, false));
+            Assert.False(num.IsBetween(5, 5, false, true));
+            Assert.False(num.IsBetween(5, 5, false, false));
         }
 
         [Fact()]

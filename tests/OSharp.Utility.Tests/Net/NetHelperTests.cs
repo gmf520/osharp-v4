@@ -13,7 +13,7 @@ namespace OSharp.Utility.Net.Tests
         [Fact()]
         public void PingTest()
         {
-            bool flag = NetHelper.Ping("114.55.24.30");
+            bool flag = NetHelper.Ping("baidu.com");
             Assert.True(flag);
         }
 

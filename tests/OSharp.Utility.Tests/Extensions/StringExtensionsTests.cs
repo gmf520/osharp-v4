@@ -173,11 +173,11 @@ namespace OSharp.Utility.Extensions.Tests
         public void IsIdentityCardTest()
         {
             string value = "321081199801018994";
-            Assert.True(value.IsIdentityCard());
+            Assert.True(value.IsIdentityCardId());
             value = "371328198104016829";
-            Assert.True(value.IsIdentityCard());
+            Assert.True(value.IsIdentityCardId());
             value = "37132819810401652x";
-            Assert.True(value.IsIdentityCard());
+            Assert.True(value.IsIdentityCardId());
         }
 
         [Fact()]
