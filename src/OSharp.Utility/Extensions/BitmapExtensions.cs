@@ -370,6 +370,26 @@ namespace OSharp.Utility.Extensions
         }
 
         /// <summary>
+        /// 去除指定范围的灰度
+        /// </summary>
+        public static byte[,] ClearGray(this byte[,] grayBytes, byte minGray, byte maxGray)
+        {
+            int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    byte value = grayBytes[x, y];
+                    if (minGray <= value && value <= maxGray)
+                    {
+                        grayBytes[x, y] = 255;
+                    }
+                }
+            }
+            return grayBytes;
+        }
+
+        /// <summary>
         /// 去除空白边界获取有效的图形
         /// </summary>
         public static byte[,] ToValid(this byte[,] binBytes, byte gray = 200)

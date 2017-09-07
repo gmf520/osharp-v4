@@ -2,34 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
 
-using Autofac;
-
-using OSharp.App.Local.Initialize;
 using OSharp.AutoMapper;
-using OSharp.Core;
-using OSharp.Core.Caching;
 using OSharp.Core.Data;
-using OSharp.Data.Entity;
 using OSharp.Core.Dependency;
 using OSharp.Core.Reflection;
 using OSharp.Core.Security;
 using OSharp.Demo.Contracts;
-using OSharp.Demo.Models.Identity;
-using OSharp.Logging.Log4Net;
 using OSharp.Redis;
 using OSharp.Utility.Extensions;
 using OSharp.Utility.Secutiry;
-
-using StackExchange.Redis;
 
 
 namespace OSharp.Demo.Consoles
@@ -355,8 +342,19 @@ namespace OSharp.Demo.Consoles
             string listUrlFormat = "http://www.xiuren8.com/index-{0}.htm";
             List<string> urls = new List<string>();
             HttpClient client = new HttpClient();
-            for (int i = 9; i <= 38; i++)
+            for (int i = 1; i <= 40; i++)
             {
+                string outPath = @"H:\迅雷下载\3\urls\";
+                if (!Directory.Exists(outPath))
+                {
+                    Directory.CreateDirectory(outPath);
+                }
+                string outFile = Path.Combine(outPath, $"urls-www.xiuren8.com-{i.ToString("D2")}.txt");
+                if (File.Exists(outFile))
+                {
+                    Console.WriteLine($"跳过第 {i} 页的记录");
+                    continue;
+                }
                 try
                 {
                     string listUrl = listUrlFormat.FormatWith(i);
@@ -369,33 +367,40 @@ namespace OSharp.Demo.Consoles
                         {
                             string url = $"http://www.xiuren8.com/{perUrl}";
                             html = client.GetStringAsync(url).Result;
-                            url = html.Substring("下载地址:", "解压密码：").Substring("class=\"brush:html;toolbar:false\">", "</pre>");
+                            html = html.Substring("下载地址", "解压密码");
+                            if (html.Contains("下载地址"))
+                            {
+                                html = html.Substring("下载地址", "");
+                            }
+                            url = html.Substring("<pre class=\"brush:html;toolbar:false\">", "</pre>");
                             Console.WriteLine(url);
                             urls.Add(url);
                         }
                         catch (Exception e)
-                        {
-                            
-                        }
+                        { }
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                 }
-                File.WriteAllLines($@"H:\迅雷下载\3\urls\urls-www.xiuren8.com-{i.ToString("D2")}.txt", urls);
+                File.WriteAllLines(outFile, urls);
+                Console.WriteLine($"输出文件：{outFile}，{urls.Count}条记录\n");
                 urls.Clear();
             }
         }
 
         private static void Method14()
         {
-            throw new NotImplementedException();
+            string path = @"D:\ValidateCode\DiamondVote2\source\14-54-45.jpg";
+            Bitmap bmp = new Bitmap(path);
+            bmp = bmp.ToGrayArray2D().ClearGray(0, 2).ToBitmap();
+            bmp.Save(path + "cg.jpg");
         }
 
         private static void Method15()
         {
-            throw new NotImplementedException();
+            
         }
 
         private static void Method16()
