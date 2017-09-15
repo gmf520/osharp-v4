@@ -28,11 +28,7 @@ namespace OSharp.Core.Security
         public string CreateSecret()
         {
             string id = Guid.NewGuid().ToString("N");
-            byte[] buffer = id.ToBytes();
-            return Convert.ToBase64String(buffer)
-                .TrimEnd('=')
-                .Replace("+", "")
-                .Replace("/", "");
+            return id.ToBase64String().TrimEnd('=').Replace("+", "").Replace("/", "");
         }
 
         #endregion

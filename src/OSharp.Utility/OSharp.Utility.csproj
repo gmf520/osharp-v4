@@ -64,6 +64,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -105,9 +106,10 @@
     <Compile Include="Drawing\ValidateCoder.cs" />
     <Compile Include="Drawing\ValidateCodeType.cs" />
     <Compile Include="Dynamic\Exposed.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Filter\DataPage.cs" />
+    <Compile Include="Filter\PageResult.cs" />
     <Compile Include="Net\NetHelper.cs" />
     <Compile Include="Reflection\FastInvokeHandler.cs" />
     <Compile Include="Dynamic\MetaObject.cs" />

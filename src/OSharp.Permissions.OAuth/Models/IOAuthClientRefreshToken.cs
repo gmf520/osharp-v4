@@ -18,6 +18,7 @@ namespace OSharp.Core.Security.Models
     /// 定义客户端刷新Token信息
     /// </summary>
     public interface IOAuthClientRefreshToken<out TKey> : IEntity<TKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 Token值

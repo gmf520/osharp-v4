@@ -7,6 +7,7 @@
 //  <last-date>2016-03-13 1:14</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,14 +31,16 @@ namespace OSharp.Core.Security
     public interface ISecurityRole<in TRole, TRoleKey, TFunction, TFunctionKey, in TModuleKey> : IScopeDependency
         where TRole : IRole<TRoleKey>, IEntity<TRoleKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
-        where TModuleKey : struct
+        where TModuleKey : IEquatable<TModuleKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
         /// 获取指定角色的允许功能集合
         /// </summary>
         /// <param name="role">角色信息</param>
         /// <returns>允许的功能集合</returns>
-        IEnumerable<TFunction> GetRoleAllowedFunctions(TRole role);
+        IEnumerable<TFunction> GetRoleAllFunctions(TRole role);
 
         /// <summary>
         /// 给角色添加模块权限

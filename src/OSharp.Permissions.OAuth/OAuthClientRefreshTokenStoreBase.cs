@@ -27,6 +27,8 @@ namespace OSharp.Core.Security
         where TClientRefreshToken : OAuthClientRefreshTokenBase<TClientRefreshTokenKey, TClient, TClientKey, TUser, TUserKey>, new()
         where TClient : IOAuthClient<TClientKey>
         where TUser : UserBase<TUserKey>
+        where TClientRefreshTokenKey : IEquatable<TClientRefreshTokenKey>
+        where TClientKey : IEquatable<TClientKey>
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>

@@ -27,7 +27,7 @@ namespace OSharp.Utility.Extensions.Tests
         {
             List<int> source = new List<int>();
             //当为空集合时，返回null
-            Assert.Equal(source.ExpandAndToString(), null);
+            Assert.Equal(source.ExpandAndToString(), string.Empty);
 
             source.AddRange(new List<int>() { 1, 2, 3, 4, 5, 6 });
             //没有分隔符时，默认为逗号

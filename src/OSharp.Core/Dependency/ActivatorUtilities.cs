@@ -85,14 +85,14 @@ namespace OSharp.Core.Dependency
 
             FindApplicableConstructor(instanceType, argumentTypes, out constructor, out parameterMap);
 
-            var provider = Expression.Parameter(typeof(IServiceProvider), "provider");
-            var argumentArray = Expression.Parameter(typeof(object[]), "argumentArray");
-            var factoryExpressionBody = BuildFactoryExpression(constructor, parameterMap, provider, argumentArray);
+            ParameterExpression provider = Expression.Parameter(typeof(IServiceProvider), "provider");
+            ParameterExpression argumentArray = Expression.Parameter(typeof(object[]), "argumentArray");
+            Expression factoryExpressionBody = BuildFactoryExpression(constructor, parameterMap, provider, argumentArray);
 
-            var factoryLamda = Expression.Lambda<Func<IServiceProvider, object[], object>>(
+            Expression<Func<IServiceProvider, object[], object>> factoryLamda = Expression.Lambda<Func<IServiceProvider, object[], object>>(
                 factoryExpressionBody, provider, argumentArray);
 
-            var result = factoryLamda.Compile();
+            Func<IServiceProvider, object[], object> result = factoryLamda.Compile();
             return result.Invoke;
         }
 
@@ -119,13 +119,13 @@ namespace OSharp.Core.Dependency
         }
         private static MethodInfo GetMethodInfo<T>(Expression<T> expr)
         {
-            var mc = (MethodCallExpression)expr.Body;
+            MethodCallExpression mc = (MethodCallExpression)expr.Body;
             return mc.Method;
         }
 
         private static object GetService(IServiceProvider sp, Type type, Type requiredBy, bool isDefaultParameterRequired)
         {
-            var service = sp.GetService(type);
+            object service = sp.GetService(type);
             if (service == null && !isDefaultParameterRequired)
             {
                 throw new InvalidOperationException(
@@ -139,12 +139,12 @@ namespace OSharp.Core.Dependency
             Expression serviceProvider,
             Expression factoryArgumentArray)
         {
-            var constructorParameters = constructor.GetParameters();
-            var constructorArguments = new Expression[constructorParameters.Length];
+            ParameterInfo[] constructorParameters = constructor.GetParameters();
+            Expression[] constructorArguments = new Expression[constructorParameters.Length];
 
-            for (var i = 0; i < constructorParameters.Length; i++)
+            for (int i = 0; i < constructorParameters.Length; i++)
             {
-                var parameterType = constructorParameters[i].ParameterType;
+                Type parameterType = constructorParameters[i].ParameterType;
 
                 if (parameterMap[i] != null)
                 {
@@ -152,8 +152,8 @@ namespace OSharp.Core.Dependency
                 }
                 else
                 {
-                    var constructorParameterHasDefault = constructorParameters[i].HasDefaultValue;
-                    var parameterTypeExpression = new Expression[] { serviceProvider,
+                    bool constructorParameterHasDefault = constructorParameters[i].HasDefaultValue;
+                    Expression[] parameterTypeExpression = new Expression[] { serviceProvider,
                         Expression.Constant(parameterType, typeof(Type)),
                         Expression.Constant(constructor.DeclaringType, typeof(Type)),
                         Expression.Constant(constructorParameterHasDefault) };
@@ -164,7 +164,7 @@ namespace OSharp.Core.Dependency
                 // when the argument would otherwise be null.
                 if (constructorParameters[i].HasDefaultValue)
                 {
-                    var defaultValueExpression = Expression.Constant(constructorParameters[i].DefaultValue);
+                    ConstantExpression defaultValueExpression = Expression.Constant(constructorParameters[i].DefaultValue);
                     constructorArguments[i] = Expression.Coalesce(constructorArguments[i], defaultValueExpression);
                 }
 
@@ -183,7 +183,7 @@ namespace OSharp.Core.Dependency
             matchingConstructor = null;
             parameterMap = null;
 
-            foreach (var constructor in instanceType.GetTypeInfo().DeclaredConstructors)
+            foreach (ConstructorInfo constructor in instanceType.GetTypeInfo().DeclaredConstructors)
             {
                 if (constructor.IsStatic || !constructor.IsPublic)
                 {
@@ -215,12 +215,12 @@ namespace OSharp.Core.Dependency
         {
             parameterMap = new int?[constructorParameters.Length];
 
-            for (var i = 0; i < argumentTypes.Length; i++)
+            for (int i = 0; i < argumentTypes.Length; i++)
             {
-                var foundMatch = false;
-                var givenParameter = argumentTypes[i].GetTypeInfo();
+                bool foundMatch = false;
+                TypeInfo givenParameter = argumentTypes[i].GetTypeInfo();
 
-                for (var j = 0; j < constructorParameters.Length; j++)
+                for (int j = 0; j < constructorParameters.Length; j++)
                 {
                     if (parameterMap[j] != null)
                     {

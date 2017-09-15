@@ -21,7 +21,7 @@ namespace OSharp.Core.Data
     /// 可持久化到数据库的数据模型基类
     /// </summary>
     /// <typeparam name="TKey">主键数据类型</typeparam>
-    public abstract class EntityBase<TKey> : IEntity<TKey>
+    public abstract class EntityBase<TKey> : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 初始化一个<see cref="EntityBase{TKey}"/>类型的新实例

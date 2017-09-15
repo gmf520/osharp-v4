@@ -15,7 +15,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 表示权限验证结果的枚举
     /// </summary>
-    public enum AuthenticationResultType
+    public enum AuthorizationResultType
     {
         /// <summary>
         /// 权限检查通过
@@ -38,7 +38,7 @@ namespace OSharp.Core.Security
         [Description("当前功能已经被锁定，不能继续操作。")] FunctionLocked,
 
         /// <summary>
-        /// 功能不存在
+        /// 要执行的功能不存在
         /// </summary>
         [Description("指定功能不存在。")] FunctionNotFound,
 

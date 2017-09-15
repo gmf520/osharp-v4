@@ -14,5 +14,13 @@ using OSharp.Demo.Models.Security;
 namespace OSharp.Demo.ModelConfigurations.Security
 {
     public class ModuleConfiguration : EntityConfigurationBase<Module, int>
-    { }
+    {
+        public ModuleConfiguration()
+        {
+            HasMany(m => m.SubModules).WithOptional(n => n.Parent);
+            HasMany(m => m.Functions).WithMany();
+            HasMany(m => m.Roles).WithMany();
+            HasMany(m => m.Users).WithMany();
+        }
+    }
 }

@@ -14,7 +14,7 @@ namespace OSharp.Core.Security
     /// <summary>
     /// 指定功能需要登录才能访问
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class LoginedAttribute : Attribute
     { }
 }

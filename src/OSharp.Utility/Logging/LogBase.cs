@@ -83,7 +83,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsTraceEnabled)
             {
-                Write(LogLevel.Trace, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Trace, format, null);
             }
         }
 
@@ -108,7 +112,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsDebugEnabled)
             {
-                Write(LogLevel.Debug, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Debug, format, null);
             }
         }
 
@@ -134,7 +142,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsInfoEnabled)
             {
-                Write(LogLevel.Info, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Info, format, null);
             }
         }
 
@@ -159,7 +171,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsWarnEnabled)
             {
-                Write(LogLevel.Warn, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Warn, format, null);
             }
         }
 
@@ -184,7 +200,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsErrorEnabled)
             {
-                Write(LogLevel.Error, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Error, format, null);
             }
         }
 
@@ -211,7 +231,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsErrorEnabled)
             {
-                Write(LogLevel.Error, string.Format(format, args), exception);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Error, format, exception);
             }
         }
 
@@ -236,7 +260,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsFatalEnabled)
             {
-                Write(LogLevel.Fatal, string.Format(format, args), null);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Fatal, format, null);
             }
         }
 
@@ -263,7 +291,11 @@ namespace OSharp.Utility.Logging
         {
             if (IsFatalEnabled)
             {
-                Write(LogLevel.Fatal, string.Format(format, args), exception);
+                if (format.Contains("{") && format.Contains("}") && args.Length > 0)
+                {
+                    format = string.Format(format, args);
+                }
+                Write(LogLevel.Fatal, format, exception);
             }
         }
 

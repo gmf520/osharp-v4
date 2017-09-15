@@ -22,17 +22,11 @@ namespace OSharp.Core.Dependency
         /// </summary>
         public ServiceBuildOptions()
         {
-            AssemblyFinder = new DirectoryAssemblyFinder();
             TransientTypeFinder = new TransientDependencyTypeFinder();
             ScopeTypeFinder = new ScopeDependencyTypeFinder();
             SingletonTypeFinder = new SingletonDependencyTypeFinder();
         }
-
-        /// <summary>
-        /// 获取或设置 程序集查找器
-        /// </summary>
-        public IAllAssemblyFinder AssemblyFinder { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 即时生命周期依赖类型查找器
         /// </summary>

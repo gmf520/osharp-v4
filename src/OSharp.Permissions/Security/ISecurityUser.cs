@@ -31,14 +31,16 @@ namespace OSharp.Core.Security
     public interface ISecurityUser<in TUser, TUserKey, TFunction, TFunctionKey, in TModuleKey> : IScopeDependency
         where TUser : IUser<TUserKey>, IEntity<TUserKey>
         where TFunction : IFunction, IEntity<TFunctionKey>
-        where TModuleKey : struct
+        where TModuleKey : IEquatable<TModuleKey>
+        where TUserKey : IEquatable<TUserKey>
+        where TFunctionKey : IEquatable<TFunctionKey>
     {
         /// <summary>
-        /// 获取指定用户的允许功能集合
+        /// 获取赋予给用户的功能集合，不包含用户拥有的角色赋予的功能集合
         /// </summary>
         /// <param name="user">用户信息</param>
         /// <returns>允许的功能集合</returns>
-        Task<IEnumerable<TFunction>> GetUserAllowedFunctions(TUser user);
+        IEnumerable<TFunction> GetUserAllFunctions(TUser user);
 
         /// <summary>
         /// 给用户添加模块权限
@@ -47,13 +49,5 @@ namespace OSharp.Core.Security
         /// <param name="moduleIds">要添加的模块编号集合</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> SetUserModules(TUser user, params TModuleKey[] moduleIds);
-
-        /// <summary>
-        /// 给用户添加特殊功能限制
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <param name="functions">要添加的功能编号及控制类型集合</param>
-        /// <returns></returns>
-        Task<OperationResult> SetUserFunctions(TUser user, params Tuple<TFunctionKey, FilterType>[] functions);
     }
 }

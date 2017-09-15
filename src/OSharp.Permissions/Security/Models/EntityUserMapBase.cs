@@ -25,6 +25,9 @@ namespace OSharp.Core.Security.Models
         : EntityBase<TKey>, IEntityUserMap<TKey, TEntityInfo, TEntityInfoKey, TUser, TUserKey>
         where TEntityInfo : EntityInfoBase<TEntityInfoKey>
         where TUser : UserBase<TUserKey>
+        where TKey : IEquatable<TKey>
+        where TEntityInfoKey : IEquatable<TEntityInfoKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取或设置 实体信息

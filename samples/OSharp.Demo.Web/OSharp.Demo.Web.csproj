@@ -62,6 +62,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.6.6\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.MemoryStorage, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.MemoryStorage.1.3.0.0\lib\net45\Hangfire.MemoryStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -542,14 +550,21 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\WebApi\ValuesController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
+    <Compile Include="Data\MyAutoMigrationsConfiguration.cs" />
+    <Compile Include="Data\MyDbContextInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Startups\Hangfires\HangfireJobsRunner.cs" />
     <Compile Include="ViewModels\TreeNode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OSharp.Autofac.Hangfire\OSharp.Autofac.Hangfire.csproj">
+      <Project>{8bfbf42c-d5fd-46f4-8a32-dabc19455077}</Project>
+      <Name>OSharp.Autofac.Hangfire</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\OSharp.Autofac.Mvc\OSharp.Autofac.Mvc.csproj">
       <Project>{ec26e385-6ded-4695-9338-b7136152abc6}</Project>
       <Name>OSharp.Autofac.Mvc</Name>
@@ -621,7 +636,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>OSharp.Keys.snk</AssemblyOriginatorKeyFile>
@@ -637,7 +652,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56679</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:10240</IISUrl>
+          <IISUrl>http://localhost:10241</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -7,8 +7,12 @@
 //  <last-date>2015-09-29 23:12</last-date>
 // -----------------------------------------------------------------------
 
+using Hangfire;
+using Hangfire.MemoryStorage;
+
 using Microsoft.Owin;
 
+using OSharp.Autofac.Hangfire.Initialize;
 using OSharp.Autofac.Http;
 using OSharp.Autofac.Mvc;
 using OSharp.AutoMapper;
@@ -18,6 +22,7 @@ using OSharp.Core.Security;
 using OSharp.Data.Entity;
 using OSharp.Demo.Services;
 using OSharp.Demo.Web;
+using OSharp.Demo.Web.Startups.Hangfires;
 using OSharp.Logging.Log4Net;
 using OSharp.Web.Http.Initialize;
 using OSharp.Web.Mvc.Initialize;
@@ -54,6 +59,13 @@ namespace OSharp.Demo.Web
             app.ConfigureOAuth(apiIocBuilder.ServiceProvider);
             app.ConfigureWebApi();
             //app.ConfigureSignalR();
+
+            IIocBuilder hangfireBuilder = new HangfireAutofacIocBuilder(services);
+            app.UseOSharpHangfile(hangfireBuilder);
+            GlobalConfiguration.Configuration.UseMemoryStorage();
+            app.UseHangfireDashboard();
+            app.UseHangfireServer(new BackgroundJobServerOptions() { WorkerCount = 1 });
+            HangfireJobsRunner.Start(); 
         }
     }
 }

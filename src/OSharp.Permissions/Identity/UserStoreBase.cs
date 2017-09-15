@@ -195,7 +195,7 @@ namespace OSharp.Core.Identity
         public virtual async Task<TUser> FindByNameAsync(string userName)
         {
             userName.CheckNotNull("userName");
-            return await Task.Run(() => UserRepository.TrackEntities.Where(m => m.UserName.ToUpper() == userName.ToUpper()).FirstOrDefault());
+            return await Task.Run(() => UserRepository.TrackEntities.FirstOrDefault(m => m.UserName.ToUpper() == userName.ToUpper()));
         }
 
         #endregion
@@ -217,7 +217,7 @@ namespace OSharp.Core.Identity
             {
                 return;
             }
-            TRole role = await Task.Run(() => RoleRepository.TrackEntities.Where(m => m.Name == roleName).FirstOrDefault());
+            TRole role = RoleRepository.TrackEntities.FirstOrDefault(m => m.Name == roleName);
             if (role == null)
             {
                 throw new InvalidOperationException("名称为“{0}”的角色信息不存在".FormatWith(roleName));
@@ -236,8 +236,8 @@ namespace OSharp.Core.Identity
         {
             user.CheckNotNull("user");
             roleName.CheckNotNull("roleName");
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(m => m.User.Id.Equals(user.Id)
-                  && m.Role.Name == roleName).FirstOrDefault());
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.FirstOrDefault(m => m.User.Id.Equals(user.Id)
+                && m.Role.Name == roleName);
             if (map == null)
             {
                 return;
@@ -273,7 +273,7 @@ namespace OSharp.Core.Identity
         #endregion
 
         #region Implementation of IUserRoleMapStore<in TUserRoleMapInputDto,in TUserRoleMapKey,in TUserKey,TRoleKey>
-        
+
         /// <summary>
         /// 添加用户角色映射信息
         /// </summary>
@@ -281,16 +281,16 @@ namespace OSharp.Core.Identity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault()); ;
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault();
             if (map != null)
             {
                 return new OperationResult(OperationResultType.Error,
-                    "“{0}-{1}”的指派信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
+                    "“{0}-{1}”的映射信息已存在，不能重复添加".FormatWith(map.User.NickName, map.Role.Name));
             }
-            
+
             map = dto.MapTo<TUserRoleMap>();
             TUser user = UserRepository.GetByKey(dto.UserId);
             if (user == null)
@@ -304,8 +304,9 @@ namespace OSharp.Core.Identity
                 return new OperationResult(OperationResultType.QueryNull, "指定编号的角色信息不存在");
             }
             map.Role = role;
-            await UserRoleMapRepository.InsertAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.InsertAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与角色“{1}”的映射信息创建成功".FormatWith(user.UserName, role.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -315,10 +316,10 @@ namespace OSharp.Core.Identity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateUserRoleMapAsync(TUserRoleMapInputDto dto)
         {
-            dto.CheckNotNull("dto" );
+            dto.CheckNotNull("dto");
             dto.ThrowIfTimeInvalid();
             Expression<Func<TUserRoleMap, bool>> predicate = m => m.User.Id.Equals(dto.UserId) && m.Role.Id.Equals(dto.RoleId);
-            TUserRoleMap map = await Task.Run(() => UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault());
+            TUserRoleMap map = UserRoleMapRepository.TrackEntities.Where(predicate).FirstOrDefault();
             if (map != null && !map.Id.Equals(dto.Id))
             {
                 return new OperationResult(OperationResultType.Error,
@@ -329,7 +330,7 @@ namespace OSharp.Core.Identity
                 map = await UserRoleMapRepository.GetByKeyAsync(dto.Id);
             }
             map = dto.MapTo(map);
-            if (!map.User.Id.Equals(dto.UserId))
+            if (map.User == null || !map.User.Id.Equals(dto.UserId))
             {
                 TUser user = UserRepository.GetByKey(dto.UserId);
                 if (user == null)
@@ -338,7 +339,7 @@ namespace OSharp.Core.Identity
                 }
                 map.User = user;
             }
-            if (!map.Role.Id.Equals(dto.RoleId))
+            if (map.Role == null || !map.Role.Id.Equals(dto.RoleId))
             {
                 TRole role = RoleRepository.GetByKey(dto.RoleId);
                 if (role == null)
@@ -347,8 +348,9 @@ namespace OSharp.Core.Identity
                 }
                 map.Role = role;
             }
-            await UserRoleMapRepository.UpdateAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.UpdateAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户“{0}”与角色“{1}”的映射信息更新成功".FormatWith(map.User.UserName, map.Role.Name))
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -363,8 +365,9 @@ namespace OSharp.Core.Identity
             {
                 return OperationResult.NoChanged;
             }
-            await UserRoleMapRepository.DeleteAsync(map);
-            return OperationResult.Success;
+            return await UserRoleMapRepository.DeleteAsync(map) > 0
+                ? new OperationResult(OperationResultType.Success, "用户角色映射信息删除成功")
+                : OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -641,7 +644,7 @@ namespace OSharp.Core.Identity
         public async Task<TUser> FindByEmailAsync(string email)
         {
             email.CheckNotNull("email");
-            return await Task.Run(() => UserRepository.TrackEntities.Where(m => m.Email.Equals(email)).FirstOrDefault());
+            return await Task.Run(() => UserRepository.TrackEntities.FirstOrDefault(m => m.Email.Equals(email)));
         }
 
         #endregion
