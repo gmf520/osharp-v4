@@ -175,7 +175,7 @@ namespace OSharp.Utility.Extensions
             {
                 return default(T);
             }
-            if (typeof(T).HasAttribute<SerializableAttribute>())
+            if (typeof(T).HasAttribute<SerializableAttribute>() == false)
             {
                 throw new NotSupportedException("当前对象未标记特性“{0}”，无法进行DeepClone操作".FormatWith(typeof(SerializableAttribute)));
             }
