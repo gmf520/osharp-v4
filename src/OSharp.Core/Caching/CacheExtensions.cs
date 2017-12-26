@@ -93,6 +93,7 @@ namespace OSharp.Core.Caching
             cache.Set(key, result, function);
             return result;
         }
+
         #region Selector
 
         /// <summary>
