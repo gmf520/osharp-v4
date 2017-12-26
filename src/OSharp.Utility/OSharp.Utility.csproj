@@ -111,6 +111,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Filter\PageResult.cs" />
     <Compile Include="Net\NetHelper.cs" />
+    <Compile Include="Reflection\ComLibraryLoader.cs" />
     <Compile Include="Reflection\FastInvokeHandler.cs" />
     <Compile Include="Dynamic\MetaObject.cs" />
     <Compile Include="Exceptions\ExceptionMessage.cs" />
@@ -155,6 +156,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reflection\IComClassFactory.cs" />
+    <Compile Include="Reflection\NativeMethods.cs" />
+    <Compile Include="Reflection\SyncLocker.cs" />
     <Compile Include="Secutiry\CommunicationCryptor.cs" />
     <Compile Include="Secutiry\DesHelper.cs" />
     <Compile Include="Secutiry\HashHelper.cs" />

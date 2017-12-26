@@ -89,7 +89,7 @@ namespace OSharp.Core.Security
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
+        public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             //调用登录服务验证用户名与密码
             bool validated = await _passwordValidator.Validate(context.UserName, context.Password);

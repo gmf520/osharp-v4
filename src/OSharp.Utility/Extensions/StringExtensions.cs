@@ -244,19 +244,21 @@ namespace OSharp.Utility.Extensions
         /// </summary>
         public static bool IsUrl(this string value)
         {
-            try
-            {
-                if (value.IsNullOrEmpty() || value.Contains(' '))
-                {
-                    return false;
-                }
-                Uri uri = new Uri(value);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            const string pattern = @"((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?";
+            return value.IsMatch(pattern);
+            //try
+            //{
+            //    if (value.IsNullOrEmpty() || value.Contains(' '))
+            //    {
+            //        return false;
+            //    }
+            //    Uri uri = new Uri(value);
+            //    return true;
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
         }
 
         /// <summary>
@@ -535,7 +537,7 @@ namespace OSharp.Utility.Extensions
         /// <summary>
         /// 将<see cref="byte"/>[]数组转换为字符串，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
-        public static string ToString(this byte[] bytes, Encoding encoding = null)
+        public static string ToString2(this byte[] bytes, Encoding encoding = null)
         {
             if (encoding == null)
             {

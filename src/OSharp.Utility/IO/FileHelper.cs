@@ -119,5 +119,36 @@ namespace OSharp.Utility.IO
             }
             return sb.ToString();
         }
+
+        /// <summary>
+        /// 获取文本文件的编码方式
+        /// </summary>
+        public static Encoding GetFileEncoding(string fileName)
+        {
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (BinaryReader reader = new BinaryReader(fs))
+                {
+                    byte[] buffer = reader.ReadBytes(2);
+                    if (buffer[0] >= 0xEF)
+                    {
+                        if (buffer[0] == 0xEF && buffer[1] == 0xBB)
+                        {
+                            return Encoding.UTF8;
+                        }
+                        if (buffer[0] == 0xFE && buffer[1] == 0xFF)
+                        {
+                            return Encoding.BigEndianUnicode;
+                        }
+                        if (buffer[0] == 0xFF && buffer[1] == 0xFE)
+                        {
+                            return Encoding.Unicode;
+                        }
+                        return Encoding.Default;
+                    }
+                    return Encoding.Default;
+                }
+            }
+        }
     }
 }
