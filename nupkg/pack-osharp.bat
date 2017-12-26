@@ -1,4 +1,5 @@
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Utility\OSharp.Utility.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
+"..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Utility.Wpf\OSharp.Utility.Wpf.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Core\OSharp.Core.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Data.Entity\OSharp.Data.Entity.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
 "..\.nuget\NuGet.exe" "pack" "..\src\OSharp.Data.Entity.MySql\OSharp.Data.Entity.MySql.csproj" -Properties Configuration=Debug -IncludeReferencedProjects
