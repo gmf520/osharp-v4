@@ -42,7 +42,7 @@ namespace OSharp.Utility.Data
         public static T FromBinary<T>(byte[] bytes)
         {
             bytes.CheckNotNullOrEmpty("bytes");
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(bytes))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (T)formatter.Deserialize(ms);
