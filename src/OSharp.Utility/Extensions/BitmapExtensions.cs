@@ -585,15 +585,18 @@ namespace OSharp.Utility.Extensions
         /// <returns></returns>
         public static byte[] ToBytes(this Bitmap bmp)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (Bitmap newBmp = new Bitmap(bmp))
             {
-                ImageFormat format = bmp.RawFormat;
-                if (ImageFormat.MemoryBmp.Equals(format))
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    format = ImageFormat.Bmp;
+                    ImageFormat format = newBmp.RawFormat;
+                    if (ImageFormat.MemoryBmp.Equals(format))
+                    {
+                        format = ImageFormat.Bmp;
+                    }
+                    newBmp.Save(ms, format);
+                    return ms.GetBuffer();
                 }
-                bmp.Save(ms, format);
-                return ms.ToArray();
             }
         }
 
