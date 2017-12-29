@@ -159,6 +159,7 @@
     <Compile Include="Reflection\IComClassFactory.cs" />
     <Compile Include="Reflection\NativeMethods.cs" />
     <Compile Include="Reflection\SyncLocker.cs" />
+    <Compile Include="Secutiry\AesHelper.cs" />
     <Compile Include="Secutiry\CommunicationCryptor.cs" />
     <Compile Include="Secutiry\DesHelper.cs" />
     <Compile Include="Secutiry\HashHelper.cs" />

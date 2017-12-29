@@ -74,7 +74,7 @@ namespace OSharp.Core.Identity
                 return;
             }
             TUser existUser = _manager.Users.FirstOrDefault(m => m.NickName == nickName);
-            if (existUser == null || user.Id.Equals(existUser.Id))
+            if (existUser == null || user.Id.Equals(existUser.Id) || !RequireUniqueNickName)
             {
                 return;
             }

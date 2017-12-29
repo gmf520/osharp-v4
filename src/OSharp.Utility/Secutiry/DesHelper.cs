@@ -69,13 +69,15 @@ namespace OSharp.Utility.Secutiry
             SymmetricAlgorithm provider = _isTriple
                 ? (SymmetricAlgorithm)new TripleDESCryptoServiceProvider { Key = _key, Mode = CipherMode.ECB }
                 : new DESCryptoServiceProvider { Key = _key, Mode = CipherMode.ECB };
-
-            MemoryStream ms = new MemoryStream();
-            using (CryptoStream cs = new CryptoStream(ms, provider.CreateEncryptor(), CryptoStreamMode.Write))
+            
+            using (MemoryStream ms = new MemoryStream())
             {
-                cs.Write(source, 0, source.Length);
-                cs.FlushFinalBlock();
-                return ms.ToArray();
+                using (CryptoStream cs = new CryptoStream(ms, provider.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(source, 0, source.Length);
+                    cs.FlushFinalBlock();
+                    return ms.ToArray();
+                } 
             }
         }
 
@@ -87,7 +89,6 @@ namespace OSharp.Utility.Secutiry
         public byte[] Decrypt(byte[] source)
         {
             source.CheckNotNull("source");
-
             if (source == null)
             {
                 throw new ArgumentNullException("source");
@@ -96,12 +97,15 @@ namespace OSharp.Utility.Secutiry
             SymmetricAlgorithm provider = _isTriple
                 ? (SymmetricAlgorithm)new TripleDESCryptoServiceProvider { Key = _key, Mode = CipherMode.ECB }
                 : new DESCryptoServiceProvider { Key = _key, Mode = CipherMode.ECB };
-            MemoryStream ms = new MemoryStream();
-            using (CryptoStream cs = new CryptoStream(ms, provider.CreateDecryptor(), CryptoStreamMode.Write))
+
+            using (MemoryStream ms = new MemoryStream())
             {
-                cs.Write(source, 0, source.Length);
-                cs.FlushFinalBlock();
-                return ms.ToArray();
+                using (CryptoStream cs = new CryptoStream(ms, provider.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(source, 0, source.Length);
+                    cs.FlushFinalBlock();
+                    return ms.ToArray();
+                } 
             }
         }
         

@@ -400,7 +400,12 @@ namespace OSharp.Demo.Consoles
 
         private static void Method15()
         {
-            
+            string key = Console.ReadLine();
+            string str = "博客园";
+            str = AesHelper.Encrypt(str, key);
+            Console.WriteLine(str);
+            str = AesHelper.Decrypt(str, key);
+            Console.WriteLine(str);
         }
 
         private static void Method16()

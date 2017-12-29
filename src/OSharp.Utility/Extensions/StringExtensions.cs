@@ -568,7 +568,7 @@ namespace OSharp.Utility.Extensions
             }
             return Convert.ToBase64String(encoding.GetBytes(source));
         }
-
+        
         /// <summary>
         /// 将Base64字符串转换为正常字符串，默认编码为<see cref="Encoding.UTF8"/>
         /// </summary>
