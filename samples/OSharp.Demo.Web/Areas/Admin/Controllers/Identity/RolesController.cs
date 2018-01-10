@@ -15,6 +15,7 @@ using OSharp.Demo.Dtos.Identity;
 using OSharp.Utility;
 using OSharp.Utility.Data;
 using OSharp.Utility.Filter;
+using OSharp.Web.Mvc;
 using OSharp.Web.Mvc.Extensions;
 using OSharp.Web.Mvc.Filters;
 using OSharp.Web.Mvc.Security;
@@ -24,7 +25,7 @@ using OSharp.Web.Mvc.UI;
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
 {
     [Description("管理-角色")]
-    [OsharpAuthorize]
+    //[OsharpAuthorize]
     public class RolesController : AdminBaseController
     {
         /// <summary>

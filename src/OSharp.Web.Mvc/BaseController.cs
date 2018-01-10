@@ -19,7 +19,7 @@ namespace OSharp.Web.Mvc
     /// <summary>
     /// OSharp-MVC的控制器基类
     /// </summary>
-    [OsharpAuthorize]
+    //[OsharpAuthorize]
     [OperateLogFilter]
     public abstract class BaseController : Controller
     {
