@@ -1,8 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="DecToOctConverter.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-01-26 22:19</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 
 using OSharp.Utility.Extensions;
@@ -26,15 +32,14 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return 0;
+                return "0";
             }
-            string binPattern = "0-7";
-            string bin = value.ToString();
-            if (!bin.IsMatch(binPattern))
+            if (!(value is int))
             {
-                return 0;
+                return "0";
             }
-            return System.Convert.ToInt32(bin, 8);
+            int dec = (int)value;
+            return System.Convert.ToString(dec, 8);
         }
 
         /// <summary>
@@ -48,14 +53,15 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return "0";
+                return 0;
             }
-            if (!(value is int))
+            string binPattern = "^[0-7]$";
+            string bin = value.ToString();
+            if (!bin.IsMatch(binPattern, false))
             {
-                return "0";
+                return 0;
             }
-            int dec = (int)value;
-            return System.Convert.ToString(dec, 8);
+            return System.Convert.ToInt32(bin, 8);
         }
     }
 }

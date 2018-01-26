@@ -32,15 +32,14 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return 0;
+                return "0";
             }
-            string hexPattern = "0-9A-FA-F";
-            string hex = value.ToString().ToUpper();
-            if (!hex.IsMatch(hexPattern))
+            if (!(value is int))
             {
-                return 0;
+                return "0";
             }
-            return System.Convert.ToInt32(hex, 16);
+            int dec = (int)value;
+            return System.Convert.ToString(dec, 16).ToUpper();
         }
 
         /// <summary>
@@ -54,14 +53,15 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return "0";
+                return 0;
             }
-            if (!(value is int))
+            string hexPattern = "^[0-9A-F]$";
+            string hex = value.ToString().ToUpper();
+            if (!hex.IsMatch(hexPattern, false))
             {
-                return "0";
+                return 0;
             }
-            int dec = (int)value;
-            return System.Convert.ToString(dec, 16).ToUpper();
+            return System.Convert.ToInt32(hex, 16);
         }
     }
 }

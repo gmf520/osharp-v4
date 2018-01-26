@@ -32,15 +32,14 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return 0;
+                return "0";
             }
-            string binPattern = "0-1";
-            string bin = value.ToString();
-            if (!bin.IsMatch(binPattern))
+            if (!(value is int))
             {
-                return 0;
+                return "0";
             }
-            return System.Convert.ToInt32(bin, 2);
+            int dec = (int)value;
+            return System.Convert.ToString(dec, 2);
         }
 
         /// <summary>
@@ -54,14 +53,15 @@ namespace OSharp.Utility.Wpf.Converters
         {
             if (value == null)
             {
-                return "0";
+                return 0;
             }
-            if (!(value is int))
+            string binPattern = "^[0-1]$";
+            string bin = value.ToString();
+            if (!bin.IsMatch(binPattern, false))
             {
-                return "0";
+                return 0;
             }
-            int dec = (int)value;
-            return System.Convert.ToString(dec, 2);
+            return System.Convert.ToInt32(bin, 2);
         }
     }
 }
