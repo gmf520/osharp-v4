@@ -87,6 +87,9 @@
     <Compile Include="Converters\BooleanToNoConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DecToBinConverter.cs" />
+    <Compile Include="Converters\DecToHexConverter.cs" />
+    <Compile Include="Converters\DecToOctConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelExBase.cs" />

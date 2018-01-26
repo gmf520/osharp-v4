@@ -158,3 +158,4 @@ $RECYCLE.BIN/
 *.nupkg
 *.mdf
 *.ldf
+/.vs/osharp/v15/Server/sqlite3
