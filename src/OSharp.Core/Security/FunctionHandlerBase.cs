@@ -100,9 +100,9 @@ namespace OSharp.Core.Security
                 }
             }
             Debug.Assert(Functions != null, "Functions != null");
-            return Functions.FirstOrDefault(m => m.Area.Equals(area, StringComparison.OrdinalIgnoreCase)
-                && m.Controller.Equals(controller, StringComparison.OrdinalIgnoreCase)
-                && m.Action.Equals(action, StringComparison.OrdinalIgnoreCase)
+            return Functions.FirstOrDefault(m => string.Equals(m.Area, area, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Controller, controller, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Action, action, StringComparison.OrdinalIgnoreCase)
                 && m.PlatformToken == PlatformToken);
         }
 
@@ -189,10 +189,10 @@ namespace OSharp.Core.Security
         protected virtual bool ExistsFunction(IEnumerable<TFunction> functions, TFunction function)
         {
             return functions.Any(m =>
-                m.Action == function.Action
-                    && m.Controller.Equals(function.Controller, StringComparison.OrdinalIgnoreCase)
-                    && m.Area.Equals(function.Area, StringComparison.OrdinalIgnoreCase)
-                    && m.Name.Equals(function.Name, StringComparison.OrdinalIgnoreCase)
+                string.Equals(m.Area, function.Area, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Controller, function.Controller, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Action, function.Action, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Name, function.Name, StringComparison.OrdinalIgnoreCase)
                     && m.PlatformToken == PlatformToken);
         }
 
@@ -208,10 +208,10 @@ namespace OSharp.Core.Security
         protected virtual TFunction GetFunction(IEnumerable<TFunction> functions, string action, string controller, string area, string name)
         {
             return functions.FirstOrDefault(m =>
-                m.Area.Equals(area, StringComparison.OrdinalIgnoreCase)
-                    && m.Controller.Equals(controller, StringComparison.OrdinalIgnoreCase)
-                    && m.Action.Equals(action, StringComparison.OrdinalIgnoreCase)
-                    && m.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
+                string.Equals(m.Area, area, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Controller, controller, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Action, action, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase)
                     && m.PlatformToken == PlatformToken);
         }
 
@@ -288,9 +288,9 @@ namespace OSharp.Core.Security
                 }
                 bool isUpdate = false;
                 TFunction function = functions.SingleOrDefault(m =>
-                    m.Action == item.Action
-                        && m.Controller.Equals(item.Controller, StringComparison.OrdinalIgnoreCase)
-                        && m.Area.Equals(item.Area, StringComparison.OrdinalIgnoreCase)
+                    string.Equals(m.Area, item.Area, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(m.Controller, item.Controller, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(m.Action, item.Action, StringComparison.OrdinalIgnoreCase)
                         && m.PlatformToken == PlatformToken);
                 if (function == null)
                 {
