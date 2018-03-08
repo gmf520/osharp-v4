@@ -55,7 +55,7 @@ namespace OSharp.Utility.Wpf.Converters
             {
                 return 0;
             }
-            string hexPattern = "^[0-9A-F]$";
+            string hexPattern = "^[0-9A-F]+$";
             string hex = value.ToString().ToUpper();
             if (!hex.IsMatch(hexPattern, false))
             {

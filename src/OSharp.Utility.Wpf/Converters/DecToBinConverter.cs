@@ -55,7 +55,7 @@ namespace OSharp.Utility.Wpf.Converters
             {
                 return 0;
             }
-            string binPattern = "^[0-1]$";
+            string binPattern = "^[0-1]+$";
             string bin = value.ToString();
             if (!bin.IsMatch(binPattern, false))
             {
