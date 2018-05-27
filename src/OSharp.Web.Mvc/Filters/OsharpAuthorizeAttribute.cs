@@ -104,10 +104,10 @@ namespace OSharp.Web.Mvc.Filters
             AuthorizationResultType type = result.ResultType;
             switch (type)
             {
-                case AuthorizationResultType.LoggedOut:
+                case AuthorizationResultType.Unauthorized:
                     filterContext.Result = new HttpUnauthorizedResult();
                     break;
-                case AuthorizationResultType.PurviewLack:
+                case AuthorizationResultType.Forbidden:
                     filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                     break;
                 case AuthorizationResultType.FunctionLocked:

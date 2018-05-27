@@ -23,14 +23,14 @@ namespace OSharp.Core.Security
         [Description("权限检查通过。")] Allowed,
 
         /// <summary>
-        /// 该操作需要登录后才能继续进行
+        /// 未登录被拒绝，401
         /// </summary>
-        [Description("该操作需要登录后才能继续进行。")] LoggedOut,
+        [Description("该操作需要登录后才能继续进行。")] Unauthorized,
 
         /// <summary>
-        /// 权限不足
+        /// 已登录，但权限不足，403
         /// </summary>
-        [Description("当前用户权限不足，不能继续操作。")] PurviewLack,
+        [Description("当前用户权限不足，不能继续操作。")] Forbidden,
 
         /// <summary>
         /// 功能锁定

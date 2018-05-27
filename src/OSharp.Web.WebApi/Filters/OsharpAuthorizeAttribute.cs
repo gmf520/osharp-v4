@@ -87,10 +87,10 @@ namespace OSharp.Web.Http.Filters
             string msg = StringToISO_8859_1(result.Message);
             switch (type)
             {
-                case AuthorizationResultType.LoggedOut:
+                case AuthorizationResultType.Unauthorized:
                     actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, msg);
                     break;
-                case AuthorizationResultType.PurviewLack:
+                case AuthorizationResultType.Forbidden:
                     actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, msg);
                     break;
                 case AuthorizationResultType.FunctionLocked:

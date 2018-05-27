@@ -94,7 +94,7 @@ namespace OSharp.Core.Security
             //登录无效
             if (principal == null || !principal.Identity.IsAuthenticated)
             {
-                return new AuthorizationResult(AuthorizationResultType.LoggedOut);
+                return new AuthorizationResult(AuthorizationResultType.Unauthorized);
             }
             //登录限制，无角色限制
             if (function.FunctionType == FunctionType.Logined)
@@ -115,7 +115,7 @@ namespace OSharp.Core.Security
             ClaimsPrincipal claimsUser = user as ClaimsPrincipal;
             if (claimsUser == null)
             {
-                return new AuthorizationResult(AuthorizationResultType.Error, "当前用户信息格式不正确，仅支持ClaimsPrincipal类型的用户信息");
+                return new AuthorizationResult(AuthorizationResultType.Error, "当前用户信息IPrincipal格式不正确，仅支持ClaimsPrincipal类型的用户信息");
             }
             //角色限制
             ClaimsIdentity identity = claimsUser.Identity as ClaimsIdentity;
@@ -151,7 +151,7 @@ namespace OSharp.Core.Security
             {
                 return AuthorizationResult.Allowed;
             }
-            return new AuthorizationResult(AuthorizationResultType.PurviewLack);
+            return new AuthorizationResult(AuthorizationResultType.Forbidden);
         }
     }
 }
